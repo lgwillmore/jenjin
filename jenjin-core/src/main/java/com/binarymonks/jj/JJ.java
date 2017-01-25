@@ -29,6 +29,8 @@ public class JJ {
      */
     public static LifeCycle lifecycle = new LifeCycle();
 
+    public static World world = new World();
+
     static void initialise() {
         render = new Render();
     }

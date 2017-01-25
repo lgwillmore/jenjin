@@ -10,7 +10,8 @@ import com.binarymonks.jj.pools.managers.Vector2PoolManager;
 /**
  * Pools is a place to register new {@link PoolManager}s for things that you want to pool.
  * Then you can get and recycle the Pooled thing as you wish. There is one of these
- * ready to use and access from anywhere in {@link com.binarymonks.jj.JJ}
+ * ready to use and access from anywhere in {@link com.binarymonks.jj.JJ}. Or even better at
+ * {@link N#ew(Class)} and {@link Re#cycle(Object)}
  * <p>
  * Pools also comes with some default managers already registered for:
  * - {@link Event}
@@ -25,19 +26,34 @@ public class Pools {
         registerManager(new Vector2PoolManager(), Vector2.class);
     }
 
-    public <T> T nuw(Class<T> pooled) {
-        if (!pools.containsKey(pooled)) {
-            throw new NoPoolManagerException(pooled);
+    /**
+     * Get something from the pool or make a new one. A {@link PoolManager} must be registered.
+     * There is a nice little convenience function with much less to type {@link N#ew(Class)}
+     * Be sure to {@link Re#cycle(Object)} it when you are done.
+     *
+     * @param pooledClass the class of the object that is pooled
+     * @param <T>
+     * @return an instance of the pooled class
+     */
+    public <T> T nuw(Class<T> pooledClass) {
+        if (!pools.containsKey(pooledClass)) {
+            throw new NoPoolManagerException(pooledClass);
         } else {
-            return (T) pools.get(pooled).getNew();
+            return (T) pools.get(pooledClass).getNew();
         }
     }
 
-    public void recycle(Object poolable) {
-        if (!pools.containsKey(poolable.getClass())) {
-            throw new NoPoolManagerException(poolable.getClass());
+    /**
+     * Recycle the used pooled object. A {@link PoolManager} must be registered.
+     * There is a nice little convenience function with much less to type {@link Re#cycle(Object)}
+     *
+     * @param pooled
+     */
+    public void recycle(Object pooled) {
+        if (!pools.containsKey(pooled.getClass())) {
+            throw new NoPoolManagerException(pooled.getClass());
         } else {
-            pools.get(poolable.getClass()).add(poolable);
+            pools.get(pooled.getClass()).add(pooled);
         }
     }
 

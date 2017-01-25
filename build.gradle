@@ -22,6 +22,9 @@ allprojects {
 project(":jenjin-core") {
     apply plugin: 'java'
     apply plugin: 'maven-publish'
+    apply plugin: 'idea'
+
+    sourceCompatibility = '1.8'
 
     dependencies {
         compile fileTree(dir: '../libs', include: '*.jar')

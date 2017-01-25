@@ -9,7 +9,8 @@ public class RootSpec {
 
     Array<NodeSpec> nodeSpecs = new Array<>();
 
-    public void addNode(NodeSpec nodeSpec) {
+    public RootSpec addNode(NodeSpec nodeSpec) {
         this.nodeSpecs.add(nodeSpec);
+        return this;
     }
 }

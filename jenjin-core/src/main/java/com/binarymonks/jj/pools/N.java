@@ -1,4 +1,4 @@
-package com.binarymonks.jj.pools.managers;
+package com.binarymonks.jj.pools;
 
 import com.binarymonks.jj.JJ;
 

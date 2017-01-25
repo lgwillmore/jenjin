@@ -1,10 +1,10 @@
 package com.binarymonks.jj.pools;
 
 /**
- * A PoolManager takes care of reseting and creating its THING_TO_POOL. This means we can pool anything.
- * @param <THING_TO_POOL>
+ * A PoolManager takes care of reseting and creating its POOLED_THING. This means we can pool anything.
+ * @param <POOLED_THING>
  */
-public interface PoolManager<THING_TO_POOL> {
-    void reset(THING_TO_POOL thingToPool);
-    THING_TO_POOL create_new();
+public interface PoolManager<POOLED_THING> {
+    void reset(POOLED_THING pooled_thing);
+    POOLED_THING create_new();
 }
