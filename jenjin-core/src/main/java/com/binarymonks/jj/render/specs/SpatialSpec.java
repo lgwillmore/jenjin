@@ -1,4 +1,4 @@
-package com.binarymonks.jj.render.spec;
+package com.binarymonks.jj.render.specs;
 
 import com.badlogic.gdx.math.Vector2;
 import com.binarymonks.jj.JJ;
