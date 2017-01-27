@@ -3,9 +3,11 @@ package com.binarymonks.jj.playground;
 import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.layers.DefaultLayer;
-import com.binarymonks.jj.objects.specs.NodeSpec;
-import com.binarymonks.jj.objects.specs.RootSpec;
-import com.binarymonks.jj.objects.specs.SceneSpec;
+import com.binarymonks.jj.things.InstanceParams;
+import com.binarymonks.jj.things.Thing;
+import com.binarymonks.jj.things.specs.NodeSpec;
+import com.binarymonks.jj.things.specs.ThingSpec;
+import com.binarymonks.jj.things.specs.SceneSpec;
 import com.binarymonks.jj.physics.specs.ShapePhysicsSpec;
 import com.binarymonks.jj.render.specs.RenderSpec;
 
@@ -13,25 +15,43 @@ import com.binarymonks.jj.render.specs.RenderSpec;
 public class PlayGround extends Game {
     @Override
     protected void gameOn() {
+        //TODO: Add a gameworld rendering layer
+
+
         //Show a splash screen
         JJ.render.layers.addLayerTop(new DefaultLayer());
 
-        //Get the level specification
+        //Load ThingSpecs
+        JJ.things.specs
+                .set("enemy/1", enemeySpec())
+                .set("player", playerSpec());
+
+        //Add instances to a level
         SceneSpec level = new SceneSpec()
-                .add(enemeySpec())
-                .add(playerSpec());
+                .add("enemy/1",
+                        InstanceParams.New(),
+                        InstanceParams.New(),
+                        InstanceParams.New()
+                )
+                .add("player", InstanceParams.New());
 
         //Load the level asynchronously with a callback when it is done
-        JJ.world.load(level, this::onLevelLoaded);
+        JJ.things.world.load(level, this::onLevelLoaded);
     }
+
 
     private void onLevelLoaded() {
+        //Get the player instance and hook in controls
+        Thing player = JJ.things.world.getThingByName("PlayerThing");
+
+        //Hide the splashscreen
+
 
     }
 
 
-    private RootSpec enemeySpec() {
-        return new RootSpec()
+    private ThingSpec enemeySpec() {
+        return new ThingSpec()
                 .addNode(
                         new NodeSpec()
                                 .addRender(
@@ -47,8 +67,8 @@ public class PlayGround extends Game {
                 );
     }
 
-    private RootSpec playerSpec() {
-        return new RootSpec()
+    private ThingSpec playerSpec() {
+        return new ThingSpec()
                 .addNode(
                         new NodeSpec()
                                 .addRender(

@@ -1,8 +1,8 @@
-package com.binarymonks.jj.objects;
+package com.binarymonks.jj.things;
 
 import com.binarymonks.jj.render.RenderRoot;
 
-public class ObjectRoot {
+public class Thing {
 
     RenderRoot renderRoot;
 

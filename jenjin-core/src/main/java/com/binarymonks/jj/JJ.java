@@ -29,7 +29,7 @@ public class JJ {
      */
     public static LifeCycle lifecycle = new LifeCycle();
 
-    public static World world = new World();
+    public static Things things = new Things();
 
     static void initialise() {
         render = new Render();

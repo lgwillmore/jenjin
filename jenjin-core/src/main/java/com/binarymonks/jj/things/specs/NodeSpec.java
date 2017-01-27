@@ -1,4 +1,4 @@
-package com.binarymonks.jj.objects.specs;
+package com.binarymonks.jj.things.specs;
 
 import com.binarymonks.jj.physics.specs.PhysicsSpec;
 import com.binarymonks.jj.render.specs.RenderSpec;

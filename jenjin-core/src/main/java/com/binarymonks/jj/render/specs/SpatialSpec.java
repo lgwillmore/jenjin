@@ -2,6 +2,7 @@ package com.binarymonks.jj.render.specs;
 
 import com.badlogic.gdx.math.Vector2;
 import com.binarymonks.jj.JJ;
+import com.binarymonks.jj.things.Thing;
 
 /**
  * Specifications for how to determine position stuff in world space.
@@ -12,7 +13,7 @@ public interface SpatialSpec {
      ****************************************/
 
     /**
-     * Positioning relative to the {@link com.binarymonks.jj.objects.ObjectRoot}
+     * Positioning relative to the {@link Thing}
      */
     class ObjectRelative implements SpatialSpec {
         public Vector2 offset = JJ.pools.nuw(Vector2.class);
