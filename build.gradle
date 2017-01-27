@@ -24,7 +24,11 @@ project(":jenjin-core") {
     apply plugin: 'maven-publish'
     apply plugin: 'idea'
 
+    println System.getProperty("java.home")
+
     sourceCompatibility = '1.8'
+
+
 
     dependencies {
         compile fileTree(dir: '../libs', include: '*.jar')
@@ -34,5 +38,16 @@ project(":jenjin-core") {
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         testCompile "junit:junit:$junitVersion"
         testCompile "org.mockito:mockito-core:1.9.5"
+    }
+}
+
+project(":jenjin-demo") {
+    apply plugin: "java"
+
+
+    dependencies {
+        compile project(":jenjin-core")
+        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     }
 }

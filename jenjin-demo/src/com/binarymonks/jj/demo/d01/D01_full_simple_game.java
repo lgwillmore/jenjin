@@ -1,25 +1,22 @@
-package com.binarymonks.jj.playground;
+package com.binarymonks.jj.demo.d01;
 
 import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.layers.DefaultLayer;
+import com.binarymonks.jj.physics.specs.ShapePhysicsSpec;
+import com.binarymonks.jj.render.specs.RenderSpec;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.Thing;
 import com.binarymonks.jj.things.specs.NodeSpec;
-import com.binarymonks.jj.things.specs.ThingSpec;
 import com.binarymonks.jj.things.specs.SceneSpec;
-import com.binarymonks.jj.physics.specs.ShapePhysicsSpec;
-import com.binarymonks.jj.render.specs.RenderSpec;
+import com.binarymonks.jj.things.specs.ThingSpec;
 
-
-public class PlayGround extends Game {
+public class D01_full_simple_game extends Game {
     @Override
     protected void gameOn() {
-        //TODO: Add a gameworld rendering layer
-
 
         //Show a splash screen
-        JJ.render.layers.addLayerTop(new DefaultLayer());
+        //JJ.render.layers.addLayerTop(new DefaultLayer());
 
         //Load ThingSpecs
         JJ.things.specs
@@ -81,6 +78,4 @@ public class PlayGround extends Game {
                                 )
                 );
     }
-
-
 }

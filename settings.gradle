@@ -1,2 +1,3 @@
 include 'jenjin-core'
+include 'jenjin-demo'
 

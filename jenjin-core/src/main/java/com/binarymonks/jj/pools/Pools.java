@@ -4,8 +4,8 @@ package com.binarymonks.jj.pools;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.events.Event;
-import com.binarymonks.jj.pools.managers.EventPoolManager;
 import com.binarymonks.jj.pools.managers.Vector2PoolManager;
+import com.binarymonks.jj.things.InstanceParams;
 
 /**
  * Pools is a place to register new {@link PoolManager}s for things that you want to pool.
@@ -16,14 +16,16 @@ import com.binarymonks.jj.pools.managers.Vector2PoolManager;
  * Pools also comes with some default managers already registered for:
  * - {@link Event}
  * - {@link Vector2}
+ * - {@link InstanceParams}
  */
 public class Pools {
 
     ObjectMap<Class, Pool> pools = new ObjectMap<>();
 
     public Pools() {
-        registerManager(new EventPoolManager(), Event.class);
+        registerManager(new Event.PM(), Event.class);
         registerManager(new Vector2PoolManager(), Vector2.class);
+        registerManager(new InstanceParams.PM(), InstanceParams.class);
     }
 
     /**

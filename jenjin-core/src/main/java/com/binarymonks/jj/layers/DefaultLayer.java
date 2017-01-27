@@ -4,7 +4,7 @@ package com.binarymonks.jj.layers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class DefaultLayer extends Layer {
+public class DefaultLayer implements Layer {
 
     ShapeRenderer shapeRenderer;
 
@@ -18,10 +18,5 @@ public class DefaultLayer extends Layer {
         shapeRenderer.setColor(Color.RED);
         shapeRenderer.rect(0, 0, 50, 50);
         shapeRenderer.end();
-    }
-
-    @Override
-    public void dispose() {
-        shapeRenderer.dispose();
     }
 }

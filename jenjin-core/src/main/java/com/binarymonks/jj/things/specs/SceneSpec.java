@@ -11,7 +11,7 @@ public class SceneSpec {
     ObjectMap<String, Array<InstanceParams>> instances = new ObjectMap<>();
 
     public SceneSpec add(String thingSpecName, InstanceParams... instanceParams) {
-        if (instances.containsKey(thingSpecName)) {
+        if (!instances.containsKey(thingSpecName)) {
             instances.put(thingSpecName, new Array<InstanceParams>());
         }
         instances.get(thingSpecName).addAll(instanceParams);
