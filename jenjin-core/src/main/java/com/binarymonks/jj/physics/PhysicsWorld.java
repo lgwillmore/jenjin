@@ -9,6 +9,7 @@ public class PhysicsWorld {
     public World world;
     public int velocityIterations = 10;
     public int positionIterations = 20;
+    public CollisionGroups collisionGroups = new CollisionGroupsBasic();
 
     boolean inStep = false;
 

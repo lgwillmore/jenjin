@@ -51,7 +51,7 @@ public class ThingFactory {
         fDef.restitution = nodeSpec.restitution;
         fDef.isSensor = nodeSpec.isSensor;
         String collisionGroup = nodeSpec.collisionGroup;
-        CollisionGroups.CollisionGroupData cd = JJ.physics.collisionGroups.getGroupData(collisionGroup);
+        CollisionGroups.CollisionGroupData cd = Global.physics.collisionGroups.getGroupData(collisionGroup);
         fDef.filter.categoryBits = cd.category;
         fDef.filter.maskBits = cd.mask;
 
