@@ -1,13 +1,13 @@
 package com.binarymonks.jj.things.specs;
 
-import com.binarymonks.jj.physics.specs.PhysicsSpec;
+import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
 import com.binarymonks.jj.render.specs.RenderSpec;
 
 
 public class NodeSpec {
 
-    RenderSpec renderSpec = new RenderSpec.Null();
-    PhysicsSpec physicsSpec = new PhysicsSpec.Null();
+    public RenderSpec renderSpec = new RenderSpec.Null();
+    public PhysicsNodeSpec physicsNodeSpec = new PhysicsNodeSpec.Null();
 
     public NodeSpec addRender(RenderSpec renderSpec) {
         this.renderSpec = renderSpec;
@@ -15,8 +15,8 @@ public class NodeSpec {
     }
 
 
-    public NodeSpec addPhysics(PhysicsSpec physicsSpec) {
-        this.physicsSpec = physicsSpec;
+    public NodeSpec addPhysics(PhysicsNodeSpec physicsNodeSpec) {
+        this.physicsNodeSpec = physicsNodeSpec;
         return this;
     }
 }

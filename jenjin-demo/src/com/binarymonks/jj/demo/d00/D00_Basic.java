@@ -11,6 +11,6 @@ public class D00_Basic extends Game {
 
     @Override
     protected void gameOn() {
-        JJ.render.layers.addLayerTop(new DefaultLayer());
+        JJ.layers.addLayerTop(new DefaultLayer());
     }
 }

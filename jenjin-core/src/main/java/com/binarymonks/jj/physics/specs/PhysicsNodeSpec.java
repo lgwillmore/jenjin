@@ -3,9 +3,9 @@ package com.binarymonks.jj.physics.specs;
 /**
  * Created by lwillmore on 25/01/17.
  */
-public interface PhysicsSpec {
+public interface PhysicsNodeSpec {
 
-    class Null implements PhysicsSpec {
+    class Null implements PhysicsNodeSpec {
 
     }
 }

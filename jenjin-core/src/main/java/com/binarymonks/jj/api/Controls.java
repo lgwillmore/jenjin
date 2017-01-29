@@ -1,4 +1,4 @@
-package com.binarymonks.jj;
+package com.binarymonks.jj.api;
 
 public class Controls {
 

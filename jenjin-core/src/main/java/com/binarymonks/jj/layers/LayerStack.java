@@ -3,7 +3,7 @@ package com.binarymonks.jj.layers;
 
 import com.badlogic.gdx.utils.Array;
 
-public class LayerStack implements Layer {
+public class LayerStack implements Layer, Layers {
 
     Array<Layer> layers = new Array<>();
 
@@ -15,6 +15,7 @@ public class LayerStack implements Layer {
         }
     }
 
+    @Override
     public void addLayerTop(Layer add) {
         layers.insert(layers.size, add);
     }

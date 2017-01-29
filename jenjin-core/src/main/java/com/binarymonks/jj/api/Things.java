@@ -1,18 +1,14 @@
-package com.binarymonks.jj;
+package com.binarymonks.jj.api;
 
 import com.binarymonks.jj.async.Callback;
+import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.Thing;
 import com.binarymonks.jj.things.specs.SceneSpec;
 
-public class World {
-
-    public void load(SceneSpec sceneSpec, Callback callback) {
-
-    }
-
-    public void load(SceneSpec sceneSpec) {
-
-    }
+/**
+ * API for Things
+ */
+public interface Things {
 
     /**
      * Retrieve a specific {@link Thing}.
@@ -20,7 +16,10 @@ public class World {
      * @param uniqueName The unique name set in {@link com.binarymonks.jj.things.InstanceParams}
      * @return
      */
-    public Thing getThingByName(String uniqueName) {
-        return null;
-    }
+    Thing getThingByName(String uniqueName);
+
+    void load(SceneSpec sceneSpec, Callback callback);
+
+
+    void create(String thingSpecPath, InstanceParams instanceParams);
 }

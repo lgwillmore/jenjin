@@ -1,6 +1,7 @@
 package com.binarymonks.jj;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.binarymonks.jj.backend.Global;
 
 
 /**
@@ -16,6 +17,15 @@ import com.badlogic.gdx.ApplicationListener;
  */
 public abstract class Game implements ApplicationListener {
 
+    JJConfig JJConfig = new JJConfig();
+
+    public Game() {
+    }
+
+    public Game(JJConfig JJConfig) {
+        this.JJConfig = JJConfig;
+    }
+
     @Override
     public void create() {
         JJ.initialise();
@@ -26,27 +36,29 @@ public abstract class Game implements ApplicationListener {
 
     @Override
     public void render() {
-        JJ.time.update();
-        JJ.render.update();
+        Global.time.update();
+        Global.physics.update();
+        Global.render.update();
     }
 
     @Override
     public void resize(int width, int height) {
-        JJ.lifecycle.resize(width, height);
+        Global.lifecycle.resize(width, height);
     }
 
     @Override
     public void pause() {
-        JJ.lifecycle.pause();
+        Global.lifecycle.pause();
     }
 
     @Override
     public void resume() {
-        JJ.lifecycle.resume();
+        Global.lifecycle.resume();
     }
 
     @Override
     public void dispose() {
-        JJ.lifecycle.dispose();
+        Global.lifecycle.dispose();
     }
+
 }
