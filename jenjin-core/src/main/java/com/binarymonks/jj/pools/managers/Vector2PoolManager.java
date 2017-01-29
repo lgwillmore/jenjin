@@ -13,4 +13,9 @@ public class Vector2PoolManager implements PoolManager<Vector2> {
     public Vector2 create_new() {
         return new Vector2();
     }
+
+    @Override
+    public void dispose(Vector2 vector2) {
+
+    }
 }

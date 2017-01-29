@@ -22,4 +22,11 @@ public class Pool<POOLED> {
         manager.reset(pooled);
         pool.add(pooled);
     }
+
+    public void clear() {
+        for (POOLED pooled : pool) {
+            manager.dispose(pooled);
+        }
+        pool.clear();
+    }
 }

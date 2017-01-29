@@ -62,6 +62,11 @@ public class InstanceParams {
         public InstanceParams create_new() {
             return new InstanceParams();
         }
+
+        @Override
+        public void dispose(InstanceParams instanceParams) {
+
+        }
     }
 
 }

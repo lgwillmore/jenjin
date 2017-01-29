@@ -27,5 +27,10 @@ public class Event {
         public Event create_new() {
             return new Event();
         }
+
+        @Override
+        public void dispose(Event event) {
+
+        }
     }
 }

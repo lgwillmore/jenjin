@@ -59,6 +59,15 @@ public class Pools {
         }
     }
 
+    /**
+     * Use this if you want to dump the pooled objects.
+     * They will be disposed by the PoolManager before being removed from the pool.
+     * @param clazzToClear
+     */
+    public void clearPool(Class clazzToClear){
+        pools.get(clazzToClear).clear();
+    }
+
     public <P, T extends PoolManager<P>> void registerManager(T poolManager, Class<P> thingToPoolClass) {
         if (!pools.containsKey(thingToPoolClass)) {
             pools.put(thingToPoolClass, new Pool<>(poolManager));

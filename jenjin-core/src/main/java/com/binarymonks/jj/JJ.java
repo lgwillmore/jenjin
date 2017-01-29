@@ -6,6 +6,7 @@ import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.layers.LayerStack;
 import com.binarymonks.jj.layers.Layers;
 import com.binarymonks.jj.lifecycle.LifeCyclePublisher;
+import com.binarymonks.jj.physics.PhysicsWorld;
 import com.binarymonks.jj.pools.Pools;
 import com.binarymonks.jj.render.Render;
 import com.binarymonks.jj.things.ThingManager;
@@ -39,7 +40,7 @@ public class JJ {
 
     public static Layers layers;
 
-    public static Physics physics = new Physics();
+    public static Physics physics;
 
     public static Assets assets;
 
@@ -62,7 +63,12 @@ public class JJ {
         specs = specifications;
 
         ThingManager thingManager = new ThingManager();
+        Global.thingManager = thingManager;
         things = thingManager;
+
+        PhysicsWorld physicsWorld = new PhysicsWorld();
+        Global.physics = physicsWorld;
+        physics=physicsWorld;
     }
 
 }

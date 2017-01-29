@@ -2,6 +2,6 @@ package com.binarymonks.jj.async;
 
 
 @FunctionalInterface
-public interface Callback {
+public interface Function {
     void call();
 }

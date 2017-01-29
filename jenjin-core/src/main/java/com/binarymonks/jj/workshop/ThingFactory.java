@@ -17,13 +17,14 @@ import com.binarymonks.jj.things.specs.NodeSpec;
 import com.binarymonks.jj.things.specs.ThingSpec;
 
 public class ThingFactory {
+    int idCounter=0;
 
     public ThingFactory() {
         JJ.pools.registerManager(new Context.BuildContextPoolManager(), Context.class);
     }
 
     public Thing create(String thingSpecPath, InstanceParams instanceParams) {
-        Thing thing = new Thing();
+        Thing thing = new Thing(idCounter++);
         Context context = N.ew(Context.class);
         context.thing = thing;
         context.thingSpec = Global.specs.specifications.get(thingSpecPath);
@@ -33,6 +34,7 @@ public class ThingFactory {
         buildNodes(context);
 
         Re.cycle(context);
+        Global.thingGraphs.add(thing);
         return thing;
     }
 
@@ -107,6 +109,11 @@ public class ThingFactory {
             @Override
             public Context create_new() {
                 return new Context();
+            }
+
+            @Override
+            public void dispose(Context context) {
+
             }
         }
     }
