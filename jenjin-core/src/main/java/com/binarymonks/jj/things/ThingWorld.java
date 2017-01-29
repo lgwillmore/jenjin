@@ -3,7 +3,7 @@ package com.binarymonks.jj.things;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 
-public class ThingGraphs {
+public class ThingWorld {
 
     ObjectMap<Integer, Thing> things = new ObjectMap<>(200);
     ObjectMap<Integer, Thing> queuedForAddThings = new ObjectMap<>(100);

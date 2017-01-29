@@ -34,7 +34,7 @@ public class ThingFactory {
         buildNodes(context);
 
         Re.cycle(context);
-        Global.thingGraphs.add(thing);
+        Global.thingWorld.add(thing);
         return thing;
     }
 

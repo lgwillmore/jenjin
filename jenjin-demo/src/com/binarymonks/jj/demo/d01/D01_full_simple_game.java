@@ -2,6 +2,7 @@ package com.binarymonks.jj.demo.d01;
 
 import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
+import com.binarymonks.jj.layers.GameRenderingLayer;
 import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.render.specs.RenderSpec;
 import com.binarymonks.jj.things.InstanceParams;
@@ -20,6 +21,8 @@ public class D01_full_simple_game extends Game {
     protected void gameOn() {
 
         //Show a splash screen
+        GameRenderingLayer gameRenderingLayer = new GameRenderingLayer(100,0,0);
+        JJ.layers.addLayerTop(gameRenderingLayer);
         //JJ.layers.addLayerTop(new DefaultLayer());
 
         //Load ThingSpecs

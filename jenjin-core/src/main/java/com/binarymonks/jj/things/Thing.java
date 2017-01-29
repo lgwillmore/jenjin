@@ -18,7 +18,7 @@ public class Thing {
 
     public void markForDestruction(){
         markedForDestruction=true;
-        Global.thingGraphs.remove(this);
+        Global.thingWorld.remove(this);
     }
 
     public boolean isMarkedForDestruction(){

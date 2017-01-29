@@ -37,8 +37,9 @@ public abstract class Game implements ApplicationListener {
     @Override
     public void render() {
         Global.time.update();
+        Global.thingWorld.update();
+        Global.layerStack.update();
         Global.physics.update();
-        Global.render.update();
     }
 
     @Override

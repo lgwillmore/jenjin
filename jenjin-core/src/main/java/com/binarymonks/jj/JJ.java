@@ -4,11 +4,11 @@ package com.binarymonks.jj;
 import com.binarymonks.jj.api.*;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.layers.LayerStack;
-import com.binarymonks.jj.layers.Layers;
+import com.binarymonks.jj.api.Layers;
 import com.binarymonks.jj.lifecycle.LifeCyclePublisher;
 import com.binarymonks.jj.physics.PhysicsWorld;
 import com.binarymonks.jj.pools.Pools;
-import com.binarymonks.jj.render.Render;
+import com.binarymonks.jj.render.RenderWorld;
 import com.binarymonks.jj.things.ThingManager;
 import com.binarymonks.jj.time.TimeControls;
 import com.binarymonks.jj.workshop.Specifications;
@@ -55,8 +55,8 @@ public class JJ {
         lifecycle = lifeCyclePublisher;
 
         LayerStack layerStack = new LayerStack();
-        Global.render = new Render(layerStack);
         layers = layerStack;
+        Global.layerStack = layerStack;
 
         Specifications specifications = new Specifications();
         Global.specs = specifications;
