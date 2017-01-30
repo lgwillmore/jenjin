@@ -11,6 +11,7 @@ import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.pools.PoolManager;
 import com.binarymonks.jj.pools.Re;
+import com.binarymonks.jj.render.RenderNode;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.Thing;
 import com.binarymonks.jj.things.specs.NodeSpec;
@@ -41,6 +42,7 @@ public class ThingFactory {
     private void buildNodes(Context context) {
         for (NodeSpec nodeSpec : context.thingSpec.nodeSpecs) {
             Fixture fixture = buildFixture((FixtureNodeSpec)nodeSpec.physicsNodeSpec, context.body);
+            RenderNode render = Global.factories.renders.build(nodeSpec.renderSpec);
         }
     }
 

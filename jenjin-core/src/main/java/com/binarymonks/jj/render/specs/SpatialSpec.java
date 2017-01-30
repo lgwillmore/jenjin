@@ -1,32 +1,25 @@
 package com.binarymonks.jj.render.specs;
 
-import com.badlogic.gdx.math.Vector2;
-import com.binarymonks.jj.JJ;
-import com.binarymonks.jj.things.Thing;
+public class SpatialSpec<T> {
 
-/**
- * Specifications for how to determine position stuff in world space.
- */
-public interface SpatialSpec {
-    /****************************************
-     *           Implementers Below         *
-     ****************************************/
+    public float offsetX;
+    public float offsetY;
+    public float rotationD;
 
-    /**
-     * Positioning relative to the {@link Thing}
-     */
-    class ObjectRelative implements SpatialSpec {
-        public Vector2 offset = JJ.pools.nuw(Vector2.class);
-        public float rotationD = 0;
+    T parent;
 
-        public ObjectRelative offset(float x, float y) {
-            offset.set(x, y);
-            return this;
-        }
+    public SpatialSpec(T parent) {
+        this.parent = parent;
+    }
 
-        public ObjectRelative rotationD(float rotationD) {
-            this.rotationD = rotationD;
-            return this;
-        }
+    public T setOffset(float x, float y) {
+        this.offsetX = x;
+        this.offsetY = y;
+        return parent;
+    }
+
+    public T setRotationD(float rotationD) {
+        this.rotationD = rotationD;
+        return parent;
     }
 }

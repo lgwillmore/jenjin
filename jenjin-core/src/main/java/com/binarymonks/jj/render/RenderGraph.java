@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 public class RenderGraph {
 
     /**
-     * RenderWorld the layers in order
+     * RenderWorld the layers in layer
      */
     public Array<RenderLayer> renderLayers = new Array<>();
 

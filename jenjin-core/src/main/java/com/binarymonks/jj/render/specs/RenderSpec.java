@@ -1,25 +1,25 @@
 package com.binarymonks.jj.render.specs;
 
-import com.badlogic.gdx.graphics.Color;
 
-public interface RenderSpec {
+public abstract class RenderSpec {
+
     /****************************************
      *           Implementers Below         *
      ****************************************/
 
-    class Null implements RenderSpec {
+    public static class Null extends RenderSpec {
 
     }
 
-    public class B2DShapeRenderSpec implements RenderSpec {
+    public static abstract class Shape extends RenderSpec {
 
-        Color color = Color.BLUE;
-
-        public B2DShapeRenderSpec(Color color) {
-            this.color = color;
+        public static class Rect extends Shape {
+            public SpatialSpec<Rect> spatial = new SpatialSpec<>(this);
+            public DrawSpec<Rect> draw = new DrawSpec<>(this);
+            public LayerSpec<Rect> layer = new LayerSpec<>(this);
+            public WidthHeight<Rect> widthHeight = new WidthHeight<>(this);
         }
 
-        public B2DShapeRenderSpec() {
-        }
     }
+
 }

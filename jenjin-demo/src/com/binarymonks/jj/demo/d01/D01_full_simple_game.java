@@ -1,5 +1,6 @@
 package com.binarymonks.jj.demo.d01;
 
+import com.badlogic.gdx.graphics.Color;
 import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.layers.GameRenderingLayer;
@@ -21,7 +22,7 @@ public class D01_full_simple_game extends Game {
     protected void gameOn() {
 
         //Show a splash screen
-        GameRenderingLayer gameRenderingLayer = new GameRenderingLayer(100,0,0);
+        GameRenderingLayer gameRenderingLayer = new GameRenderingLayer(100, 0, 0);
         JJ.layers.addLayerTop(gameRenderingLayer);
         //JJ.layers.addLayerTop(new DefaultLayer());
 
@@ -56,7 +57,14 @@ public class D01_full_simple_game extends Game {
                 .addNode(
                         new NodeSpec()
                                 .addRender(
-                                        new RenderSpec.B2DShapeRenderSpec())
+                                        new RenderSpec.Shape.Rect()
+                                                .draw.setColor(Color.BLUE)
+                                                .draw.setFill(true)
+                                                .layer.setLayer(1)
+                                                .layer.setPriority(0)
+                                                .spatial.setOffset(5, 5)
+                                                .widthHeight.set(10, 10)
+                                )
                                 .addPhysics(
                                         new FixtureNodeSpec()
                                 )
