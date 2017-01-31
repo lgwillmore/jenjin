@@ -31,8 +31,15 @@ public class GameRenderingLayer implements Layer {
         camera.update();
         Global.renderWorld.batch.setProjectionMatrix(camera.combined);
         Global.renderWorld.batch.begin();
-        for (RenderGraph.RenderLayer layer : Global.renderWorld.defaultRenderGraph.renderLayers) {
-            updateLayer(layer);
+        ObjectMap<Integer, RenderGraph.RenderLayer> layers = Global.renderWorld.defaultRenderGraph.renderLayers;
+        int renderedCount = 0;
+        int layerIndex=0;
+        while (renderedCount < layers.size){
+            if(layers.containsKey(layerIndex)){
+                renderedCount++;
+                updateLayer(layers.get(layerIndex));
+            }
+            layerIndex++;
         }
         Global.renderWorld.batch.end();
         if (b2dDebug) {
@@ -41,7 +48,7 @@ public class GameRenderingLayer implements Layer {
     }
 
     private void updateLayer(RenderGraph.RenderLayer layer) {
-        for (ObjectMap.Entry<String, ObjectMap<Integer, ThingLayer>> componentsByThing : layer.thingLayersByThingPath) {
+        for (ObjectMap.Entry<String, ObjectMap<Integer, ThingLayer>> componentsByThing : layer.thingLayersByThingPathAndID) {
             updateThingLayers(componentsByThing.value);
         }
     }

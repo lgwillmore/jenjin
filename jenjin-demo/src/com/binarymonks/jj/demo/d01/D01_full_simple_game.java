@@ -53,35 +53,24 @@ public class D01_full_simple_game extends Game {
 
 
     private ThingSpec enemeySpec() {
+        RenderSpec.Shape.Rect renderSpec = new RenderSpec.Shape.Rect();
+        renderSpec.draw.setColor(Color.BLUE);
+        renderSpec.draw.setFill(true);
+        renderSpec.order.setLayer(1);
+        renderSpec.order.setPriority(0);
+        renderSpec.spatial.setX(5);
+        renderSpec.spatial.setY(5);
+        renderSpec.dimension.setWidth(10);
+        renderSpec.dimension.setHeight(10);
+
         return new ThingSpec()
                 .addNode(
                         new NodeSpec()
                                 .addRender(
-                                        new RenderSpec.Shape.Rect()
-                                                .draw.setColor(Color.BLUE)
-                                                .draw.setFill(true)
-                                                .layer.setLayer(1)
-                                                .layer.setPriority(0)
-                                                .spatial.setOffset(5, 5)
-                                                .widthHeight.set(10, 10)
+                                        renderSpec
                                 )
                                 .addPhysics(
                                         new FixtureNodeSpec()
-                                )
-                );
-    }
-
-    private ThingSpec playerSpec() {
-        return new ThingSpec()
-                .addNode(
-                        new NodeSpec()
-                                .addRender(
-                                        new RenderSpec.Null()
-                                )
-                ).addNode(
-                        new NodeSpec()
-                                .addRender(
-                                        new RenderSpec.Null()
                                 )
                 );
     }

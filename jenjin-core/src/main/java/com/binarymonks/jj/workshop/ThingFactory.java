@@ -2,6 +2,8 @@ package com.binarymonks.jj.workshop;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.physics.CollisionGroups;
@@ -12,20 +14,22 @@ import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.pools.PoolManager;
 import com.binarymonks.jj.pools.Re;
 import com.binarymonks.jj.render.RenderNode;
+import com.binarymonks.jj.render.ThingLayer;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.Thing;
+import com.binarymonks.jj.things.ThingNode;
 import com.binarymonks.jj.things.specs.NodeSpec;
 import com.binarymonks.jj.things.specs.ThingSpec;
 
 public class ThingFactory {
-    int idCounter=0;
+    int idCounter = 0;
 
     public ThingFactory() {
         JJ.pools.registerManager(new Context.BuildContextPoolManager(), Context.class);
     }
 
     public Thing create(String thingSpecPath, InstanceParams instanceParams) {
-        Thing thing = new Thing(idCounter++);
+        Thing thing = new Thing(thingSpecPath, idCounter++);
         Context context = N.ew(Context.class);
         context.thing = thing;
         context.thingSpec = Global.specs.specifications.get(thingSpecPath);
@@ -34,15 +38,41 @@ public class ThingFactory {
         buildPhysicsRoot(context);
         buildNodes(context);
 
+        wireInRenderNodes(context);
+
         Re.cycle(context);
         Global.thingWorld.add(thing);
         return thing;
     }
 
+    private void wireInRenderNodes(Context context) {
+        ObjectMap<Integer, ThingLayer> thingLayers = new ObjectMap<>();
+        for (ThingNode node : context.nodes) {
+            if (node.render != null) {
+                int layer = node.render.order.layer;
+                if (layer < 0) {
+                    throw new RuntimeException("You cannot have a layer less than 0");
+                }
+                if (!thingLayers.containsKey(layer)) {
+                    thingLayers.put(layer, new ThingLayer(layer));
+                }
+                thingLayers.get(layer).renderNodes.add(node.render);
+            }
+        }
+        //TODO: Sort the thingLayers in priority order
+        context.thing.renderRoot.thingLayers = thingLayers;
+        Global.renderWorld.addThing(context.thing);
+    }
+
     private void buildNodes(Context context) {
         for (NodeSpec nodeSpec : context.thingSpec.nodeSpecs) {
-            Fixture fixture = buildFixture((FixtureNodeSpec)nodeSpec.physicsNodeSpec, context.body);
+            ThingNode node = new ThingNode();
+
+            Fixture fixture = buildFixture((FixtureNodeSpec) nodeSpec.physicsNodeSpec, context.body);
+            node.fixture = fixture;
             RenderNode render = Global.factories.renders.build(nodeSpec.renderSpec);
+            node.render = render;
+            context.nodes.add(node);
         }
     }
 
@@ -96,6 +126,7 @@ public class ThingFactory {
         InstanceParams instanceParams;
         Thing thing;
         Body body;
+        Array<ThingNode> nodes = new Array<>();
 
         public static class BuildContextPoolManager implements PoolManager<Context> {
 
@@ -106,6 +137,7 @@ public class ThingFactory {
                 context.instanceParams = null;
                 context.thing = null;
                 context.body = null;
+                context.nodes.clear();
             }
 
             @Override

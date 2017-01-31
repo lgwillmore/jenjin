@@ -6,22 +6,24 @@ import com.binarymonks.jj.render.RenderRoot;
 
 public class Thing {
 
+    public String path;
     public int id;
-    RenderRoot renderRoot;
-    PhysicsRoot physicsroot;
+    public RenderRoot renderRoot=new RenderRoot();
 
-    boolean markedForDestruction=false;
+    public PhysicsRoot physicsroot;
+    boolean markedForDestruction = false;
 
-    public Thing(int id) {
+    public Thing(String path, int id) {
+        this.path = path;
         this.id = id;
     }
 
-    public void markForDestruction(){
-        markedForDestruction=true;
+    public void markForDestruction() {
+        markedForDestruction = true;
         Global.thingWorld.remove(this);
     }
 
-    public boolean isMarkedForDestruction(){
+    public boolean isMarkedForDestruction() {
         return markedForDestruction;
     }
 }

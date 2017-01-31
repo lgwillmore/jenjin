@@ -6,7 +6,7 @@ import com.binarymonks.jj.render.specs.RenderSpec;
 
 public class NodeSpec {
 
-    public RenderSpec renderSpec = new RenderSpec.Null();
+    public RenderSpec renderSpec;
     public PhysicsNodeSpec physicsNodeSpec = new PhysicsNodeSpec.Null();
 
     public NodeSpec addRender(RenderSpec renderSpec) {
