@@ -1,6 +1,7 @@
 package com.binarymonks.jj.workshop;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -48,8 +49,8 @@ public class ThingFactory {
     private void wireInRenderNodes(Context context) {
         ObjectMap<Integer, ThingLayer> thingLayers = new ObjectMap<>();
         for (ThingNode node : context.nodes) {
-            if (node.render != null) {
-                int layer = node.render.order.layer;
+            if (!(node.render instanceof RenderNode.Null)) {
+                int layer = node.render.spec.layer;
                 if (layer < 0) {
                     throw new RuntimeException("You cannot have a layer less than 0");
                 }
@@ -70,7 +71,7 @@ public class ThingFactory {
 
             Fixture fixture = buildFixture((FixtureNodeSpec) nodeSpec.physicsNodeSpec, context.body);
             node.fixture = fixture;
-            RenderNode render = Global.factories.renders.build(nodeSpec.renderSpec);
+            RenderNode render = nodeSpec.renderSpec.makeNode();
             node.render = render;
             context.nodes.add(node);
         }
@@ -99,7 +100,7 @@ public class ThingFactory {
         if (nodeSpec.shape instanceof B2DShapeSpec.PolygonSquare) {
             B2DShapeSpec.PolygonSquare polygonSquare = (B2DShapeSpec.PolygonSquare) nodeSpec.shape;
             PolygonShape boxshape = new PolygonShape();
-            boxshape.setAsBox((polygonSquare.width / 2.0f), (polygonSquare.height / 2.0f), nodeSpec.offset, nodeSpec.rotationD * MathUtils.degreesToRadians);
+            boxshape.setAsBox((polygonSquare.width / 2.0f), (polygonSquare.height / 2.0f), N.ew(Vector2.class).set(nodeSpec.offsetX, nodeSpec.offsetY), nodeSpec.rotationD * MathUtils.degreesToRadians);
             return boxshape;
         }
         return null;

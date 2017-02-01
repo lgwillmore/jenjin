@@ -1,28 +1,52 @@
 package com.binarymonks.jj.render.specs;
 
 
-import com.binarymonks.jj.composable.Spatial;
-import com.binarymonks.jj.composable.Dimension;
+import com.badlogic.gdx.graphics.Color;
 import com.binarymonks.jj.render.RenderNode;
-import com.binarymonks.jj.render.ShapeRenderNode;
-import com.binarymonks.jj.render.composable.Draw;
-import com.binarymonks.jj.render.composable.RenderOrder;
 
-public abstract class RenderSpec {
-    public Spatial spatial = new Spatial();
-    public RenderOrder order = new RenderOrder();
+public abstract class RenderSpec<CONCRETE> {
+    public int layer;
+    public int thingPriority;
+    public float offsetX;
+    public float offsetY;
+    public float rotationD;
+    public Color color = new Color(0, 0, 0, 1);
+    CONCRETE self;
 
-    /****************************************
-     *           Implementers Below         *
-     ****************************************/
+    public CONCRETE setLayer(int layer) {
+        this.layer = layer;
+        return self;
+    }
 
-    public static abstract class Shape extends RenderSpec {
-        public Draw draw = new Draw();
+    public CONCRETE setPriority(int priority) {
+        this.thingPriority = priority;
+        return self;
+    }
 
-        public static class Rect extends Shape {
-            public Dimension dimension = new Dimension();
+    public CONCRETE setOffset(float x, float y) {
+        this.offsetX = x;
+        this.offsetY = y;
+        return self;
+    }
+
+    public CONCRETE setRotationD(float rotationD) {
+        this.rotationD = rotationD;
+        return self;
+    }
+
+    public CONCRETE setColor(Color color) {
+        this.color.set(color);
+        return self;
+    }
+
+    public abstract RenderNode<?> makeNode();
+
+    public static class Null extends RenderSpec<Null>{
+
+        @Override
+        public RenderNode<?> makeNode() {
+            return null;
         }
-
     }
 
 }

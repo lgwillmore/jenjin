@@ -4,8 +4,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.layers.GameRenderingLayer;
+import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
 import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.render.specs.RenderSpec;
+import com.binarymonks.jj.render.specs.ShapeRenderSpec;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.Thing;
 import com.binarymonks.jj.things.specs.NodeSpec;
@@ -53,24 +55,23 @@ public class D01_full_simple_game extends Game {
 
 
     private ThingSpec enemeySpec() {
-        RenderSpec.Shape.Rect renderSpec = new RenderSpec.Shape.Rect();
-        renderSpec.draw.setColor(Color.BLUE);
-        renderSpec.draw.setFill(true);
-        renderSpec.order.setLayer(1);
-        renderSpec.order.setPriority(0);
-        renderSpec.spatial.setX(5);
-        renderSpec.spatial.setY(5);
-        renderSpec.dimension.setWidth(10);
-        renderSpec.dimension.setHeight(10);
-
         return new ThingSpec()
                 .addNode(
                         new NodeSpec()
                                 .addRender(
-                                        renderSpec
+                                        new ShapeRenderSpec.Rectangle()
+                                                .setLayer(0)
+                                                .setFill(true)
+                                                .setDimension(10, 10)
+                                                .setOffset(5, 5)
+                                                .setRotationD(45)
+                                                .setColor(Color.BLUE)
                                 )
                                 .addPhysics(
                                         new FixtureNodeSpec()
+                                                .setShape(new B2DShapeSpec.PolygonSquare(10, 10))
+                                                .setOffset(5, 5)
+                                                .setRotationD(45)
                                 )
                 );
     }

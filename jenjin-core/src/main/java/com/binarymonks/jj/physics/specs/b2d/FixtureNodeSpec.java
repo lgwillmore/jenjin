@@ -11,7 +11,8 @@ public class FixtureNodeSpec implements PhysicsNodeSpec {
     public float friction = 0f;
     public float restitution = 0;
     public float rotationD = 0;
-    public Vector2 offset = N.ew(Vector2.class);
+    public float offsetX;
+    public float offsetY;
     public boolean isSensor = false;
     public B2DShapeSpec shape = new B2DShapeSpec.PolygonSquare(5, 5);
 
@@ -40,8 +41,9 @@ public class FixtureNodeSpec implements PhysicsNodeSpec {
         return this;
     }
 
-    public FixtureNodeSpec setOffset(Vector2 offset) {
-        this.offset = offset;
+    public FixtureNodeSpec setOffset(float x, float y) {
+        this.offsetX = x;
+        this.offsetY = y;
         return this;
     }
 
