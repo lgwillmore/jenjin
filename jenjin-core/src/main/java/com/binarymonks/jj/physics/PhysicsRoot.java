@@ -10,6 +10,10 @@ public interface PhysicsRoot {
     public static class B2DPhysicsRoot implements PhysicsRoot {
         Body body;
 
+        public B2DPhysicsRoot(Body body) {
+            this.body = body;
+        }
+
         @Override
         public Vector2 position() {
             return body.getPosition();

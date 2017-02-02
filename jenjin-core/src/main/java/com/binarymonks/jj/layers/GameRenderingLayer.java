@@ -30,6 +30,7 @@ public class GameRenderingLayer implements Layer {
     public void update() {
         camera.update();
         Global.renderWorld.batch.setProjectionMatrix(camera.combined);
+        Global.renderWorld.polyBatch.setProjectionMatrix(camera.combined);
         Global.renderWorld.batch.begin();
         ObjectMap<Integer, RenderGraph.RenderLayer> layers = Global.renderWorld.defaultRenderGraph.renderLayers;
         int renderedCount = 0;
@@ -61,7 +62,7 @@ public class GameRenderingLayer implements Layer {
 
     private void updateThingNodes(Array<RenderNode> renderNodes) {
         for (RenderNode node : renderNodes) {
-            node.render();
+            node.render(camera);
         }
     }
 }

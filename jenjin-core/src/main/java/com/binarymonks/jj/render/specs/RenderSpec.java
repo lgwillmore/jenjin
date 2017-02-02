@@ -2,9 +2,11 @@ package com.binarymonks.jj.render.specs;
 
 
 import com.badlogic.gdx.graphics.Color;
+import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.render.RenderNode;
 
 public abstract class RenderSpec<CONCRETE> {
+    public int id = Global.renderWorld.nextRenderID();
     public int layer;
     public int thingPriority;
     public float offsetX;
@@ -41,11 +43,11 @@ public abstract class RenderSpec<CONCRETE> {
 
     public abstract RenderNode<?> makeNode();
 
-    public static class Null extends RenderSpec<Null>{
+    public static class Null extends RenderSpec<Null> {
 
         @Override
         public RenderNode<?> makeNode() {
-            return null;
+            return RenderNode.NULL;
         }
     }
 

@@ -73,6 +73,13 @@ public class D01_full_simple_game extends Game {
                                                 .setOffset(5, 5)
                                                 .setRotationD(45)
                                 )
-                );
+                ).addNode(
+                        new NodeSpec()
+                        .addPhysics(
+                                new FixtureNodeSpec()
+                                .setShape(new B2DShapeSpec.PolygonSquare(1,1))
+                        )
+                )
+                ;
     }
 }

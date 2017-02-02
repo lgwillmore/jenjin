@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.physics.CollisionGroups;
+import com.binarymonks.jj.physics.PhysicsRoot;
 import com.binarymonks.jj.physics.specs.PhysicsRootSpec;
 import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
 import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
@@ -49,7 +50,7 @@ public class ThingFactory {
     private void wireInRenderNodes(Context context) {
         ObjectMap<Integer, ThingLayer> thingLayers = new ObjectMap<>();
         for (ThingNode node : context.nodes) {
-            if (!(node.render instanceof RenderNode.Null)) {
+            if (!(node.render == RenderNode.NULL)) {
                 int layer = node.render.spec.layer;
                 if (layer < 0) {
                     throw new RuntimeException("You cannot have a layer less than 0");
@@ -58,6 +59,7 @@ public class ThingFactory {
                     thingLayers.put(layer, new ThingLayer(layer));
                 }
                 thingLayers.get(layer).renderNodes.add(node.render);
+                node.render.parent = context.thing;
             }
         }
         //TODO: Sort the thingLayers in priority order
@@ -118,6 +120,8 @@ public class ThingFactory {
         def.bullet = bodyDef.bullet;
         def.allowSleep = bodyDef.allowSleep;
         context.body = Global.physics.world.createBody(def);
+        PhysicsRoot.B2DPhysicsRoot physicsRoot = new PhysicsRoot.B2DPhysicsRoot(context.body);
+        context.thing.physicsroot = physicsRoot;
         context.body.setUserData(context.thing);
     }
 
