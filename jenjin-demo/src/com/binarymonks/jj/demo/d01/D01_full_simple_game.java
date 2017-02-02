@@ -35,8 +35,8 @@ public class D01_full_simple_game extends Game {
         //Add instances to a level
         SceneSpec level = new SceneSpec()
                 .add("enemy/1",
-                        InstanceParams.New().setPosition(0, 20),
-                        InstanceParams.New().setPosition(0, -20)
+                        InstanceParams.New().setPosition(0, 30).setRotationD(45),
+                        InstanceParams.New().setPosition(0, -20).setRotationD(135)
                 );
 
         //Load the level asynchronously with a callback when it is done
@@ -64,14 +64,14 @@ public class D01_full_simple_game extends Game {
                                                 .setFill(true)
                                                 .setDimension(10, 10)
                                                 .setOffset(5, 5)
-                                                .setRotationD(45)
+                                                .setRotationD(60)
                                                 .setColor(Color.BLUE)
                                 )
                                 .addPhysics(
                                         new FixtureNodeSpec()
                                                 .setShape(new B2DShapeSpec.PolygonSquare(10, 10))
                                                 .setOffset(5, 5)
-                                                .setRotationD(45)
+                                                .setRotationD(60)
                                 )
                 ).addNode(
                         new NodeSpec()

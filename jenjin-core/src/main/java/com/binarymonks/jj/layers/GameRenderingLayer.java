@@ -32,6 +32,7 @@ public class GameRenderingLayer implements Layer {
         Global.renderWorld.batch.setProjectionMatrix(camera.combined);
         Global.renderWorld.polyBatch.setProjectionMatrix(camera.combined);
         Global.renderWorld.batch.begin();
+        Global.renderWorld.polyBatch.begin();
         ObjectMap<Integer, RenderGraph.RenderLayer> layers = Global.renderWorld.defaultRenderGraph.renderLayers;
         int renderedCount = 0;
         int layerIndex=0;
@@ -42,6 +43,7 @@ public class GameRenderingLayer implements Layer {
             }
             layerIndex++;
         }
+        Global.renderWorld.polyBatch.end();
         Global.renderWorld.batch.end();
         if (b2dDebug) {
             drenderer.render(Global.physics.world, Global.renderWorld.batch.getProjectionMatrix());

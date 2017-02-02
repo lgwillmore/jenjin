@@ -1,9 +1,11 @@
 package com.binarymonks.jj.pools;
 
 
+import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.events.Event;
+import com.binarymonks.jj.pools.managers.Matrix3PoolManager;
 import com.binarymonks.jj.pools.managers.Vector2PoolManager;
 import com.binarymonks.jj.things.InstanceParams;
 
@@ -16,6 +18,7 @@ import com.binarymonks.jj.things.InstanceParams;
  * Pools also comes with some default managers already registered for:
  * - {@link Event}
  * - {@link Vector2}
+ * - {@link Matrix3}
  * - {@link InstanceParams}
  */
 public class Pools {
@@ -26,6 +29,7 @@ public class Pools {
         registerManager(new Event.PM(), Event.class);
         registerManager(new Vector2PoolManager(), Vector2.class);
         registerManager(new InstanceParams.PM(), InstanceParams.class);
+        registerManager(new Matrix3PoolManager(), Matrix3.class);
     }
 
     /**
@@ -62,9 +66,10 @@ public class Pools {
     /**
      * Use this if you want to dump the pooled objects.
      * They will be disposed by the PoolManager before being removed from the pool.
+     *
      * @param clazzToClear
      */
-    public void clearPool(Class clazzToClear){
+    public void clearPool(Class clazzToClear) {
         pools.get(clazzToClear).clear();
     }
 
