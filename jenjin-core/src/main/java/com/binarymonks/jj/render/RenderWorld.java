@@ -36,7 +36,7 @@ public class RenderWorld {
 
     public PolygonSprite polygonSprite(int renderSpecID, Array<Vector2> points) {
         Pixmap pix = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pix.setColor(0xDEADBEFF); // DE is red, AD is green and BE is blue.
+        pix.setColor(0xFFFFFFFF);
         pix.fill();
         Texture textureSolid = new Texture(pix);
         float[] vertices = new float[points.size * 2];

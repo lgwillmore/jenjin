@@ -40,14 +40,15 @@ public abstract class ShapeRenderSpec<CONCRETE> extends RenderSpec<CONCRETE> {
             PolygonSprite polygonSprite;
             if (!Global.renderWorld.polySpriteCache.containsKey(id)) {
                 Matrix3 trMatrix = N.ew(Matrix3.class);
-                trMatrix.translate(offsetX,offsetY);
+                trMatrix.translate(offsetX, offsetY);
                 trMatrix.rotate(rotationD);
                 Array<Vector2> points = new Array<>();
-                points.add(N.ew(Vector2.class).set(-width/2, -height/2).mul(trMatrix));
-                points.add(N.ew(Vector2.class).set(width/2, -height/2).mul(trMatrix));
-                points.add(N.ew(Vector2.class).set(width/2, height/2).mul(trMatrix));
-                points.add(N.ew(Vector2.class).set(-width/2, height/2).mul(trMatrix));
+                points.add(N.ew(Vector2.class).set(-width / 2, -height / 2).mul(trMatrix));
+                points.add(N.ew(Vector2.class).set(width / 2, -height / 2).mul(trMatrix));
+                points.add(N.ew(Vector2.class).set(width / 2, height / 2).mul(trMatrix));
+                points.add(N.ew(Vector2.class).set(-width / 2, height / 2).mul(trMatrix));
                 polygonSprite = Global.renderWorld.polygonSprite(id, points);
+                Re.cycleItems(points);
                 Re.cycle(trMatrix);
             } else {
                 polygonSprite = Global.renderWorld.polySpriteCache.get(id);

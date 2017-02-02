@@ -7,6 +7,6 @@ public class ThingTools {
     }
 
     static void update(Thing thing) {
-
+        thing.behaviourRoot.update();
     }
 }

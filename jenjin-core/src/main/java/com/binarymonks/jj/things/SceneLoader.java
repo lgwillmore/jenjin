@@ -8,7 +8,8 @@ import com.binarymonks.jj.things.specs.SceneSpec;
 
 public class SceneLoader {
 
-    public void load(SceneSpec sceneSpec, Function callback) {
+
+    public void load(SceneSpec sceneSpec) {
         for (ObjectMap.Entry<String, Array<InstanceParams>> thingInstances : sceneSpec.instances) {
             for (InstanceParams ip : thingInstances.value) {
                 JJ.things.create(thingInstances.key,ip);

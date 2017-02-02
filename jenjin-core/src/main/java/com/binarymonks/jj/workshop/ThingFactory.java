@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.backend.Global;
+import com.binarymonks.jj.behaviour.Behaviour;
 import com.binarymonks.jj.physics.CollisionGroups;
 import com.binarymonks.jj.physics.PhysicsRoot;
 import com.binarymonks.jj.physics.specs.PhysicsRootSpec;
@@ -39,12 +40,20 @@ public class ThingFactory {
 
         buildPhysicsRoot(context);
         buildNodes(context);
-
         wireInRenderNodes(context);
+        buildBehaviour(context);
 
         Re.cycle(context);
         Global.thingWorld.add(thing);
         return thing;
+    }
+
+    private void buildBehaviour(Context context) {
+        for (Behaviour behaviour : context.thingSpec.behaviours) {
+            Behaviour clone = behaviour.clone();
+            context.thing.behaviourRoot.add(clone);
+            clone.parent=context.thing;
+        }
     }
 
     private void wireInRenderNodes(Context context) {

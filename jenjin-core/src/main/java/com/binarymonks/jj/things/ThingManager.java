@@ -26,7 +26,12 @@ public class ThingManager implements Things {
 
     @Override
     public void load(SceneSpec sceneSpec, Function callback) {
-        sceneLoader.load(sceneSpec, callback);
+        sceneLoader.load(sceneSpec);
+    }
+
+    @Override
+    public void load(SceneSpec sceneSpec) {
+        sceneLoader.load(sceneSpec);
     }
 
     @Override

@@ -32,16 +32,11 @@ public class D00_Basic extends Game {
         JJ.layers.addLayerTop(gameRenderingLayer);
 
         JJ.specs
-                .set("squaresBlue", squaresBlue())
-                .set("squaresRed", squaresBlue());
+                .set("squares", squares());
 
         //Add instances to a level
         SceneSpec level = new SceneSpec()
-//                .add("squaresBlue",
-//                        InstanceParams.New().setPosition(-10, 0).setRotationD(90),
-//                        InstanceParams.New().setPosition(-20, 0).setRotationD(90)
-//                )
-                .add("squaresRed",
+                .add("squares",
                         InstanceParams.New().setPosition(10, 0).setRotationD(90),
                         InstanceParams.New().setPosition(-10, 0).setRotationD(90)
                 );
@@ -61,7 +56,7 @@ public class D00_Basic extends Game {
     }
 
 
-    private ThingSpec squaresBlue() {
+    private ThingSpec squares() {
         return new ThingSpec()
                 .addNode(
                         new NodeSpec()
@@ -99,48 +94,6 @@ public class D00_Basic extends Game {
                                                 .setRotationD(45)
                                 )
                 )
-                ;
-    }
-
-
-    private ThingSpec squaresRed() {
-        return new ThingSpec()
-                .addNode(
-                        new NodeSpec()
-                                .addRender(
-                                        new ShapeRenderSpec.Rectangle()
-                                                .setLayer(0)
-                                                .setFill(true)
-                                                .setDimension(10, 10)
-                                                .setOffset(5, 5)
-                                                .setRotationD(45)
-                                                .setColor(Color.BLUE)
-                                )
-                                .addPhysics(
-                                        new FixtureNodeSpec()
-                                                .setShape(new B2DShapeSpec.PolygonSquare(10, 10))
-                                                .setOffset(5, 5)
-                                                .setRotationD(45)
-                                )
-                )
-//                .addNode(
-//                        new NodeSpec()
-//                                .addRender(
-//                                        new ShapeRenderSpec.Rectangle()
-//                                                .setLayer(0)
-//                                                .setFill(true)
-//                                                .setDimension(10, 10)
-//                                                .setOffset(-5, 5)
-//                                                .setRotationD(45)
-//                                                .setColor(Color.BLUE)
-//                                )
-//                                .addPhysics(
-//                                        new FixtureNodeSpec()
-//                                                .setShape(new B2DShapeSpec.PolygonSquare(10, 10))
-//                                                .setOffset(-5, 5)
-//                                                .setRotationD(45)
-//                                )
-//                )
                 ;
     }
 }

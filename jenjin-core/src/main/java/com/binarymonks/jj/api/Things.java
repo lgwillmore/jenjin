@@ -22,6 +22,8 @@ public interface Things {
 
     void load(SceneSpec sceneSpec, Function callback);
 
+    void load(SceneSpec sceneSpec);
+
     /**
      * Create a new object from a Specification.
      *

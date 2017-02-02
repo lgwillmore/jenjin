@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 public interface PhysicsRoot {
     Vector2 position();
     float rotationR();
+    Body getB2DBody();
 
     public static class B2DPhysicsRoot implements PhysicsRoot {
         Body body;
@@ -22,6 +23,11 @@ public interface PhysicsRoot {
         @Override
         public float rotationR() {
             return body.getAngle();
+        }
+
+        @Override
+        public Body getB2DBody() {
+            return body;
         }
     }
 }
