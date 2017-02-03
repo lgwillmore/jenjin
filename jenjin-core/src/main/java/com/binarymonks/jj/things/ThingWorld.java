@@ -7,6 +7,7 @@ public class ThingWorld {
 
     ObjectMap<Integer, Thing> things = new ObjectMap<>(200);
     ObjectMap<Integer, Thing> queuedForAddThings = new ObjectMap<>(100);
+    ObjectMap<String, Thing> namedThings = new ObjectMap<>(10);
     Array<Thing> removals = new Array<>();
     boolean inUpdate = false;
 
@@ -20,6 +21,16 @@ public class ThingWorld {
 
     private void reallyAdd(Thing thing) {
         things.put(thing.id, thing);
+        if (thing.uniqueName!=null){
+            if(namedThings.containsKey(thing.uniqueName)){
+                throw new RuntimeException(String.format("Unique named Thing %s already exists.",thing.uniqueName));
+            }
+            namedThings.put(thing.uniqueName,thing);
+        }
+    }
+
+    public Thing getThingByUniqueName(String uniqueName){
+        return namedThings.get(uniqueName);
     }
 
     public void update() {

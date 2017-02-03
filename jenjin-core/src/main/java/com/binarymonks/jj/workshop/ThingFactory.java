@@ -32,7 +32,7 @@ public class ThingFactory {
     }
 
     public Thing create(String thingSpecPath, InstanceParams instanceParams) {
-        Thing thing = new Thing(thingSpecPath, idCounter++);
+        Thing thing = new Thing(thingSpecPath, idCounter++, instanceParams.uniqueInstanceName);
         Context context = N.ew(Context.class);
         context.thing = thing;
         context.thingSpec = Global.specs.specifications.get(thingSpecPath);
@@ -52,7 +52,7 @@ public class ThingFactory {
         for (Behaviour behaviour : context.thingSpec.behaviours) {
             Behaviour clone = behaviour.clone();
             context.thing.behaviourRoot.add(clone);
-            clone.parent=context.thing;
+            clone.parent = context.thing;
         }
     }
 

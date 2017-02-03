@@ -40,11 +40,16 @@ public class D01_pong extends Game {
                         InstanceParams.New().setPosition(COURT_LENGTH - 10, COURT_LENGTH / 2).setRotationD(0)
                 )
                 .add("player",
-                        InstanceParams.New().setPosition(10, COURT_LENGTH / 2)
+                        InstanceParams.New().setUniqueName("player_bat").setPosition(10, COURT_LENGTH / 2)
                 );
 
         //Load the the scene
-        JJ.things.load(level);
+        JJ.things.load(level, this::onLevelLoad);
+    }
+
+    private void onLevelLoad(){
+        Thing player = JJ.things.getThingByName("player_bat");
+        System.out.println(player.uniqueName);
     }
 
 

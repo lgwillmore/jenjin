@@ -21,12 +21,13 @@ public class ThingManager implements Things {
 
     @Override
     public Thing getThingByName(String uniqueName) {
-        return null;
+        return Global.thingWorld.getThingByUniqueName(uniqueName);
     }
 
     @Override
     public void load(SceneSpec sceneSpec, Function callback) {
         sceneLoader.load(sceneSpec);
+        callback.call();
     }
 
     @Override

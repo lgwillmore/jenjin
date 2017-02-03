@@ -26,4 +26,5 @@ public class ThingSpec {
         behaviours.add(behaviour);
         return this;
     }
+
 }
