@@ -1,8 +1,6 @@
 package com.binarymonks.jj.physics.specs.b2d;
 
-import com.badlogic.gdx.math.Vector2;
 import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
-import com.binarymonks.jj.pools.N;
 
 public class FixtureNodeSpec implements PhysicsNodeSpec {
 

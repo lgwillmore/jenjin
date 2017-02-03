@@ -40,7 +40,7 @@ public class PhysicsWorld implements Physics {
 
     @Override
     public void setCollisionGroups(CollisionGroups collisionGroups) {
-        collisionGroups = collisionGroups;
+        this.collisionGroups = collisionGroups;
     }
 
     @Override

@@ -1,9 +1,12 @@
 package com.binarymonks.jj.demo.d01;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.*;
 import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
+import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.layers.GameRenderingLayer;
 import com.binarymonks.jj.physics.specs.PhysicsRootSpec;
 import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
@@ -33,7 +36,9 @@ public class D01_pong extends Game {
         //Define your ThingSpecs
         JJ.specs
                 .set("bot", bot())
-                .set("player", player());
+                .set("player", player())
+                .set("ball", ball())
+        ;
 
 
         //Add instances of your ThingSpecs to a scene
@@ -43,16 +48,16 @@ public class D01_pong extends Game {
                 )
                 .add("player",
                         InstanceParams.New().setUniqueName("player_bat").setPosition(10, COURT_LENGTH / 2)
-                );
+                )
+                .add("ball",
+                        InstanceParams.New().setUniqueName("ball").setPosition(COURT_LENGTH / 2, COURT_LENGTH / 2));
 
         //Load the the scene
         JJ.things.load(level, this::onLevelLoad);
     }
 
     private void onLevelLoad() {
-        Thing player = JJ.things.getThingByName("player_bat");
-        PlayerBehaviour playerBehaviour = player.behaviour.get(PlayerBehaviour.class);
-        System.out.println(playerBehaviour.getClass().getSimpleName());
+        JJ.things.getThingByName("ball").physicsroot.getB2DBody().setLinearVelocity(-20, 0);
     }
 
 
@@ -60,15 +65,8 @@ public class D01_pong extends Game {
         return new ThingSpec()
                 .addNode(
                         new NodeSpec()
-                                .addRender(
-                                        new ShapeRenderSpec.Rectangle()
-                                                .setDimension(BAT_WIDTH, BAT_HEIGHT)
-                                                .setColor(Color.WHITE)
-                                )
-                                .addPhysics(
-                                        new FixtureNodeSpec()
-                                                .setShape(new B2DShapeSpec.PolygonSquare(BAT_WIDTH, BAT_HEIGHT))
-                                )
+                                .addRender(new ShapeRenderSpec.Rectangle().setDimension(BAT_WIDTH, BAT_HEIGHT).setColor(Color.WHITE))
+                                .addPhysics(new FixtureNodeSpec().setShape(new B2DShapeSpec.PolygonSquare(BAT_WIDTH, BAT_HEIGHT)))
                 )
                 .addBehaviour(
                         new RandomBotBehaviour()
@@ -83,17 +81,25 @@ public class D01_pong extends Game {
                 )
                 .addNode(
                         new NodeSpec()
-                                .addRender(
-                                        new ShapeRenderSpec.Rectangle()
-                                                .setDimension(BAT_WIDTH, BAT_HEIGHT)
-                                                .setColor(Color.WHITE)
-                                )
-                                .addPhysics(
-                                        new FixtureNodeSpec()
-                                                .setShape(new B2DShapeSpec.PolygonSquare(BAT_WIDTH, BAT_HEIGHT))
-                                )
+                                .addRender(new ShapeRenderSpec.Rectangle().setDimension(BAT_WIDTH, BAT_HEIGHT).setColor(Color.WHITE))
+                                .addPhysics(new FixtureNodeSpec().setShape(new B2DShapeSpec.PolygonSquare(BAT_WIDTH, BAT_HEIGHT)))
                 )
                 .addBehaviour(new PlayerBehaviour())
+                ;
+    }
+
+    private ThingSpec ball() {
+        return new ThingSpec()
+                .setPhysics(new PhysicsRootSpec.B2D().setLinearDamping(0))
+                .addNode(
+                        new NodeSpec()
+                                .addRender(new ShapeRenderSpec.Rectangle().setDimension(5, 5).setColor(Color.BLUE))
+                                .addPhysics(new FixtureNodeSpec()
+                                        .setFriction(0)
+                                        .setRestitution(1)
+                                        .setShape(new B2DShapeSpec.PolygonSquare(5, 5)
+                                        ))
+                )
                 ;
     }
 }
