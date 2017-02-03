@@ -14,5 +14,35 @@ public interface PhysicsRootSpec {
         public float angularDamping;
         public boolean bullet = false;
         public boolean allowSleep = true;
+
+        public B2D setBodyType(BodyDef.BodyType bodyType) {
+            this.bodyType = bodyType;
+            return this;
+        }
+
+        public B2D setFixedRotation(boolean fixedRotation) {
+            this.fixedRotation = fixedRotation;
+            return this;
+        }
+
+        public B2D setLinearDamping(float linearDamping) {
+            this.linearDamping = linearDamping;
+            return this;
+        }
+
+        public B2D setAngularDamping(float angularDamping) {
+            this.angularDamping = angularDamping;
+            return this;
+        }
+
+        public B2D setBullet(boolean bullet) {
+            this.bullet = bullet;
+            return this;
+        }
+
+        public B2D setAllowSleep(boolean allowSleep) {
+            this.allowSleep = allowSleep;
+            return this;
+        }
     }
 }

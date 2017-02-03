@@ -49,9 +49,9 @@ public class ThingFactory {
     }
 
     private void buildBehaviour(Context context) {
-        for (Behaviour behaviour : context.thingSpec.behaviours) {
+        for (Behaviour behaviour : context.thingSpec.behaviour) {
             Behaviour clone = behaviour.clone();
-            context.thing.behaviourRoot.add(clone);
+            context.thing.behaviour.add(clone);
             clone.parent = context.thing;
         }
     }
@@ -77,7 +77,7 @@ public class ThingFactory {
     }
 
     private void buildNodes(Context context) {
-        for (NodeSpec nodeSpec : context.thingSpec.nodeSpecs) {
+        for (NodeSpec nodeSpec : context.thingSpec.nodes) {
             ThingNode node = new ThingNode();
 
             Fixture fixture = buildFixture((FixtureNodeSpec) nodeSpec.physicsNodeSpec, context.body);
@@ -118,7 +118,7 @@ public class ThingFactory {
     }
 
     private void buildPhysicsRoot(Context context) {
-        PhysicsRootSpec.B2D bodyDef = (PhysicsRootSpec.B2D) context.thingSpec.physicsRootSpec;
+        PhysicsRootSpec.B2D bodyDef = (PhysicsRootSpec.B2D) context.thingSpec.physics;
         BodyDef def = new BodyDef();
         def.position.set(context.instanceParams.x, context.instanceParams.y);
         def.angle = context.instanceParams.rotationD * MathUtils.degreesToRadians;

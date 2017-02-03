@@ -1,9 +1,11 @@
 package com.binarymonks.jj.demo.d01;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.layers.GameRenderingLayer;
+import com.binarymonks.jj.physics.specs.PhysicsRootSpec;
 import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
 import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.render.specs.ShapeRenderSpec;
@@ -47,9 +49,10 @@ public class D01_pong extends Game {
         JJ.things.load(level, this::onLevelLoad);
     }
 
-    private void onLevelLoad(){
+    private void onLevelLoad() {
         Thing player = JJ.things.getThingByName("player_bat");
-        System.out.println(player.uniqueName);
+        PlayerBehaviour playerBehaviour = player.behaviour.get(PlayerBehaviour.class);
+        System.out.println(playerBehaviour.getClass().getSimpleName());
     }
 
 
@@ -75,6 +78,9 @@ public class D01_pong extends Game {
 
     private ThingSpec player() {
         return new ThingSpec()
+                .setPhysics(new PhysicsRootSpec.B2D()
+                        .setBodyType(BodyDef.BodyType.KinematicBody)
+                )
                 .addNode(
                         new NodeSpec()
                                 .addRender(
@@ -87,6 +93,7 @@ public class D01_pong extends Game {
                                                 .setShape(new B2DShapeSpec.PolygonSquare(BAT_WIDTH, BAT_HEIGHT))
                                 )
                 )
+                .addBehaviour(new PlayerBehaviour())
                 ;
     }
 }

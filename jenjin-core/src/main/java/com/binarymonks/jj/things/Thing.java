@@ -12,7 +12,7 @@ public class Thing {
     public String uniqueName;
     public RenderRoot renderRoot = new RenderRoot();
     public PhysicsRoot physicsroot;
-    public BehaviourRoot behaviourRoot = new BehaviourRoot();
+    public BehaviourRoot behaviour = new BehaviourRoot();
     boolean markedForDestruction = false;
 
     public Thing(String path, int id, String uniqueName) {
