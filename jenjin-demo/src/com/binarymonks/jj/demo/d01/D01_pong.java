@@ -30,12 +30,17 @@ public class D01_pong extends Game {
 
         //Define your ThingSpecs
         JJ.specs
-                .set("bot", bot());
+                .set("bot", bot())
+                .set("player", player());
+
 
         //Add instances of your ThingSpecs to a scene
         SceneSpec level = new SceneSpec()
                 .add("bot",
                         InstanceParams.New().setPosition(COURT_LENGTH - 10, COURT_LENGTH / 2).setRotationD(0)
+                )
+                .add("player",
+                        InstanceParams.New().setPosition(10, COURT_LENGTH / 2)
                 );
 
         //Load the the scene
@@ -59,6 +64,23 @@ public class D01_pong extends Game {
                 )
                 .addBehaviour(
                         new RandomBotBehaviour()
+                )
+                ;
+    }
+
+    private ThingSpec player() {
+        return new ThingSpec()
+                .addNode(
+                        new NodeSpec()
+                                .addRender(
+                                        new ShapeRenderSpec.Rectangle()
+                                                .setDimension(BAT_WIDTH, BAT_HEIGHT)
+                                                .setColor(Color.WHITE)
+                                )
+                                .addPhysics(
+                                        new FixtureNodeSpec()
+                                                .setShape(new B2DShapeSpec.PolygonSquare(BAT_WIDTH, BAT_HEIGHT))
+                                )
                 )
                 ;
     }

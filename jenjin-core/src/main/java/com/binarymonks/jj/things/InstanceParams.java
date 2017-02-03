@@ -3,13 +3,14 @@ package com.binarymonks.jj.things;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.pools.PoolManager;
+import com.binarymonks.jj.pools.Poolable;
 
 /**
  * This defines the parameters of an instance of a {@link Thing} on creation.
  * This is pooled by default, as you tend to make a lot of these.
  * The recycling is handled automatically though, so don't worry.
  */
-public class InstanceParams {
+public class InstanceParams implements Poolable {
 
     public float x;
     public float y;
@@ -46,27 +47,12 @@ public class InstanceParams {
         return N.ew(InstanceParams.class);
     }
 
-
-    public static class PM implements PoolManager<InstanceParams> {
-
-        @Override
-        public void reset(InstanceParams instanceParams) {
-            instanceParams.properties.clear();
-            instanceParams
-                    .setPosition(0, 0)
-                    .setRotationD(0)
-                    .setUniqueName(null);
-        }
-
-        @Override
-        public InstanceParams create_new() {
-            return new InstanceParams();
-        }
-
-        @Override
-        public void dispose(InstanceParams instanceParams) {
-
-        }
+    @Override
+    public void reset() {
+        properties.clear();
+        setPosition(0, 0);
+        setRotationD(0);
+        setUniqueName(null);
     }
 
 }

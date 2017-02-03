@@ -3,8 +3,9 @@ package com.binarymonks.jj.events;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.pools.PoolManager;
+import com.binarymonks.jj.pools.Poolable;
 
-public class Event {
+public class Event implements Poolable {
     public Enum<?> eenum;
     public ObjectMap<String, Object> props = new ObjectMap<>();
 
@@ -16,21 +17,9 @@ public class Event {
         return N.ew(Event.class);
     }
 
-    public static class PM implements PoolManager<Event> {
-        @Override
-        public void reset(Event event) {
-            event.eenum = null;
-            event.props.clear();
-        }
-
-        @Override
-        public Event create_new() {
-            return new Event();
-        }
-
-        @Override
-        public void dispose(Event event) {
-
-        }
+    @Override
+    public void reset() {
+        eenum = null;
+        props.clear();
     }
 }
