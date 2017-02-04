@@ -102,8 +102,9 @@ public class D01_pong extends Game {
                                 .addPhysics(new FixtureNodeSpec()
                                         .setFriction(0)
                                         .setRestitution(1)
-                                        .setShape(new B2DShapeSpec.PolygonSquare(5, 5)
-                                        ))
+                                        .setShape(new B2DShapeSpec.PolygonSquare(5, 5))
+                                        .addFinalBeginCollision(new BallCollision())
+                                )
                 )
                 ;
     }

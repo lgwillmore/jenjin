@@ -1,5 +1,7 @@
 package com.binarymonks.jj.physics.specs.b2d;
 
+import com.badlogic.gdx.utils.Array;
+import com.binarymonks.jj.physics.CollisionFunction;
 import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
 
 public class FixtureNodeSpec implements PhysicsNodeSpec {
@@ -12,7 +14,11 @@ public class FixtureNodeSpec implements PhysicsNodeSpec {
     public float offsetX;
     public float offsetY;
     public boolean isSensor = false;
-    public B2DShapeSpec shape = new B2DShapeSpec.PolygonSquare(5, 5);
+    public B2DShapeSpec shape;
+    public Array<CollisionFunction> initialBeginCollisions = new Array<>();
+    public Array<CollisionFunction> finalBeginCollisions = new Array<>();
+    public Array<CollisionFunction> endCollisions = new Array<>();
+
 
     public FixtureNodeSpec setCollisionGroup(String collisionGroup) {
         this.collisionGroup = collisionGroup;
@@ -52,6 +58,21 @@ public class FixtureNodeSpec implements PhysicsNodeSpec {
 
     public FixtureNodeSpec setShape(B2DShapeSpec shape) {
         this.shape = shape;
+        return this;
+    }
+
+    public FixtureNodeSpec addInitialBeginCollision(CollisionFunction function){
+        initialBeginCollisions.add(function);
+        return this;
+    }
+
+    public FixtureNodeSpec addFinalBeginCollision(CollisionFunction function){
+        finalBeginCollisions.add(function);
+        return this;
+    }
+
+    public FixtureNodeSpec addEndCollision(CollisionFunction function){
+        endCollisions.add(function);
         return this;
     }
 }

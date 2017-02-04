@@ -2,10 +2,30 @@ package com.binarymonks.jj.physics;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.binarymonks.jj.pools.N;
 
 public interface PhysicsRoot {
     Vector2 position();
+
     float rotationR();
+
+    /**
+     * Be careful if you are using Box2D physics.
+     * Rather apply forces through {@link PhysicsRoot#getB2DBody()}
+     *
+     * @param x
+     * @param y
+     */
+    void setPosition(float x, float y);
+
+    /**
+     * Be careful if you are using Box2D physics.
+     * Rather apply forces through {@link PhysicsRoot#getB2DBody()}
+     *
+     * @param rotation
+     */
+    void setRotationR(float rotation);
+
     Body getB2DBody();
 
     public static class B2DPhysicsRoot implements PhysicsRoot {
@@ -26,8 +46,49 @@ public interface PhysicsRoot {
         }
 
         @Override
+        public void setPosition(float x, float y) {
+            body.setTransform(x, y, body.getAngle());
+        }
+
+        @Override
+        public void setRotationR(float rotation) {
+            Vector2 position = body.getPosition();
+            body.setTransform(position.x, position.y, rotation);
+        }
+
+        @Override
         public Body getB2DBody() {
             return body;
+        }
+    }
+
+    public static class BasicPhysics implements PhysicsRoot {
+        Vector2 position = N.ew(Vector2.class);
+        float rotationR = 0;
+
+        @Override
+        public Vector2 position() {
+            return position;
+        }
+
+        @Override
+        public float rotationR() {
+            return rotationR;
+        }
+
+        @Override
+        public void setPosition(float x, float y) {
+            position.set(x, y);
+        }
+
+        @Override
+        public void setRotationR(float rotation) {
+            rotationR = rotation;
+        }
+
+        @Override
+        public Body getB2DBody() {
+            return null;
         }
     }
 }

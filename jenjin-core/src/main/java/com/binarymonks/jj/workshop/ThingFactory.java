@@ -8,7 +8,9 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.behaviour.Behaviour;
+import com.binarymonks.jj.physics.CollisionFunction;
 import com.binarymonks.jj.physics.CollisionGroups;
+import com.binarymonks.jj.physics.CollisionResolver;
 import com.binarymonks.jj.physics.PhysicsRoot;
 import com.binarymonks.jj.physics.specs.PhysicsRootSpec;
 import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
@@ -80,15 +82,15 @@ public class ThingFactory {
         for (NodeSpec nodeSpec : context.thingSpec.nodes) {
             ThingNode node = new ThingNode();
 
-            Fixture fixture = buildFixture((FixtureNodeSpec) nodeSpec.physicsNodeSpec, context.body);
-            node.fixture = fixture;
+            buildFixture((FixtureNodeSpec) nodeSpec.physicsNodeSpec, node, context.body);
+
             RenderNode render = nodeSpec.renderSpec.makeNode();
             node.render = render;
             context.nodes.add(node);
         }
     }
 
-    private Fixture buildFixture(FixtureNodeSpec nodeSpec, Body body) {
+    private Fixture buildFixture(FixtureNodeSpec nodeSpec, ThingNode node, Body body) {
         Shape shape = buildShape(nodeSpec);
         FixtureDef fDef = new FixtureDef();
         fDef.shape = shape;
@@ -102,9 +104,29 @@ public class ThingFactory {
         fDef.filter.maskBits = cd.mask;
 
         Fixture f = body.createFixture(fDef);
+        node.fixture = f;
+
+        CollisionResolver resolver = new CollisionResolver();
+        for (CollisionFunction ibegin : nodeSpec.initialBeginCollisions) {
+            resolver.addInitialBegin(ibegin.clone());
+        }
+        for (CollisionFunction fbegin : nodeSpec.finalBeginCollisions) {
+            resolver.addFinalBegin(fbegin.clone());
+        }
+        for (CollisionFunction end : nodeSpec.endCollisions) {
+            resolver.addInitialBegin(end.clone());
+        }
 
         shape.dispose();
         return f;
+    }
+
+    private boolean hasCollsions(FixtureNodeSpec nodeSpec) {
+        return (
+                nodeSpec.initialBeginCollisions.size > 0
+                        || nodeSpec.finalBeginCollisions.size > 0
+                        || nodeSpec.endCollisions.size > 0
+        );
     }
 
     private Shape buildShape(FixtureNodeSpec nodeSpec) {
