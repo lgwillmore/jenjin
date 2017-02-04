@@ -1,4 +1,4 @@
-package com.binarymonks.jj.workshop;
+package com.binarymonks.jj.things;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -80,13 +80,19 @@ public class ThingFactory {
 
     private void buildNodes(Context context) {
         for (NodeSpec nodeSpec : context.thingSpec.nodes) {
-            ThingNode node = new ThingNode();
+            ThingNode node = new ThingNode(nodeSpec.name);
 
             buildFixture((FixtureNodeSpec) nodeSpec.physicsNodeSpec, node, context.body);
 
             RenderNode render = nodeSpec.renderSpec.makeNode();
             node.render = render;
             context.nodes.add(node);
+
+            if(node.name==null){
+                node.name = "ANON_NODE_"+context.thing.nodes.size;
+            }
+            context.thing.nodes.put(node.name,node);
+            node.parent=context.thing;
         }
     }
 
@@ -105,6 +111,7 @@ public class ThingFactory {
 
         Fixture f = body.createFixture(fDef);
         node.fixture = f;
+        f.setUserData(node);
 
         CollisionResolver resolver = new CollisionResolver();
         for (CollisionFunction ibegin : nodeSpec.initialBeginCollisions) {
@@ -116,6 +123,8 @@ public class ThingFactory {
         for (CollisionFunction end : nodeSpec.endCollisions) {
             resolver.addInitialBegin(end.clone());
         }
+
+        node.collisionResolver = resolver;
 
         shape.dispose();
         return f;

@@ -8,6 +8,12 @@ public class NodeSpec {
 
     public RenderSpec renderSpec = new RenderSpec.Null();
     public PhysicsNodeSpec physicsNodeSpec = new PhysicsNodeSpec.Null();
+    public String name;
+
+    public NodeSpec setName(String name) {
+        this.name = name;
+        return this;
+    }
 
     public NodeSpec addRender(RenderSpec renderSpec) {
         this.renderSpec = renderSpec;

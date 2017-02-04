@@ -1,4 +1,4 @@
-package com.binarymonks.jj.workshop;
+package com.binarymonks.jj.things;
 
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.api.Specs;

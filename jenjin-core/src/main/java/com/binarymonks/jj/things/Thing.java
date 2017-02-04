@@ -13,9 +13,11 @@ public class Thing {
     public String uniqueName;
     public RenderRoot renderRoot = new RenderRoot();
     public PhysicsRoot physicsroot;
-    public BehaviourRoot behaviour = new BehaviourRoot();
+    BehaviourRoot behaviour = new BehaviourRoot();
     boolean markedForDestruction = false;
-    public ObjectMap<String, Object> properties = new ObjectMap<>();
+    ObjectMap<String, Object> properties = new ObjectMap<>();
+    ObjectMap<String, ThingNode> nodes = new ObjectMap<>();
+
 
     public Thing(String path, int id, String uniqueName) {
         this.path = path;

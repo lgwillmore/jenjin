@@ -10,4 +10,9 @@ public class BallCollision extends CollisionFunction {
     public void collision(Thing me, Fixture myFixture, Thing other, Fixture otherFixture, Contact contact) {
         System.out.println("Ping!");
     }
+
+    @Override
+    public CollisionFunction clone() {
+        return new BallCollision();
+    }
 }

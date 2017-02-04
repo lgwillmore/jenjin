@@ -7,7 +7,7 @@ import com.binarymonks.jj.render.RenderWorld;
 import com.binarymonks.jj.things.ThingWorld;
 import com.binarymonks.jj.things.ThingManager;
 import com.binarymonks.jj.time.TimeControls;
-import com.binarymonks.jj.workshop.Specifications;
+import com.binarymonks.jj.things.Specifications;
 
 public class Global {
     public static RenderWorld renderWorld = new RenderWorld();

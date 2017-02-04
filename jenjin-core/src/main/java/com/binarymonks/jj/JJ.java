@@ -8,10 +8,9 @@ import com.binarymonks.jj.api.Layers;
 import com.binarymonks.jj.lifecycle.LifeCyclePublisher;
 import com.binarymonks.jj.physics.PhysicsWorld;
 import com.binarymonks.jj.pools.Pools;
-import com.binarymonks.jj.render.RenderWorld;
 import com.binarymonks.jj.things.ThingManager;
 import com.binarymonks.jj.time.TimeControls;
-import com.binarymonks.jj.workshop.Specifications;
+import com.binarymonks.jj.things.Specifications;
 
 /**
  * The Jenjin API.
@@ -43,6 +42,8 @@ public class JJ {
     public static Physics physics;
 
     public static Assets assets;
+
+    public static Audio audio = new Audio();
 
     static void initialise() {
 

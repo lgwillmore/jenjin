@@ -11,8 +11,12 @@ public class ThingNode {
     public Fixture fixture;
     public RenderNode render;
     public ObjectMap<String, Object> properties = new ObjectMap<>();
-    private CollisionResolver collisionResolver = new CollisionResolver();
+    public CollisionResolver collisionResolver = new CollisionResolver();
+    String name;
 
+    public ThingNode(String name) {
+        this.name = name;
+    }
 
     public boolean hasProperty(String propertyKey) {
         if (!properties.containsKey(propertyKey) && parent != null) {

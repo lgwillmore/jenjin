@@ -19,6 +19,7 @@ public class PhysicsWorld implements Physics {
 
     public PhysicsWorld() {
         world = new World(Vector2.Zero, true);
+        world.setContactListener(new JJContactListener());
     }
 
     public void update() {
@@ -27,7 +28,7 @@ public class PhysicsWorld implements Physics {
         if (frameDelta > 0) {
             world.step((float) JJ.time.getDelta(), velocityIterations, positionIterations);
         }
-        for(Function function : postPhysicsFunctions){
+        for (Function function : postPhysicsFunctions) {
             function.call();
         }
         postPhysicsFunctions.clear();
