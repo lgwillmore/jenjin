@@ -1,6 +1,7 @@
 package com.binarymonks.jj.things;
 
 import com.badlogic.gdx.utils.ObjectMap;
+import com.binarymonks.jj.audio.SoundEffects;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.behaviour.BehaviourRoot;
 import com.binarymonks.jj.physics.PhysicsRoot;
@@ -13,6 +14,7 @@ public class Thing {
     public String uniqueName;
     public RenderRoot renderRoot = new RenderRoot();
     public PhysicsRoot physicsroot;
+    public SoundEffects sounds;
     BehaviourRoot behaviour = new BehaviourRoot();
     boolean markedForDestruction = false;
     ObjectMap<String, Object> properties = new ObjectMap<>();

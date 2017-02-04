@@ -39,6 +39,11 @@ public abstract class CollisionFunction {
 
     public abstract CollisionFunction clone();
 
+    public void copyProperties(CollisionFunction copyFrom) {
+        this.matchProperties.addAll(copyFrom.matchProperties);
+        this.ignoreProperties.addAll(copyFrom.ignoreProperties);
+    }
+
     public void setResolver(CollisionResolver resolver) {
         this.resolver = resolver;
     }

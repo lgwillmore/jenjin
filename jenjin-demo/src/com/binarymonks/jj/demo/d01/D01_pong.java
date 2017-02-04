@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
+import com.binarymonks.jj.audio.SoundParams;
 import com.binarymonks.jj.layers.GameRenderingLayer;
+import com.binarymonks.jj.physics.collisions.SoundCollision;
 import com.binarymonks.jj.physics.specs.PhysicsRootSpec;
 import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
 import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
@@ -55,10 +57,10 @@ public class D01_pong extends Game {
                 );
 
         //Load the the scene
-        JJ.things.load(level, this::onLevelLoad);
+        JJ.things.load(level, this::kickOff);
     }
 
-    private void onLevelLoad() {
+    private void kickOff() {
         JJ.things.getThingByName("ball").physicsroot.getB2DBody().setLinearVelocity(-20, 0);
     }
 
@@ -96,6 +98,9 @@ public class D01_pong extends Game {
     private ThingSpec ball() {
         return new ThingSpec()
                 .setPhysics(new PhysicsRootSpec.B2D().setLinearDamping(0))
+                .addSound(
+                        new SoundParams("pong").addPath("sounds/pong.mp3").setVolume(0.5f)
+                )
                 .addNode(
                         new NodeSpec()
                                 .addRender(new ShapeRenderSpec.Rectangle().setDimension(5, 5).setColor(Color.BLUE))
@@ -103,7 +108,7 @@ public class D01_pong extends Game {
                                         .setFriction(0)
                                         .setRestitution(1)
                                         .setShape(new B2DShapeSpec.PolygonSquare(5, 5))
-                                        .addFinalBeginCollision(new BallCollision())
+                                        .addFinalBeginCollision(new SoundCollision("pong"))
                                 )
                 )
                 ;

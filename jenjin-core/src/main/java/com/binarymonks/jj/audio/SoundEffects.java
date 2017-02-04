@@ -8,13 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class JJSoundEffects implements Disposable {
+public class SoundEffects implements Disposable {
 
     private static final double REPEAT_ELAPSED_TIME = 0.1;
     Map<String, SoundPlayer> sounds = new HashMap<>();
-    Map<String, SoundEffectParameters> parameters = new HashMap<>();
+    Map<String, SoundParams> parameters = new HashMap<>();
     String currentSoundId;
-    String defaultSound;
     SoundPlayer currentSound;
     long currentSoundPlayID;
     double currentSoundStart;
@@ -36,35 +35,35 @@ public class JJSoundEffects implements Disposable {
         }
     }
 
-    public void stopSound(){
-        if(currentSound != null){
+    public void stopSound() {
+        if (currentSound != null) {
             currentSound.stop();
         }
     }
 
-    public void addSoundEffect(SoundEffectParameters soundfx) {
+    public void addSoundEffect(SoundParams soundfx) {
         if (soundfx.soundPaths != null) {
             sounds.put(soundfx.id, SoundPlayer.getSound(soundfx));
-            parameters.put(soundfx.id,soundfx);
+            parameters.put(soundfx.id, soundfx);
         }
     }
 
-    public void addSoundEffects(List<SoundEffectParameters> soundfx) {
-        for (SoundEffectParameters fxParams : soundfx) {
+    public void addSoundEffects(List<SoundParams> soundfx) {
+        for (SoundParams fxParams : soundfx) {
             addSoundEffect(fxParams);
         }
     }
 
-    public void triggerSound(String soundfxID) {
+    public void triggerSound(String soundfxID, SoundMode mode) {
         double elapsed = JJ.time.getTime() - currentSoundStart;
         if (currentSound == null ||
                 !currentSoundfxID.equals(soundfxID) || (elapsed > REPEAT_ELAPSED_TIME)) {
             currentSoundId = soundfxID;
-            trigger(soundfxID);
+            trigger(soundfxID, mode);
         }
     }
 
-    private void trigger(String soundfxID) {
+    private void trigger(String soundfxID, SoundMode mode) {
         if (sounds.containsKey(soundfxID)) {
             SoundPlayer proposedSound = sounds.get(soundfxID);
             proposedSound.selectRandom();
@@ -77,8 +76,7 @@ public class JJSoundEffects implements Disposable {
                 float volume = (JJ.audio.effects.isMute()) ? 0.0f : currentSound.parameters.volume
                         * JJ.audio.effects.getVolume();
                 currentSoundPlayID = currentSound.play(volume);
-                if (currentSound.parameters.playMode.name().startsWith(
-                        PlayMode.LOOP.name())) {
+                if (mode.equals(SoundMode.LOOP)) {
                     currentSound.setLooping(currentSoundPlayID, true);
                 }
                 currentSound.setPitch(currentSoundPlayID,
@@ -87,14 +85,7 @@ public class JJSoundEffects implements Disposable {
         }
     }
 
-
-
-    public void setDefaultSound(String soundID) {
-        defaultSound = soundID;
-        triggerSound(defaultSound);
-    }
-
-    public Map<String, SoundEffectParameters> getParams() {
+    public Map<String, SoundParams> getParams() {
         return parameters;
     }
 

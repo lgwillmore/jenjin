@@ -3,24 +3,21 @@ package com.binarymonks.jj.audio;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.binarymonks.jenjin.JJ;
-import com.binarymonks.jenjin.utils.JJMathUtil;
+import com.binarymonks.jj.JJ;
+import com.binarymonks.jj.utils.JJMathUtil;
 
 import java.util.List;
 
-/**
- * Created by Laurence on 5/24/2016.
- */
 public abstract class SoundPlayer implements Sound {
 
-    SoundEffectParameters parameters;
+    SoundParams parameters;
     String currentSoundPath;
 
-    private SoundPlayer(SoundEffectParameters parameters) {
+    private SoundPlayer(SoundParams parameters) {
         this.parameters = parameters;
     }
 
-    public static SoundPlayer getSound(SoundEffectParameters params) {
+    public static SoundPlayer getSound(SoundParams params) {
         if (!params.isBig) {
             return new ShortSound(params);
         }
@@ -49,13 +46,13 @@ public abstract class SoundPlayer implements Sound {
         Sound sound;
 
 
-        private ShortSound(SoundEffectParameters parameters) {
+        private ShortSound(SoundParams parameters) {
             super(parameters);
         }
 
         @Override
         public void triggering() {
-            sound = JJ.assetManager.get(currentSoundPath, Sound.class);
+            sound = JJ.assets.get(currentSoundPath, Sound.class);
         }
 
         @Override
@@ -91,7 +88,7 @@ public abstract class SoundPlayer implements Sound {
         @Override
         public void stop() {
             sound.stop();
-            JJ.assetManager.unload(currentSoundPath);
+            JJ.assets.unload(currentSoundPath);
         }
 
         @Override
@@ -112,7 +109,7 @@ public abstract class SoundPlayer implements Sound {
         @Override
         public void stop(long soundId) {
             sound.stop(soundId);
-            JJ.assetManager.unload(currentSoundPath);
+            JJ.assets.unload(currentSoundPath);
         }
 
         @Override
@@ -156,7 +153,7 @@ public abstract class SoundPlayer implements Sound {
 
         Music sound;
 
-        public LongSound(SoundEffectParameters parameters) {
+        public LongSound(SoundParams parameters) {
             super(parameters);
         }
 

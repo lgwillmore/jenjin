@@ -1,12 +1,11 @@
 package com.binarymonks.jj.things.specs;
 
 import com.badlogic.gdx.utils.Array;
+import com.binarymonks.jj.audio.SoundParams;
 import com.binarymonks.jj.behaviour.Behaviour;
 import com.binarymonks.jj.physics.specs.PhysicsRootSpec;
 
-/**
- * Created by lwillmore on 25/01/17.
- */
+
 public class ThingSpec {
 
     public Array<NodeSpec> nodes = new Array<>();
@@ -15,7 +14,9 @@ public class ThingSpec {
 
     public PhysicsRootSpec physics = new PhysicsRootSpec.B2D();
 
-    public ThingSpec setPhysics(PhysicsRootSpec physicsSpec){
+    public Array<SoundParams> sounds = new Array<>();
+
+    public ThingSpec setPhysics(PhysicsRootSpec physicsSpec) {
         this.physics = physicsSpec;
         return this;
     }
@@ -30,4 +31,8 @@ public class ThingSpec {
         return this;
     }
 
+    public ThingSpec addSound(SoundParams soundParams) {
+        sounds.add(soundParams);
+        return this;
+    }
 }
