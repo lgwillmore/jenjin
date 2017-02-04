@@ -13,7 +13,7 @@ import com.binarymonks.jj.render.RenderGraph;
 public class GameRenderingLayer implements Layer {
     public OrthographicCamera camera;
     Box2DDebugRenderer drenderer = new Box2DDebugRenderer();
-    boolean b2dDebug = true;
+    boolean b2dDebug = false;
 
     public GameRenderingLayer(float worldBoxWidth, float posX, float posY) {
         float w = Gdx.graphics.getWidth();

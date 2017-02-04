@@ -13,6 +13,8 @@ public class InstanceParams {
 
     public float x;
     public float y;
+    public float scaleX = 1;
+    public float scaleY = 1;
     public float rotationD = 0;
     public String uniqueInstanceName;
 
@@ -38,6 +40,16 @@ public class InstanceParams {
         return this;
     }
 
+    public InstanceParams setScaleX(float scaleX) {
+        this.scaleX = scaleX;
+        return this;
+    }
+
+    public InstanceParams setScaleY(float scaleY) {
+        this.scaleY = scaleY;
+        return this;
+    }
+
     /**
      * Use this to get a new one. This is so recycling and pooling
      * can be handled automatically.
@@ -55,6 +67,8 @@ public class InstanceParams {
             instanceParams
                     .setPosition(0, 0)
                     .setRotationD(0)
+                    .setScaleX(1)
+                    .setScaleY(1)
                     .setUniqueName(null);
         }
 

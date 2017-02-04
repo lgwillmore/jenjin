@@ -12,7 +12,7 @@ public class DesktopLauncher {
 		lwjglConfig.height= 1000;
 		lwjglConfig.width = 1000;
 		JJConfig jjconfig = new JJConfig();
-		jjconfig.b2dDebug=true;
+//		jjconfig.b2dDebug=true;
 		new LwjglApplication(new D01_pong(jjconfig), lwjglConfig);
 	}
 }
