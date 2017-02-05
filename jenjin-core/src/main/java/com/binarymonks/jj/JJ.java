@@ -2,6 +2,8 @@ package com.binarymonks.jj;
 
 
 import com.binarymonks.jj.api.*;
+import com.binarymonks.jj.assets.AssetManager;
+import com.binarymonks.jj.async.LoopTasks;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.layers.LayerStack;
 import com.binarymonks.jj.api.Layers;
@@ -45,6 +47,8 @@ public class JJ {
 
     public static Audio audio = new Audio();
 
+    public static Tasks tasks;
+
     static void initialise() {
 
         TimeControls timeControls = new TimeControls();
@@ -70,6 +74,13 @@ public class JJ {
         PhysicsWorld physicsWorld = new PhysicsWorld();
         Global.physics = physicsWorld;
         physics=physicsWorld;
+
+        LoopTasks loopTasks = new LoopTasks();
+        Global.tasks = loopTasks;
+        tasks=loopTasks;
+
+        assets = new AssetManager();
+
     }
 
 }

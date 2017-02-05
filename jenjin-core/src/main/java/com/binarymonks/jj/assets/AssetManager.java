@@ -7,13 +7,17 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.api.Assets;
 import com.binarymonks.jj.assets.fonts.FontSet;
 import com.binarymonks.jj.assets.loaders.GifTextureLoader;
 import com.binarymonks.jj.assets.loaders.TTFontLoader;
 import com.binarymonks.jj.assets.types.GifTexture;
+import com.binarymonks.jj.async.Function;
+import com.binarymonks.jj.async.Task;
 
 public class AssetManager implements Assets {
 
@@ -53,7 +57,6 @@ public class AssetManager implements Assets {
     }
 
 
-
     public float getProgress() {
         return manager.getProgress();
     }
@@ -67,7 +70,6 @@ public class AssetManager implements Assets {
     public boolean isLoaded(String fileName) {
         return manager.isLoaded(fileName);
     }
-
 
 
     @Override
@@ -133,9 +135,53 @@ public class AssetManager implements Assets {
     }
 
     @Override
+    public void loadThen(Array<AssetReference> assets, Function callback) {
+        JJ.tasks.addPreLoopTask(new AsyncAssetLoader(assets, callback));
+    }
+
+    @Override
     public void load(AssetDescriptor<?> desc) {
         manager.load(desc);
     }
 
+    public static class AsyncAssetLoader implements Task {
 
+        Array<AssetReference> assets;
+        Function callback;
+        String loggingTag = "AsyncAssetLoader";
+
+        public AsyncAssetLoader(Array<AssetReference> assets, Function callback) {
+            this.assets = assets;
+            this.callback = callback;
+        }
+
+        @Override
+        public void getReady() {
+            Gdx.app.log(loggingTag, "Loading assets:");
+            for (AssetReference assetRef : assets) {
+                Gdx.app.log(loggingTag, " - " + assetRef.assetPath);
+                JJ.assets.load(assetRef.assetPath, assetRef.clazz);
+            }
+        }
+
+        @Override
+        public void doWork() {
+
+        }
+
+        @Override
+        public void tearDown() {
+            callback.call();
+        }
+
+        @Override
+        public boolean isDone() {
+            for (AssetReference asset : assets) {
+                if (!JJ.assets.isLoaded(asset.assetPath)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
 }

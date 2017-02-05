@@ -3,6 +3,7 @@ package com.binarymonks.jj.things;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.api.Things;
 import com.binarymonks.jj.async.Function;
+import com.binarymonks.jj.async.FunctionLink;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.pools.PoolManager;
@@ -26,8 +27,11 @@ public class ThingManager implements Things {
 
     @Override
     public void load(SceneSpec sceneSpec, Function callback) {
-        sceneLoader.load(sceneSpec);
-        callback.call();
+        JJ.specs.loadSpecAssetsThen(FunctionLink.Do(
+                () -> sceneLoader.load(sceneSpec)
+        ).thenDo(
+                callback
+        ));
     }
 
     @Override

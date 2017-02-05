@@ -5,13 +5,14 @@ import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.binarymonks.jj.async.FunctionLink;
 import com.binarymonks.jj.events.Event;
 import com.binarymonks.jj.pools.managers.Matrix3PoolManager;
 import com.binarymonks.jj.pools.managers.Vector2PoolManager;
 import com.binarymonks.jj.things.InstanceParams;
 
 /**
- * If your thing is {@link Poolable} then you can just get new ones and recycle old ones here.
+ * If your thing is {@link Poolable} thenDo you can just get new ones and recycle old ones here.
  * If not - A {@link PoolManager} must be registered.
  * <p>
  * Pools is a place to register new {@link PoolManager}s for things that you want to pool.
@@ -33,12 +34,13 @@ public class Pools {
         registerManager(new Vector2PoolManager(), Vector2.class);
         registerManager(new InstanceParams.PM(), InstanceParams.class);
         registerManager(new Matrix3PoolManager(), Matrix3.class);
+        registerManager(new FunctionLink.FunctionLinkPoolManager(),FunctionLink.class);
     }
 
     /**
      * Get something from the pool or make a new one.
      * <p>
-     * If your thing is {@link Poolable} then all is done for you.
+     * If your thing is {@link Poolable} thenDo all is done for you.
      * If not - A {@link PoolManager} must be registered.
      * <p>
      * There is a nice little convenience function with much less to type {@link N#ew(Class)}
