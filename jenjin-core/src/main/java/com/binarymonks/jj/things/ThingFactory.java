@@ -6,6 +6,8 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.JJ;
+import com.binarymonks.jj.audio.SoundEffects;
+import com.binarymonks.jj.audio.SoundParams;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.behaviour.Behaviour;
 import com.binarymonks.jj.physics.CollisionFunction;
@@ -44,10 +46,19 @@ public class ThingFactory {
         buildNodes(context);
         wireInRenderNodes(context);
         buildBehaviour(context);
+        buildSounds(context);
 
         Re.cycle(context);
         Global.thingWorld.add(thing);
         return thing;
+    }
+
+    private void buildSounds(Context context) {
+        SoundEffects soundEffects = new SoundEffects();
+        for (SoundParams soundP : context.thingSpec.sounds) {
+            soundEffects.addSoundEffect(soundP);
+        }
+        context.thing.sounds = soundEffects;
     }
 
     private void buildBehaviour(Context context) {
@@ -82,21 +93,21 @@ public class ThingFactory {
         for (NodeSpec nodeSpec : context.thingSpec.nodes) {
             ThingNode node = new ThingNode(nodeSpec.name);
 
-            buildFixture((FixtureNodeSpec) nodeSpec.physicsNodeSpec, node, context.body);
+            buildFixture((FixtureNodeSpec) nodeSpec.physicsNodeSpec, node, context);
 
             RenderNode render = nodeSpec.renderSpec.makeNode();
             node.render = render;
             context.nodes.add(node);
 
-            if(node.name==null){
-                node.name = "ANON_NODE_"+context.thing.nodes.size;
+            if (node.name == null) {
+                node.name = "ANON_NODE_" + context.thing.nodes.size;
             }
-            context.thing.nodes.put(node.name,node);
-            node.parent=context.thing;
+            context.thing.nodes.put(node.name, node);
+            node.parent = context.thing;
         }
     }
 
-    private Fixture buildFixture(FixtureNodeSpec nodeSpec, ThingNode node, Body body) {
+    private Fixture buildFixture(FixtureNodeSpec nodeSpec, ThingNode node, Context context) {
         Shape shape = buildShape(nodeSpec);
         FixtureDef fDef = new FixtureDef();
         fDef.shape = shape;
@@ -109,7 +120,7 @@ public class ThingFactory {
         fDef.filter.categoryBits = cd.category;
         fDef.filter.maskBits = cd.mask;
 
-        Fixture f = body.createFixture(fDef);
+        Fixture f = context.body.createFixture(fDef);
         node.fixture = f;
         f.setUserData(node);
 
@@ -125,6 +136,7 @@ public class ThingFactory {
         }
 
         node.collisionResolver = resolver;
+        resolver.setSelf(context.thing);
 
         shape.dispose();
         return f;
