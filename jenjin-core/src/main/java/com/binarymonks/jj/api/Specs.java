@@ -8,4 +8,6 @@ public interface Specs {
     Specs set(String path, ThingSpec thingSpec);
 
     void loadSpecAssetsThen(Function callback);
+
+    void loadSpecAssetsNow();
 }

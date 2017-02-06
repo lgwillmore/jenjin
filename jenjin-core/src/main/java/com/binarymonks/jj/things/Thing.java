@@ -31,6 +31,10 @@ public class Thing {
         return properties.containsKey(propertyKey);
     }
 
+    public Object getProperty(String key) {
+        return properties.get(key);
+    }
+
     public void markForDestruction() {
         markedForDestruction = true;
         Global.thingWorld.remove(this);
@@ -39,4 +43,6 @@ public class Thing {
     public boolean isMarkedForDestruction() {
         return markedForDestruction;
     }
+
+
 }

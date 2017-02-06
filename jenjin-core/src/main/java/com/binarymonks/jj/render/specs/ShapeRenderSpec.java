@@ -1,16 +1,13 @@
 package com.binarymonks.jj.render.specs;
 
-import com.badlogic.gdx.graphics.g2d.PolygonSprite;
-import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.binarymonks.jj.backend.Global;
+import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
 import com.binarymonks.jj.pools.N;
-import com.binarymonks.jj.pools.Re;
 import com.binarymonks.jj.render.PolygonRenderNode;
 import com.binarymonks.jj.render.RenderNode;
 
-public abstract class ShapeRenderSpec<CONCRETE> extends RenderSpec<CONCRETE> {
+public abstract class ShapeRenderSpec<CONCRETE extends ShapeRenderSpec> extends SpatialRenderSpec<CONCRETE> {
 
     public boolean fill = true;
 
@@ -19,14 +16,11 @@ public abstract class ShapeRenderSpec<CONCRETE> extends RenderSpec<CONCRETE> {
         return self;
     }
 
+
     public static class Rectangle extends ShapeRenderSpec<Rectangle> {
 
         public float width;
         public float height;
-
-        public Rectangle() {
-            this.self = this;
-        }
 
         public Rectangle setDimension(float width, float height) {
             this.width = width;
@@ -36,24 +30,17 @@ public abstract class ShapeRenderSpec<CONCRETE> extends RenderSpec<CONCRETE> {
 
 
         @Override
-        public RenderNode<?> makeNode() {
-            PolygonSprite polygonSprite;
-            if (!Global.renderWorld.polySpriteCache.containsKey(id)) {
-                Matrix3 trMatrix = N.ew(Matrix3.class);
-                trMatrix.translate(offsetX, offsetY);
-                trMatrix.rotate(rotationD);
-                Array<Vector2> points = new Array<>();
-                points.add(N.ew(Vector2.class).set(-width / 2, -height / 2).mul(trMatrix));
-                points.add(N.ew(Vector2.class).set(width / 2, -height / 2).mul(trMatrix));
-                points.add(N.ew(Vector2.class).set(width / 2, height / 2).mul(trMatrix));
-                points.add(N.ew(Vector2.class).set(-width / 2, height / 2).mul(trMatrix));
-                polygonSprite = Global.renderWorld.polygonSprite(id, points);
-                Re.cycleItems(points);
-                Re.cycle(trMatrix);
+        public RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec) {
+            if (PolygonRenderNode.haveBuilt(this)) {
+                return PolygonRenderNode.rebuild(this);
             } else {
-                polygonSprite = Global.renderWorld.polySpriteCache.get(id);
+                Array<Vector2> points = new Array<>();
+                points.add(N.ew(Vector2.class).set(-width / 2, -height / 2));
+                points.add(N.ew(Vector2.class).set(width / 2, -height / 2));
+                points.add(N.ew(Vector2.class).set(width / 2, height / 2));
+                points.add(N.ew(Vector2.class).set(-width / 2, height / 2));
+                return PolygonRenderNode.buildNew(this, points, N.ew(Vector2.class).set(offsetX, offsetY), rotationD);
             }
-            return new PolygonRenderNode(this, polygonSprite);
         }
 
 

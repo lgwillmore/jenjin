@@ -140,6 +140,14 @@ public class AssetManager implements Assets {
     }
 
     @Override
+    public void loadNow(Array<AssetReference> assets) {
+        for(AssetReference assetRef : assets){
+            manager.load(assetRef.assetPath,assetRef.clazz);
+        }
+        manager.finishLoading();
+    }
+
+    @Override
     public void load(AssetDescriptor<?> desc) {
         manager.load(desc);
     }

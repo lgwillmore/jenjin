@@ -3,17 +3,20 @@ package com.binarymonks.jj.render.specs;
 
 import com.badlogic.gdx.graphics.Color;
 import com.binarymonks.jj.backend.Global;
+import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
 import com.binarymonks.jj.render.RenderNode;
+import com.binarymonks.jj.specs.PropField;
 
-public abstract class RenderSpec<CONCRETE> {
+public abstract class RenderSpec<CONCRETE extends RenderSpec> {
     public int id = Global.renderWorld.nextRenderID();
     public int layer;
     public int thingPriority;
-    public float offsetX;
-    public float offsetY;
-    public float rotationD;
     public Color color = new Color(0, 0, 0, 1);
     CONCRETE self;
+
+    public RenderSpec() {
+        self = (CONCRETE) this;
+    }
 
     public CONCRETE setLayer(int layer) {
         this.layer = layer;
@@ -25,30 +28,21 @@ public abstract class RenderSpec<CONCRETE> {
         return self;
     }
 
-    public CONCRETE setOffset(float x, float y) {
-        this.offsetX = x;
-        this.offsetY = y;
-        return self;
-    }
-
-    public CONCRETE setRotationD(float rotationD) {
-        this.rotationD = rotationD;
-        return self;
-    }
-
     public CONCRETE setColor(Color color) {
         this.color.set(color);
         return self;
     }
 
-    public abstract RenderNode<?> makeNode();
+    public abstract RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec);
 
     public static class Null extends RenderSpec<Null> {
 
+
         @Override
-        public RenderNode<?> makeNode() {
+        public RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec) {
             return RenderNode.NULL;
         }
+
     }
 
 }

@@ -20,9 +20,9 @@ public interface Things {
      */
     Thing getThingByName(String uniqueName);
 
-    void load(SceneSpec sceneSpec, Function callback);
+    void loadNow(SceneSpec sceneSpec, Function callback);
 
-    void load(SceneSpec sceneSpec);
+    void loadNow(SceneSpec sceneSpec);
 
     /**
      * Create a new object from a Specification.

@@ -22,9 +22,6 @@ import com.binarymonks.jj.pools.PoolManager;
 import com.binarymonks.jj.pools.Re;
 import com.binarymonks.jj.render.RenderNode;
 import com.binarymonks.jj.render.ThingLayer;
-import com.binarymonks.jj.things.InstanceParams;
-import com.binarymonks.jj.things.Thing;
-import com.binarymonks.jj.things.ThingNode;
 import com.binarymonks.jj.things.specs.NodeSpec;
 import com.binarymonks.jj.things.specs.ThingSpec;
 
@@ -42,6 +39,7 @@ public class ThingFactory {
         context.thingSpec = Global.specs.specifications.get(thingSpecPath);
         context.instanceParams = instanceParams;
 
+        setProperties(context);
         buildPhysicsRoot(context);
         buildNodes(context);
         wireInRenderNodes(context);
@@ -51,6 +49,12 @@ public class ThingFactory {
         Re.cycle(context);
         Global.thingWorld.add(thing);
         return thing;
+    }
+
+    private void setProperties(Context context) {
+        for (ObjectMap.Entry<String, Object> prop : context.instanceParams.properties) {
+            context.thing.properties.put(prop.key, prop.value);
+        }
     }
 
     private void buildSounds(Context context) {
@@ -84,7 +88,13 @@ public class ThingFactory {
                 node.render.parent = context.thing;
             }
         }
-        //TODO: Sort the thingLayers in priority order
+        for (ObjectMap.Entry<Integer, ThingLayer> layers : thingLayers) {
+            layers.value.renderNodes.sort(
+                    (o1, o2) -> {
+                        return o1.spec.thingPriority - o2.spec.thingPriority;
+                    }
+            );
+        }
         context.thing.renderRoot.thingLayers = thingLayers;
         Global.renderWorld.addThing(context.thing);
     }
@@ -95,7 +105,7 @@ public class ThingFactory {
 
             buildFixture((FixtureNodeSpec) nodeSpec.physicsNodeSpec, node, context);
 
-            RenderNode render = nodeSpec.renderSpec.makeNode();
+            RenderNode render = nodeSpec.renderSpec.makeNode(nodeSpec.physicsNodeSpec);
             node.render = render;
             context.nodes.add(node);
 
@@ -142,7 +152,7 @@ public class ThingFactory {
         return f;
     }
 
-    private boolean hasCollsions(FixtureNodeSpec nodeSpec) {
+    private boolean hasCollisions(FixtureNodeSpec nodeSpec) {
         return (
                 nodeSpec.initialBeginCollisions.size > 0
                         || nodeSpec.finalBeginCollisions.size > 0
@@ -151,11 +161,16 @@ public class ThingFactory {
     }
 
     private Shape buildShape(FixtureNodeSpec nodeSpec) {
-        if (nodeSpec.shape instanceof B2DShapeSpec.PolygonSquare) {
-            B2DShapeSpec.PolygonSquare polygonSquare = (B2DShapeSpec.PolygonSquare) nodeSpec.shape;
+        if (nodeSpec.shape instanceof B2DShapeSpec.PolygonRectangle) {
+            B2DShapeSpec.PolygonRectangle polygonRectangle = (B2DShapeSpec.PolygonRectangle) nodeSpec.shape;
             PolygonShape boxshape = new PolygonShape();
-            boxshape.setAsBox((polygonSquare.width / 2.0f), (polygonSquare.height / 2.0f), N.ew(Vector2.class).set(nodeSpec.offsetX, nodeSpec.offsetY), nodeSpec.rotationD * MathUtils.degreesToRadians);
+            boxshape.setAsBox((polygonRectangle.width / 2.0f), (polygonRectangle.height / 2.0f), N.ew(Vector2.class).set(nodeSpec.offsetX, nodeSpec.offsetY), nodeSpec.rotationD * MathUtils.degreesToRadians);
             return boxshape;
+        } else if (nodeSpec.shape instanceof B2DShapeSpec.Circle) {
+            B2DShapeSpec.Circle circle = (B2DShapeSpec.Circle) nodeSpec.shape;
+            CircleShape circleShape = new CircleShape();
+            circleShape.setRadius(circle.radius);
+            return circleShape;
         }
         return null;
     }

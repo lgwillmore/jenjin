@@ -26,7 +26,7 @@ public class RenderWorld {
 
 
     public void addThing(Thing thing) {
-        //TODO:New rendergraphs will be handled here
+        //TODO:buildNew rendergraphs will be handled here
         defaultRenderGraph.add(thing.path, thing.id, thing.renderRoot.thingLayers);
     }
 

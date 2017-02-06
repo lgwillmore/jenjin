@@ -1,15 +1,19 @@
 package com.binarymonks.jj.demo.d01;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.audio.SoundParams;
 import com.binarymonks.jj.layers.GameRenderingLayer;
+import com.binarymonks.jj.physics.CollisionFunction;
+import com.binarymonks.jj.physics.collisions.EmitEventCollision;
 import com.binarymonks.jj.physics.collisions.SoundCollision;
 import com.binarymonks.jj.physics.specs.PhysicsRootSpec;
 import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
 import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
+import com.binarymonks.jj.render.specs.B2DRenderSpec;
 import com.binarymonks.jj.render.specs.ShapeRenderSpec;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.specs.NodeSpec;
@@ -38,26 +42,39 @@ public class D01_pong extends Game {
                 .set("player", player())
                 .set("ball", ball())
                 .set("wall", wall())
+                .set("scoreWall", scoreWall())
         ;
 
 
         //Add instances of your ThingSpecs to a scene
         SceneSpec level = new SceneSpec()
-                .add("bot",
-                        InstanceParams.New().setPosition(COURT_LENGTH - BAT_INSET, COURT_LENGTH / 2).setRotationD(0)
+                .add("player",
+                        InstanceParams.New()
+                                .setPosition(COURT_LENGTH - BAT_INSET, COURT_LENGTH / 2)
+                                /**
+                                 * Would not normally set keys as a property, but it shows how you can get
+                                 * Instance customisation with properties
+                                 */
+                                .setProperty("upkey", Input.Keys.UP)
+                                .setProperty("downkey", Input.Keys.DOWN)
                 )
                 .add("player",
-                        InstanceParams.New().setUniqueName("player_bat").setPosition(BAT_INSET, COURT_LENGTH / 2)
+                        InstanceParams.New()
+                                .setPosition(BAT_INSET, COURT_LENGTH / 2)
+                                .setProperty("upkey", Input.Keys.Q)
+                                .setProperty("downkey", Input.Keys.A)
                 )
                 .add("ball",
                         InstanceParams.New().setUniqueName("ball").setPosition(COURT_LENGTH / 2, COURT_LENGTH / 2))
                 .add("wall"
                         , InstanceParams.New().setPosition(COURT_LENGTH / 2, COURT_LENGTH - BAT_INSET)
                         , InstanceParams.New().setPosition(COURT_LENGTH / 2, BAT_INSET)
-                );
+                )
+                .add("scoreWall",
+                        InstanceParams.New().setPosition(0, COURT_LENGTH / 2));
 
         //Load the the scene
-        JJ.things.load(level, this::kickOff);
+        JJ.things.loadNow(level, this::kickOff);
     }
 
     private void kickOff() {
@@ -73,7 +90,9 @@ public class D01_pong extends Game {
                 .addNode(
                         new NodeSpec()
                                 .addRender(new ShapeRenderSpec.Rectangle().setDimension(BAT_WIDTH, BAT_HEIGHT).setColor(Color.WHITE))
-                                .addPhysics(new FixtureNodeSpec().setShape(new B2DShapeSpec.PolygonSquare(BAT_WIDTH, BAT_HEIGHT)))
+                                .addPhysics(new FixtureNodeSpec()
+                                        .setShape(new B2DShapeSpec.PolygonRectangle(BAT_WIDTH, BAT_HEIGHT))
+                                        .addInitialBeginCollision(new BatCollision()))
                 )
                 .addBehaviour(
                         new RandomBotBehaviour()
@@ -89,7 +108,10 @@ public class D01_pong extends Game {
                 .addNode(
                         new NodeSpec()
                                 .addRender(new ShapeRenderSpec.Rectangle().setDimension(BAT_WIDTH, BAT_HEIGHT).setColor(Color.WHITE))
-                                .addPhysics(new FixtureNodeSpec().setShape(new B2DShapeSpec.PolygonSquare(BAT_WIDTH, BAT_HEIGHT)))
+                                .addPhysics(new FixtureNodeSpec()
+                                        .setShape(new B2DShapeSpec.PolygonRectangle(BAT_WIDTH, BAT_HEIGHT))
+                                        .addInitialBeginCollision(new BatCollision())
+                                )
                 )
                 .addBehaviour(new PlayerBehaviour())
                 ;
@@ -97,7 +119,7 @@ public class D01_pong extends Game {
 
     private ThingSpec ball() {
         return new ThingSpec()
-                .setPhysics(new PhysicsRootSpec.B2D().setLinearDamping(0))
+                .setPhysics(new PhysicsRootSpec.B2D().setLinearDamping(0).setFixedRotation(true))
                 .addSound(
                         new SoundParams("pong").addPath("sounds/pong.mp3").setVolume(0.5f)
                 )
@@ -107,8 +129,8 @@ public class D01_pong extends Game {
                                 .addPhysics(new FixtureNodeSpec()
                                         .setFriction(0)
                                         .setRestitution(1)
-                                        .setShape(new B2DShapeSpec.PolygonSquare(5, 5))
-                                        .addFinalBeginCollision(new SoundCollision("pong"))
+                                        .setShape(new B2DShapeSpec.Circle(2.5f))
+                                        .addInitialBeginCollision(new SoundCollision("pong"))
                                 )
                 )
                 ;
@@ -120,7 +142,22 @@ public class D01_pong extends Game {
                 .addNode(
                         new NodeSpec()
                                 .addRender(new ShapeRenderSpec.Rectangle().setDimension(COURT_LENGTH - 2 * (BAT_INSET + BAT_WIDTH * 0.501f), BAT_WIDTH).setColor(Color.WHITE))
-                                .addPhysics(new FixtureNodeSpec().setShape(new B2DShapeSpec.PolygonSquare(COURT_LENGTH - 2 * (BAT_INSET + BAT_WIDTH * 0.501f), BAT_WIDTH)))
+                                .addPhysics(new FixtureNodeSpec().setShape(new B2DShapeSpec.PolygonRectangle(COURT_LENGTH - 2 * (BAT_INSET + BAT_WIDTH * 0.501f), BAT_WIDTH)))
+                )
+                ;
+    }
+
+
+    private ThingSpec scoreWall() {
+        return new ThingSpec()
+                .setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.StaticBody))
+                .addNode(
+                        new NodeSpec()
+                                .addRender(new B2DRenderSpec().setColor(Color.YELLOW))
+                                .addPhysics(new FixtureNodeSpec()
+                                        .setShape(new B2DShapeSpec.PolygonRectangle(5, COURT_LENGTH * 1.1f))
+//                                        .addInitialBeginCollision(new EmitEventCollision())
+                                )
                 )
                 ;
     }

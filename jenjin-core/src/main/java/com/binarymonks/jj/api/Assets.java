@@ -38,4 +38,6 @@ public interface Assets {
 
 
     void loadThen(Array<AssetReference> assets, Function callback);
+
+    void loadNow(Array<AssetReference> assets);
 }

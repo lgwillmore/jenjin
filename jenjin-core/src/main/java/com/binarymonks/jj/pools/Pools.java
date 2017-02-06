@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.async.FunctionLink;
-import com.binarymonks.jj.events.Event;
 import com.binarymonks.jj.pools.managers.Matrix3PoolManager;
 import com.binarymonks.jj.pools.managers.Vector2PoolManager;
 import com.binarymonks.jj.things.InstanceParams;
@@ -30,7 +29,6 @@ public class Pools {
     ObjectMap<Class, Array<Poolable>> poolablePools = new ObjectMap<>();
 
     public Pools() {
-        registerManager(new Event.PM(), Event.class);
         registerManager(new Vector2PoolManager(), Vector2.class);
         registerManager(new InstanceParams.PM(), InstanceParams.class);
         registerManager(new Matrix3PoolManager(), Matrix3.class);

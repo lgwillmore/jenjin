@@ -26,7 +26,7 @@ public class ThingManager implements Things {
     }
 
     @Override
-    public void load(SceneSpec sceneSpec, Function callback) {
+    public void loadNow(SceneSpec sceneSpec, Function callback) {
         JJ.specs.loadSpecAssetsThen(FunctionLink.Do(
                 () -> sceneLoader.load(sceneSpec)
         ).thenDo(
@@ -35,7 +35,8 @@ public class ThingManager implements Things {
     }
 
     @Override
-    public void load(SceneSpec sceneSpec) {
+    public void loadNow(SceneSpec sceneSpec) {
+        JJ.specs.loadSpecAssetsNow();
         sceneLoader.load(sceneSpec);
     }
 

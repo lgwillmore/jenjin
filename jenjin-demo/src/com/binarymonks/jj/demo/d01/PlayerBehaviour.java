@@ -18,10 +18,12 @@ public class PlayerBehaviour extends Behaviour {
     public void update() {
         float direction = 0;
         float y = parent.physicsroot.position().y;
-        if (Gdx.input.isKeyPressed(Input.Keys.UP) && y < COURT_LENGTH - BAT_HEIGHT / 2) {
+        int upkey = (int) parent.getProperty("upkey");
+        int downkey = (int) parent.getProperty("downkey");
+        if (Gdx.input.isKeyPressed(upkey) && y < COURT_LENGTH - BAT_HEIGHT / 2) {
             direction += 1;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && y > BAT_HEIGHT / 2) {
+        if (Gdx.input.isKeyPressed(downkey) && y > BAT_HEIGHT / 2) {
             direction -= 1;
         }
         parent.physicsroot.getB2DBody().setLinearVelocity(0, velocity * direction);

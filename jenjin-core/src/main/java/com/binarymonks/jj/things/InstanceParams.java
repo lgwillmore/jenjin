@@ -50,6 +50,11 @@ public class InstanceParams {
         return this;
     }
 
+    public InstanceParams setProperty(String key, Object value){
+        this.properties.put(key,value);
+        return this;
+    }
+
     /**
      * Use this to get a new one. This is so recycling and pooling
      * can be handled automatically.

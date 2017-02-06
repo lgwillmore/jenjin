@@ -50,6 +50,10 @@ public class GameRenderingLayer implements Layer {
         }
     }
 
+    public void setDebug(boolean debug){
+        this.b2dDebug=true;
+    }
+
     private void updateLayer(RenderGraph.RenderLayer layer) {
         for (ObjectMap.Entry<String, ObjectMap<Integer, ThingLayer>> componentsByThing : layer.thingLayersByThingPathAndID) {
             updateThingLayers(componentsByThing.value);

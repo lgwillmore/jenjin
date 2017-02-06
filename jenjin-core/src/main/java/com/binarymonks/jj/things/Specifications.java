@@ -28,6 +28,12 @@ public class Specifications implements Specs {
         JJ.assets.loadThen(assets,callback);
     }
 
+    @Override
+    public void loadSpecAssetsNow() {
+        Array<AssetReference> assets = getAllAssets();
+        JJ.assets.loadNow(assets);
+    }
+
     private Array<AssetReference> getAllAssets() {
         Array<AssetReference> assets = new Array<>();
         for (ObjectMap.Entry<String, ThingSpec> specification : specifications) {

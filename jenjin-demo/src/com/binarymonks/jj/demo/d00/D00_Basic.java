@@ -3,8 +3,6 @@ package com.binarymonks.jj.demo.d00;
 import com.badlogic.gdx.graphics.Color;
 import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
-import com.binarymonks.jj.JJConfig;
-import com.binarymonks.jj.layers.DefaultLayer;
 import com.binarymonks.jj.layers.GameRenderingLayer;
 import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
 import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
@@ -42,7 +40,7 @@ public class D00_Basic extends Game {
                 );
 
         //Load the level asynchronously with a callback when it is done
-        JJ.things.load(level, this::onLevelLoaded);
+        JJ.things.loadNow(level, this::onLevelLoaded);
     }
 
 
@@ -71,7 +69,7 @@ public class D00_Basic extends Game {
                                 )
                                 .addPhysics(
                                         new FixtureNodeSpec()
-                                                .setShape(new B2DShapeSpec.PolygonSquare(10, 10))
+                                                .setShape(new B2DShapeSpec.PolygonRectangle(10, 10))
                                                 .setOffset(5, 5)
                                                 .setRotationD(45)
                                 )
@@ -89,7 +87,7 @@ public class D00_Basic extends Game {
                                 )
                                 .addPhysics(
                                         new FixtureNodeSpec()
-                                                .setShape(new B2DShapeSpec.PolygonSquare(10, 10))
+                                                .setShape(new B2DShapeSpec.PolygonRectangle(10, 10))
                                                 .setOffset(-20, 5)
                                                 .setRotationD(45)
                                 )
