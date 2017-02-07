@@ -43,7 +43,6 @@ public class D01_pong extends Game {
 
         //Define your ThingSpecs
         JJ.specs
-                .set("bot", bot())
                 .set("player", player())
                 .set("ball", ball())
                 .set("wall", wall())
@@ -116,24 +115,6 @@ public class D01_pong extends Game {
 
     private void newBall() {
         JJ.things.create("ball", InstanceParams.New().setUniqueName("ball").setPosition(COURT_LENGTH / 2, COURT_LENGTH / 2), this::kickOff);
-    }
-
-    private ThingSpec bot() {
-        return new ThingSpec()
-                .setPhysics(new PhysicsRootSpec.B2D()
-                        .setBodyType(BodyDef.BodyType.KinematicBody)
-                )
-                .addNode(
-                        new NodeSpec()
-                                .addRender(new ShapeRenderSpec.Rectangle().setDimension(BAT_WIDTH, BAT_HEIGHT).color.set(Color.WHITE))
-                                .addPhysics(new FixtureNodeSpec()
-                                        .setShape(new B2DShapeSpec.PolygonRectangle(BAT_WIDTH, BAT_HEIGHT))
-                                        .addInitialBeginCollision(new BatCollision()))
-                )
-                .addBehaviour(
-                        new RandomBotBehaviour()
-                )
-                ;
     }
 
     private ThingSpec player() {

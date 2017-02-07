@@ -35,19 +35,18 @@ public class ThingWorld {
     }
 
     public void update() {
+        for (Thing removal : removals) {
+            reallyRemove(removal);
+        }
+        removals.clear();
+        for (ObjectMap.Entry<Integer, Thing> thingEntry : queuedForAddThings) {
+            reallyAdd(thingEntry.value);
+        }
+        queuedForAddThings.clear();
         inUpdate = true;
         for (ObjectMap.Entry<Integer, Thing> thingEntry : things) {
             ThingTools.update(thingEntry.value);
         }
-        for (ObjectMap.Entry<Integer, Thing> thingEntry : queuedForAddThings) {
-            ThingTools.update(thingEntry.value);
-            reallyAdd(thingEntry.value);
-        }
-        queuedForAddThings.clear();
-        for (Thing removeal : removals) {
-            reallyRemove(removeal);
-        }
-        removals.clear();
         inUpdate = false;
     }
 
