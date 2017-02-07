@@ -40,6 +40,10 @@ public class PolygonRenderNode extends RenderNode<RenderSpec> {
         poly.draw(Global.renderWorld.polyBatch);
     }
 
+    @Override
+    public void dispose() {
+    }
+
 
     public static boolean haveBuilt(RenderSpec sourceSpec) {
         return Global.renderWorld.polySpriteCache.containsKey(sourceSpec.id);

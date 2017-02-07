@@ -8,6 +8,7 @@ import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.audio.SoundParams;
 import com.binarymonks.jj.layers.GameRenderingLayer;
 import com.binarymonks.jj.physics.CollisionFunction;
+import com.binarymonks.jj.physics.collisions.DestroyCollision;
 import com.binarymonks.jj.physics.collisions.EmitEventCollision;
 import com.binarymonks.jj.physics.collisions.SoundCollision;
 import com.binarymonks.jj.physics.specs.PhysicsRootSpec;
@@ -16,6 +17,7 @@ import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.render.specs.B2DRenderSpec;
 import com.binarymonks.jj.render.specs.ShapeRenderSpec;
 import com.binarymonks.jj.things.InstanceParams;
+import com.binarymonks.jj.things.Thing;
 import com.binarymonks.jj.things.specs.NodeSpec;
 import com.binarymonks.jj.things.specs.SceneSpec;
 import com.binarymonks.jj.things.specs.ThingSpec;
@@ -25,7 +27,7 @@ public class D01_pong extends Game {
     public static float COURT_LENGTH = 100;
     public static float BAT_HEIGHT = 20;
     public static float BAT_WIDTH = 5;
-    public static float BAT_INSET = 10;
+    public static float BAT_INSET = 5;
 
     public static String MSG_PLAYER1_SCORE = "player1_score";
     public static String MSG_PLAYER2_SCORE = "player2_score";
@@ -60,18 +62,20 @@ public class D01_pong extends Game {
                                  */
                                 .setProperty("upkey", Input.Keys.UP)
                                 .setProperty("downkey", Input.Keys.DOWN)
+                                .setProperty("color", Color.BLUE)
                 )
                 .add("player",
                         InstanceParams.New()
                                 .setPosition(BAT_INSET, COURT_LENGTH / 2)
                                 .setProperty("upkey", Input.Keys.Q)
                                 .setProperty("downkey", Input.Keys.A)
+                                .setProperty("color", Color.RED)
                 )
                 .add("ball",
                         InstanceParams.New().setUniqueName("ball").setPosition(COURT_LENGTH / 2, COURT_LENGTH / 2))
                 .add("wall"
-                        , InstanceParams.New().setPosition(COURT_LENGTH / 2, COURT_LENGTH - BAT_INSET)
-                        , InstanceParams.New().setPosition(COURT_LENGTH / 2, BAT_INSET)
+                        , InstanceParams.New().setPosition(COURT_LENGTH / 2, COURT_LENGTH - BAT_HEIGHT / 2)
+                        , InstanceParams.New().setPosition(COURT_LENGTH / 2, BAT_HEIGHT / 2)
                 )
                 .add("scoreWall",
                         InstanceParams.New()
@@ -84,24 +88,35 @@ public class D01_pong extends Game {
                                 .setProperty("score_message", MSG_PLAYER2_SCORE)
                 );
 
-        //Load the the scene
-        JJ.things.loadNow(level, this::kickOff);
-    }
-
-    private void kickOff() {
+        //Register some event handlers for when the ball gets passed a player
         JJ.events.register(MSG_PLAYER1_SCORE, this::player1Scored);
         JJ.events.register(MSG_PLAYER2_SCORE, this::player2Scored);
-        JJ.things.getThingByName("ball").physicsroot.getB2DBody().setLinearVelocity(-20, 0);
+
+        //Load the the scene
+        JJ.things.loadNow(level, this::gameLoaded);
+    }
+
+    private void gameLoaded() {
+        kickOff(JJ.things.getThingByName("ball"));
+    }
+
+    private void kickOff(Thing ball) {
+        ball.physicsroot.getB2DBody().setLinearVelocity(-20, 0);
     }
 
     private void player1Scored() {
         System.out.println("Player 1 scored");
+        newBall();
     }
 
     private void player2Scored() {
         System.out.println("Player 2 scored");
+        newBall();
     }
 
+    private void newBall() {
+        JJ.things.create("ball", InstanceParams.New().setUniqueName("ball").setPosition(COURT_LENGTH / 2, COURT_LENGTH / 2), this::kickOff);
+    }
 
     private ThingSpec bot() {
         return new ThingSpec()
@@ -128,7 +143,7 @@ public class D01_pong extends Game {
                 )
                 .addNode(
                         new NodeSpec()
-                                .addRender(new ShapeRenderSpec.Rectangle().setDimension(BAT_WIDTH, BAT_HEIGHT).color.set(Color.WHITE))
+                                .addRender(new ShapeRenderSpec.Rectangle().setDimension(BAT_WIDTH, BAT_HEIGHT).color.delegateToProperty("color"))
                                 .addPhysics(new FixtureNodeSpec()
                                         .setShape(new B2DShapeSpec.PolygonRectangle(BAT_WIDTH, BAT_HEIGHT))
                                         .addInitialBeginCollision(new BatCollision())
@@ -146,7 +161,7 @@ public class D01_pong extends Game {
                 )
                 .addNode(
                         new NodeSpec()
-                                .addRender(new ShapeRenderSpec.Rectangle().setDimension(5, 5).color.set(Color.BLUE))
+                                .addRender(new ShapeRenderSpec.Rectangle().setDimension(5, 5).color.set(Color.GREEN))
                                 .addPhysics(new FixtureNodeSpec()
                                         .setFriction(0)
                                         .setRestitution(1)
@@ -178,6 +193,7 @@ public class D01_pong extends Game {
                                 .addPhysics(new FixtureNodeSpec()
                                         .setShape(new B2DShapeSpec.PolygonRectangle(5, COURT_LENGTH * 1.1f))
                                         .addInitialBeginCollision(new EmitEventCollision().message.delegateToProperty("score_message"))
+                                        .addFinalBeginCollision(new DestroyCollision(false, true))
                                 )
                 )
                 ;

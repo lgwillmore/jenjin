@@ -53,4 +53,8 @@ public class RenderWorld {
         polySpriteCache.put(renderSpecID, poly);
         return poly;
     }
+
+    public void removeThing(Thing removal) {
+        defaultRenderGraph.remove(removal.path, removal.id, removal.renderRoot.thingLayers);
+    }
 }

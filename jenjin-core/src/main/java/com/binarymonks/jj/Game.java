@@ -42,6 +42,7 @@ public abstract class Game implements ApplicationListener {
         Global.thingWorld.update();
         Global.layerStack.update();
         Global.physics.update();
+        Global.tasks.postPhysicsTasks.update();
     }
 
     @Override

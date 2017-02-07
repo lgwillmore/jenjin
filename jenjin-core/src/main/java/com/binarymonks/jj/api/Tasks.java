@@ -6,4 +6,6 @@ public interface Tasks {
 
     void addPreLoopTask(Task task);
 
+    void addPostPhysicsTask(Task task);
+
 }

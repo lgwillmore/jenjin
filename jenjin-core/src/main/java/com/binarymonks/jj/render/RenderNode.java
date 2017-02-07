@@ -24,6 +24,8 @@ public abstract class RenderNode<SPEC extends RenderSpec> {
 
     public abstract void render(OrthographicCamera camera);
 
+    public abstract void dispose();
+
     private static class Null extends RenderNode<RenderSpec.Null> {
 
 
@@ -33,6 +35,11 @@ public abstract class RenderNode<SPEC extends RenderSpec> {
 
         @Override
         public void render(OrthographicCamera camera) {
+
+        }
+
+        @Override
+        public void dispose() {
 
         }
     }
