@@ -3,12 +3,16 @@ package com.binarymonks.jj.physics;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.utils.Array;
+import com.binarymonks.jj.specs.PropField;
 import com.binarymonks.jj.things.Thing;
 import com.binarymonks.jj.things.ThingNode;
+import com.binarymonks.jj.utils.Reflection;
+
+import java.lang.reflect.Field;
 
 public abstract class CollisionFunction {
 
-    CollisionResolver resolver;
+    private CollisionResolver resolver;
     protected Array<String> ignoreProperties = new Array<>();
     protected Array<String> matchProperties = new Array<>();
     private boolean enabled = true;
@@ -46,6 +50,12 @@ public abstract class CollisionFunction {
 
     public void setResolver(CollisionResolver resolver) {
         this.resolver = resolver;
+        for (Field field : this.getClass().getFields()) {
+            if (PropField.class.isAssignableFrom(field.getType())) {
+                PropField pf = Reflection.getFieldFromInstance(field, this);
+                pf.setParent(resolver.getSelf());
+            }
+        }
     }
 
     public void disable() {

@@ -69,7 +69,7 @@ public class ThingFactory {
         for (Behaviour behaviour : context.thingSpec.behaviour) {
             Behaviour clone = behaviour.clone();
             context.thing.behaviour.add(clone);
-            clone.parent = context.thing;
+            clone.setParent(context.thing);
         }
     }
 
@@ -135,6 +135,7 @@ public class ThingFactory {
         f.setUserData(node);
 
         CollisionResolver resolver = new CollisionResolver();
+        resolver.setSelf(context.thing);
         for (CollisionFunction ibegin : nodeSpec.initialBeginCollisions) {
             resolver.addInitialBegin(ibegin.clone());
         }
@@ -146,7 +147,6 @@ public class ThingFactory {
         }
 
         node.collisionResolver = resolver;
-        resolver.setSelf(context.thing);
 
         shape.dispose();
         return f;

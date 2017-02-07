@@ -1,5 +1,8 @@
 package com.binarymonks.jj.utils;
 
+import com.binarymonks.jj.physics.CollisionFunction;
+import com.binarymonks.jj.specs.PropField;
+
 import java.lang.reflect.Field;
 
 /**
@@ -15,4 +18,12 @@ public class Reflection {
         }
     }
 
+
+    public static <T> T getFieldFromInstance(Field field, Object parentObject) {
+        try {
+            return (T) field.get(parentObject);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(String.format("Could not get the field value %s from class %s", field.getName(), parentObject.getClass().getCanonicalName()));
+        }
+    }
 }

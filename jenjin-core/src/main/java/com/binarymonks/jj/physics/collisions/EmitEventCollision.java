@@ -4,31 +4,32 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.physics.CollisionFunction;
+import com.binarymonks.jj.specs.PropField;
 import com.binarymonks.jj.things.Thing;
 
-/**
- * Created by lwillmore on 06/02/17.
- */
 public class EmitEventCollision extends CollisionFunction {
 
-    String message;
+    public PropField<String, EmitEventCollision> message = new PropField<>(this);
 
     public EmitEventCollision(String message) {
-        this.message = message;
+        super();
+        this.message.set(message);
     }
 
     public EmitEventCollision() {
+        super();
     }
+
 
     @Override
     public void collision(Thing me, Fixture myFixture, Thing other, Fixture otherFixture, Contact contact) {
-        JJ.events.send(message);
+        JJ.events.send(message.get());
     }
 
     @Override
     public CollisionFunction clone() {
         EmitEventCollision clone = new EmitEventCollision();
-        clone.message = message;
+        clone.message.copyFrom(message);
         return clone;
     }
 }

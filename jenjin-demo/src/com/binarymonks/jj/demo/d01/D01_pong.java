@@ -27,6 +27,9 @@ public class D01_pong extends Game {
     public static float BAT_WIDTH = 5;
     public static float BAT_INSET = 10;
 
+    public static String MSG_PLAYER1_SCORE = "player1_score";
+    public static String MSG_PLAYER2_SCORE = "player2_score";
+
     public D01_pong(com.binarymonks.jj.JJConfig JJConfig) {
         super(JJConfig);
     }
@@ -73,10 +76,12 @@ public class D01_pong extends Game {
                 .add("scoreWall",
                         InstanceParams.New()
                                 .setPosition(0, COURT_LENGTH / 2)
-                                .setProperty("color", Color.BLUE),
+                                .setProperty("color", Color.BLUE)
+                                .setProperty("score_message", MSG_PLAYER1_SCORE),
                         InstanceParams.New()
                                 .setPosition(COURT_LENGTH, COURT_LENGTH / 2)
                                 .setProperty("color", Color.RED)
+                                .setProperty("score_message", MSG_PLAYER2_SCORE)
                 );
 
         //Load the the scene
@@ -84,7 +89,17 @@ public class D01_pong extends Game {
     }
 
     private void kickOff() {
+        JJ.events.register(MSG_PLAYER1_SCORE, this::player1Scored);
+        JJ.events.register(MSG_PLAYER2_SCORE, this::player2Scored);
         JJ.things.getThingByName("ball").physicsroot.getB2DBody().setLinearVelocity(-20, 0);
+    }
+
+    private void player1Scored() {
+        System.out.println("Player 1 scored");
+    }
+
+    private void player2Scored() {
+        System.out.println("Player 2 scored");
     }
 
 
@@ -161,8 +176,8 @@ public class D01_pong extends Game {
                         new NodeSpec()
                                 .addRender(new B2DRenderSpec().color.delegateToProperty("color"))
                                 .addPhysics(new FixtureNodeSpec()
-                                                .setShape(new B2DShapeSpec.PolygonRectangle(5, COURT_LENGTH * 1.1f))
-                                        .addInitialBeginCollision(new EmitEventCollision())
+                                        .setShape(new B2DShapeSpec.PolygonRectangle(5, COURT_LENGTH * 1.1f))
+                                        .addInitialBeginCollision(new EmitEventCollision().message.delegateToProperty("score_message"))
                                 )
                 )
                 ;
