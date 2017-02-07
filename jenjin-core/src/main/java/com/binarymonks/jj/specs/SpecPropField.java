@@ -1,8 +1,5 @@
 package com.binarymonks.jj.specs;
 
-import com.binarymonks.jj.things.Thing;
-
-
 public class SpecPropField<VALUE, OWNER> implements FieldPropertyDelegate<VALUE, OWNER> {
 
     VALUE value;
@@ -25,7 +22,7 @@ public class SpecPropField<VALUE, OWNER> implements FieldPropertyDelegate<VALUE,
     }
 
     @Override
-    public OWNER delegateTo(String propertykey) {
+    public OWNER delegateToProperty(String propertykey) {
         this.propertyDelegate = propertykey;
         return owner;
     }

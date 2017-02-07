@@ -71,7 +71,13 @@ public class D01_pong extends Game {
                         , InstanceParams.New().setPosition(COURT_LENGTH / 2, BAT_INSET)
                 )
                 .add("scoreWall",
-                        InstanceParams.New().setPosition(0, COURT_LENGTH / 2));
+                        InstanceParams.New()
+                                .setPosition(0, COURT_LENGTH / 2)
+                                .setProperty("color", Color.BLUE),
+                        InstanceParams.New()
+                                .setPosition(COURT_LENGTH, COURT_LENGTH / 2)
+                                .setProperty("color", Color.RED)
+                );
 
         //Load the the scene
         JJ.things.loadNow(level, this::kickOff);
@@ -89,7 +95,7 @@ public class D01_pong extends Game {
                 )
                 .addNode(
                         new NodeSpec()
-                                .addRender(new ShapeRenderSpec.Rectangle().setDimension(BAT_WIDTH, BAT_HEIGHT).setColor(Color.WHITE))
+                                .addRender(new ShapeRenderSpec.Rectangle().setDimension(BAT_WIDTH, BAT_HEIGHT).color.set(Color.WHITE))
                                 .addPhysics(new FixtureNodeSpec()
                                         .setShape(new B2DShapeSpec.PolygonRectangle(BAT_WIDTH, BAT_HEIGHT))
                                         .addInitialBeginCollision(new BatCollision()))
@@ -107,7 +113,7 @@ public class D01_pong extends Game {
                 )
                 .addNode(
                         new NodeSpec()
-                                .addRender(new ShapeRenderSpec.Rectangle().setDimension(BAT_WIDTH, BAT_HEIGHT).setColor(Color.WHITE))
+                                .addRender(new ShapeRenderSpec.Rectangle().setDimension(BAT_WIDTH, BAT_HEIGHT).color.set(Color.WHITE))
                                 .addPhysics(new FixtureNodeSpec()
                                         .setShape(new B2DShapeSpec.PolygonRectangle(BAT_WIDTH, BAT_HEIGHT))
                                         .addInitialBeginCollision(new BatCollision())
@@ -125,7 +131,7 @@ public class D01_pong extends Game {
                 )
                 .addNode(
                         new NodeSpec()
-                                .addRender(new ShapeRenderSpec.Rectangle().setDimension(5, 5).setColor(Color.BLUE))
+                                .addRender(new ShapeRenderSpec.Rectangle().setDimension(5, 5).color.set(Color.BLUE))
                                 .addPhysics(new FixtureNodeSpec()
                                         .setFriction(0)
                                         .setRestitution(1)
@@ -141,7 +147,7 @@ public class D01_pong extends Game {
                 .setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.StaticBody))
                 .addNode(
                         new NodeSpec()
-                                .addRender(new ShapeRenderSpec.Rectangle().setDimension(COURT_LENGTH - 2 * (BAT_INSET + BAT_WIDTH * 0.501f), BAT_WIDTH).setColor(Color.WHITE))
+                                .addRender(new ShapeRenderSpec.Rectangle().setDimension(COURT_LENGTH - 2 * (BAT_INSET + BAT_WIDTH * 0.501f), BAT_WIDTH).color.set(Color.WHITE))
                                 .addPhysics(new FixtureNodeSpec().setShape(new B2DShapeSpec.PolygonRectangle(COURT_LENGTH - 2 * (BAT_INSET + BAT_WIDTH * 0.501f), BAT_WIDTH)))
                 )
                 ;
@@ -153,10 +159,10 @@ public class D01_pong extends Game {
                 .setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.StaticBody))
                 .addNode(
                         new NodeSpec()
-                                .addRender(new B2DRenderSpec().setColor(Color.YELLOW))
+                                .addRender(new B2DRenderSpec().color.delegateToProperty("color"))
                                 .addPhysics(new FixtureNodeSpec()
-                                        .setShape(new B2DShapeSpec.PolygonRectangle(5, COURT_LENGTH * 1.1f))
-//                                        .addInitialBeginCollision(new EmitEventCollision())
+                                                .setShape(new B2DShapeSpec.PolygonRectangle(5, COURT_LENGTH * 1.1f))
+                                        .addInitialBeginCollision(new EmitEventCollision())
                                 )
                 )
                 ;

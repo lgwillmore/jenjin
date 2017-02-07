@@ -65,7 +65,7 @@ public class D00_Basic extends Game {
                                                 .setDimension(10, 10)
                                                 .setOffset(5, 5)
                                                 .setRotationD(45)
-                                                .setColor(Color.BLUE)
+                                                .color.set(Color.BLUE)
                                 )
                                 .addPhysics(
                                         new FixtureNodeSpec()
@@ -83,7 +83,7 @@ public class D00_Basic extends Game {
                                                 .setDimension(10, 10)
                                                 .setOffset(-20, 5)
                                                 .setRotationD(45)
-                                                .setColor(Color.RED)
+                                                .color.set(Color.RED)
                                 )
                                 .addPhysics(
                                         new FixtureNodeSpec()

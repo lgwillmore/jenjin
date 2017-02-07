@@ -33,7 +33,7 @@ public class PolygonRenderNode extends RenderNode<RenderSpec> {
     @Override
     public void render(OrthographicCamera camera) {
         Vector2 parentPos = parent.physicsroot.position();
-        poly.setColor(spec.color);
+        poly.setColor(color.get());
         poly.setOrigin(0, 0);
         poly.setRotation(parent.physicsroot.rotationR() * MathUtils.radDeg);
         poly.setPosition(parentPos.x, parentPos.y);

@@ -19,7 +19,7 @@ public abstract class ShapeRenderNode<SPEC extends ShapeRenderSpec> extends Rend
     public void render(OrthographicCamera camera) {
         ShapeRenderer renderer = Global.renderWorld.shapeRenderer;
         renderer.begin(spec.fill ? ShapeRenderer.ShapeType.Filled : ShapeRenderer.ShapeType.Line);
-        renderer.setColor(spec.color);
+        renderer.setColor(color.get());
         drawShape(camera);
         renderer.end();
     }

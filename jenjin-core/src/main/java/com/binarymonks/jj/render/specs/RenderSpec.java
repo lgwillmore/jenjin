@@ -6,12 +6,13 @@ import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
 import com.binarymonks.jj.render.RenderNode;
 import com.binarymonks.jj.specs.PropField;
+import com.binarymonks.jj.specs.SpecPropField;
 
 public abstract class RenderSpec<CONCRETE extends RenderSpec> {
     public int id = Global.renderWorld.nextRenderID();
     public int layer;
     public int thingPriority;
-    public Color color = new Color(0, 0, 0, 1);
+    public SpecPropField<Color, CONCRETE> color = new SpecPropField<>((CONCRETE) this, new Color(0, 0, 0, 1));
     CONCRETE self;
 
     public RenderSpec() {
@@ -25,11 +26,6 @@ public abstract class RenderSpec<CONCRETE extends RenderSpec> {
 
     public CONCRETE setPriority(int priority) {
         this.thingPriority = priority;
-        return self;
-    }
-
-    public CONCRETE setColor(Color color) {
-        this.color.set(color);
         return self;
     }
 

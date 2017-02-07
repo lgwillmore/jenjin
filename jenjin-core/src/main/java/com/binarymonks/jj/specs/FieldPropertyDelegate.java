@@ -6,5 +6,5 @@ package com.binarymonks.jj.specs;
 public interface FieldPropertyDelegate<VALUE, OWNER> {
     OWNER set(VALUE value);
 
-    OWNER delegateTo(String propertykey);
+    OWNER delegateToProperty(String propertykey);
 }

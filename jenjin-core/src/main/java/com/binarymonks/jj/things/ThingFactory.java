@@ -85,7 +85,7 @@ public class ThingFactory {
                     thingLayers.put(layer, new ThingLayer(layer));
                 }
                 thingLayers.get(layer).renderNodes.add(node.render);
-                node.render.parent = context.thing;
+                node.render.setParent(context.thing);
             }
         }
         for (ObjectMap.Entry<Integer, ThingLayer> layers : thingLayers) {

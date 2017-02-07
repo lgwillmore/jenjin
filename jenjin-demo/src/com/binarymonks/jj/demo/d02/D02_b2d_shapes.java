@@ -49,7 +49,7 @@ public class D02_b2d_shapes extends Game {
                 .addNode(
                         new NodeSpec()
                                 .addRender(new B2DRenderSpec()
-                                        .setColor(Color.YELLOW)
+                                        .color.set(Color.YELLOW)
                                         .setLayer(0)
                                         .setPriority(1)
                                 )
@@ -59,7 +59,7 @@ public class D02_b2d_shapes extends Game {
                 .addNode(
                         new NodeSpec()
                                 .addRender(new B2DRenderSpec()
-                                        .setColor(Color.GREEN)
+                                        .color.set(Color.GREEN)
                                         .setLayer(1)
                                         .setPriority(0)
                                 )
@@ -69,10 +69,10 @@ public class D02_b2d_shapes extends Game {
                 .addNode(
                         new NodeSpec()
                                 .addRender(new B2DRenderSpec()
-                                        .setColor(Color.BLUE)
+                                        .color.set(Color.BLUE)
                                         .setLayer(0)
                                         .setPriority(0)
-                                        .setOffset(10,10)
+                                        .setOffset(10, 10)
                                 )
                                 .addPhysics(new FixtureNodeSpec()
                                         .setShape(new B2DShapeSpec.PolygonRectangle(5, 5)))
