@@ -15,15 +15,25 @@ public class BehaviourRootTest {
     }
 
     @Test(expected = BehaviourRoot.InvalidTypeInheritanceException.class)
-    public void add_type_is_not_supertype(){
+    public void add_type_is_not_supertype() {
         BehaviourRoot testObj = new BehaviourRoot();
         testObj.add(new MySubType());
     }
 
-    public static class MySuperBehaviour extends Behaviour{
+    public static class MySuperBehaviour extends Behaviour {
+
+        @Override
+        public void getReady() {
+
+        }
 
         @Override
         public void update() {
+
+        }
+
+        @Override
+        public void tearDown() {
 
         }
 
@@ -38,10 +48,20 @@ public class BehaviourRootTest {
         }
     }
 
-    public static class MySubType extends Behaviour{
+    public static class MySubType extends Behaviour {
+
+        @Override
+        public void getReady() {
+
+        }
 
         @Override
         public void update() {
+
+        }
+
+        @Override
+        public void tearDown() {
 
         }
 

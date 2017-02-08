@@ -1,5 +1,6 @@
 package com.binarymonks.jj.api;
 
+import com.binarymonks.jj.async.Function;
 import com.binarymonks.jj.time.TimeControls;
 
 public interface Time {
@@ -24,4 +25,7 @@ public interface Time {
 
     TimeControls.TimeFunction getTimeFunction();
 
+    int scheduleInSeconds(Function function, float seconds);
+
+    void cancelScheduled(int scheduleID);
 }

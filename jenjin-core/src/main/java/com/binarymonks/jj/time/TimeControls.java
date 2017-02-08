@@ -2,6 +2,7 @@ package com.binarymonks.jj.time;
 
 import com.badlogic.gdx.Gdx;
 import com.binarymonks.jj.api.Time;
+import com.binarymonks.jj.async.Function;
 
 public class TimeControls implements Time {
     private static double fixedDelta = 1f / 60;
@@ -11,6 +12,7 @@ public class TimeControls implements Time {
     private static float DELTA_FLOAT = 1f / 60;
     private static double TIME = 0;
     private static TimeFunction timeFunction = TimeFunction.RATIO_TIME;
+    private Scheduler scheduler = new Scheduler(this::getTime);
 
 
     @Override
@@ -26,6 +28,7 @@ public class TimeControls implements Time {
     public void update() {
         timeFunction.update(Gdx.graphics.getDeltaTime());
         TIME += DELTA;
+        scheduler.update();
     }
 
     @Override
@@ -67,6 +70,16 @@ public class TimeControls implements Time {
     @Override
     public TimeFunction getTimeFunction() {
         return timeFunction;
+    }
+
+    @Override
+    public int scheduleInSeconds(Function function, float seconds) {
+        return scheduler.scheduleInSeconds(function, seconds);
+    }
+
+    @Override
+    public void cancelScheduled(int scheduleID) {
+
     }
 
     public enum TimeFunction {
