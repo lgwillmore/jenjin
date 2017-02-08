@@ -30,7 +30,9 @@ public class D02_b2d_shapes extends Game {
         gameRenderingLayer.setDebug(true);
         JJ.layers.addLayerTop(gameRenderingLayer);
 
-        JJ.specs.set("rectangle", rectangle());
+        JJ.specs
+                .set("rectangle", rectangle())
+        ;
 
         SceneSpec scene = new SceneSpec();
         scene.add("rectangle",

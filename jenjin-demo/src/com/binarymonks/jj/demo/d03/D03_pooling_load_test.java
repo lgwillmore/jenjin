@@ -3,11 +3,14 @@ package com.binarymonks.jj.demo.d03;
 import com.badlogic.gdx.graphics.Color;
 import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
+import com.binarymonks.jj.behaviour.DestroySelf;
 import com.binarymonks.jj.layers.GameRenderingLayer;
 import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
 import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.render.specs.B2DRenderSpec;
+import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.specs.NodeSpec;
+import com.binarymonks.jj.things.specs.SceneSpec;
 import com.binarymonks.jj.things.specs.ThingSpec;
 
 public class D03_pooling_load_test extends Game {
@@ -20,6 +23,22 @@ public class D03_pooling_load_test extends Game {
         GameRenderingLayer gameRenderingLayer = new GameRenderingLayer(WORLD_WIDTH, WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
         gameRenderingLayer.setDebug(true);
         JJ.layers.addLayerTop(gameRenderingLayer);
+
+        JJ.specs
+                .set("square", square())
+                .set("emitter", emitter())
+        ;
+
+        SceneSpec scene = new SceneSpec();
+        scene.add("emitter",
+                InstanceParams.New().setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 2)
+        );
+
+        JJ.things.loadNow(scene);
+    }
+
+    private ThingSpec emitter() {
+        return new ThingSpec().addBehaviour(new Emitter().setIntervalSeconds(0.1f).setSpecPath("square"));
     }
 
 
@@ -33,7 +52,7 @@ public class D03_pooling_load_test extends Game {
                                 )
                                 .addPhysics(new FixtureNodeSpec().setShape(new B2DShapeSpec.PolygonRectangle(5, 5)))
                 )
-//                .addBehaviour()
+                .addBehaviour(new DestroySelf().timeToLive.set(4f))
                 ;
     }
 }

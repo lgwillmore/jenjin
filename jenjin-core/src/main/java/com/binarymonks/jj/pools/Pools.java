@@ -32,7 +32,7 @@ public class Pools {
         registerManager(new Vector2PoolManager(), Vector2.class);
         registerManager(new InstanceParams.PM(), InstanceParams.class);
         registerManager(new Matrix3PoolManager(), Matrix3.class);
-        registerManager(new FunctionLink.FunctionLinkPoolManager(),FunctionLink.class);
+        registerManager(new FunctionLink.FunctionLinkPoolManager(), FunctionLink.class);
     }
 
     /**
@@ -60,7 +60,7 @@ public class Pools {
     }
 
     private <T> T nuwPoolable(Class<T> pooledClass) {
-        if (poolablePools.containsKey(pooledClass)) {
+        if (poolablePools.containsKey(pooledClass) && poolablePools.get(pooledClass).size > 0) {
             return (T) poolablePools.get(pooledClass).pop();
         } else {
             try {
@@ -90,8 +90,8 @@ public class Pools {
     }
 
     private void recyclePoolable(Poolable pooled) {
-        if (!poolablePools.containsKey(pooled.getClass())){
-            poolablePools.put(pooled.getClass(),new Array<>());
+        if (!poolablePools.containsKey(pooled.getClass())) {
+            poolablePools.put(pooled.getClass(), new Array<>());
         }
         poolablePools.get(pooled.getClass()).add(pooled);
         pooled.reset();

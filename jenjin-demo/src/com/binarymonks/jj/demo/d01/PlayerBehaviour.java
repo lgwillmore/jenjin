@@ -15,6 +15,11 @@ public class PlayerBehaviour extends Behaviour {
     float velocity = 30;
 
     @Override
+    public void getReady() {
+
+    }
+
+    @Override
     public void update() {
         float direction = 0;
         float y = parent.physicsroot.position().y;
@@ -27,6 +32,11 @@ public class PlayerBehaviour extends Behaviour {
             direction -= 1;
         }
         parent.physicsroot.getB2DBody().setLinearVelocity(0, velocity * direction);
+    }
+
+    @Override
+    public void tearDown() {
+
     }
 
     @Override

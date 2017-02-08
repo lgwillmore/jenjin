@@ -1,12 +1,13 @@
 package com.binarymonks.jj.behaviour;
 
+import com.binarymonks.jj.async.Task;
 import com.binarymonks.jj.specs.PropField;
 import com.binarymonks.jj.things.Thing;
 import com.binarymonks.jj.utils.Reflection;
 
 import java.lang.reflect.Field;
 
-public abstract class Behaviour {
+public abstract class Behaviour implements Task {
 
     protected Thing parent;
 
