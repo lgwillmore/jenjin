@@ -45,14 +45,16 @@ public class ThingWorld {
         queuedForAddThings.clear();
         inUpdate = true;
         for (ObjectMap.Entry<Integer, Thing> thingEntry : things) {
-            ThingTools.update(thingEntry.value);
+            thingEntry.value.update();
         }
         inUpdate = false;
     }
 
     private void reallyRemove(Thing removal) {
         things.remove(removal.id);
-        namedThings.remove(removal.uniqueName);
+        if (removal.uniqueName != null) {
+            namedThings.remove(removal.uniqueName);
+        }
         Global.renderWorld.removeThing(removal);
         ThingTools.destroy(removal);
     }

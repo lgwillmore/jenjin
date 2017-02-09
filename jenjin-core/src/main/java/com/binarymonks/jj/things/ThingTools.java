@@ -36,10 +36,6 @@ public class ThingTools {
         }
     }
 
-    static void update(Thing thing) {
-        thing.behaviour.update();
-    }
-
     public static class DestroyThingBody extends OneTimeTask implements Poolable {
 
         Body body;

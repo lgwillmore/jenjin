@@ -14,11 +14,11 @@ public class PropField<VALUE, OWNER> implements FieldPropertyDelegate<VALUE, OWN
 
     public PropField(OWNER owner) {
         this.owner = owner;
-
     }
 
     public PropField(OWNER owner, VALUE value) {
         this.value = value;
+        this.owner = owner;
     }
 
     public void copyFrom(SpecPropField<VALUE, ?> specField) {

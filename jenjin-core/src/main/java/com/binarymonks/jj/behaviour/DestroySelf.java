@@ -8,7 +8,7 @@ import com.binarymonks.jj.specs.PropField;
  */
 public class DestroySelf extends Behaviour {
 
-    public PropField<Float, DestroySelf> timeToLive = new PropField<Float, DestroySelf>(this, 1f);
+    public PropField<Float, DestroySelf> timeToLive = new PropField<>(this, 1f);
     int destroySelfTimerID;
 
     @Override
@@ -17,9 +17,10 @@ public class DestroySelf extends Behaviour {
     }
 
     @Override
-    public void update() {
+    public void doWork() {
 
     }
+
 
     @Override
     public void tearDown() {

@@ -20,7 +20,7 @@ public class PlayerBehaviour extends Behaviour {
     }
 
     @Override
-    public void update() {
+    public void doWork() {
         float direction = 0;
         float y = parent.physicsroot.position().y;
         int upkey = (int) parent.getProperty("upkey");

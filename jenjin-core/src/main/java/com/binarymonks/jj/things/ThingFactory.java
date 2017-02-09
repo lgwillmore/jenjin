@@ -68,7 +68,7 @@ public class ThingFactory {
     private void buildBehaviour(Context context) {
         for (Behaviour behaviour : context.thingSpec.behaviour) {
             Behaviour clone = behaviour.clone();
-            context.thing.behaviour.add(clone);
+            context.thing.addBehaviour(clone);
             clone.setParent(context.thing);
         }
     }

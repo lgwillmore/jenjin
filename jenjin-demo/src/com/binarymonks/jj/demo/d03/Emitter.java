@@ -28,7 +28,7 @@ public class Emitter extends Behaviour {
     }
 
     @Override
-    public void update() {
+    public void doWork() {
 
     }
 

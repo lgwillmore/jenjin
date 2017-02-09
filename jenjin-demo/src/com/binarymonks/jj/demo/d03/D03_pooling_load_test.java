@@ -38,17 +38,17 @@ public class D03_pooling_load_test extends Game {
     }
 
     private ThingSpec emitter() {
-        return new ThingSpec().addBehaviour(new Emitter().setIntervalSeconds(0.1f).setSpecPath("square"));
+        return new ThingSpec().addBehaviour(new Emitter().setIntervalSeconds(0.05f).setSpecPath("square"));
     }
 
 
     private ThingSpec square() {
+
         return new ThingSpec()
                 .addNode(
                         new NodeSpec()
                                 .addRender(
-                                        new B2DRenderSpec()
-                                                .color.delegateToProperty("color")
+                                        new B2DRenderSpec().color.set(Color.BLUE)
                                 )
                                 .addPhysics(new FixtureNodeSpec().setShape(new B2DShapeSpec.PolygonRectangle(5, 5)))
                 )

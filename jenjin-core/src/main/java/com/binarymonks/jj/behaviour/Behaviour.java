@@ -11,12 +11,6 @@ public abstract class Behaviour implements Task {
 
     protected Thing parent;
 
-    public abstract void getReady();
-
-    public abstract void update();
-
-    public abstract void tearDown();
-
     public abstract Behaviour clone();
 
     public Class<?> type() {
@@ -25,6 +19,11 @@ public abstract class Behaviour implements Task {
 
     public Thing getParent() {
         return parent;
+    }
+
+    @Override
+    public boolean isDone() {
+        return false;
     }
 
     public void setParent(Thing parent) {
