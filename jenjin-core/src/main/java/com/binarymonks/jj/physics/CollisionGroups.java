@@ -1,7 +1,7 @@
 package com.binarymonks.jj.physics;
 
 /**
- * This is needed to get the performCollision groups of your game objects. This will determine what collides with what.
+ * This is needed to checkPools the performCollision groups of your game objects. This will determine what collides with what.
  * @author Laurence
  *
  */

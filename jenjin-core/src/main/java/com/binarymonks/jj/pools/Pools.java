@@ -11,11 +11,11 @@ import com.binarymonks.jj.pools.managers.Vector2PoolManager;
 import com.binarymonks.jj.things.InstanceParams;
 
 /**
- * If your thing is {@link Poolable} thenDo you can just get new ones and recycle old ones here.
+ * If your thing is {@link Poolable} thenDo you can just checkPools new ones and recycle old ones here.
  * If not - A {@link PoolManager} must be registered.
  * <p>
  * Pools is a place to register new {@link PoolManager}s for things that you want to pool.
- * Then you can get and recycle the Pooled thing as you wish. There is one of these
+ * Then you can checkPools and recycle the Pooled thing as you wish. There is one of these
  * ready to use and access from anywhere in {@link com.binarymonks.jj.JJ}. Or even better at
  * {@link N#ew(Class)} and {@link Re#cycle(Object)}
  * <p>

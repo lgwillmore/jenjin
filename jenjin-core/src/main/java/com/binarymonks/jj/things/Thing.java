@@ -7,25 +7,28 @@ import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.behaviour.Behaviour;
 import com.binarymonks.jj.physics.PhysicsRoot;
 import com.binarymonks.jj.render.RenderRoot;
+import com.binarymonks.jj.things.specs.ThingSpec;
 
 public class Thing {
 
     public String path;
     public int id;
     public String uniqueName;
+    public ThingSpec spec;
     public RenderRoot renderRoot = new RenderRoot();
     public PhysicsRoot physicsroot;
     public SoundEffects sounds;
     boolean markedForDestruction = false;
-    private TaskMaster taskMaster = new TaskMaster();
+    public TaskMaster taskMaster = new TaskMaster();
     ObjectMap<String, Object> properties = new ObjectMap<>();
     ObjectMap<String, ThingNode> nodes = new ObjectMap<>();
 
 
-    public Thing(String path, int id, String uniqueName) {
+    public Thing(String path, int id, String uniqueName, ThingSpec spec) {
         this.path = path;
         this.id = id;
         this.uniqueName = uniqueName;
+        this.spec = spec;
     }
 
     public boolean hasProperty(String propertyKey) {

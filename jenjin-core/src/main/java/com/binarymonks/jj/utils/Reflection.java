@@ -14,7 +14,7 @@ public class Reflection {
         try {
             return clazz.getField(name);
         } catch (NoSuchFieldException e) {
-            throw new RuntimeException(String.format("Could not get field name %s from class %s", name, clazz.getCanonicalName()));
+            throw new RuntimeException(String.format("Could not checkPools field name %s from class %s", name, clazz.getCanonicalName()));
         }
     }
 
@@ -23,7 +23,7 @@ public class Reflection {
         try {
             return (T) field.get(parentObject);
         } catch (IllegalAccessException e) {
-            throw new RuntimeException(String.format("Could not get the field value %s from class %s", field.getName(), parentObject.getClass().getCanonicalName()));
+            throw new RuntimeException(String.format("Could not checkPools the field value %s from class %s", field.getName(), parentObject.getClass().getCanonicalName()));
         }
     }
 }

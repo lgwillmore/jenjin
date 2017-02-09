@@ -16,6 +16,8 @@ public class ThingSpec {
 
     public Array<SoundParams> sounds = new Array<>();
 
+    public boolean pool = true;
+
     public ThingSpec setPhysics(PhysicsRootSpec physicsSpec) {
         this.physics = physicsSpec;
         return this;
@@ -33,6 +35,11 @@ public class ThingSpec {
 
     public ThingSpec addSound(SoundParams soundParams) {
         sounds.add(soundParams);
+        return this;
+    }
+
+    public ThingSpec setPool(boolean pool) {
+        this.pool = pool;
         return this;
     }
 }

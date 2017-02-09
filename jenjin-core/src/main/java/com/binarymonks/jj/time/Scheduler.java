@@ -2,7 +2,9 @@ package com.binarymonks.jj.time;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.async.Function;
+import com.binarymonks.jj.pools.Poolable;
 
 import java.util.function.Supplier;
 
@@ -10,7 +12,7 @@ public class Scheduler {
 
     int idCounter = 0;
     Supplier<Double> getTimeFunction;
-    ObjectMap<Integer, ScheduledFuncion> scheduledFunctions = new ObjectMap<>(200);
+    ObjectMap<Integer, ScheduledFunction> scheduledFunctions = new ObjectMap<>(200);
     Array<Integer> removals = new Array<>();
 
     public Scheduler(Supplier<Double> getTimeFunction) {
@@ -19,21 +21,27 @@ public class Scheduler {
 
     public void update() {
         double time = getTimeFunction.get();
-        for (ObjectMap.Entry<Integer, ScheduledFuncion> scheduledFunction : scheduledFunctions.entries()) {
-            if (scheduledFunction.value.triggerTime <= time) {
-                scheduledFunction.value.function.call();
-                removals.add(scheduledFunction.key);
+        for (ObjectMap.Entry<Integer, ScheduledFunction> scheduledFunction : scheduledFunctions.entries()) {
+            ScheduledFunction sf = scheduledFunction.value;
+            if (sf.triggerTime <= time) {
+                sf.function.call();
+                if (sf.repeat) {
+
+                } else {
+                    removals.add(scheduledFunction.key);
+                }
             }
         }
         for (Integer i : removals) {
-            scheduledFunctions.remove(i);
+            ScheduledFunction sf = scheduledFunctions.remove(i);
+            JJ.pools.recycle(sf);
         }
         removals.clear();
     }
 
-    public int scheduleInSeconds(Function function, float seconds) {
+    public int scheduleInSeconds(Function function, float seconds, boolean repeat) {
         int id = idCounter++;
-        scheduledFunctions.put(id, new ScheduledFuncion(function, getTimeFunction.get() + seconds));
+        scheduledFunctions.put(id, JJ.pools.nuw(ScheduledFunction.class).set(function, getTimeFunction.get() + seconds, repeat));
         return id;
     }
 
@@ -42,13 +50,24 @@ public class Scheduler {
     }
 
 
-    public static class ScheduledFuncion {
+    public static class ScheduledFunction implements Poolable {
         Function function;
         double triggerTime;
+        boolean repeat;
 
-        public ScheduledFuncion(Function function, double triggerTime) {
+        public ScheduledFunction set(Function function, double triggerTime, boolean repeat) {
             this.function = function;
             this.triggerTime = triggerTime;
+            this.repeat = repeat;
+            return this;
+        }
+
+
+        @Override
+        public void reset() {
+            function = null;
+            triggerTime = 0;
+            repeat = false;
         }
     }
 

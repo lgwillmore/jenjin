@@ -24,7 +24,7 @@ public class Emitter extends Behaviour {
 
     @Override
     public void getReady() {
-        scheduleID = JJ.time.scheduleInSeconds(this::emit, intervalSeconds);
+        scheduleID = JJ.time.scheduleInSeconds(this::emit, intervalSeconds,true);
     }
 
     @Override
@@ -40,7 +40,6 @@ public class Emitter extends Behaviour {
     private void emit() {
         Vector2 myPos = parent.physicsroot.position();
         JJ.things.create(specPath, InstanceParams.New().setPosition(myPos.x, myPos.y));
-        scheduleID = JJ.time.scheduleInSeconds(this::emit, intervalSeconds);
     }
 
     @Override

@@ -19,7 +19,7 @@ public class TaskMaster {
         }
     }
 
-    private void clean() {
+    public void clean() {
         for (Task removeTask : removeTasks) {
             removeTask.tearDown();
             tasks.removeValue(removeTask, true);
@@ -30,6 +30,19 @@ public class TaskMaster {
             addTask.getReady();
         }
         addTasks.clear();
+    }
+
+    public void neutralise() {
+        clean();
+        for (Task task : tasks) {
+            task.tearDown();
+        }
+    }
+
+    public void reactivate() {
+        for (Task task : tasks) {
+            task.getReady();
+        }
     }
 
     public void addTask(Task task) {

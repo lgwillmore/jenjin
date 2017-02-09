@@ -73,8 +73,8 @@ public class TimeControls implements Time {
     }
 
     @Override
-    public int scheduleInSeconds(Function function, float seconds) {
-        return scheduler.scheduleInSeconds(function, seconds);
+    public int scheduleInSeconds(Function function, float seconds, boolean repeat) {
+        return scheduler.scheduleInSeconds(function, seconds, repeat);
     }
 
     @Override

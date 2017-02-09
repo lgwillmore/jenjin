@@ -25,7 +25,7 @@ public interface Time {
 
     TimeControls.TimeFunction getTimeFunction();
 
-    int scheduleInSeconds(Function function, float seconds);
+    int scheduleInSeconds(Function function, float seconds, boolean repeat);
 
     void cancelScheduled(int scheduleID);
 }

@@ -27,28 +27,57 @@ import com.binarymonks.jj.things.specs.ThingSpec;
 
 public class ThingFactory {
     int idCounter = 0;
+    ObjectMap<String, Array<Thing>> pooledThings = new ObjectMap<>();
 
     public ThingFactory() {
         JJ.pools.registerManager(new Context.BuildContextPoolManager(), Context.class);
     }
 
     public Thing create(String thingSpecPath, InstanceParams instanceParams) {
-        Thing thing = new Thing(thingSpecPath, idCounter++, instanceParams.uniqueInstanceName);
         Context context = N.ew(Context.class);
-        context.thing = thing;
         context.thingSpec = Global.specs.specifications.get(thingSpecPath);
         context.instanceParams = instanceParams;
-
+        if (context.thingSpec.pool) {
+            getPooled(thingSpecPath, context);
+        } else {
+            buildNew(thingSpecPath, context);
+        }
         setProperties(context);
+        Global.renderWorld.addThing(context.thing);
+        Global.thingWorld.add(context.thing);
+        Thing thing = context.thing;
+        Re.cycle(context);
+        return thing;
+    }
+
+    private void getPooled(String thingSpecPath, Context context) {
+        context.thing = checkPools(thingSpecPath);
+        if (context.thing == null) {
+            buildNew(thingSpecPath, context);
+        } else {
+            resetPooled(context);
+        }
+    }
+
+    private Thing checkPools(String thingSpecPath) {
+        if (pooledThings.containsKey(thingSpecPath) && pooledThings.get(thingSpecPath).size > 0) {
+            return pooledThings.get(thingSpecPath).pop();
+        }
+        return null;
+    }
+
+    private void resetPooled(Context context) {
+        ThingTools.resetPhysics(context.thing, context.instanceParams);
+        context.thing.taskMaster.reactivate();
+    }
+
+    private void buildNew(String thingSpecPath, Context context) {
+        context.thing = new Thing(thingSpecPath, idCounter++, context.instanceParams.uniqueInstanceName, context.thingSpec);
         buildPhysicsRoot(context);
         buildNodes(context);
         wireInRenderNodes(context);
         buildBehaviour(context);
         buildSounds(context);
-
-        Re.cycle(context);
-        Global.thingWorld.add(thing);
-        return thing;
     }
 
     private void setProperties(Context context) {
@@ -96,7 +125,6 @@ public class ThingFactory {
             );
         }
         context.thing.renderRoot.thingLayers = thingLayers;
-        Global.renderWorld.addThing(context.thing);
     }
 
     private void buildNodes(Context context) {
@@ -190,6 +218,13 @@ public class ThingFactory {
         PhysicsRoot.B2DPhysicsRoot physicsRoot = new PhysicsRoot.B2DPhysicsRoot(context.body);
         context.thing.physicsroot = physicsRoot;
         context.body.setUserData(context.thing);
+    }
+
+    public void recycle(Thing thing) {
+        if (!pooledThings.containsKey(thing.path)) {
+            pooledThings.put(thing.path, new Array<>());
+        }
+        pooledThings.get(thing.path).add(thing);
     }
 
 

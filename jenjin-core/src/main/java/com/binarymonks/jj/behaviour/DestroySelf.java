@@ -13,7 +13,7 @@ public class DestroySelf extends Behaviour {
 
     @Override
     public void getReady() {
-        destroySelfTimerID = JJ.time.scheduleInSeconds(this::destroyMe, timeToLive.get());
+        destroySelfTimerID = JJ.time.scheduleInSeconds(this::destroyMe, timeToLive.get(), false);
     }
 
     @Override

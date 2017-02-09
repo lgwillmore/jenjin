@@ -31,7 +31,8 @@ public class D03_pooling_load_test extends Game {
 
         SceneSpec scene = new SceneSpec();
         scene.add("emitter",
-                InstanceParams.New().setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 2)
+                InstanceParams.New().setPosition(WORLD_WIDTH*0.25f, WORLD_HEIGHT*0.25f),
+                InstanceParams.New().setPosition(WORLD_WIDTH*0.75f, WORLD_HEIGHT*0.75f)
         );
 
         JJ.things.loadNow(scene);

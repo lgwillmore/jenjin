@@ -56,7 +56,7 @@ public class D01_pong extends Game {
                         InstanceParams.New()
                                 .setPosition(COURT_LENGTH - BAT_INSET, COURT_LENGTH / 2)
                                 /**
-                                 * Would not normally set keys as a property, but it shows how you can get
+                                 * Would not normally set keys as a property, but it shows how you can checkPools
                                  * Instance customisation with properties
                                  */
                                 .setProperty("upkey", Input.Keys.UP)
