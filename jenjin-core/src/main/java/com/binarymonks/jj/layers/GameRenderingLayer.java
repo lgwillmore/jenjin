@@ -51,7 +51,7 @@ public class GameRenderingLayer implements Layer {
     }
 
     public void setDebug(boolean debug){
-        this.b2dDebug=true;
+        this.b2dDebug=debug;
     }
 
     private void updateLayer(RenderGraph.RenderLayer layer) {
