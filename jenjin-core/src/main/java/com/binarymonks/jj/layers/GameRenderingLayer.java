@@ -10,7 +10,7 @@ import com.binarymonks.jj.render.RenderNode;
 import com.binarymonks.jj.render.ThingLayer;
 import com.binarymonks.jj.render.RenderGraph;
 
-public class GameRenderingLayer implements Layer {
+public class GameRenderingLayer extends Layer {
     public OrthographicCamera camera;
     Box2DDebugRenderer drenderer = new Box2DDebugRenderer();
 

@@ -1,7 +1,11 @@
 package com.binarymonks.jj.layers;
 
 
-public interface Layer {
+import com.badlogic.gdx.InputMultiplexer;
 
-    void update();
+public abstract class Layer {
+
+    protected InputMultiplexer inputMultiplexer = new InputMultiplexer();
+
+    public abstract void update();
 }

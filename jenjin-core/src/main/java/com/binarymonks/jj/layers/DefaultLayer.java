@@ -4,7 +4,7 @@ package com.binarymonks.jj.layers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class DefaultLayer implements Layer {
+public class DefaultLayer extends Layer {
 
     ShapeRenderer shapeRenderer;
 

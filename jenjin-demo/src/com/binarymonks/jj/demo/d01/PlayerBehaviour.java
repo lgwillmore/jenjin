@@ -32,21 +32,25 @@ public class PlayerBehaviour extends Behaviour {
         parent.physicsroot.getB2DBody().setLinearVelocity(0, velocity * direction);
     }
 
-    public void goUp() {
+    public boolean goUp() {
         up = true;
+        return true;
     }
 
-    public void stopUp() {
+    public boolean stopUp() {
         up = false;
+        return true;
     }
 
 
-    public void goDown() {
+    public boolean goDown() {
         down = true;
+        return true;
     }
 
-    public void stopDown() {
+    public boolean stopDown() {
         down = false;
+        return true;
     }
 
     @Override

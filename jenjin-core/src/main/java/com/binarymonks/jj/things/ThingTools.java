@@ -11,6 +11,7 @@ import com.binarymonks.jj.async.OneTimeTask;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.behaviour.Behaviour;
 import com.binarymonks.jj.pools.N;
+import com.binarymonks.jj.pools.PoolManager;
 import com.binarymonks.jj.pools.Poolable;
 import com.binarymonks.jj.pools.Re;
 import com.binarymonks.jj.render.RenderNode;
@@ -27,7 +28,6 @@ public class ThingTools {
         if (thing.spec.pool) {
             thing.behaviourMaster.neutralise();
             neutralisePhysics(thing);
-            Global.factories.things.recycle(thing);
         } else {
             destroyRender(thing);
             destroyPhysics(thing);
@@ -37,29 +37,38 @@ public class ThingTools {
     }
 
     private static void neutralisePhysics(Thing thing) {
-        Body body = thing.physicsroot.getB2DBody();
-        for (Fixture fixture : body.getFixtureList()) {
-            ThingNode thingNode = (ThingNode) fixture.getUserData();
-            thingNode.properties.put(COLLISION_CAT_CACHE, fixture.getFilterData().categoryBits);
-            thingNode.properties.put(COLLISION_MASK_CACHE, fixture.getFilterData().maskBits);
-            Filter filterData = fixture.getFilterData();
-            filterData.categoryBits = NONE;
-            filterData.maskBits = NONE;
-            fixture.setFilterData(filterData);
+        if (!Global.physics.isUpdating()) {
+            Body body = thing.physicsroot.getB2DBody();
+            for (Fixture fixture : body.getFixtureList()) {
+                ThingNode thingNode = (ThingNode) fixture.getUserData();
+                thingNode.properties.put(COLLISION_CAT_CACHE, fixture.getFilterData().categoryBits);
+                thingNode.properties.put(COLLISION_MASK_CACHE, fixture.getFilterData().maskBits);
+                Filter filterData = fixture.getFilterData();
+                filterData.categoryBits = NONE;
+                filterData.maskBits = NONE;
+                fixture.setFilterData(filterData);
+            }
+            jointsToDestroy.clear();
+            for (JointEdge joint : body.getJointList()) {
+                jointsToDestroy.add(joint.joint);
+            }
+            for (Joint joint : jointsToDestroy) {
+                Global.physics.world.destroyJoint(joint);
+            }
+            jointsToDestroy.clear();
+            body.setTransform(physicsPoolLocation, 0);
+            body.setLinearVelocity(Vector2.Zero);
+            body.setAngularVelocity(0);
+            body.setActive(false);
+            body.setAwake(false);
+            Global.factories.things.recycle(thing);
+        } else {
+            Global.tasks.addPostPhysicsTask(
+                    N.ew(NeutralisePhysics.class)
+                            .setThing(thing)
+            );
         }
-        jointsToDestroy.clear();
-        for (JointEdge joint : body.getJointList()) {
-            jointsToDestroy.add(joint.joint);
-        }
-        for (Joint joint : jointsToDestroy) {
-            Global.physics.world.destroyJoint(joint);
-        }
-        jointsToDestroy.clear();
-        body.setTransform(physicsPoolLocation, 0);
-        body.setLinearVelocity(Vector2.Zero);
-        body.setAngularVelocity(0);
-        body.setActive(false);
-        body.setAwake(false);
+
     }
 
     public static void resetPhysics(Thing thing, InstanceParams params) {
@@ -113,6 +122,27 @@ public class ThingTools {
         @Override
         public void reset() {
             body = null;
+        }
+    }
+
+    public static class NeutralisePhysics extends OneTimeTask implements Poolable {
+
+        Thing thing;
+
+        public NeutralisePhysics setThing(Thing thing){
+            this.thing = thing;
+            return this;
+        }
+
+
+        @Override
+        public void reset() {
+            thing = null;
+        }
+
+        @Override
+        protected void doOnce() {
+            ThingTools.neutralisePhysics(thing);
         }
     }
 }

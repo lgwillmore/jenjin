@@ -65,7 +65,11 @@ public class JJ {
         Global.lifecycle = lifeCyclePublisher;
         lifecycle = lifeCyclePublisher;
 
-        LayerStack layerStack = new LayerStack();
+        BaseInputProcessor baseInputProcessor = new BaseInputProcessor();
+        input = baseInputProcessor;
+        Global.input = baseInputProcessor;
+
+        LayerStack layerStack = new LayerStack(baseInputProcessor);
         layers = layerStack;
         Global.layerStack = layerStack;
 
@@ -86,6 +90,7 @@ public class JJ {
         tasks = loopTasks;
 
         assets = new AssetManager();
+
 
     }
 
