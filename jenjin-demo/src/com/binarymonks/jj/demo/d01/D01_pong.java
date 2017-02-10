@@ -6,8 +6,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.audio.SoundParams;
+import com.binarymonks.jj.input.Actions;
 import com.binarymonks.jj.layers.GameRenderingLayer;
-import com.binarymonks.jj.physics.CollisionFunction;
 import com.binarymonks.jj.physics.collisions.DestroyCollision;
 import com.binarymonks.jj.physics.collisions.EmitEventCollision;
 import com.binarymonks.jj.physics.collisions.SoundCollision;
@@ -92,8 +92,19 @@ public class D01_pong extends Game {
     private void gameLoaded() {
         //Wire some controls into each player instance
         PlayerBehaviour player1 = JJ.things.getThingByName("player1").getBehaviour(PlayerBehaviour.class);
-        System.out.println(player1);
+        mapPlayerKeys(player1, Input.Keys.W, Input.Keys.S);
+        PlayerBehaviour player2 = JJ.things.getThingByName("player2").getBehaviour(PlayerBehaviour.class);
+        mapPlayerKeys(player2, Input.Keys.UP, Input.Keys.DOWN);
+
+
         kickOff(JJ.things.getThingByName("ball"));
+    }
+
+    private void mapPlayerKeys(PlayerBehaviour player, int up, int down) {
+        JJ.input.map(up, Actions.Key.PRESSED, player::goUp);
+        JJ.input.map(up, Actions.Key.RELEASED, player::stopUp);
+        JJ.input.map(down, Actions.Key.PRESSED, player::goDown);
+        JJ.input.map(down, Actions.Key.RELEASED, player::stopDown);
     }
 
     private void kickOff(Thing ball) {

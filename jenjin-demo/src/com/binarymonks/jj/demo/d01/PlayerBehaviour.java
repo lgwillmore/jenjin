@@ -7,12 +7,12 @@ import com.binarymonks.jj.behaviour.Behaviour;
 import static com.binarymonks.jj.demo.d01.D01_pong.BAT_HEIGHT;
 import static com.binarymonks.jj.demo.d01.D01_pong.COURT_LENGTH;
 
-/**
- * Created by lwillmore on 03/02/17.
- */
 public class PlayerBehaviour extends Behaviour {
 
     float velocity = 30;
+
+    boolean up = false;
+    boolean down = false;
 
     @Override
     public void getReady() {
@@ -23,15 +23,30 @@ public class PlayerBehaviour extends Behaviour {
     public void doWork() {
         float direction = 0;
         float y = parent.physicsroot.position().y;
-        int upkey = (int) parent.getProperty("upkey");
-        int downkey = (int) parent.getProperty("downkey");
-        if (Gdx.input.isKeyPressed(upkey) && y < COURT_LENGTH - BAT_HEIGHT / 2) {
+        if (up && y < COURT_LENGTH - BAT_HEIGHT / 2) {
             direction += 1;
         }
-        if (Gdx.input.isKeyPressed(downkey) && y > BAT_HEIGHT / 2) {
+        if (down && y > BAT_HEIGHT / 2) {
             direction -= 1;
         }
         parent.physicsroot.getB2DBody().setLinearVelocity(0, velocity * direction);
+    }
+
+    public void goUp() {
+        up = true;
+    }
+
+    public void stopUp() {
+        up = false;
+    }
+
+
+    public void goDown() {
+        down = true;
+    }
+
+    public void stopDown() {
+        down = false;
     }
 
     @Override

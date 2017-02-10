@@ -6,6 +6,7 @@ import com.binarymonks.jj.assets.AssetManager;
 import com.binarymonks.jj.async.LoopTasks;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.events.EventBus;
+import com.binarymonks.jj.input.BaseInputProcessor;
 import com.binarymonks.jj.layers.LayerStack;
 import com.binarymonks.jj.api.Layers;
 import com.binarymonks.jj.lifecycle.LifeCyclePublisher;
@@ -51,6 +52,7 @@ public class JJ {
     public static Tasks tasks;
 
     public static EventBus events = new EventBus();
+    public static BaseInputProcessor input;
 
     static void initialise(JJConfig jjConfig) {
         Global.config=jjConfig;
