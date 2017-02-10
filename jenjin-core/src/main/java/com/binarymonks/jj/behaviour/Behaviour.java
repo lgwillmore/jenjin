@@ -7,21 +7,26 @@ import com.binarymonks.jj.utils.Reflection;
 
 import java.lang.reflect.Field;
 
-public abstract class Behaviour implements Task {
+public abstract class Behaviour {
 
     protected Thing parent;
 
     public abstract Behaviour clone();
 
-    public Class<?> type() {
-        return this.getClass();
+    public Class<Behaviour> type() {
+        return (Class<Behaviour>) this.getClass();
     }
+
+    public abstract void doWork();
+
+    public abstract void tearDown();
+
+    public abstract void getReady();
 
     public Thing getParent() {
         return parent;
     }
 
-    @Override
     public boolean isDone() {
         return false;
     }

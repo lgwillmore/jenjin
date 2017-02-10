@@ -7,7 +7,7 @@ public interface Task {
     void doWork();
 
     void tearDown();
-
+    
     boolean isDone();
 
 }

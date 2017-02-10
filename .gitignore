@@ -20,7 +20,7 @@ hs_err_pid*
 jenjin-core/build/
 jenjin-demo/build/
 
-# Ignore Gradle GUI JJConfig
+# Ignore Gradle GUI jjConfig
 gradle-app.setting
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)

@@ -17,18 +17,18 @@ import com.binarymonks.jj.backend.Global;
  */
 public abstract class Game implements ApplicationListener {
 
-    JJConfig JJConfig = new JJConfig();
+    JJConfig jjConfig = new JJConfig();
 
     public Game() {
     }
 
-    public Game(JJConfig JJConfig) {
-        this.JJConfig = JJConfig;
+    public Game(JJConfig jjConfig) {
+        this.jjConfig = jjConfig;
     }
 
     @Override
     public void create() {
-        JJ.initialise();
+        JJ.initialise(this.jjConfig);
         gameOn();
     }
 

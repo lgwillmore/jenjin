@@ -68,7 +68,7 @@ public class ThingFactory {
 
     private void resetPooled(Context context) {
         ThingTools.resetPhysics(context.thing, context.instanceParams);
-        context.thing.taskMaster.reactivate();
+        context.thing.behaviourMaster.reactivate();
     }
 
     private void buildNew(String thingSpecPath, Context context) {

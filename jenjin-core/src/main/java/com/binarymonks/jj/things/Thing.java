@@ -1,10 +1,12 @@
 package com.binarymonks.jj.things;
 
 import com.badlogic.gdx.utils.ObjectMap;
+import com.binarymonks.jj.async.Task;
 import com.binarymonks.jj.async.TaskMaster;
 import com.binarymonks.jj.audio.SoundEffects;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.behaviour.Behaviour;
+import com.binarymonks.jj.behaviour.BehaviourMaster;
 import com.binarymonks.jj.physics.PhysicsRoot;
 import com.binarymonks.jj.render.RenderRoot;
 import com.binarymonks.jj.things.specs.ThingSpec;
@@ -19,7 +21,7 @@ public class Thing {
     public PhysicsRoot physicsroot;
     public SoundEffects sounds;
     boolean markedForDestruction = false;
-    public TaskMaster taskMaster = new TaskMaster();
+    public BehaviourMaster behaviourMaster = new BehaviourMaster();
     ObjectMap<String, Object> properties = new ObjectMap<>();
     ObjectMap<String, ThingNode> nodes = new ObjectMap<>();
 
@@ -46,7 +48,7 @@ public class Thing {
 
     public void addBehaviour(Behaviour behaviour) {
         behaviour.setParent(this);
-        taskMaster.addTask(behaviour);
+        behaviourMaster.addBehavior(behaviour);
     }
 
     public boolean isMarkedForDestruction() {
@@ -55,6 +57,10 @@ public class Thing {
 
 
     public void update() {
-        taskMaster.update();
+        behaviourMaster.update();
+    }
+
+    public <T extends Behaviour> T getBehaviour(Class<T> behaviourType) {
+        return behaviourMaster.getTrackedBehaviour((Class<Behaviour>) behaviourType);
     }
 }

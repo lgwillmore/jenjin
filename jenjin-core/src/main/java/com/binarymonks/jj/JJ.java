@@ -52,7 +52,8 @@ public class JJ {
 
     public static EventBus events = new EventBus();
 
-    static void initialise() {
+    static void initialise(JJConfig jjConfig) {
+        Global.config=jjConfig;
 
         TimeControls timeControls = new TimeControls();
         Global.time = timeControls;

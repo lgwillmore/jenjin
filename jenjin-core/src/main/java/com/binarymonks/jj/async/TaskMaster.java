@@ -8,6 +8,7 @@ public class TaskMaster {
     Array<Task> addTasks = new Array<>();
     Array<Task> removeTasks = new Array<>();
 
+
     public void update() {
         clean();
         for (Task task : tasks) {

@@ -54,20 +54,14 @@ public class D01_pong extends Game {
         SceneSpec level = new SceneSpec()
                 .add("player",
                         InstanceParams.New()
+                                .setUniqueName("player2")
                                 .setPosition(COURT_LENGTH - BAT_INSET, COURT_LENGTH / 2)
-                                /**
-                                 * Would not normally set keys as a property, but it shows how you can checkPools
-                                 * Instance customisation with properties
-                                 */
-                                .setProperty("upkey", Input.Keys.UP)
-                                .setProperty("downkey", Input.Keys.DOWN)
                                 .setProperty("color", Color.BLUE)
                 )
                 .add("player",
                         InstanceParams.New()
+                                .setUniqueName("player1")
                                 .setPosition(BAT_INSET, COURT_LENGTH / 2)
-                                .setProperty("upkey", Input.Keys.Q)
-                                .setProperty("downkey", Input.Keys.A)
                                 .setProperty("color", Color.RED)
                 )
                 .add("ball",
@@ -96,6 +90,9 @@ public class D01_pong extends Game {
     }
 
     private void gameLoaded() {
+        //Wire some controls into each player instance
+        PlayerBehaviour player1 = JJ.things.getThingByName("player1").getBehaviour(PlayerBehaviour.class);
+        System.out.println(player1);
         kickOff(JJ.things.getThingByName("ball"));
     }
 

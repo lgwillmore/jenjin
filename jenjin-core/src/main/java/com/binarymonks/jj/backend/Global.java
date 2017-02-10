@@ -1,5 +1,6 @@
 package com.binarymonks.jj.backend;
 
+import com.binarymonks.jj.JJConfig;
 import com.binarymonks.jj.async.LoopTasks;
 import com.binarymonks.jj.layers.LayerStack;
 import com.binarymonks.jj.lifecycle.LifeCyclePublisher;
@@ -21,4 +22,5 @@ public class Global {
     public static ThingManager thingManager;
     public static LayerStack layerStack;
     public static LoopTasks tasks;
+    public static JJConfig config;
 }

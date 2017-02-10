@@ -25,13 +25,13 @@ public class ThingTools {
 
     static void destroy(Thing thing) {
         if (thing.spec.pool) {
-            thing.taskMaster.neutralise();
+            thing.behaviourMaster.neutralise();
             neutralisePhysics(thing);
             Global.factories.things.recycle(thing);
         } else {
             destroyRender(thing);
             destroyPhysics(thing);
-            thing.taskMaster.neutralise();
+            thing.behaviourMaster.neutralise();
         }
 
     }

@@ -27,7 +27,6 @@ public class D02_b2d_shapes extends Game {
     @Override
     protected void gameOn() {
         GameRenderingLayer gameRenderingLayer = new GameRenderingLayer(WORLD_WIDTH, WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
-        gameRenderingLayer.setDebug(true);
         JJ.layers.addLayerTop(gameRenderingLayer);
 
         JJ.specs

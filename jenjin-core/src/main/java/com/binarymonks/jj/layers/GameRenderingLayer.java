@@ -13,7 +13,6 @@ import com.binarymonks.jj.render.RenderGraph;
 public class GameRenderingLayer implements Layer {
     public OrthographicCamera camera;
     Box2DDebugRenderer drenderer = new Box2DDebugRenderer();
-    boolean b2dDebug = false;
 
     public GameRenderingLayer(float worldBoxWidth, float posX, float posY) {
         float w = Gdx.graphics.getWidth();
@@ -45,13 +44,9 @@ public class GameRenderingLayer implements Layer {
         }
         Global.renderWorld.polyBatch.end();
         Global.renderWorld.batch.end();
-        if (b2dDebug) {
+        if (Global.config.b2dDebug) {
             drenderer.render(Global.physics.world, Global.renderWorld.batch.getProjectionMatrix());
         }
-    }
-
-    public void setDebug(boolean debug){
-        this.b2dDebug=debug;
     }
 
     private void updateLayer(RenderGraph.RenderLayer layer) {
