@@ -4,8 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
 import com.binarymonks.jj.pools.N;
-import com.binarymonks.jj.render.PolygonRenderNode;
-import com.binarymonks.jj.render.RenderNode;
+import com.binarymonks.jj.render.nodes.PolygonRenderNode;
+import com.binarymonks.jj.render.nodes.RenderNode;
 
 public abstract class ShapeRenderSpec<CONCRETE extends ShapeRenderSpec> extends SpatialRenderSpec<CONCRETE> {
 
@@ -39,7 +39,13 @@ public abstract class ShapeRenderSpec<CONCRETE extends ShapeRenderSpec> extends 
                 points.add(N.ew(Vector2.class).set(width / 2, -height / 2));
                 points.add(N.ew(Vector2.class).set(width / 2, height / 2));
                 points.add(N.ew(Vector2.class).set(-width / 2, height / 2));
-                return PolygonRenderNode.buildNew(this, points, N.ew(Vector2.class).set(offsetX, offsetY), rotationD);
+                return PolygonRenderNode.buildNew(
+                        this,
+                        points,
+                        N.ew(Vector2.class).set(
+                                spatial.getOffsetX(physicsNodeSpec),
+                                spatial.getOffsetY(physicsNodeSpec)),
+                        spatial.getRotationD(physicsNodeSpec));
             }
         }
 

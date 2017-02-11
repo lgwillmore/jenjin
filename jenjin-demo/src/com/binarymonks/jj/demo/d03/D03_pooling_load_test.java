@@ -3,6 +3,7 @@ package com.binarymonks.jj.demo.d03;
 import com.badlogic.gdx.graphics.Color;
 import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
+import com.binarymonks.jj.JJConfig;
 import com.binarymonks.jj.behaviour.DestroySelf;
 import com.binarymonks.jj.layers.GameRenderingLayer;
 import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
@@ -16,6 +17,10 @@ import com.binarymonks.jj.things.specs.ThingSpec;
 public class D03_pooling_load_test extends Game {
     float WORLD_WIDTH = 100;
     float WORLD_HEIGHT = 100;
+
+    public D03_pooling_load_test(JJConfig jjConfig){
+        super(jjConfig);
+    }
 
 
     @Override

@@ -10,6 +10,7 @@ import com.binarymonks.jj.physics.specs.PhysicsRootSpec;
 import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
 import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.render.specs.B2DRenderSpec;
+import com.binarymonks.jj.render.specs.Spatial;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.specs.NodeSpec;
 import com.binarymonks.jj.things.specs.SceneSpec;
@@ -73,7 +74,6 @@ public class D02_b2d_shapes extends Game {
                                         .color.set(Color.BLUE)
                                         .setLayer(0)
                                         .setPriority(0)
-                                        .setOffset(10, 10)
                                 )
                                 .addPhysics(new FixtureNodeSpec()
                                         .setShape(new B2DShapeSpec.PolygonRectangle(5, 5)))

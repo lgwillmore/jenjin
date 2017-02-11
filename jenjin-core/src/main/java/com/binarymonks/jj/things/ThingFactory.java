@@ -14,13 +14,14 @@ import com.binarymonks.jj.physics.CollisionFunction;
 import com.binarymonks.jj.physics.CollisionGroups;
 import com.binarymonks.jj.physics.CollisionResolver;
 import com.binarymonks.jj.physics.PhysicsRoot;
+import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
 import com.binarymonks.jj.physics.specs.PhysicsRootSpec;
 import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
 import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.pools.PoolManager;
 import com.binarymonks.jj.pools.Re;
-import com.binarymonks.jj.render.RenderNode;
+import com.binarymonks.jj.render.nodes.RenderNode;
 import com.binarymonks.jj.render.ThingLayer;
 import com.binarymonks.jj.things.specs.NodeSpec;
 import com.binarymonks.jj.things.specs.ThingSpec;
@@ -131,7 +132,7 @@ public class ThingFactory {
         for (NodeSpec nodeSpec : context.thingSpec.nodes) {
             ThingNode node = new ThingNode(nodeSpec.name);
 
-            buildFixture((FixtureNodeSpec) nodeSpec.physicsNodeSpec, node, context);
+            buildFixture(nodeSpec.physicsNodeSpec, node, context);
 
             RenderNode render = nodeSpec.renderSpec.makeNode(nodeSpec.physicsNodeSpec);
             node.render = render;
@@ -145,39 +146,41 @@ public class ThingFactory {
         }
     }
 
-    private Fixture buildFixture(FixtureNodeSpec nodeSpec, ThingNode node, Context context) {
-        Shape shape = buildShape(nodeSpec);
-        FixtureDef fDef = new FixtureDef();
-        fDef.shape = shape;
-        fDef.density = nodeSpec.density;
-        fDef.friction = nodeSpec.friction;
-        fDef.restitution = nodeSpec.restitution;
-        fDef.isSensor = nodeSpec.isSensor;
-        String collisionGroup = nodeSpec.collisionGroup;
-        CollisionGroups.CollisionGroupData cd = Global.physics.collisionGroups.getGroupData(collisionGroup);
-        fDef.filter.categoryBits = cd.category;
-        fDef.filter.maskBits = cd.mask;
+    private void buildFixture(PhysicsNodeSpec nodeSpec, ThingNode node, Context context) {
+        if(nodeSpec instanceof FixtureNodeSpec) {
+            FixtureNodeSpec fixtureSpec = (FixtureNodeSpec) nodeSpec;
+            Shape shape = buildShape(fixtureSpec);
+            FixtureDef fDef = new FixtureDef();
+            fDef.shape = shape;
+            fDef.density = fixtureSpec.density;
+            fDef.friction = fixtureSpec.friction;
+            fDef.restitution = fixtureSpec.restitution;
+            fDef.isSensor = fixtureSpec.isSensor;
+            String collisionGroup = fixtureSpec.collisionGroup;
+            CollisionGroups.CollisionGroupData cd = Global.physics.collisionGroups.getGroupData(collisionGroup);
+            fDef.filter.categoryBits = cd.category;
+            fDef.filter.maskBits = cd.mask;
 
-        Fixture f = context.body.createFixture(fDef);
-        node.fixture = f;
-        f.setUserData(node);
+            Fixture f = context.body.createFixture(fDef);
+            node.fixture = f;
+            f.setUserData(node);
 
-        CollisionResolver resolver = new CollisionResolver();
-        resolver.setSelf(context.thing);
-        for (CollisionFunction ibegin : nodeSpec.initialBeginCollisions) {
-            resolver.addInitialBegin(ibegin.clone());
+            CollisionResolver resolver = new CollisionResolver();
+            resolver.setSelf(context.thing);
+            for (CollisionFunction ibegin : fixtureSpec.initialBeginCollisions) {
+                resolver.addInitialBegin(ibegin.clone());
+            }
+            for (CollisionFunction fbegin : fixtureSpec.finalBeginCollisions) {
+                resolver.addFinalBegin(fbegin.clone());
+            }
+            for (CollisionFunction end : fixtureSpec.endCollisions) {
+                resolver.addInitialBegin(end.clone());
+            }
+
+            node.collisionResolver = resolver;
+
+            shape.dispose();
         }
-        for (CollisionFunction fbegin : nodeSpec.finalBeginCollisions) {
-            resolver.addFinalBegin(fbegin.clone());
-        }
-        for (CollisionFunction end : nodeSpec.endCollisions) {
-            resolver.addInitialBegin(end.clone());
-        }
-
-        node.collisionResolver = resolver;
-
-        shape.dispose();
-        return f;
     }
 
     private boolean hasCollisions(FixtureNodeSpec nodeSpec) {

@@ -75,4 +75,19 @@ public class FixtureNodeSpec implements PhysicsNodeSpec {
         endCollisions.add(function);
         return this;
     }
+
+    @Override
+    public float getOffsetX() {
+        return offsetX;
+    }
+
+    @Override
+    public float getOffsetY() {
+        return offsetY;
+    }
+
+    @Override
+    public float getRotationD() {
+        return rotationD;
+    }
 }

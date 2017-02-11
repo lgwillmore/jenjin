@@ -2,11 +2,13 @@ package com.binarymonks.jj.render.specs;
 
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.utils.Array;
+import com.binarymonks.jj.assets.AssetReference;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
-import com.binarymonks.jj.render.RenderNode;
-import com.binarymonks.jj.specs.PropField;
+import com.binarymonks.jj.render.nodes.RenderNode;
 import com.binarymonks.jj.specs.SpecPropField;
+import com.binarymonks.jj.utils.Empty;
 
 public abstract class RenderSpec<CONCRETE extends RenderSpec> {
     public int id = Global.renderWorld.nextRenderID();
@@ -30,6 +32,10 @@ public abstract class RenderSpec<CONCRETE extends RenderSpec> {
     }
 
     public abstract RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec);
+
+    public Array<AssetReference> getAssets() {
+        return Empty.Array();
+    }
 
     public static class Null extends RenderSpec<Null> {
 

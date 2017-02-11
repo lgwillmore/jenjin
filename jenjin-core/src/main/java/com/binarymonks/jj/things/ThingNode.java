@@ -3,7 +3,7 @@ package com.binarymonks.jj.things;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.physics.CollisionResolver;
-import com.binarymonks.jj.render.RenderNode;
+import com.binarymonks.jj.render.nodes.RenderNode;
 
 public class ThingNode {
 

@@ -1,20 +1,16 @@
 package com.binarymonks.jj.things;
 
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.async.OneTimeTask;
 import com.binarymonks.jj.backend.Global;
-import com.binarymonks.jj.behaviour.Behaviour;
 import com.binarymonks.jj.pools.N;
-import com.binarymonks.jj.pools.PoolManager;
 import com.binarymonks.jj.pools.Poolable;
 import com.binarymonks.jj.pools.Re;
-import com.binarymonks.jj.render.RenderNode;
+import com.binarymonks.jj.render.nodes.RenderNode;
 import com.binarymonks.jj.render.ThingLayer;
 
 public class ThingTools {

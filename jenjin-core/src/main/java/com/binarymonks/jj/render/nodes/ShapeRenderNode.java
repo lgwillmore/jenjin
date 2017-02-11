@@ -1,14 +1,11 @@
-package com.binarymonks.jj.render;
+package com.binarymonks.jj.render.nodes;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.render.specs.ShapeRenderSpec;
 
-/**
- * Created by lwillmore on 30/01/17.
- */
+
 public abstract class ShapeRenderNode<SPEC extends ShapeRenderSpec> extends RenderNode<SPEC> {
 
     public ShapeRenderNode(SPEC renderSpec) {

@@ -6,6 +6,22 @@ import com.binarymonks.jj.pools.N;
 
 public class ShapePhysicsNodeSpec implements PhysicsNodeSpec {
 
-    Vector2 position = N.ew(Vector2.class);
+    float offsetX;
+    float offsetY;
+    float rotationD;
 
+    @Override
+    public float getOffsetX() {
+        return offsetX;
+    }
+
+    @Override
+    public float getOffsetY() {
+        return offsetY;
+    }
+
+    @Override
+    public float getRotationD() {
+        return rotationD;
+    }
 }

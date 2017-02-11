@@ -8,6 +8,7 @@ import com.binarymonks.jj.api.Specs;
 import com.binarymonks.jj.assets.AssetReference;
 import com.binarymonks.jj.async.Function;
 import com.binarymonks.jj.audio.SoundParams;
+import com.binarymonks.jj.things.specs.NodeSpec;
 import com.binarymonks.jj.things.specs.ThingSpec;
 
 public class Specifications implements Specs {
@@ -25,7 +26,7 @@ public class Specifications implements Specs {
     @Override
     public void loadSpecAssetsThen(Function callback) {
         Array<AssetReference> assets = getAllAssets();
-        JJ.assets.loadThen(assets,callback);
+        JJ.assets.loadThen(assets, callback);
     }
 
     @Override
@@ -37,12 +38,23 @@ public class Specifications implements Specs {
     private Array<AssetReference> getAllAssets() {
         Array<AssetReference> assets = new Array<>();
         for (ObjectMap.Entry<String, ThingSpec> specification : specifications) {
-            for (SoundParams sound : specification.value.sounds) {
-                for (String path : sound.soundPaths) {
-                    assets.add(new AssetReference(Sound.class, path));
-                }
-            }
+            addSoundAssets(assets, specification.value);
+            addRenderAssets(assets, specification.value);
         }
         return assets;
+    }
+
+    private void addRenderAssets(Array<AssetReference> assets, ThingSpec spec) {
+        for(NodeSpec node: spec.nodes){
+            assets.addAll(node.renderSpec.getAssets());
+        }
+    }
+
+    private void addSoundAssets(Array<AssetReference> assets, ThingSpec spec) {
+        for (SoundParams sound : spec.sounds) {
+            for (String path : sound.soundPaths) {
+                assets.add(new AssetReference(Sound.class, path));
+            }
+        }
     }
 }

@@ -1,12 +1,7 @@
-package com.binarymonks.jj.render;
+package com.binarymonks.jj.render.nodes;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.PolygonRegion;
 import com.badlogic.gdx.graphics.g2d.PolygonSprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
@@ -15,7 +10,6 @@ import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.pools.Re;
 import com.binarymonks.jj.render.specs.RenderSpec;
-import com.binarymonks.jj.render.specs.ShapeRenderSpec;
 
 /**
  * Created by lwillmore on 30/01/17.

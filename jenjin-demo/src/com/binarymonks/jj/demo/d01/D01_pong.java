@@ -29,8 +29,8 @@ public class D01_pong extends Game {
     public static float BAT_WIDTH = 5;
     public static float BAT_INSET = 5;
 
-    public static String MSG_PLAYER1_SCORE = "player1_score";
-    public static String MSG_PLAYER2_SCORE = "player2_score";
+    public static String MSG_PLAYER1_SCORE = "player1_scored";
+    public static String MSG_PLAYER2_SCORE = "player2_scored";
 
     public D01_pong(com.binarymonks.jj.JJConfig JJConfig) {
         super(JJConfig);
@@ -49,7 +49,6 @@ public class D01_pong extends Game {
                 .set("scoreWall", scoreWall())
         ;
 
-
         //Add instances of your ThingSpecs to a scene
         SceneSpec level = new SceneSpec()
                 .add("player",
@@ -65,7 +64,9 @@ public class D01_pong extends Game {
                                 .setProperty("color", Color.RED)
                 )
                 .add("ball",
-                        InstanceParams.New().setUniqueName("ball").setPosition(COURT_LENGTH / 2, COURT_LENGTH / 2))
+                        InstanceParams.New()
+                                .setUniqueName("ball")
+                                .setPosition(COURT_LENGTH / 2, COURT_LENGTH / 2))
                 .add("wall"
                         , InstanceParams.New().setPosition(COURT_LENGTH / 2, COURT_LENGTH - BAT_HEIGHT / 2)
                         , InstanceParams.New().setPosition(COURT_LENGTH / 2, BAT_HEIGHT / 2)
@@ -96,7 +97,6 @@ public class D01_pong extends Game {
         PlayerBehaviour player2 = JJ.things.getThingByName("player2").getBehaviour(PlayerBehaviour.class);
         mapPlayerKeys(player2, Input.Keys.UP, Input.Keys.DOWN);
 
-
         kickOff(JJ.things.getThingByName("ball"));
     }
 
@@ -112,17 +112,21 @@ public class D01_pong extends Game {
     }
 
     private void player1Scored() {
-        System.out.println("Player 1 scored");
         newBall();
     }
 
     private void player2Scored() {
-        System.out.println("Player 2 scored");
         newBall();
     }
 
     private void newBall() {
-        JJ.things.create("ball", InstanceParams.New().setUniqueName("ball").setPosition(COURT_LENGTH / 2, COURT_LENGTH / 2), this::kickOff);
+        JJ.things.create(
+                "ball",
+                InstanceParams.New()
+                        .setUniqueName("ball")
+                        .setPosition(COURT_LENGTH / 2, COURT_LENGTH / 2),
+                this::kickOff
+        );
     }
 
     private ThingSpec player() {
@@ -132,7 +136,10 @@ public class D01_pong extends Game {
                 )
                 .addNode(
                         new NodeSpec()
-                                .addRender(new ShapeRenderSpec.Rectangle().setDimension(BAT_WIDTH, BAT_HEIGHT).color.delegateToProperty("color"))
+                                .addRender(new ShapeRenderSpec.Rectangle()
+                                        .setDimension(BAT_WIDTH, BAT_HEIGHT)
+                                        .color.delegateToProperty("color")
+                                )
                                 .addPhysics(new FixtureNodeSpec()
                                         .setShape(new B2DShapeSpec.PolygonRectangle(BAT_WIDTH, BAT_HEIGHT))
                                         .addInitialBeginCollision(new BatCollision())
@@ -166,12 +173,16 @@ public class D01_pong extends Game {
                 .setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.StaticBody))
                 .addNode(
                         new NodeSpec()
-                                .addRender(new ShapeRenderSpec.Rectangle().setDimension(COURT_LENGTH - 2 * (BAT_INSET + BAT_WIDTH * 0.501f), BAT_WIDTH).color.set(Color.WHITE))
-                                .addPhysics(new FixtureNodeSpec().setShape(new B2DShapeSpec.PolygonRectangle(COURT_LENGTH - 2 * (BAT_INSET + BAT_WIDTH * 0.501f), BAT_WIDTH)))
+                                .addRender(new ShapeRenderSpec.Rectangle()
+                                        .setDimension(COURT_LENGTH - 2 * (BAT_INSET + BAT_WIDTH * 0.501f), BAT_WIDTH)
+                                        .color.set(Color.WHITE)
+                                )
+                                .addPhysics(new FixtureNodeSpec()
+                                        .setShape(new B2DShapeSpec.PolygonRectangle(COURT_LENGTH - 2 * (BAT_INSET + BAT_WIDTH * 0.501f), BAT_WIDTH)
+                                        ))
                 )
                 ;
     }
-
 
     private ThingSpec scoreWall() {
         return new ThingSpec()

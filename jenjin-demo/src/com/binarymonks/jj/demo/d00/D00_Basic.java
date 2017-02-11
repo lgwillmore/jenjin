@@ -7,6 +7,7 @@ import com.binarymonks.jj.layers.GameRenderingLayer;
 import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
 import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.render.specs.ShapeRenderSpec;
+import com.binarymonks.jj.render.specs.Spatial;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.Thing;
 import com.binarymonks.jj.things.specs.NodeSpec;
@@ -63,8 +64,7 @@ public class D00_Basic extends Game {
                                                 .setLayer(0)
                                                 .setFill(true)
                                                 .setDimension(10, 10)
-                                                .setOffset(5, 5)
-                                                .setRotationD(45)
+                                                .setSpatial(new Spatial.Fixed().setOffset(5,5).setRotationD(45))
                                                 .color.set(Color.BLUE)
                                 )
                                 .addPhysics(
@@ -81,8 +81,7 @@ public class D00_Basic extends Game {
                                                 .setLayer(0)
                                                 .setFill(true)
                                                 .setDimension(10, 10)
-                                                .setOffset(-20, 5)
-                                                .setRotationD(45)
+                                                .setSpatial(new Spatial.DelegateToPhysics())
                                                 .color.set(Color.RED)
                                 )
                                 .addPhysics(
