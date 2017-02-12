@@ -1,5 +1,6 @@
 package com.binarymonks.jj.render;
 
+import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,18 +13,25 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ShortArray;
+import com.binarymonks.jj.api.Lights;
+import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.layers.LayerStack;
 import com.binarymonks.jj.things.Thing;
 
-public class RenderWorld {
+public class RenderWorld implements Lights {
     int renderIDCounter = 0;
-    public SpriteBatch batch = new SpriteBatch();
     public ShapeRenderer shapeRenderer = new ShapeRenderer();
     public PolygonSpriteBatch polyBatch = new PolygonSpriteBatch();
+    public RayHandler rayHandler;
     public RenderGraph defaultRenderGraph = new RenderGraph();
     public ObjectMap<Integer, PolygonSprite> polySpriteCache = new ObjectMap<>();
     EarClippingTriangulator triangulator = new EarClippingTriangulator();
 
+    public RenderWorld() {
+        rayHandler = new RayHandler(Global.physics.world);
+        rayHandler.setBlurNum(2);
+        rayHandler.setAmbientLight(0.0f, 0.0f, 0.0f, 1f);
+    }
 
     public void addThing(Thing thing) {
         //TODO:buildNew rendergraphs will be handled here
@@ -56,5 +64,10 @@ public class RenderWorld {
 
     public void removeThing(Thing removal) {
         defaultRenderGraph.remove(removal.path, removal.id, removal.renderRoot.thingLayers);
+    }
+
+    @Override
+    public void setAmbientLight(float r, float g, float b, float a) {
+        rayHandler.setAmbientLight(r, g, b, a);
     }
 }

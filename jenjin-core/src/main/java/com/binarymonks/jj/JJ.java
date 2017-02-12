@@ -12,6 +12,7 @@ import com.binarymonks.jj.api.Layers;
 import com.binarymonks.jj.lifecycle.LifeCyclePublisher;
 import com.binarymonks.jj.physics.PhysicsWorld;
 import com.binarymonks.jj.pools.Pools;
+import com.binarymonks.jj.render.RenderWorld;
 import com.binarymonks.jj.things.ThingManager;
 import com.binarymonks.jj.time.TimeControls;
 import com.binarymonks.jj.things.Specifications;
@@ -53,6 +54,7 @@ public class JJ {
 
     public static EventBus events = new EventBus();
     public static BaseInputProcessor input;
+    public static Lights lights;
 
     static void initialise(JJConfig jjConfig) {
         Global.config=jjConfig;
@@ -91,6 +93,9 @@ public class JJ {
 
         assets = new AssetManager();
 
+        RenderWorld renderWorld = new RenderWorld();
+        Global.renderWorld = renderWorld;
+        lights=renderWorld;
 
     }
 

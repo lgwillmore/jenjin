@@ -14,7 +14,7 @@ public abstract class RenderSpec<CONCRETE extends RenderSpec> {
     public int id = Global.renderWorld.nextRenderID();
     public int layer;
     public int thingPriority;
-    public SpecPropField<Color, CONCRETE> color = new SpecPropField<>((CONCRETE) this, new Color(0, 0, 0, 1));
+    public SpecPropField<Color, CONCRETE> color = new SpecPropField<>((CONCRETE) this, Color.WHITE);
     CONCRETE self;
 
     public RenderSpec() {

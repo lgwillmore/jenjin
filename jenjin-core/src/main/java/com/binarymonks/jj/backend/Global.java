@@ -13,7 +13,7 @@ import com.binarymonks.jj.time.TimeControls;
 import com.binarymonks.jj.things.Specifications;
 
 public class Global {
-    public static RenderWorld renderWorld = new RenderWorld();
+    public static RenderWorld renderWorld;
     public static TimeControls time;
     public static LifeCyclePublisher lifecycle;
     public static Specifications specs;

@@ -13,7 +13,7 @@ import com.binarymonks.jj.render.RenderGraph;
 
 public class GameRenderingLayer extends Layer {
     public OrthographicCamera camera;
-    RayHandler rayHandler;
+
     Box2DDebugRenderer drenderer = new Box2DDebugRenderer();
 
     public GameRenderingLayer(float worldBoxWidth, float posX, float posY) {
@@ -24,19 +24,14 @@ public class GameRenderingLayer extends Layer {
         camera = new OrthographicCamera(worldBoxWidth, worldBoxWidth * (h / w));
         camera.position.set(posX, posY, 0);
         camera.update();
-        rayHandler = new RayHandler(Global.physics.world);
-        rayHandler.setBlurNum(2);
     }
 
 
     @Override
     public void update() {
         camera.update();
-        Global.renderWorld.batch.enableBlending();
         Global.renderWorld.polyBatch.enableBlending();
-        Global.renderWorld.batch.setProjectionMatrix(camera.combined);
         Global.renderWorld.polyBatch.setProjectionMatrix(camera.combined);
-//        Global.renderWorld.batch.begin();
         Global.renderWorld.polyBatch.begin();
         ObjectMap<Integer, RenderGraph.RenderLayer> layers = Global.renderWorld.defaultRenderGraph.renderLayers;
         int renderedCount = 0;
@@ -48,14 +43,16 @@ public class GameRenderingLayer extends Layer {
             }
             layerIndex++;
         }
-//        Global.renderWorld.batch.end();
-//        Global.renderWorld.batch.enableBlending();
         Global.renderWorld.polyBatch.end();
-        rayHandler.setCombinedMatrix(camera.combined, camera.position.x, camera.position.y, camera.viewportWidth, camera.viewportHeight);
-        rayHandler.updateAndRender();
+        renderLights();
         if (Global.config.b2dDebug) {
-            drenderer.render(Global.physics.world, Global.renderWorld.batch.getProjectionMatrix());
+            drenderer.render(Global.physics.world, Global.renderWorld.polyBatch.getProjectionMatrix());
         }
+    }
+
+    private void renderLights() {
+        Global.renderWorld.rayHandler.setCombinedMatrix(camera.combined, camera.position.x, camera.position.y, camera.viewportWidth, camera.viewportHeight);
+        Global.renderWorld.rayHandler.updateAndRender();
     }
 
     private void updateLayer(RenderGraph.RenderLayer layer) {
