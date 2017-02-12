@@ -14,6 +14,7 @@ public abstract class RenderSpec<CONCRETE extends RenderSpec> {
     public int id = Global.renderWorld.nextRenderID();
     public int layer;
     public int thingPriority;
+    public GraphSpec<CONCRETE> renderGraph = new GraphSpec<CONCRETE>((CONCRETE) this);
     public SpecPropField<Color, CONCRETE> color = new SpecPropField<>((CONCRETE) this, Color.WHITE);
     CONCRETE self;
 

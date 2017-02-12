@@ -1,12 +1,13 @@
 package com.binarymonks.jj.physics.specs.b2d;
 
 import com.badlogic.gdx.utils.Array;
+import com.binarymonks.jj.physics.CollisionDataSpec;
 import com.binarymonks.jj.physics.CollisionFunction;
 import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
 
 public class FixtureNodeSpec implements PhysicsNodeSpec {
 
-    public String collisionGroup;
+    public CollisionDataSpec<FixtureNodeSpec> collisionData = new CollisionDataSpec<>(this);
     public float density = 0.5f;
     public float friction = 0f;
     public float restitution = 0;
@@ -19,11 +20,6 @@ public class FixtureNodeSpec implements PhysicsNodeSpec {
     public Array<CollisionFunction> finalBeginCollisions = new Array<>();
     public Array<CollisionFunction> endCollisions = new Array<>();
 
-
-    public FixtureNodeSpec setCollisionGroup(String collisionGroup) {
-        this.collisionGroup = collisionGroup;
-        return this;
-    }
 
     public FixtureNodeSpec setDensity(float density) {
         this.density = density;
@@ -61,17 +57,17 @@ public class FixtureNodeSpec implements PhysicsNodeSpec {
         return this;
     }
 
-    public FixtureNodeSpec addInitialBeginCollision(CollisionFunction function){
+    public FixtureNodeSpec addInitialBeginCollision(CollisionFunction function) {
         initialBeginCollisions.add(function);
         return this;
     }
 
-    public FixtureNodeSpec addFinalBeginCollision(CollisionFunction function){
+    public FixtureNodeSpec addFinalBeginCollision(CollisionFunction function) {
         finalBeginCollisions.add(function);
         return this;
     }
 
-    public FixtureNodeSpec addEndCollision(CollisionFunction function){
+    public FixtureNodeSpec addEndCollision(CollisionFunction function) {
         endCollisions.add(function);
         return this;
     }

@@ -26,6 +26,7 @@ import com.binarymonks.jj.pools.PoolManager;
 import com.binarymonks.jj.pools.Re;
 import com.binarymonks.jj.render.nodes.RenderNode;
 import com.binarymonks.jj.render.ThingLayer;
+import com.binarymonks.jj.specs.SpecTools;
 import com.binarymonks.jj.things.specs.NodeSpec;
 import com.binarymonks.jj.things.specs.ThingSpec;
 
@@ -88,15 +89,15 @@ public class ThingFactory {
 
     private void buildLights(Context context) {
         for (LightSpec lightSpec : context.thingSpec.lights) {
-            addLight(lightSpec, context.thing, context.body);
+            addLight(lightSpec, context.thing, context.body, context.instanceParams.properties);
         }
     }
 
-    private void addLight(LightSpec lightSpec, Thing thing, Body body) {
+    private void addLight(LightSpec lightSpec, Thing thing, Body body, ObjectMap<String, Object> properties) {
         Light light = null;
         if (lightSpec instanceof LightSpec.Point) {
             LightSpec.Point pointSpec = (LightSpec.Point) lightSpec;
-            light = new PointLight(Global.renderWorld.rayHandler, pointSpec.rays, pointSpec.color, pointSpec.reach, pointSpec.offsetX, pointSpec.offsetY);
+            light = new PointLight(Global.renderWorld.rayHandler, pointSpec.rays, SpecTools.freeze(pointSpec.color, properties), pointSpec.reach, pointSpec.offsetX, pointSpec.offsetY);
             light.attachToBody(body);
         }
         if (lightSpec.name == null) {
@@ -180,10 +181,10 @@ public class ThingFactory {
             fDef.friction = fixtureSpec.friction;
             fDef.restitution = fixtureSpec.restitution;
             fDef.isSensor = fixtureSpec.isSensor;
-            String collisionGroup = fixtureSpec.collisionGroup;
-            CollisionGroups.CollisionGroupData cd = Global.physics.collisionGroups.getGroupData(collisionGroup);
+            CollisionGroups.CollisionData cd = Global.physics.collisionGroups.getCollisionData(fixtureSpec.collisionData);
             fDef.filter.categoryBits = cd.category;
             fDef.filter.maskBits = cd.mask;
+            Re.cycle(cd);
 
             Fixture f = context.body.createFixture(fDef);
             node.fixture = f;
