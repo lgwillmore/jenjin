@@ -53,7 +53,7 @@ public class JJ {
     public static Tasks tasks;
 
     public static EventBus events = new EventBus();
-    public static BaseInputProcessor input;
+    public static JJInput input;
     public static Lights lights;
 
     static void initialise(JJConfig jjConfig) {

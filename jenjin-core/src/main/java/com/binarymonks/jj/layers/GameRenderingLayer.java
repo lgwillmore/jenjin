@@ -6,14 +6,17 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.backend.Global;
+import com.binarymonks.jj.input.TouchManager;
 import com.binarymonks.jj.render.nodes.RenderNode;
 import com.binarymonks.jj.render.ThingLayer;
 import com.binarymonks.jj.render.RenderGraph;
+import com.binarymonks.jj.things.Thing;
 
 public class GameRenderingLayer extends Layer {
     public OrthographicCamera camera;
 
     Box2DDebugRenderer drenderer = new Box2DDebugRenderer();
+    TouchManager touchManager;
 
     public GameRenderingLayer(float worldBoxWidth, float posX, float posY) {
         float w = Gdx.graphics.getWidth();
@@ -23,12 +26,19 @@ public class GameRenderingLayer extends Layer {
         camera = new OrthographicCamera(worldBoxWidth, worldBoxWidth * (h / w));
         camera.position.set(posX, posY, 0);
         camera.update();
+        touchManager = new TouchManager(camera);
+        inputMultiplexer.addProcessor(touchManager);
+    }
+
+    public void addMouseDrag(Thing thing) {
+        touchManager.addMouseDrag(thing);
     }
 
 
     @Override
     public void update() {
         camera.update();
+        touchManager.update();
         renderGraph(Global.renderWorld.defaultRenderGraph);
         renderLights();
         renderGraph(Global.renderWorld.lightSourceRenderGraph);

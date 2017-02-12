@@ -4,6 +4,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.api.JJInput;
 import com.binarymonks.jj.async.Function;
+import com.binarymonks.jj.things.Thing;
 
 import java.util.function.Supplier;
 
@@ -17,6 +18,11 @@ public class BaseInputProcessor implements JJInput, InputProcessor {
             keyToActionToFunctionMap.put(keyCode, new ObjectMap<>());
         }
         keyToActionToFunctionMap.get(keyCode).put(keyAction, function);
+    }
+
+    @Override
+    public void addMouseDrag(Thing thing) {
+
     }
 
     @Override
