@@ -76,6 +76,9 @@ public class ThingFactory {
     private void resetPooled(Context context) {
         ThingTools.resetPhysics(context.thing, context.instanceParams);
         context.thing.behaviourMaster.reactivate();
+        for (ObjectMap.Entry<String, Light> light : context.thing.lights) {
+            light.value.setActive(true);
+        }
     }
 
     private void buildNew(String thingSpecPath, Context context) {

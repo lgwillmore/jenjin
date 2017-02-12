@@ -11,5 +11,4 @@ import java.util.function.Supplier;
 public interface JJInput {
     void map(int keyCode, Actions.Key keyAction, Supplier<Boolean> function);
 
-    void addMouseDrag(Thing thing);
 }

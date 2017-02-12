@@ -20,10 +20,6 @@ public class BaseInputProcessor implements JJInput, InputProcessor {
         keyToActionToFunctionMap.get(keyCode).put(keyAction, function);
     }
 
-    @Override
-    public void addMouseDrag(Thing thing) {
-
-    }
 
     @Override
     public boolean keyDown(int keycode) {

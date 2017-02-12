@@ -1,5 +1,6 @@
 package com.binarymonks.jj.things;
 
+import box2dLight.Light;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -24,10 +25,16 @@ public class ThingTools {
         if (thing.spec.pool) {
             thing.behaviourMaster.neutralise();
             neutralisePhysics(thing);
+            for (ObjectMap.Entry<String, Light> light : thing.lights) {
+                light.value.setActive(false);
+            }
         } else {
             destroyRender(thing);
             destroyPhysics(thing);
             thing.behaviourMaster.neutralise();
+            for (ObjectMap.Entry<String, Light> light : thing.lights) {
+                light.value.dispose();
+            }
         }
 
     }

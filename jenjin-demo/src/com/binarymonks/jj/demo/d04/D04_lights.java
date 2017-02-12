@@ -13,7 +13,6 @@ import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
 import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.render.specs.B2DRenderSpec;
 import com.binarymonks.jj.render.specs.BackingTexture;
-import com.binarymonks.jj.render.specs.ShapeRenderSpec;
 import com.binarymonks.jj.render.specs.TextureRenderSpec;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.Thing;
