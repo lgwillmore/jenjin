@@ -5,6 +5,7 @@ import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.JJConfig;
 import com.binarymonks.jj.layers.GameRenderingLayer;
+import com.binarymonks.jj.lights.specs.LightSpec;
 import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
 import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.render.specs.B2DRenderSpec;
@@ -32,6 +33,7 @@ public class D04_lights extends Game {
         JJ.specs
                 .set("background", background())
                 .set("block", block())
+                .set("light", light())
         ;
 
         SceneSpec scene = new SceneSpec();
@@ -41,8 +43,11 @@ public class D04_lights extends Game {
                 InstanceParams.New().setPosition(300, 300),
                 InstanceParams.New().setPosition(700, 700),
                 InstanceParams.New().setPosition(1100, 1100)
-        )
+        ).add("light",
+                InstanceParams.New().setPosition(750, 750))
         ;
+
+        JJ.lights.setAmbientLight(0,0,0,0.3f);
 
         JJ.things.loadNow(scene);
     }
@@ -77,6 +82,11 @@ public class D04_lights extends Game {
                                         .setShape(new B2DShapeSpec.PolygonRectangle(100, 100))
                                 )
                 );
+    }
+
+    private ThingSpec light() {
+        return new ThingSpec()
+                .addLight(new LightSpec.Point().setColor(Color.RED).setReach(300));
     }
 
 

@@ -1,5 +1,7 @@
 package com.binarymonks.jj.things;
 
+import box2dLight.Light;
+import box2dLight.PointLight;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -10,6 +12,7 @@ import com.binarymonks.jj.audio.SoundEffects;
 import com.binarymonks.jj.audio.SoundParams;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.behaviour.Behaviour;
+import com.binarymonks.jj.lights.specs.LightSpec;
 import com.binarymonks.jj.physics.CollisionFunction;
 import com.binarymonks.jj.physics.CollisionGroups;
 import com.binarymonks.jj.physics.CollisionResolver;
@@ -28,6 +31,7 @@ import com.binarymonks.jj.things.specs.ThingSpec;
 
 public class ThingFactory {
     int idCounter = 0;
+    int lightCounter = 0;
     ObjectMap<String, Array<Thing>> pooledThings = new ObjectMap<>();
 
     public ThingFactory() {
@@ -79,6 +83,26 @@ public class ThingFactory {
         wireInRenderNodes(context);
         buildBehaviour(context);
         buildSounds(context);
+        buildLights(context);
+    }
+
+    private void buildLights(Context context) {
+        for (LightSpec lightSpec : context.thingSpec.lights) {
+            addLight(lightSpec, context.thing, context.body);
+        }
+    }
+
+    private void addLight(LightSpec lightSpec, Thing thing, Body body) {
+        Light light = null;
+        if (lightSpec instanceof LightSpec.Point) {
+            LightSpec.Point pointSpec = (LightSpec.Point) lightSpec;
+            light = new PointLight(Global.renderWorld.rayHandler, pointSpec.rays, pointSpec.color, pointSpec.reach, pointSpec.offsetX, pointSpec.offsetY);
+            light.attachToBody(body);
+        }
+        if (lightSpec.name == null) {
+            lightSpec.name = "anon" + lightCounter++;
+        }
+        thing.lights.put(lightSpec.name, light);
     }
 
     private void setProperties(Context context) {
@@ -147,7 +171,7 @@ public class ThingFactory {
     }
 
     private void buildFixture(PhysicsNodeSpec nodeSpec, ThingNode node, Context context) {
-        if(nodeSpec instanceof FixtureNodeSpec) {
+        if (nodeSpec instanceof FixtureNodeSpec) {
             FixtureNodeSpec fixtureSpec = (FixtureNodeSpec) nodeSpec;
             Shape shape = buildShape(fixtureSpec);
             FixtureDef fDef = new FixtureDef();

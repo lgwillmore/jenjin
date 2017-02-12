@@ -1,7 +1,6 @@
 package com.binarymonks.jj.lights.specs;
 
 import com.badlogic.gdx.graphics.Color;
-import com.binarymonks.jj.specs.SpecPropField;
 
 public abstract class LightSpec<CONCRETE extends LightSpec> {
 
@@ -13,7 +12,7 @@ public abstract class LightSpec<CONCRETE extends LightSpec> {
 
     public String name;
     public int rays = 20;
-    public SpecPropField<Color, CONCRETE> color = new SpecPropField<>((CONCRETE) this, new Color(0.3f, 0.3f, 0.3f, 0.3f));
+    public Color color = new Color(0.3f, 0.3f, 0.3f, 0.3f);
     public float reach = 2f;
     public String collisionGroup;
 
@@ -34,6 +33,11 @@ public abstract class LightSpec<CONCRETE extends LightSpec> {
 
     public CONCRETE setCollisionGroup(String collisionGroup) {
         this.collisionGroup = collisionGroup;
+        return self;
+    }
+
+    public CONCRETE setColor(Color color) {
+        this.color = color;
         return self;
     }
 

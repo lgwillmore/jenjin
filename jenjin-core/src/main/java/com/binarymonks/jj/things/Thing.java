@@ -1,5 +1,6 @@
 package com.binarymonks.jj.things;
 
+import box2dLight.Light;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.async.Task;
 import com.binarymonks.jj.async.TaskMaster;
@@ -22,6 +23,7 @@ public class Thing {
     public SoundEffects sounds;
     boolean markedForDestruction = false;
     public BehaviourMaster behaviourMaster = new BehaviourMaster();
+    ObjectMap<String, Light> lights = new ObjectMap<>();
     ObjectMap<String, Object> properties = new ObjectMap<>();
     ObjectMap<String, ThingNode> nodes = new ObjectMap<>();
 
