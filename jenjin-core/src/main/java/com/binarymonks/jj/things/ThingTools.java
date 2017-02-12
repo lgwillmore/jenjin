@@ -93,7 +93,12 @@ public class ThingTools {
     }
 
     private static void destroyRender(Thing thing) {
-        for (ObjectMap.Entry<Integer, ThingLayer> thingLayer : thing.renderRoot.thingLayers) {
+        destroyGraphLayers(thing.renderRoot.defaultThingLayers);
+        destroyGraphLayers(thing.renderRoot.lightSourceThingLayers);
+    }
+
+    private static void destroyGraphLayers(ObjectMap<Integer, ThingLayer> graphLayers) {
+        for (ObjectMap.Entry<Integer, ThingLayer> thingLayer : graphLayers) {
             for (RenderNode node : thingLayer.value.renderNodes) {
                 node.dispose();
             }
@@ -125,7 +130,7 @@ public class ThingTools {
 
         Thing thing;
 
-        public NeutralisePhysics setThing(Thing thing){
+        public NeutralisePhysics setThing(Thing thing) {
             this.thing = thing;
             return this;
         }

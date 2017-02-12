@@ -1,9 +1,6 @@
 package com.binarymonks.jj.render;
 
 import box2dLight.RayHandler;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
@@ -15,15 +12,17 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ShortArray;
 import com.binarymonks.jj.api.Lights;
 import com.binarymonks.jj.backend.Global;
-import com.binarymonks.jj.layers.LayerStack;
 import com.binarymonks.jj.things.Thing;
 
 public class RenderWorld implements Lights {
+    public static final String DEFAULT_RENDER_GRAPH = "DEFAULT_RENDERGRAPH";
+    public static final String LIGHTSOURCE_RENDER_GRAPH = "LIGHTSOURCE_RENDERGRAPH";
     int renderIDCounter = 0;
     public ShapeRenderer shapeRenderer = new ShapeRenderer();
     public PolygonSpriteBatch polyBatch = new PolygonSpriteBatch();
     public RayHandler rayHandler;
     public RenderGraph defaultRenderGraph = new RenderGraph();
+    public RenderGraph lightSourceRenderGraph = new RenderGraph();
     public ObjectMap<Integer, PolygonSprite> polySpriteCache = new ObjectMap<>();
     EarClippingTriangulator triangulator = new EarClippingTriangulator();
 
@@ -34,8 +33,8 @@ public class RenderWorld implements Lights {
     }
 
     public void addThing(Thing thing) {
-        //TODO:buildNew rendergraphs will be handled here
-        defaultRenderGraph.add(thing.path, thing.id, thing.renderRoot.thingLayers);
+        defaultRenderGraph.add(thing.path, thing.id, thing.renderRoot.defaultThingLayers);
+        lightSourceRenderGraph.add(thing.path, thing.id, thing.renderRoot.lightSourceThingLayers);
     }
 
     public int nextRenderID() {
@@ -63,7 +62,8 @@ public class RenderWorld implements Lights {
     }
 
     public void removeThing(Thing removal) {
-        defaultRenderGraph.remove(removal.path, removal.id, removal.renderRoot.thingLayers);
+        defaultRenderGraph.remove(removal.path, removal.id, removal.renderRoot.defaultThingLayers);
+        lightSourceRenderGraph.remove(removal.path, removal.id, removal.renderRoot.lightSourceThingLayers);
     }
 
     @Override

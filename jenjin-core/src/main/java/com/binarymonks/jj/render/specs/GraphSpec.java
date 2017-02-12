@@ -5,7 +5,7 @@ import com.binarymonks.jj.render.GraphType;
 public class GraphSpec<OWNER> {
 
     OWNER self;
-    GraphType type = GraphType.DEFAULT;
+    public GraphType type = GraphType.DEFAULT;
 
     public GraphSpec(OWNER self) {
         this.self = self;

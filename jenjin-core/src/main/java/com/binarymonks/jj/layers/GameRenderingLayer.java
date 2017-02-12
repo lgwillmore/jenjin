@@ -1,6 +1,5 @@
 package com.binarymonks.jj.layers;
 
-import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -30,10 +29,19 @@ public class GameRenderingLayer extends Layer {
     @Override
     public void update() {
         camera.update();
+        renderGraph(Global.renderWorld.defaultRenderGraph);
+        renderLights();
+        renderGraph(Global.renderWorld.lightSourceRenderGraph);
+        if (Global.config.b2dDebug) {
+            drenderer.render(Global.physics.world, Global.renderWorld.polyBatch.getProjectionMatrix());
+        }
+    }
+
+    private void renderGraph(RenderGraph renderGraph) {
+        ObjectMap<Integer, RenderGraph.RenderLayer> layers = renderGraph.renderLayers;
         Global.renderWorld.polyBatch.enableBlending();
         Global.renderWorld.polyBatch.setProjectionMatrix(camera.combined);
         Global.renderWorld.polyBatch.begin();
-        ObjectMap<Integer, RenderGraph.RenderLayer> layers = Global.renderWorld.defaultRenderGraph.renderLayers;
         int renderedCount = 0;
         int layerIndex = 0;
         while (renderedCount < layers.size) {
@@ -44,10 +52,6 @@ public class GameRenderingLayer extends Layer {
             layerIndex++;
         }
         Global.renderWorld.polyBatch.end();
-        renderLights();
-        if (Global.config.b2dDebug) {
-            drenderer.render(Global.physics.world, Global.renderWorld.polyBatch.getProjectionMatrix());
-        }
     }
 
     private void renderLights() {

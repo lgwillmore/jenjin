@@ -10,4 +10,5 @@ public class ThingLayer {
     public ThingLayer(int layer) {
         this.layer = layer;
     }
+
 }

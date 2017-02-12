@@ -10,11 +10,13 @@ public abstract class RenderNode<SPEC extends RenderSpec> {
     protected Thing parent;
     public static RenderNode<?> NULL = new Null(new RenderSpec.Null());
     public SPEC spec;
+    public String renderGraphName;
     public PropField<Color, ?> color = new PropField<>(new Color(0, 0, 0, 1));
 
     public RenderNode(SPEC spec) {
         this.spec = spec;
         this.color.copyFrom(spec.color);
+        this.renderGraphName= spec.renderGraph.type.name();
     }
 
 

@@ -24,6 +24,7 @@ import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.pools.PoolManager;
 import com.binarymonks.jj.pools.Re;
+import com.binarymonks.jj.render.RenderWorld;
 import com.binarymonks.jj.render.nodes.RenderNode;
 import com.binarymonks.jj.render.ThingLayer;
 import com.binarymonks.jj.specs.SpecTools;
@@ -129,9 +130,16 @@ public class ThingFactory {
     }
 
     private void wireInRenderNodes(Context context) {
+        ObjectMap<Integer, ThingLayer> defaultLayers = buildLayers(context, RenderWorld.DEFAULT_RENDER_GRAPH);
+        ObjectMap<Integer, ThingLayer> lightSourceLayers = buildLayers(context, RenderWorld.LIGHTSOURCE_RENDER_GRAPH);
+        context.thing.renderRoot.defaultThingLayers = defaultLayers;
+        context.thing.renderRoot.lightSourceThingLayers = lightSourceLayers;
+    }
+
+    private ObjectMap<Integer, ThingLayer> buildLayers(Context context, String defaultRenderGraph) {
         ObjectMap<Integer, ThingLayer> thingLayers = new ObjectMap<>();
         for (ThingNode node : context.nodes) {
-            if (!(node.render == RenderNode.NULL)) {
+            if (!(node.render == RenderNode.NULL) && node.render.renderGraphName.equals(defaultRenderGraph)) {
                 int layer = node.render.spec.layer;
                 if (layer < 0) {
                     throw new RuntimeException("You cannot have a layer less than 0");
@@ -145,12 +153,10 @@ public class ThingFactory {
         }
         for (ObjectMap.Entry<Integer, ThingLayer> layers : thingLayers) {
             layers.value.renderNodes.sort(
-                    (o1, o2) -> {
-                        return o1.spec.thingPriority - o2.spec.thingPriority;
-                    }
+                    (o1, o2) -> o1.spec.thingPriority - o2.spec.thingPriority
             );
         }
-        context.thing.renderRoot.thingLayers = thingLayers;
+        return thingLayers;
     }
 
     private void buildNodes(Context context) {
