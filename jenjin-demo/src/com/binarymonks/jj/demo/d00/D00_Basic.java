@@ -41,7 +41,7 @@ public class D00_Basic extends Game {
                 );
 
         //Load the level asynchronously with a callback when it is done
-        JJ.things.loadNow(level, this::onLevelLoaded);
+        JJ.things.load(level, this::onLevelLoaded);
     }
 
 

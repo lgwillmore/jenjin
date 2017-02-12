@@ -87,7 +87,7 @@ public class D01_pong extends Game {
         JJ.events.register(MSG_PLAYER2_SCORE, this::player2Scored);
 
         //Load the the scene
-        JJ.things.loadNow(level, this::gameLoaded);
+        JJ.things.load(level, this::gameLoaded);
     }
 
     private void gameLoaded() {

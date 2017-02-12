@@ -20,7 +20,7 @@ public interface Things {
      */
     Thing getThingByName(String uniqueName);
 
-    void loadNow(SceneSpec sceneSpec, Function callback);
+    void load(SceneSpec sceneSpec, Function callback);
 
     void loadNow(SceneSpec sceneSpec);
 

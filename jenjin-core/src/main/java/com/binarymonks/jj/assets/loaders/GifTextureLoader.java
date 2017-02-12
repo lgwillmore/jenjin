@@ -32,7 +32,7 @@ public class GifTextureLoader extends AsynchronousAssetLoader<GifTexture,GifLoad
 		try(InputStream in = file.read()){
 			gifTexture = gifReader.readGifTexture(in);
 		} catch (IOException e) {
-			throw new RuntimeException("Could not loadNow gif",e);
+			throw new RuntimeException("Could not load gif",e);
 		}
 		GifTexture gTex = gifTexture;
 		gifTexture=null;

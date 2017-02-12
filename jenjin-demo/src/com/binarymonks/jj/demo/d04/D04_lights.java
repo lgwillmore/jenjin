@@ -46,12 +46,16 @@ public class D04_lights extends Game {
                 InstanceParams.New().setPosition(700, 700),
                 InstanceParams.New().setPosition(1100, 1100)
         ).add("light",
-                InstanceParams.New().setPosition(1000, 400))
+                InstanceParams.New().setUniqueName("light").setPosition(1000, 400))
         ;
 
         JJ.lights.setAmbientLight(0, 0, 0, 0.3f);
 
-        JJ.things.loadNow(scene);
+        JJ.things.load(scene, this::onLoad);
+    }
+
+    public void onLoad(){
+
     }
 
     private ThingSpec background() {
