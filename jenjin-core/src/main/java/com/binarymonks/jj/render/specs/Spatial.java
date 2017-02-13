@@ -26,6 +26,13 @@ public interface Spatial {
         public float getRotationD(PhysicsNodeSpec nodeSpec) {
             return nodeSpec.getRotationD();
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof DelegateToPhysics)) return false;
+            return true;
+        }
     }
 
     class Fixed implements Spatial {
@@ -67,6 +74,36 @@ public interface Spatial {
         @Override
         public float getRotationD(PhysicsNodeSpec nodeSpec) {
             return rotationD;
+        }
+
+        @Override
+        public String toString() {
+            return "Fixed{" +
+                    "offsetX=" + offsetX +
+                    ", offsetY=" + offsetY +
+                    ", rotationD=" + rotationD +
+                    '}';
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Fixed)) return false;
+
+            Fixed fixed = (Fixed) o;
+
+            if (Float.compare(fixed.offsetX, offsetX) != 0) return false;
+            if (Float.compare(fixed.offsetY, offsetY) != 0) return false;
+            return Float.compare(fixed.rotationD, rotationD) == 0;
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = (offsetX != +0.0f ? Float.floatToIntBits(offsetX) : 0);
+            result = 31 * result + (offsetY != +0.0f ? Float.floatToIntBits(offsetY) : 0);
+            result = 31 * result + (rotationD != +0.0f ? Float.floatToIntBits(rotationD) : 0);
+            return result;
         }
     }
 }

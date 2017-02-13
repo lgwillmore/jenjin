@@ -3,8 +3,6 @@ package com.binarymonks.jj.input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.api.JJInput;
-import com.binarymonks.jj.async.Function;
-import com.binarymonks.jj.things.Thing;
 
 import java.util.function.Supplier;
 

@@ -30,7 +30,7 @@ public class SchedulerTest {
 
         setTimeTo(timeScheduled);
 
-        schedular.scheduleInSeconds(scheduledFunctionMock, timeToWait);
+        schedular.scheduleInSeconds(scheduledFunctionMock, timeToWait, false);
 
         setTimeTo(timeScheduled + 4.9f);
 
@@ -56,7 +56,7 @@ public class SchedulerTest {
 
         setTimeTo(timeScheduled);
 
-        int id = schedular.scheduleInSeconds(scheduledFunctionMock, timeToWait);
+        int id = schedular.scheduleInSeconds(scheduledFunctionMock, timeToWait, false);
 
         setTimeTo(timeScheduled + 4.9f);
 

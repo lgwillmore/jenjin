@@ -25,4 +25,10 @@ public class Global {
     public static LoopTasks tasks;
     public static JJConfig config;
     public static BaseInputProcessor input;
+
+    static int idCounter = 0;
+
+    public static int nextID() {
+        return idCounter++;
+    }
 }

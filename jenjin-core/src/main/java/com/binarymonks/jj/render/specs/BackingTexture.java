@@ -2,16 +2,27 @@ package com.binarymonks.jj.render.specs;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.assets.AssetReference;
 import com.binarymonks.jj.render.nodes.TextureProvider;
 import com.binarymonks.jj.utils.Empty;
 
-public abstract class BackingTexture {
+public abstract class BackingTexture<CONCRETE extends BackingTexture> implements Json.Serializable {
     public String path;
+    CONCRETE self = (CONCRETE) this;
+
+    public BackingTexture() {
+    }
 
     public BackingTexture(String path) {
         this.path = path;
+    }
+
+    public CONCRETE setPath(String path) {
+        this.path = path;
+        return self;
     }
 
     public abstract TextureProvider getProvider();
@@ -20,7 +31,17 @@ public abstract class BackingTexture {
         return Empty.Array();
     }
 
+    @Override
+    public String toString() {
+        return "BackingTexture{" +
+                "path='" + path + '\'' +
+                '}';
+    }
+
     public static class SimpleTexture extends BackingTexture {
+        public SimpleTexture() {
+        }
+
         public SimpleTexture(String path) {
             super(path);
         }
@@ -35,6 +56,17 @@ public abstract class BackingTexture {
             Array<AssetReference> assets = new Array<>();
             assets.add(new AssetReference(Texture.class, path));
             return assets;
+        }
+
+
+        @Override
+        public void write(Json json) {
+            json.writeValue("path", path);
+        }
+
+        @Override
+        public void read(Json json, JsonValue jsonData) {
+            this.path = jsonData.getString("path");
         }
     }
 }
