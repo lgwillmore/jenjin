@@ -38,11 +38,11 @@ public abstract class BackingTexture<CONCRETE extends BackingTexture> implements
                 '}';
     }
 
-    public static class SimpleTexture extends BackingTexture {
-        public SimpleTexture() {
+    public static class Simple extends BackingTexture {
+        public Simple() {
         }
 
-        public SimpleTexture(String path) {
+        public Simple(String path) {
             super(path);
         }
 

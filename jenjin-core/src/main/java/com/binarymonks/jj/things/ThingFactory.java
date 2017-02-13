@@ -25,8 +25,8 @@ import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.pools.PoolManager;
 import com.binarymonks.jj.pools.Re;
 import com.binarymonks.jj.render.RenderWorld;
-import com.binarymonks.jj.render.nodes.RenderNode;
 import com.binarymonks.jj.render.ThingLayer;
+import com.binarymonks.jj.render.nodes.RenderNode;
 import com.binarymonks.jj.specs.SpecTools;
 import com.binarymonks.jj.things.specs.NodeSpec;
 import com.binarymonks.jj.things.specs.ThingSpec;
@@ -235,7 +235,17 @@ public class ThingFactory {
             B2DShapeSpec.Circle circle = (B2DShapeSpec.Circle) nodeSpec.shape;
             CircleShape circleShape = new CircleShape();
             circleShape.setRadius(circle.radius);
+            circleShape.setPosition(N.ew(Vector2.class).set(nodeSpec.offsetX, nodeSpec.offsetY));
             return circleShape;
+        } else if (nodeSpec.shape instanceof B2DShapeSpec.Polygon) {
+            B2DShapeSpec.Polygon polygonSpec = (B2DShapeSpec.Polygon) nodeSpec.shape;
+            PolygonShape polygonShape = new PolygonShape();
+            Vector2[] vertices = new Vector2[polygonSpec.edges.size];
+            for (int i = 0; i < polygonSpec.edges.size; i++) {
+                vertices[i] = polygonSpec.edges.get(i);
+            }
+            polygonShape.set(vertices);
+            return polygonShape;
         }
         return null;
     }

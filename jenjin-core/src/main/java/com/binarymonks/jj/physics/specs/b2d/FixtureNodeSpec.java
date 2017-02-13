@@ -9,7 +9,7 @@ public class FixtureNodeSpec implements PhysicsNodeSpec {
 
     public CollisionDataSpec<FixtureNodeSpec> collisionData = new CollisionDataSpec<>(this);
     public float density = 0.5f;
-    public float friction = 0f;
+    public float friction = 0.1f;
     public float restitution = 0;
     public float rotationD = 0;
     public float offsetX;

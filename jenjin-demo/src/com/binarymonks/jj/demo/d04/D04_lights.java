@@ -72,7 +72,7 @@ public class D04_lights extends Game {
                         new NodeSpec()
                                 .addRender(
                                         new TextureRenderSpec(
-                                                new BackingTexture.SimpleTexture("textures/circuit_background.png"),
+                                                new BackingTexture.Simple("textures/circuit_background.png"),
                                                 WORLD_WIDTH,
                                                 WORLD_WIDTH * heightToWidth
                                         )

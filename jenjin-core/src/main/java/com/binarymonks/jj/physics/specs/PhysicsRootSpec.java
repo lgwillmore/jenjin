@@ -9,7 +9,7 @@ public interface PhysicsRootSpec {
 
     public static class B2D implements PhysicsRootSpec {
         public BodyDef.BodyType bodyType = BodyDef.BodyType.DynamicBody;
-        public boolean fixedRotation;
+        public boolean fixedRotation=false;
         public float linearDamping;
         public float angularDamping;
         public boolean bullet = false;

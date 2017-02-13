@@ -1,5 +1,8 @@
 package com.binarymonks.jj.physics.specs.b2d;
 
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+
 public interface B2DShapeSpec {
 
     public static class PolygonRectangle implements B2DShapeSpec {
@@ -21,4 +24,14 @@ public interface B2DShapeSpec {
         }
     }
 
+    public class Polygon implements B2DShapeSpec {
+
+        public Array<Vector2> edges = new Array<Vector2>();
+
+        public Polygon add(Vector2 vertex) {
+            edges.add(vertex);
+            return this;
+        }
+
+    }
 }
