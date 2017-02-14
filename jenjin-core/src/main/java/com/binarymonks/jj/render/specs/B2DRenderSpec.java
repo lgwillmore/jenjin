@@ -47,8 +47,12 @@ public class B2DRenderSpec extends RenderSpec<B2DRenderSpec> {
                 circleNode.radius = circleSpec.radius;
                 circleNode.offset.set(fixtureNodeSpec.offsetX, fixtureNodeSpec.offsetY);
                 return circleNode;
+            } else if (fixtureNodeSpec.shape instanceof B2DShapeSpec.Chain) {
+                B2DShapeSpec.Chain chainSpec = (B2DShapeSpec.Chain) fixtureNodeSpec.shape;
+                ShapeRenderNode.ChainLine chainLineNode = new ShapeRenderNode.ChainLine(this, chainSpec.edges);
+                return chainLineNode;
             }
         }
-        return null;
+        return new RenderNode.Null(this);
     }
 }

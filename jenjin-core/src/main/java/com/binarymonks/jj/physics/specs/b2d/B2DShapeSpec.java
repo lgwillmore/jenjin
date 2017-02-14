@@ -34,4 +34,14 @@ public interface B2DShapeSpec {
         }
 
     }
+
+    public static class Chain implements B2DShapeSpec {
+
+        public Array<Vector2> edges = new Array<Vector2>();
+
+        public Chain add(Vector2 vertex) {
+            edges.add(vertex);
+            return this;
+        }
+    }
 }

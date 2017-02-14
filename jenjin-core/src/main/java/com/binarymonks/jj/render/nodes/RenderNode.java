@@ -16,7 +16,7 @@ public abstract class RenderNode<SPEC extends RenderSpec> {
     public RenderNode(SPEC spec) {
         this.spec = spec;
         this.color.copyFrom(spec.color);
-        this.renderGraphName= spec.renderGraph.type.name();
+        this.renderGraphName = spec.renderGraph.type.name();
     }
 
 
@@ -24,10 +24,10 @@ public abstract class RenderNode<SPEC extends RenderSpec> {
 
     public abstract void dispose();
 
-    private static class Null extends RenderNode<RenderSpec.Null> {
+    public static class Null extends RenderNode<RenderSpec> {
 
 
-        public Null(RenderSpec.Null spec) {
+        public Null(RenderSpec spec) {
             super(spec);
         }
 

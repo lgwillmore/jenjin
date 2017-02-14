@@ -39,6 +39,7 @@ public class D02_b2d_shapes extends Game {
                 .set("polygon", polygon())
                 .set("rectangle", rectangle())
                 .set("ball", ball())
+                .set("chain", chain())
         ;
 
         SceneSpec scene = new SceneSpec();
@@ -58,10 +59,40 @@ public class D02_b2d_shapes extends Game {
                         InstanceParams.New().setPosition(40, WORLD_HEIGHT),
                         InstanceParams.New().setPosition(60, WORLD_HEIGHT),
                         InstanceParams.New().setPosition(80, WORLD_HEIGHT))
+                .add("chain",
+                        InstanceParams.New().setPosition(60, 15))
         ;
 
 
         JJ.things.loadNow(scene);
+    }
+
+    private ThingSpec chain() {
+        return new ThingSpec()
+                .setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.StaticBody))
+                .addNode(
+                        new NodeSpec()
+                                .addRender(new B2DRenderSpec()
+                                        .color.set(Color.PURPLE)
+                                        .setLayer(0)
+                                        .setPriority(1)
+                                )
+                                .addPhysics(new FixtureNodeSpec()
+                                        .setShape(new B2DShapeSpec.Chain()
+                                                .add(N.ew(Vector2.class).set(-10, -10))
+                                                .add(N.ew(Vector2.class).set(-5, -10))
+                                                .add(N.ew(Vector2.class).set(-5, -5))
+                                                .add(N.ew(Vector2.class).set(0, -5))
+                                                .add(N.ew(Vector2.class).set(0, 0))
+                                                .add(N.ew(Vector2.class).set(5, 0))
+                                                .add(N.ew(Vector2.class).set(5, 5))
+                                                .add(N.ew(Vector2.class).set(10, 5))
+                                                .add(N.ew(Vector2.class).set(10, 10))
+                                        )
+                                        .setRestitution(0.0f)
+                                        .setDensity(0.5f)
+                                )
+                );
     }
 
     private ThingSpec ball() {
@@ -70,7 +101,7 @@ public class D02_b2d_shapes extends Game {
                 .addNode(
                         new NodeSpec()
                                 .addRender(new B2DRenderSpec()
-                                        .color.set(Color.GRAY)
+                                        .color.set(Color.FIREBRICK)
                                         .setLayer(0)
                                         .setPriority(1)
                                 )

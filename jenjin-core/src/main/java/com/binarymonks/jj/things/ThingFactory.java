@@ -246,6 +246,15 @@ public class ThingFactory {
             }
             polygonShape.set(vertices);
             return polygonShape;
+        } else if (nodeSpec.shape instanceof B2DShapeSpec.Chain) {
+            B2DShapeSpec.Chain chainSpec = (B2DShapeSpec.Chain) nodeSpec.shape;
+            ChainShape chainShape = new ChainShape();
+            Vector2[] vertices = new Vector2[chainSpec.edges.size];
+            for (int i = 0; i < chainSpec.edges.size; i++) {
+                vertices[i] = chainSpec.edges.get(i).add(nodeSpec.offsetX, nodeSpec.offsetY);
+            }
+            chainShape.createChain(vertices);
+            return chainShape;
         }
         return null;
     }
