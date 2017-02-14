@@ -26,6 +26,7 @@ public class PolygonRenderNode extends RenderNode<RenderSpec> {
 
     @Override
     public void render(OrthographicCamera camera) {
+        Global.renderWorld.switchToBatch();
         Vector2 parentPos = parent.physicsroot.position();
         poly.setColor(color.get());
         poly.setOrigin(0, 0);

@@ -23,18 +23,10 @@ public abstract class ShapeRenderNode<SPEC extends RenderSpec> extends RenderNod
 
     @Override
     public void render(OrthographicCamera camera) {
+        Global.renderWorld.switchToShapes(fill);
         ShapeRenderer renderer = Global.renderWorld.shapeRenderer;
-        boolean restartBatch = false;
-        if (Global.renderWorld.polyBatch.isDrawing()) {
-            Global.renderWorld.polyBatch.end();
-            restartBatch = true;
-
-        }
-        renderer.begin(fill ? ShapeRenderer.ShapeType.Filled : ShapeRenderer.ShapeType.Line);
         renderer.setColor(color.get());
         drawShape(camera);
-        renderer.end();
-        if (restartBatch) Global.renderWorld.polyBatch.begin();
     }
 
     protected abstract void drawShape(OrthographicCamera camera);
@@ -62,7 +54,7 @@ public abstract class ShapeRenderNode<SPEC extends RenderSpec> extends RenderNod
             transform.mul(positionCache);
             positionCache3.set(positionCache.x, positionCache.y, 0);
             camera.project(positionCache3);
-            Global.renderWorld.shapeRenderer.circle(positionCache3.x, positionCache3.y, radius);
+            Global.renderWorld.shapeRenderer.circle(positionCache3.x, positionCache3.y, radius*Global.renderWorld.worldToScreenScale);
         }
     }
 

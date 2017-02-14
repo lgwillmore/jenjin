@@ -2,11 +2,14 @@ package com.binarymonks.jj.layers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.input.TouchManager;
+import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.render.nodes.RenderNode;
 import com.binarymonks.jj.render.ThingLayer;
 import com.binarymonks.jj.render.RenderGraph;
@@ -38,6 +41,7 @@ public class GameRenderingLayer extends Layer {
     @Override
     public void update() {
         camera.update();
+        updateScreenToWorldScale();
         touchManager.update();
         renderGraph(Global.renderWorld.defaultRenderGraph);
         renderLights();
@@ -45,6 +49,15 @@ public class GameRenderingLayer extends Layer {
         if (Global.config.b2dDebug) {
             drenderer.render(Global.physics.world, Global.renderWorld.polyBatch.getProjectionMatrix());
         }
+    }
+
+    private void updateScreenToWorldScale() {
+        float worldDistance= 1000;
+        Vector3 worldLeft = N.ew(Vector3.class).set(0,0,0);
+        Vector3 worldRight = N.ew(Vector3.class).set(worldDistance,0,0);
+        Vector3 screenLeft = camera.project(worldLeft);
+        Vector3 screenRight = camera.project(worldRight);
+        Global.renderWorld.worldToScreenScale=(screenRight.x-screenLeft.x)/worldDistance;
     }
 
     private void renderGraph(RenderGraph renderGraph) {
@@ -61,7 +74,7 @@ public class GameRenderingLayer extends Layer {
             }
             layerIndex++;
         }
-        Global.renderWorld.polyBatch.end();
+        Global.renderWorld.end();
     }
 
     private void renderLights() {

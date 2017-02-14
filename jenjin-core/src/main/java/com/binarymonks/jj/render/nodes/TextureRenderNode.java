@@ -34,6 +34,7 @@ public class TextureRenderNode extends RenderNode<TextureRenderSpec> {
         float relativeRotationD = parent.physicsroot.rotationR()*MathUtils.radiansToDegrees+rotationD;
         TextureRegion frame = provider.getFrame(relativeRotationD);
         if (frame != null) {
+            Global.renderWorld.switchToBatch();
             Transform transform = parent.physicsroot.getTransform();
             Vector2 position = N.ew(Vector2.class).set(offsetX,offsetY);
             transform.mul(position);

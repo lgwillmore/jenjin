@@ -25,6 +25,8 @@ public class RenderWorld implements Lights {
     public RenderGraph lightSourceRenderGraph = new RenderGraph();
     public ObjectMap<Integer, PolygonSprite> polySpriteCache = new ObjectMap<>();
     EarClippingTriangulator triangulator = new EarClippingTriangulator();
+    public float worldToScreenScale;
+    private boolean currentShapeFill = false;
 
     public RenderWorld() {
         rayHandler = new RayHandler(Global.physics.world);
@@ -69,5 +71,31 @@ public class RenderWorld implements Lights {
     @Override
     public void setAmbientLight(float r, float g, float b, float a) {
         rayHandler.setAmbientLight(r, g, b, a);
+    }
+
+    public void switchToShapes(boolean fill) {
+        if (!shapeRenderer.isDrawing()) {
+            polyBatch.end();
+            shapeRenderer.begin(fill ? ShapeRenderer.ShapeType.Filled : ShapeRenderer.ShapeType.Line);
+        } else if (fill != currentShapeFill) {
+            currentShapeFill = fill;
+            shapeRenderer.end();
+            shapeRenderer.begin(fill ? ShapeRenderer.ShapeType.Filled : ShapeRenderer.ShapeType.Line);
+        }
+    }
+
+    public void switchToBatch() {
+        if (!polyBatch.isDrawing()) {
+            shapeRenderer.end();
+            polyBatch.begin();
+        }
+    }
+
+    public void end() {
+        if (polyBatch.isDrawing()) {
+            polyBatch.end();
+        } else {
+            shapeRenderer.end();
+        }
     }
 }
