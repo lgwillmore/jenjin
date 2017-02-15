@@ -8,9 +8,10 @@ import com.badlogic.gdx.physics.box2d.Transform;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.pools.N;
+import com.binarymonks.jj.render.specs.RenderSpec;
 import com.binarymonks.jj.render.specs.TextureRenderSpec;
 
-public class TextureRenderNode extends RenderNode<TextureRenderSpec> {
+public class TextureRenderNode extends RenderNode<RenderSpec> {
 
     TextureProvider provider;
     float offsetX;
@@ -19,7 +20,7 @@ public class TextureRenderNode extends RenderNode<TextureRenderSpec> {
     float width;
     float height;
 
-    public TextureRenderNode(TextureRenderSpec spec, TextureProvider provider, float offsetX, float offsetY, float rotationD, float width, float height) {
+    public TextureRenderNode(RenderSpec spec, TextureProvider provider, float offsetX, float offsetY, float rotationD, float width, float height) {
         super(spec);
         this.provider = provider;
         this.offsetX = offsetX;
@@ -31,12 +32,12 @@ public class TextureRenderNode extends RenderNode<TextureRenderSpec> {
 
     @Override
     public void render(OrthographicCamera camera) {
-        float relativeRotationD = parent.physicsroot.rotationR()*MathUtils.radiansToDegrees+rotationD;
+        float relativeRotationD = parent.physicsroot.rotationR() * MathUtils.radiansToDegrees + rotationD;
         TextureRegion frame = provider.getFrame(relativeRotationD);
         if (frame != null) {
             Global.renderWorld.switchToBatch();
             Transform transform = parent.physicsroot.getTransform();
-            Vector2 position = N.ew(Vector2.class).set(offsetX,offsetY);
+            Vector2 position = N.ew(Vector2.class).set(offsetX, offsetY);
             transform.mul(position);
             Global.renderWorld.polyBatch.draw(frame, position.x - (width / 2), position.y - (height / 2), width / 2, height / 2, width,
                     height, 1, 1, relativeRotationD);

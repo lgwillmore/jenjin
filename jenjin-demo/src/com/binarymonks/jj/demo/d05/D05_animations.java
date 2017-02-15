@@ -13,8 +13,8 @@ import com.binarymonks.jj.things.specs.SceneSpec;
 import com.binarymonks.jj.things.specs.ThingSpec;
 
 public class D05_animations extends Game {
-    float WORLD_WIDTH = 1500;
-    float WORLD_HEIGHT = 1500;
+    float WORLD_WIDTH = 200;
+    float WORLD_HEIGHT = 200;
 
     public D05_animations(JJConfig jjconfig) {
         super(jjconfig);
@@ -37,7 +37,6 @@ public class D05_animations extends Game {
         )
         ;
 
-        JJ.lights.setAmbientLight(0, 0, 0, 0.3f);
 
         JJ.things.load(scene, this::gameLoaded);
     }
@@ -51,12 +50,13 @@ public class D05_animations extends Game {
                 .addNode(new NodeSpec()
                         .addRender(
                                 new AnimatedRenderSpec()
-                                        .setBackingTexture(new BackingTexture.Simple("textures/twinkle_animation.png"))
-                                        .setRowsNColumns(2, 3)
+                                        .setBackingTexture(new BackingTexture.Simple("textures/count.png"))
+                                        .setRowsNColumns(3, 4)
+                                        .setDimensions(100, 100)
                                         .addAnimation(new AnimationSequence()
-                                                .setDuration(0.5f)
+                                                .setDuration(6f)
                                                 .setName("default")
-                                                .setStartEnd(0, 5)
+                                                .setStartEnd(4, 8)
                                         )
                         )
 
