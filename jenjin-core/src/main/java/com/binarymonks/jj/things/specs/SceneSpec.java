@@ -18,8 +18,4 @@ public class SceneSpec {
         return this;
     }
 
-    static class InstanceSpec {
-        ThingSpec thingSpec;
-        InstanceParams instanceParams;
-    }
 }

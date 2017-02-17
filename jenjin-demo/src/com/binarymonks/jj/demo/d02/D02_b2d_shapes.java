@@ -9,6 +9,7 @@ import com.binarymonks.jj.JJConfig;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.layers.GameRenderingLayer;
 import com.binarymonks.jj.physics.specs.PhysicsRootSpec;
+import com.binarymonks.jj.physics.specs.b2d.B2DCompositeSpec;
 import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
 import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.pools.N;
@@ -42,26 +43,20 @@ public class D02_b2d_shapes extends Game {
                 .set("chain", chain())
         ;
 
-        SceneSpec scene = new SceneSpec();
-        scene
-                .add("multi",
-                        InstanceParams.New().setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 2).setRotationD(45)
-                )
-                .add("polygon",
-                        InstanceParams.New().setPosition(70, 70))
-                .add("rectangle",
-                        InstanceParams.New().setPosition(WORLD_WIDTH / 2, 0),
-                        InstanceParams.New().setPosition(0, WORLD_WIDTH / 2).setRotationD(90),
-                        InstanceParams.New().setPosition(WORLD_WIDTH, WORLD_WIDTH / 2).setRotationD(90)
-                )
-                .add("ball",
-                        InstanceParams.New().setPosition(20, WORLD_HEIGHT),
-                        InstanceParams.New().setPosition(40, WORLD_HEIGHT),
-                        InstanceParams.New().setPosition(60, WORLD_HEIGHT),
-                        InstanceParams.New().setPosition(80, WORLD_HEIGHT))
-                .add("chain",
-                        InstanceParams.New().setPosition(60, 15))
-        ;
+        B2DCompositeSpec scene = new B2DCompositeSpec();
+        scene.addThingSpec("multi",
+                InstanceParams.New().setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 2).setRotationD(45)
+        );
+        scene.addThingSpec("polygon",
+                InstanceParams.New().setPosition(70, 70));
+        scene.addThingSpec("rectangle", InstanceParams.New().setPosition(WORLD_WIDTH / 2, 0));
+        scene.addThingSpec("rectangle", InstanceParams.New().setPosition(0, WORLD_WIDTH / 2).setRotationD(90));
+        scene.addThingSpec("rectangle", InstanceParams.New().setPosition(WORLD_WIDTH, WORLD_WIDTH / 2).setRotationD(90));
+        scene.addThingSpec("ball", InstanceParams.New().setPosition(20, WORLD_HEIGHT));
+        scene.addThingSpec("ball", InstanceParams.New().setPosition(40, WORLD_HEIGHT));
+        scene.addThingSpec("ball", InstanceParams.New().setPosition(60, WORLD_HEIGHT));
+        scene.addThingSpec("ball", InstanceParams.New().setPosition(80, WORLD_HEIGHT));
+        scene.addThingSpec("chain", InstanceParams.New().setPosition(60, 15));
 
 
         JJ.things.loadNow(scene);

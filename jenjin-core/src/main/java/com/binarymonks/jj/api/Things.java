@@ -1,6 +1,7 @@
 package com.binarymonks.jj.api;
 
 import com.binarymonks.jj.async.Function;
+import com.binarymonks.jj.physics.specs.b2d.B2DCompositeSpec;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.Thing;
 import com.binarymonks.jj.things.specs.SceneSpec;
@@ -20,9 +21,9 @@ public interface Things {
      */
     Thing getThingByName(String uniqueName);
 
-    void load(SceneSpec sceneSpec, Function callback);
+    void load(B2DCompositeSpec sceneSpec, Function callback);
 
-    void loadNow(SceneSpec sceneSpec);
+    void loadNow(B2DCompositeSpec sceneSpec);
 
     /**
      * Create a new object from a Specification.

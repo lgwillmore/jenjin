@@ -9,6 +9,7 @@ import com.binarymonks.jj.layers.GameRenderingLayer;
 import com.binarymonks.jj.lights.specs.LightSpec;
 import com.binarymonks.jj.physics.CollisionGroups;
 import com.binarymonks.jj.physics.specs.PhysicsRootSpec;
+import com.binarymonks.jj.physics.specs.b2d.B2DCompositeSpec;
 import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
 import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.render.specs.B2DRenderSpec;
@@ -42,16 +43,12 @@ public class D04_lights extends Game {
                 .set("light", light())
         ;
 
-        SceneSpec scene = new SceneSpec();
-        scene.add("background",
-                InstanceParams.New().setPosition(WORLD_WIDTH * 0.5f, WORLD_HEIGHT * 0.5f).setRotationD(90)
-        ).add("block",
-                InstanceParams.New().setPosition(300, 300),
-                InstanceParams.New().setPosition(700, 700),
-                InstanceParams.New().setPosition(1100, 1100)
-        ).add("light",
-                InstanceParams.New().setUniqueName("light").setPosition(1000, 400))
-        ;
+        B2DCompositeSpec scene = new B2DCompositeSpec();
+        scene.addThingSpec("background", InstanceParams.New().setPosition(WORLD_WIDTH * 0.5f, WORLD_HEIGHT * 0.5f).setRotationD(90));
+        scene.addThingSpec("block", InstanceParams.New().setPosition(300, 300));
+        scene.addThingSpec("block", InstanceParams.New().setPosition(700, 700));
+        scene.addThingSpec("block", InstanceParams.New().setPosition(1100, 1100));
+        scene.addThingSpec("light", InstanceParams.New().setUniqueName("light").setPosition(1000, 400));
 
         JJ.lights.setAmbientLight(0, 0, 0, 0.3f);
 

@@ -12,6 +12,7 @@ import com.binarymonks.jj.physics.collisions.DestroyCollision;
 import com.binarymonks.jj.physics.collisions.EmitEventCollision;
 import com.binarymonks.jj.physics.collisions.SoundCollision;
 import com.binarymonks.jj.physics.specs.PhysicsRootSpec;
+import com.binarymonks.jj.physics.specs.b2d.B2DCompositeSpec;
 import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
 import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.render.specs.B2DRenderSpec;
@@ -50,37 +51,36 @@ public class D01_pong extends Game {
         ;
 
         //Add instances of your ThingSpecs to a scene
-        SceneSpec level = new SceneSpec()
-                .add("player",
-                        InstanceParams.New()
-                                .setUniqueName("player2")
-                                .setPosition(COURT_LENGTH - BAT_INSET, COURT_LENGTH / 2)
-                                .setProperty("color", Color.BLUE)
-                )
-                .add("player",
-                        InstanceParams.New()
-                                .setUniqueName("player1")
-                                .setPosition(BAT_INSET, COURT_LENGTH / 2)
-                                .setProperty("color", Color.RED)
-                )
-                .add("ball",
-                        InstanceParams.New()
-                                .setUniqueName("ball")
-                                .setPosition(COURT_LENGTH / 2, COURT_LENGTH / 2))
-                .add("wall"
-                        , InstanceParams.New().setPosition(COURT_LENGTH / 2, COURT_LENGTH - BAT_HEIGHT / 2)
-                        , InstanceParams.New().setPosition(COURT_LENGTH / 2, BAT_HEIGHT / 2)
-                )
-                .add("scoreWall",
-                        InstanceParams.New()
-                                .setPosition(0, COURT_LENGTH / 2)
-                                .setProperty("color", Color.BLUE)
-                                .setProperty("score_message", MSG_PLAYER1_SCORE),
-                        InstanceParams.New()
-                                .setPosition(COURT_LENGTH, COURT_LENGTH / 2)
-                                .setProperty("color", Color.RED)
-                                .setProperty("score_message", MSG_PLAYER2_SCORE)
-                );
+        B2DCompositeSpec level = new B2DCompositeSpec();
+        level.addThingSpec("player",
+                InstanceParams.New()
+                        .setUniqueName("player2")
+                        .setPosition(COURT_LENGTH - BAT_INSET, COURT_LENGTH / 2)
+                        .setProperty("color", Color.BLUE)
+        );
+        level.addThingSpec("player",
+                InstanceParams.New()
+                        .setUniqueName("player1")
+                        .setPosition(BAT_INSET, COURT_LENGTH / 2)
+                        .setProperty("color", Color.RED)
+        );
+        level.addThingSpec("ball",
+                InstanceParams.New()
+                        .setUniqueName("ball")
+                        .setPosition(COURT_LENGTH / 2, COURT_LENGTH / 2));
+        level.addThingSpec("wall", InstanceParams.New().setPosition(COURT_LENGTH / 2, COURT_LENGTH - BAT_HEIGHT / 2));
+        level.addThingSpec("wall", InstanceParams.New().setPosition(COURT_LENGTH / 2, BAT_HEIGHT / 2));
+        level.addThingSpec("scoreWall",
+                InstanceParams.New()
+                        .setPosition(COURT_LENGTH, COURT_LENGTH / 2)
+                        .setProperty("color", Color.RED)
+                        .setProperty("score_message", MSG_PLAYER2_SCORE)
+        );
+        level.addThingSpec("scoreWall",
+                InstanceParams.New()
+                        .setPosition(0, COURT_LENGTH / 2)
+                        .setProperty("color", Color.BLUE)
+                        .setProperty("score_message", MSG_PLAYER1_SCORE));
 
         //Register some event handlers for when the ball gets passed a player
         JJ.events.register(MSG_PLAYER1_SCORE, this::player1Scored);

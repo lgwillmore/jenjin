@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.layers.GameRenderingLayer;
+import com.binarymonks.jj.physics.specs.b2d.B2DCompositeSpec;
 import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
 import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.render.specs.ShapeRenderSpec;
@@ -34,11 +35,9 @@ public class D00_Basic extends Game {
                 .set("squares", squares());
 
         //Add instances to a level
-        SceneSpec level = new SceneSpec()
-                .add("squares",
-                        InstanceParams.New().setPosition(10, 0).setRotationD(90),
-                        InstanceParams.New().setPosition(-10, 0).setRotationD(90)
-                );
+        B2DCompositeSpec level = new B2DCompositeSpec();
+        level.addThingSpec("squares", InstanceParams.New().setPosition(10, 0).setRotationD(90));
+        level.addThingSpec("squares", InstanceParams.New().setPosition(-10, 0).setRotationD(90));
 
         //Load the level asynchronously with a callback when it is done
         JJ.things.load(level, this::onLevelLoaded);
@@ -64,7 +63,7 @@ public class D00_Basic extends Game {
                                                 .setLayer(0)
                                                 .setFill(true)
                                                 .setDimension(10, 10)
-                                                .setSpatial(new Spatial.Fixed().setOffset(5,5).setRotationD(45))
+                                                .setSpatial(new Spatial.Fixed().setOffset(5, 5).setRotationD(45))
                                                 .color.set(Color.BLUE)
                                 )
                                 .addPhysics(

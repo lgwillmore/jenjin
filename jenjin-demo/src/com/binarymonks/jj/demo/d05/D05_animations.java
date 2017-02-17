@@ -4,6 +4,7 @@ import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.JJConfig;
 import com.binarymonks.jj.layers.GameRenderingLayer;
+import com.binarymonks.jj.physics.specs.b2d.B2DCompositeSpec;
 import com.binarymonks.jj.render.specs.AnimatedRenderSpec;
 import com.binarymonks.jj.render.specs.AnimationSequence;
 import com.binarymonks.jj.render.specs.BackingTexture;
@@ -27,15 +28,10 @@ public class D05_animations extends Game {
         gameRenderingLayer = new GameRenderingLayer(WORLD_WIDTH, WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
         JJ.layers.addLayerTop(gameRenderingLayer);
 
-        JJ.specs
-                .set("twinkle_animated", twinkleAnimated())
-        ;
+        JJ.specs.set("twinkle_animated", twinkleAnimated());
 
-        SceneSpec scene = new SceneSpec();
-        scene.add("twinkle_animated",
-                InstanceParams.New().setPosition(WORLD_WIDTH * 0.5f, WORLD_HEIGHT * 0.5f)
-        )
-        ;
+        B2DCompositeSpec scene = new B2DCompositeSpec();
+        scene.addThingSpec("twinkle_animated", InstanceParams.New().setPosition(WORLD_WIDTH * 0.5f, WORLD_HEIGHT * 0.5f));
 
 
         JJ.things.load(scene, this::gameLoaded);

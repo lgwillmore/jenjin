@@ -5,6 +5,7 @@ import com.binarymonks.jj.api.Things;
 import com.binarymonks.jj.async.Function;
 import com.binarymonks.jj.async.FunctionLink;
 import com.binarymonks.jj.backend.Global;
+import com.binarymonks.jj.physics.specs.b2d.B2DCompositeSpec;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.pools.PoolManager;
 import com.binarymonks.jj.pools.Re;
@@ -26,7 +27,7 @@ public class ThingManager implements Things {
     }
 
     @Override
-    public void load(SceneSpec sceneSpec, Function callback) {
+    public void load(B2DCompositeSpec sceneSpec, Function callback) {
         JJ.specs.loadSpecAssetsThen(FunctionLink.Do(
                 () -> sceneLoader.load(sceneSpec)
         ).thenDo(
@@ -35,7 +36,7 @@ public class ThingManager implements Things {
     }
 
     @Override
-    public void loadNow(SceneSpec sceneSpec) {
+    public void loadNow(B2DCompositeSpec sceneSpec) {
         JJ.specs.loadSpecAssetsNow();
         sceneLoader.load(sceneSpec);
     }

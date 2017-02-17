@@ -6,6 +6,7 @@ import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.JJConfig;
 import com.binarymonks.jj.behaviour.DestroySelf;
 import com.binarymonks.jj.layers.GameRenderingLayer;
+import com.binarymonks.jj.physics.specs.b2d.B2DCompositeSpec;
 import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
 import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.render.specs.B2DRenderSpec;
@@ -18,7 +19,7 @@ public class D03_pooling_load_test extends Game {
     float WORLD_WIDTH = 100;
     float WORLD_HEIGHT = 100;
 
-    public D03_pooling_load_test(JJConfig jjConfig){
+    public D03_pooling_load_test(JJConfig jjConfig) {
         super(jjConfig);
     }
 
@@ -33,11 +34,9 @@ public class D03_pooling_load_test extends Game {
                 .set("emitter", emitter())
         ;
 
-        SceneSpec scene = new SceneSpec();
-        scene.add("emitter",
-                InstanceParams.New().setPosition(WORLD_WIDTH * 0.25f, WORLD_HEIGHT * 0.25f),
-                InstanceParams.New().setPosition(WORLD_WIDTH * 0.75f, WORLD_HEIGHT * 0.75f)
-        );
+        B2DCompositeSpec scene = new B2DCompositeSpec();
+        scene.addThingSpec("emitter", InstanceParams.New().setPosition(WORLD_WIDTH * 0.25f, WORLD_HEIGHT * 0.25f));
+        scene.addThingSpec("emitter", InstanceParams.New().setPosition(WORLD_WIDTH * 0.75f, WORLD_HEIGHT * 0.75f));
 
         JJ.things.loadNow(scene);
     }
