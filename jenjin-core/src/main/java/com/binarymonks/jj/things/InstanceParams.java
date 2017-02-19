@@ -40,18 +40,25 @@ public class InstanceParams {
         return this;
     }
 
-    public InstanceParams setScaleX(float scaleX) {
+    /**
+     * Scale where possible. Not all things will scale as you expect.
+     * Also - IMPORTANT - scaling and pooling do not mix. If you are scaling, and creating and destroying the {@link Thing}
+     * you will have to set {@link com.binarymonks.jj.things.specs.ThingSpec#setPool(boolean)} to false. So scaling is good
+     * for things like scenery and terrain.
+     *
+     * @param scaleX
+     * @param scaleY
+     * @return
+     */
+    public InstanceParams setScale(float scaleX, float scaleY) {
         this.scaleX = scaleX;
-        return this;
-    }
-
-    public InstanceParams setScaleY(float scaleY) {
         this.scaleY = scaleY;
         return this;
     }
 
-    public InstanceParams setProperty(String key, Object value){
-        this.properties.put(key,value);
+
+    public InstanceParams setProperty(String key, Object value) {
+        this.properties.put(key, value);
         return this;
     }
 
@@ -72,8 +79,7 @@ public class InstanceParams {
             instanceParams
                     .setPosition(0, 0)
                     .setRotationD(0)
-                    .setScaleX(1)
-                    .setScaleY(1)
+                    .setScale(1, 1)
                     .setUniqueName(null);
         }
 

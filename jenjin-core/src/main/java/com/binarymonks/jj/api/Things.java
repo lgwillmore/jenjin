@@ -37,4 +37,5 @@ public interface Things {
 
     void create(String thingSpecPath, InstanceParams instanceParams);
 
+    Thing createNow(String thingSpecPath, InstanceParams instanceParams);
 }

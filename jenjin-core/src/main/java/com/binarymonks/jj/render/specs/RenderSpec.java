@@ -10,6 +10,7 @@ import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
 import com.binarymonks.jj.render.nodes.RenderNode;
 import com.binarymonks.jj.specs.SpecPropField;
+import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.utils.Empty;
 
 public abstract class RenderSpec<CONCRETE extends RenderSpec> implements Json.Serializable {
@@ -34,7 +35,7 @@ public abstract class RenderSpec<CONCRETE extends RenderSpec> implements Json.Se
         return self;
     }
 
-    public abstract RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec);
+    public abstract RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec, InstanceParams instanceParams);
 
     public Array<AssetReference> getAssets() {
         return Empty.Array();
@@ -95,7 +96,7 @@ public abstract class RenderSpec<CONCRETE extends RenderSpec> implements Json.Se
 
 
         @Override
-        public RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec) {
+        public RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec, InstanceParams instanceParams) {
             return RenderNode.NULL;
         }
 

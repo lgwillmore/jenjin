@@ -28,17 +28,13 @@ public class ThingManager implements Things {
 
     @Override
     public void load(B2DCompositeSpec sceneSpec, Function callback) {
-        JJ.specs.loadSpecAssetsThen(FunctionLink.Do(
-                () -> sceneLoader.load(sceneSpec)
-        ).thenDo(
-                callback
-        ));
+        JJ.specs.loadSpecAssetsThen(() -> sceneLoader.load(sceneSpec, callback));
     }
 
     @Override
     public void loadNow(B2DCompositeSpec sceneSpec) {
         JJ.specs.loadSpecAssetsNow();
-        sceneLoader.load(sceneSpec);
+        sceneLoader.load(sceneSpec, Function::doNothing);
     }
 
     @Override
@@ -56,6 +52,18 @@ public class ThingManager implements Things {
     @Override
     public void create(String thingSpecPath, InstanceParams instanceParams) {
         create(thingSpecPath, instanceParams, this::doNothingCallback);
+    }
+
+    @Override
+    public Thing createNow(String thingSpecPath, InstanceParams instanceParams) {
+        if (!Global.physics.isUpdating()) {
+            return Global.factories.things.create(thingSpecPath, instanceParams);
+        } else {
+            CreateThingFunction delayedCreate = N.ew(CreateThingFunction.class);
+            delayedCreate.set(thingSpecPath, instanceParams, this::doNothingCallback);
+            Global.physics.addPostPhysicsFunction(delayedCreate);
+            return null;
+        }
     }
 
     void doNothingCallback(Thing thing) {

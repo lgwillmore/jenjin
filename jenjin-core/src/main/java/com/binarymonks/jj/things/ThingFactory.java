@@ -168,7 +168,7 @@ public class ThingFactory {
 
             buildFixture(nodeSpec.physicsNodeSpec, node, context);
 
-            RenderNode render = nodeSpec.renderSpec.makeNode(nodeSpec.physicsNodeSpec);
+            RenderNode render = nodeSpec.renderSpec.makeNode(nodeSpec.physicsNodeSpec,context.instanceParams);
             node.render = render;
             context.nodes.add(node);
 
@@ -183,7 +183,7 @@ public class ThingFactory {
     private void buildFixture(PhysicsNodeSpec nodeSpec, ThingNode node, Context context) {
         if (nodeSpec instanceof FixtureNodeSpec) {
             FixtureNodeSpec fixtureSpec = (FixtureNodeSpec) nodeSpec;
-            Shape shape = buildShape(fixtureSpec);
+            Shape shape = buildShape(fixtureSpec, context.instanceParams);
             FixtureDef fDef = new FixtureDef();
             fDef.shape = shape;
             fDef.density = fixtureSpec.density;
@@ -225,11 +225,11 @@ public class ThingFactory {
         );
     }
 
-    private Shape buildShape(FixtureNodeSpec nodeSpec) {
+    private Shape buildShape(FixtureNodeSpec nodeSpec, InstanceParams instanceParams) {
         if (nodeSpec.shape instanceof B2DShapeSpec.PolygonRectangle) {
             B2DShapeSpec.PolygonRectangle polygonRectangle = (B2DShapeSpec.PolygonRectangle) nodeSpec.shape;
             PolygonShape boxshape = new PolygonShape();
-            boxshape.setAsBox((polygonRectangle.width / 2.0f), (polygonRectangle.height / 2.0f), N.ew(Vector2.class).set(nodeSpec.offsetX, nodeSpec.offsetY), nodeSpec.rotationD * MathUtils.degreesToRadians);
+            boxshape.setAsBox((polygonRectangle.width * instanceParams.scaleX / 2.0f), (polygonRectangle.height * instanceParams.scaleY / 2.0f), N.ew(Vector2.class).set(nodeSpec.offsetX * instanceParams.scaleX, nodeSpec.offsetY * instanceParams.scaleY), nodeSpec.rotationD * MathUtils.degreesToRadians);
             return boxshape;
         } else if (nodeSpec.shape instanceof B2DShapeSpec.Circle) {
             B2DShapeSpec.Circle circle = (B2DShapeSpec.Circle) nodeSpec.shape;

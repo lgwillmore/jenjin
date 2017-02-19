@@ -12,7 +12,7 @@ public class B2DCompositeSpec {
     int pieceIDCounter = 0;
 
     public ObjectMap<Integer, InstanceSpec> thingPieces = new ObjectMap<>();
-    Array<JointSpec> joints = new Array<>();
+    public Array<JointSpec> joints = new Array<>();
 
 
     public int addThingSpec(String thingSpecPath, InstanceParams instanceParams) {
@@ -26,9 +26,9 @@ public class B2DCompositeSpec {
     }
 
     public static class JointSpec {
-        int thingAID;
-        int thingBID;
-        JointDef jointDef;
+        public int thingAID;
+        public int thingBID;
+        public JointDef jointDef;
 
         public JointSpec(int thingAID, int thingBID, JointDef jointDef) {
             this.thingAID = thingAID;

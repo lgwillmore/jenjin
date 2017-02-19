@@ -12,6 +12,7 @@ import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
 import com.binarymonks.jj.render.nodes.AnimationProvider;
 import com.binarymonks.jj.render.nodes.RenderNode;
 import com.binarymonks.jj.render.nodes.TextureRenderNode;
+import com.binarymonks.jj.things.InstanceParams;
 
 
 public class AnimatedRenderSpec extends SpatialRenderSpec<AnimatedRenderSpec> {
@@ -46,7 +47,7 @@ public class AnimatedRenderSpec extends SpatialRenderSpec<AnimatedRenderSpec> {
     }
 
     @Override
-    public RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec) {
+    public RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec, InstanceParams instanceParams) {
         ObjectMap<String, Animation> animations = new ObjectMap<>();
         Disposable realAsset = getAsset();
         TextureRegion[][] textureRegionGrid = buildTextureRegionGrid(realAsset);

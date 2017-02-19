@@ -6,6 +6,7 @@ import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.render.nodes.PolygonRenderNode;
 import com.binarymonks.jj.render.nodes.RenderNode;
+import com.binarymonks.jj.things.InstanceParams;
 
 public abstract class ShapeRenderSpec<CONCRETE extends ShapeRenderSpec> extends SpatialRenderSpec<CONCRETE> {
 
@@ -30,9 +31,9 @@ public abstract class ShapeRenderSpec<CONCRETE extends ShapeRenderSpec> extends 
 
 
         @Override
-        public RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec) {
+        public RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec, InstanceParams instanceParams) {
             if (PolygonRenderNode.haveBuilt(this)) {
-                return PolygonRenderNode.rebuild(this);
+                return PolygonRenderNode.rebuild(this, instanceParams);
             } else {
                 Array<Vector2> points = new Array<>();
                 points.add(N.ew(Vector2.class).set(-width / 2, -height / 2));
@@ -45,7 +46,10 @@ public abstract class ShapeRenderSpec<CONCRETE extends ShapeRenderSpec> extends 
                         N.ew(Vector2.class).set(
                                 spatial.getOffsetX(physicsNodeSpec),
                                 spatial.getOffsetY(physicsNodeSpec)),
-                        spatial.getRotationD(physicsNodeSpec));
+                        spatial.getRotationD(physicsNodeSpec),
+                        instanceParams.scaleX,
+                        instanceParams.scaleY
+                );
             }
         }
 

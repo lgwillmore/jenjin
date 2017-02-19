@@ -9,6 +9,7 @@ import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.render.nodes.PolygonRenderNode;
 import com.binarymonks.jj.render.nodes.RenderNode;
 import com.binarymonks.jj.render.nodes.ShapeRenderNode;
+import com.binarymonks.jj.things.InstanceParams;
 
 /**
  * This {@link RenderSpec} will attempt to render the box2d fixture from its parent {@link com.binarymonks.jj.things.specs.NodeSpec}
@@ -16,9 +17,9 @@ import com.binarymonks.jj.render.nodes.ShapeRenderNode;
 public class B2DRenderSpec extends RenderSpec<B2DRenderSpec> {
 
     @Override
-    public RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec) {
+    public RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec, InstanceParams instanceParams) {
         if (PolygonRenderNode.haveBuilt(this)) {
-            return PolygonRenderNode.rebuild(this);
+            return PolygonRenderNode.rebuild(this, instanceParams);
         }
         if (physicsNodeSpec instanceof FixtureNodeSpec) {
             FixtureNodeSpec fixtureNodeSpec = (FixtureNodeSpec) physicsNodeSpec;
@@ -33,18 +34,23 @@ public class B2DRenderSpec extends RenderSpec<B2DRenderSpec> {
                         this,
                         points,
                         N.ew(Vector2.class).set(fixtureNodeSpec.offsetX, fixtureNodeSpec.offsetY),
-                        fixtureNodeSpec.rotationD);
+                        fixtureNodeSpec.rotationD,
+                        instanceParams.scaleX,
+                        instanceParams.scaleY
+                );
             } else if (fixtureNodeSpec.shape instanceof B2DShapeSpec.Polygon) {
                 B2DShapeSpec.Polygon polygon = (B2DShapeSpec.Polygon) fixtureNodeSpec.shape;
                 return PolygonRenderNode.buildNew(
                         this,
                         polygon.edges,
                         N.ew(Vector2.class).set(fixtureNodeSpec.offsetX, fixtureNodeSpec.offsetY),
-                        fixtureNodeSpec.rotationD);
+                        fixtureNodeSpec.rotationD,
+                        instanceParams.scaleX,
+                        instanceParams.scaleY);
             } else if (fixtureNodeSpec.shape instanceof B2DShapeSpec.Circle) {
                 B2DShapeSpec.Circle circleSpec = (B2DShapeSpec.Circle) fixtureNodeSpec.shape;
                 ShapeRenderNode.Circle circleNode = new ShapeRenderNode.Circle(this, true);
-                circleNode.radius = circleSpec.radius;
+                circleNode.radius = circleSpec.radius * instanceParams.scaleX;
                 circleNode.offset.set(fixtureNodeSpec.offsetX, fixtureNodeSpec.offsetY);
                 return circleNode;
             } else if (fixtureNodeSpec.shape instanceof B2DShapeSpec.Chain) {

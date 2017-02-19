@@ -17,7 +17,7 @@ public class DesktopLauncher {
         lwjglConfig.width = 1000;
         JJConfig jjconfig = new JJConfig();
         jjconfig.b2dDebug = false;
-        new LwjglApplication(new D01_pong(jjconfig), lwjglConfig);
+        new LwjglApplication(new D02_b2d_shapes(jjconfig), lwjglConfig);
 //        new LwjglApplication(new D03_pooling_load_test(jjconfig), lwjglConfig);
     }
 }

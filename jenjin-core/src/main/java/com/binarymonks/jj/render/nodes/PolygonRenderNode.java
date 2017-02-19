@@ -10,6 +10,7 @@ import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.pools.Re;
 import com.binarymonks.jj.render.specs.RenderSpec;
+import com.binarymonks.jj.things.InstanceParams;
 
 /**
  * Created by lwillmore on 30/01/17.
@@ -17,11 +18,15 @@ import com.binarymonks.jj.render.specs.RenderSpec;
 public class PolygonRenderNode extends RenderNode<RenderSpec> {
 
     PolygonSprite poly;
+    float scaleX = 1;
+    float scaleY = 1;
 
 
-    PolygonRenderNode(RenderSpec renderSpec, PolygonSprite poly) {
+    PolygonRenderNode(RenderSpec renderSpec, PolygonSprite poly, float scaleX, float scaleY) {
         super(renderSpec);
         this.poly = poly;
+        this.scaleX = scaleX;
+        this.scaleY=scaleY;
     }
 
     @Override
@@ -30,6 +35,7 @@ public class PolygonRenderNode extends RenderNode<RenderSpec> {
         Vector2 parentPos = parent.physicsroot.position();
         poly.setColor(color.get());
         poly.setOrigin(0, 0);
+        poly.setScale(scaleX, scaleY);
         poly.setRotation(parent.physicsroot.rotationR() * MathUtils.radDeg);
         poly.setPosition(parentPos.x, parentPos.y);
         poly.draw(Global.renderWorld.polyBatch);
@@ -44,13 +50,13 @@ public class PolygonRenderNode extends RenderNode<RenderSpec> {
         return Global.renderWorld.polySpriteCache.containsKey(sourceSpec.id);
     }
 
-    public static PolygonRenderNode rebuild(RenderSpec sourceSpec) {
+    public static PolygonRenderNode rebuild(RenderSpec sourceSpec, InstanceParams instanceParams) {
         PolygonSprite polygonSprite;
         polygonSprite = Global.renderWorld.polySpriteCache.get(sourceSpec.id);
-        return new PolygonRenderNode(sourceSpec, polygonSprite);
+        return new PolygonRenderNode(sourceSpec, polygonSprite, instanceParams.scaleX, instanceParams.scaleY);
     }
 
-    public static PolygonRenderNode buildNew(RenderSpec sourceSpec, Array<Vector2> vertices, Vector2 offset, float rotationD) {
+    public static PolygonRenderNode buildNew(RenderSpec sourceSpec, Array<Vector2> vertices, Vector2 offset, float rotationD, float scaleX, float scaleY) {
         PolygonSprite polygonSprite;
         Matrix3 trMatrix = N.ew(Matrix3.class);
         trMatrix.translate(offset.x, offset.y);
@@ -61,7 +67,7 @@ public class PolygonRenderNode extends RenderNode<RenderSpec> {
         polygonSprite = Global.renderWorld.polygonSprite(sourceSpec.id, vertices);
         Re.cycleItems(vertices);
         Re.cycle(trMatrix);
-        return new PolygonRenderNode(sourceSpec, polygonSprite);
+        return new PolygonRenderNode(sourceSpec, polygonSprite, scaleX, scaleY);
     }
 
 }
