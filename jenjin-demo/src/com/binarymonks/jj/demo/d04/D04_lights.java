@@ -8,18 +8,18 @@ import com.binarymonks.jj.JJConfig;
 import com.binarymonks.jj.layers.GameRenderingLayer;
 import com.binarymonks.jj.lights.specs.LightSpec;
 import com.binarymonks.jj.physics.CollisionGroups;
-import com.binarymonks.jj.physics.specs.PhysicsRootSpec;
-import com.binarymonks.jj.physics.specs.b2d.B2DCompositeSpec;
-import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
-import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
-import com.binarymonks.jj.render.specs.B2DRenderSpec;
-import com.binarymonks.jj.render.specs.BackingTexture;
-import com.binarymonks.jj.render.specs.TextureRenderSpec;
+import com.binarymonks.jj.specs.physics.PhysicsRootSpec;
+import com.binarymonks.jj.specs.B2DCompositeSpec;
+import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
+import com.binarymonks.jj.specs.physics.FixtureNodeSpec;
+import com.binarymonks.jj.specs.render.B2DRenderSpec;
+import com.binarymonks.jj.specs.render.BackingTexture;
+import com.binarymonks.jj.specs.render.RenderBuilder;
+import com.binarymonks.jj.specs.render.TextureRenderSpec;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.Thing;
-import com.binarymonks.jj.things.specs.NodeSpec;
-import com.binarymonks.jj.things.specs.SceneSpec;
-import com.binarymonks.jj.things.specs.ThingSpec;
+import com.binarymonks.jj.specs.NodeSpec;
+import com.binarymonks.jj.specs.ThingSpec;
 
 public class D04_lights extends Game {
 
@@ -68,44 +68,46 @@ public class D04_lights extends Game {
                 .addNode(
                         new NodeSpec()
                                 .addRender(
-                                        new TextureRenderSpec(
+                                        RenderBuilder.texture(
                                                 new BackingTexture.Simple("textures/circuit_background.png"),
                                                 WORLD_WIDTH,
                                                 WORLD_WIDTH * heightToWidth
                                         )
-                                                .setLayer(0)
+                                                .setLayer(0).build()
                                 )
                 );
     }
 
     private ThingSpec block() {
+        FixtureNodeSpec fixtureNodeSpec = new FixtureNodeSpec()
+                .setShape(new B2DShapeSpec.PolygonRectangle(100, 100));
+        fixtureNodeSpec
+                .collisionData.setToExplicit(CollisionGroups.EVERYTHING);
         return new ThingSpec()
                 .addNode(
                         new NodeSpec()
-                                .addRender(new B2DRenderSpec()
+                                .addRender(RenderBuilder.b2d()
                                         .setLayer(1)
-                                        .color.set(Color.BLUE)
+                                        .setColor(Color.BLUE)
+                                        .build()
                                 )
-                                .addPhysics(new FixtureNodeSpec()
-                                        .setShape(new B2DShapeSpec.PolygonRectangle(100, 100))
-                                        .collisionData.setToExplicit(CollisionGroups.EVERYTHING)
-                                )
+                                .addPhysics(fixtureNodeSpec)
                 );
     }
 
     private ThingSpec light() {
+        LightSpec.Point point = new LightSpec.Point();
+        point.color.set(Color.RED);
+        point.setReach(1500);
+        point.setRays(200);
+        point.collisionData.setToExplicit(CollisionGroups.EVERYTHING);
         return new ThingSpec()
                 .setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.KinematicBody))
-                .addLight(new LightSpec.Point()
-                        .color.set(Color.RED)
-                        .setReach(1500)
-                        .setRays(200)
-                        .collisionData.setToExplicit(CollisionGroups.EVERYTHING)
-                )
+                .addLight(point)
                 .addNode(new NodeSpec()
-                        .addRender(new B2DRenderSpec()
-                                .color.set(new Color(1f, 0.8f, 0.8f, 1))
-                                .renderGraph.setToLightSource()
+                        .addRender(RenderBuilder.b2d()
+                                .setColor(new Color(1f, 0.8f, 0.8f, 1))
+                                .setGraphToLightSource().build()
                         )
                         .addPhysics(new FixtureNodeSpec().setShape(new B2DShapeSpec.PolygonRectangle(50, 50)))
                 )

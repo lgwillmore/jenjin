@@ -1,9 +1,9 @@
 package com.binarymonks.jj.render;
 
-import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
+import com.binarymonks.jj.specs.physics.PhysicsNodeSpec;
 import com.binarymonks.jj.render.nodes.RenderNode;
-import com.binarymonks.jj.render.specs.AnimatedRenderSpec;
-import com.binarymonks.jj.render.specs.RenderSpec;
+import com.binarymonks.jj.specs.render.AnimatedRenderSpec;
+import com.binarymonks.jj.specs.render.RenderSpec;
 import com.binarymonks.jj.things.InstanceParams;
 
 /**

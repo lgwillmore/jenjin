@@ -9,10 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.pools.Re;
-import com.binarymonks.jj.render.specs.B2DRenderSpec;
-import com.binarymonks.jj.render.specs.RenderSpec;
-import com.binarymonks.jj.render.specs.ShapeRenderSpec;
-import com.binarymonks.jj.render.specs.SpatialRenderSpec;
+import com.binarymonks.jj.specs.render.RenderSpec;
 
 
 public abstract class ShapeRenderNode<SPEC extends RenderSpec> extends RenderNode<SPEC> {

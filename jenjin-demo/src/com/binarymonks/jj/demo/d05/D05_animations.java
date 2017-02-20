@@ -4,14 +4,14 @@ import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.JJConfig;
 import com.binarymonks.jj.layers.GameRenderingLayer;
-import com.binarymonks.jj.physics.specs.b2d.B2DCompositeSpec;
-import com.binarymonks.jj.render.specs.AnimatedRenderSpec;
-import com.binarymonks.jj.render.specs.AnimationSequence;
-import com.binarymonks.jj.render.specs.BackingTexture;
+import com.binarymonks.jj.specs.B2DCompositeSpec;
+import com.binarymonks.jj.specs.render.AnimatedRenderSpec;
+import com.binarymonks.jj.specs.render.AnimationSequence;
+import com.binarymonks.jj.specs.render.BackingTexture;
+import com.binarymonks.jj.specs.render.RenderBuilder;
 import com.binarymonks.jj.things.InstanceParams;
-import com.binarymonks.jj.things.specs.NodeSpec;
-import com.binarymonks.jj.things.specs.SceneSpec;
-import com.binarymonks.jj.things.specs.ThingSpec;
+import com.binarymonks.jj.specs.NodeSpec;
+import com.binarymonks.jj.specs.ThingSpec;
 
 public class D05_animations extends Game {
     float WORLD_WIDTH = 200;
@@ -45,15 +45,14 @@ public class D05_animations extends Game {
         return new ThingSpec()
                 .addNode(new NodeSpec()
                         .addRender(
-                                new AnimatedRenderSpec()
-                                        .setBackingTexture(new BackingTexture.Simple("textures/count.png"))
-                                        .setRowsNColumns(3, 4)
-                                        .setDimensions(100, 100)
+                                RenderBuilder.animated(new BackingTexture.Simple("textures/count.png"),
+                                        3, 4,
+                                        100, 100)
                                         .addAnimation(new AnimationSequence()
                                                 .setDuration(6f)
                                                 .setName("default")
                                                 .setStartEnd(4, 8)
-                                        )
+                                        ).build()
                         )
 
                 );

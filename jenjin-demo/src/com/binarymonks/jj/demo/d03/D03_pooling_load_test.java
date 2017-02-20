@@ -6,14 +6,14 @@ import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.JJConfig;
 import com.binarymonks.jj.behaviour.DestroySelf;
 import com.binarymonks.jj.layers.GameRenderingLayer;
-import com.binarymonks.jj.physics.specs.b2d.B2DCompositeSpec;
-import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
-import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
-import com.binarymonks.jj.render.specs.B2DRenderSpec;
+import com.binarymonks.jj.specs.B2DCompositeSpec;
+import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
+import com.binarymonks.jj.specs.physics.FixtureNodeSpec;
+import com.binarymonks.jj.specs.render.B2DRenderSpec;
+import com.binarymonks.jj.specs.render.RenderBuilder;
 import com.binarymonks.jj.things.InstanceParams;
-import com.binarymonks.jj.things.specs.NodeSpec;
-import com.binarymonks.jj.things.specs.SceneSpec;
-import com.binarymonks.jj.things.specs.ThingSpec;
+import com.binarymonks.jj.specs.NodeSpec;
+import com.binarymonks.jj.specs.ThingSpec;
 
 public class D03_pooling_load_test extends Game {
     float WORLD_WIDTH = 100;
@@ -47,16 +47,17 @@ public class D03_pooling_load_test extends Game {
 
 
     private ThingSpec square() {
-
+        DestroySelf destroySelf = new DestroySelf();
+        destroySelf.timeToLive.set(4f);
         return new ThingSpec()
                 .addNode(
                         new NodeSpec()
                                 .addRender(
-                                        new B2DRenderSpec().color.set(Color.BLUE)
+                                        RenderBuilder.b2d().setColor(Color.BLUE).build()
                                 )
                                 .addPhysics(new FixtureNodeSpec().setShape(new B2DShapeSpec.PolygonRectangle(5, 5)))
                 )
-                .addBehaviour(new DestroySelf().timeToLive.set(4f))
+                .addBehaviour(destroySelf)
                 ;
     }
 }

@@ -1,4 +1,4 @@
-package com.binarymonks.jj.render.specs;
+package com.binarymonks.jj.specs.render;
 
 
 import com.badlogic.gdx.graphics.Color;
@@ -7,33 +7,18 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import com.binarymonks.jj.assets.AssetReference;
 import com.binarymonks.jj.backend.Global;
-import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
+import com.binarymonks.jj.specs.physics.PhysicsNodeSpec;
 import com.binarymonks.jj.render.nodes.RenderNode;
 import com.binarymonks.jj.specs.SpecPropField;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.utils.Empty;
 
-public abstract class RenderSpec<CONCRETE extends RenderSpec> implements Json.Serializable {
+public abstract class RenderSpec implements Json.Serializable {
     public int id = Global.nextID();
     public int layer;
-    public int thingPriority;
-    public GraphSpec<CONCRETE> renderGraph = new GraphSpec<CONCRETE>((CONCRETE) this);
-    public SpecPropField<Color, CONCRETE> color = new SpecPropField<>((CONCRETE) this, Color.WHITE);
-    CONCRETE self;
-
-    public RenderSpec() {
-        self = (CONCRETE) this;
-    }
-
-    public CONCRETE setLayer(int layer) {
-        this.layer = layer;
-        return self;
-    }
-
-    public CONCRETE setPriority(int priority) {
-        this.thingPriority = priority;
-        return self;
-    }
+    public int priority;
+    public GraphSpec renderGraph = new GraphSpec();
+    public SpecPropField<Color> color = new SpecPropField<>(Color.WHITE);
 
     public abstract RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec, InstanceParams instanceParams);
 
@@ -46,7 +31,7 @@ public abstract class RenderSpec<CONCRETE extends RenderSpec> implements Json.Se
         return "RenderSpec{" +
                 "id=" + id +
                 ", layer=" + layer +
-                ", thingPriority=" + thingPriority +
+                ", priority=" + priority +
                 ", renderGraph=" + renderGraph +
                 ", color=" + color +
                 '}';
@@ -55,7 +40,7 @@ public abstract class RenderSpec<CONCRETE extends RenderSpec> implements Json.Se
     @Override
     public void write(Json json) {
         json.writeValue("layer", layer);
-        json.writeValue("thingPriority", thingPriority);
+        json.writeValue("priority", priority);
         json.writeValue("renderGraph", renderGraph, null, renderGraph.getClass());
         json.writeValue("color", color, null, color.getClass());
     }
@@ -64,7 +49,7 @@ public abstract class RenderSpec<CONCRETE extends RenderSpec> implements Json.Se
     public void read(Json json, JsonValue jsonData) {
         id = Global.nextID();
         layer = jsonData.getInt("layer");
-        thingPriority = jsonData.getInt("thingPriority");
+        priority = jsonData.getInt("priority");
         renderGraph = json.readValue(null, jsonData.get("renderGraph"));
         color = json.readValue(null, jsonData.get("color"));
     }
@@ -74,10 +59,10 @@ public abstract class RenderSpec<CONCRETE extends RenderSpec> implements Json.Se
         if (this == o) return true;
         if (!(o instanceof RenderSpec)) return false;
 
-        RenderSpec<?> that = (RenderSpec<?>) o;
+        RenderSpec that = (RenderSpec) o;
 
         if (layer != that.layer) return false;
-        if (thingPriority != that.thingPriority) return false;
+        if (priority != that.priority) return false;
         if (!renderGraph.equals(that.renderGraph)) return false;
         return color.equals(that.color);
 
@@ -86,13 +71,13 @@ public abstract class RenderSpec<CONCRETE extends RenderSpec> implements Json.Se
     @Override
     public int hashCode() {
         int result = layer;
-        result = 31 * result + thingPriority;
+        result = 31 * result + priority;
         result = 31 * result + renderGraph.hashCode();
         result = 31 * result + color.hashCode();
         return result;
     }
 
-    public static class Null extends RenderSpec<Null> {
+    public static class Null extends RenderSpec {
 
 
         @Override

@@ -1,10 +1,9 @@
 package com.binarymonks.jj.api;
 
 import com.binarymonks.jj.async.Function;
-import com.binarymonks.jj.physics.specs.b2d.B2DCompositeSpec;
+import com.binarymonks.jj.specs.B2DCompositeSpec;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.Thing;
-import com.binarymonks.jj.things.specs.SceneSpec;
 
 import java.util.function.Consumer;
 

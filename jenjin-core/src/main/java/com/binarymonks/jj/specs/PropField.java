@@ -4,27 +4,18 @@ package com.binarymonks.jj.specs;
 import com.binarymonks.jj.physics.collisions.EmitEventCollision;
 import com.binarymonks.jj.things.Thing;
 
-public class PropField<VALUE, OWNER> implements FieldPropertyDelegate<VALUE, OWNER> {
+public class PropField<VALUE> implements FieldPropertyDelegate<VALUE> {
 
     VALUE value;
-    OWNER owner;
     String propertyDelegate;
     Thing parent;
 
+    public PropField(){}
 
-    public PropField(OWNER owner) {
-        this.owner = owner;
-    }
-
-    public PropField(OWNER owner, VALUE value) {
+    public PropField(VALUE value) {
         this.value = value;
-        this.owner = owner;
     }
 
-    public void copyFrom(SpecPropField<VALUE, ?> specField) {
-        this.value = specField.value;
-        this.propertyDelegate = specField.propertyDelegate;
-    }
 
     public VALUE get() {
         if (propertyDelegate != null) {
@@ -38,18 +29,21 @@ public class PropField<VALUE, OWNER> implements FieldPropertyDelegate<VALUE, OWN
     }
 
     @Override
-    public OWNER set(VALUE value) {
+    public void set(VALUE value) {
         this.value = value;
-        return owner;
     }
 
     @Override
-    public OWNER delegateToProperty(String propertykey) {
+    public void delegateToProperty(String propertykey) {
         this.propertyDelegate = propertykey;
-        return owner;
     }
 
-    public void copyFrom(PropField<VALUE, ?> specField) {
+    public void copyFrom(PropField<VALUE> specField) {
+        this.value = specField.value;
+        this.propertyDelegate = specField.propertyDelegate;
+    }
+
+    public void copyFrom(SpecPropField<VALUE> specField) {
         this.value = specField.value;
         this.propertyDelegate = specField.propertyDelegate;
     }

@@ -1,4 +1,4 @@
-package com.binarymonks.jj.render.specs;
+package com.binarymonks.jj.specs.render;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
@@ -9,9 +9,8 @@ import com.binarymonks.jj.assets.AssetReference;
 import com.binarymonks.jj.render.nodes.TextureProvider;
 import com.binarymonks.jj.utils.Empty;
 
-public abstract class BackingTexture<CONCRETE extends BackingTexture> implements Json.Serializable {
+public abstract class BackingTexture implements Json.Serializable {
     public String path;
-    CONCRETE self = (CONCRETE) this;
 
     public BackingTexture() {
     }
@@ -20,9 +19,8 @@ public abstract class BackingTexture<CONCRETE extends BackingTexture> implements
         this.path = path;
     }
 
-    public CONCRETE setPath(String path) {
+    public void setPath(String path) {
         this.path = path;
-        return self;
     }
 
     public abstract TextureProvider getProvider();

@@ -9,17 +9,15 @@ import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.JJConfig;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.layers.GameRenderingLayer;
-import com.binarymonks.jj.physics.specs.PhysicsRootSpec;
-import com.binarymonks.jj.physics.specs.b2d.B2DCompositeSpec;
-import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
-import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.pools.N;
-import com.binarymonks.jj.render.specs.B2DRenderSpec;
+import com.binarymonks.jj.specs.B2DCompositeSpec;
+import com.binarymonks.jj.specs.NodeSpec;
+import com.binarymonks.jj.specs.ThingSpec;
+import com.binarymonks.jj.specs.physics.FixtureNodeSpec;
+import com.binarymonks.jj.specs.physics.PhysicsRootSpec;
+import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
+import com.binarymonks.jj.specs.render.RenderBuilder;
 import com.binarymonks.jj.things.InstanceParams;
-import com.binarymonks.jj.things.Thing;
-import com.binarymonks.jj.things.specs.NodeSpec;
-import com.binarymonks.jj.things.specs.SceneSpec;
-import com.binarymonks.jj.things.specs.ThingSpec;
 
 
 public class D02_b2d_shapes extends Game {
@@ -94,10 +92,11 @@ public class D02_b2d_shapes extends Game {
                 .setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.StaticBody))
                 .addNode(
                         new NodeSpec()
-                                .addRender(new B2DRenderSpec()
-                                        .color.set(Color.PURPLE)
+                                .addRender(RenderBuilder.b2d()
+                                        .setColor(Color.PURPLE)
                                         .setLayer(0)
                                         .setPriority(1)
+                                        .build()
                                 )
                                 .addPhysics(new FixtureNodeSpec()
                                         .setShape(new B2DShapeSpec.Chain()
@@ -122,10 +121,11 @@ public class D02_b2d_shapes extends Game {
                 .setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.DynamicBody))
                 .addNode(
                         new NodeSpec()
-                                .addRender(new B2DRenderSpec()
-                                        .color.set(Color.FIREBRICK)
+                                .addRender(RenderBuilder.b2d()
+                                        .setColor(Color.FIREBRICK)
                                         .setLayer(0)
                                         .setPriority(1)
+                                        .build()
                                 )
                                 .addPhysics(new FixtureNodeSpec()
                                         .setShape(new B2DShapeSpec.Circle(5))
@@ -141,10 +141,11 @@ public class D02_b2d_shapes extends Game {
                 .setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.StaticBody))
                 .addNode(
                         new NodeSpec()
-                                .addRender(new B2DRenderSpec()
-                                        .color.set(Color.GRAY)
+                                .addRender(RenderBuilder.b2d()
+                                        .setColor(Color.GRAY)
                                         .setLayer(0)
                                         .setPriority(1)
+                                        .build()
                                 )
                                 .addPhysics(new FixtureNodeSpec()
                                         .setShape(new B2DShapeSpec.PolygonRectangle(1, 1)))
@@ -156,7 +157,7 @@ public class D02_b2d_shapes extends Game {
                 .setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.DynamicBody))
                 .addNode(
                         new NodeSpec()
-                                .addRender(new B2DRenderSpec().color.set(Color.PINK))
+                                .addRender(RenderBuilder.b2d().setColor(Color.PINK).build())
                                 .addPhysics(new FixtureNodeSpec()
                                         .setShape(new B2DShapeSpec.Polygon()
                                                 .add(N.ew(Vector2.class).set(-10, -10))
@@ -181,30 +182,33 @@ public class D02_b2d_shapes extends Game {
                 .setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.DynamicBody))
                 .addNode(
                         new NodeSpec()
-                                .addRender(new B2DRenderSpec()
-                                        .color.set(Color.YELLOW)
+                                .addRender(RenderBuilder.b2d()
+                                        .setColor(Color.YELLOW)
                                         .setLayer(0)
                                         .setPriority(1)
+                                        .build()
                                 )
                                 .addPhysics(new FixtureNodeSpec()
                                         .setShape(new B2DShapeSpec.PolygonRectangle(20, 20)))
                 )
                 .addNode(
                         new NodeSpec()
-                                .addRender(new B2DRenderSpec()
-                                        .color.set(Color.GREEN)
+                                .addRender(RenderBuilder.b2d()
+                                        .setColor(Color.GREEN)
                                         .setLayer(1)
                                         .setPriority(0)
+                                        .build()
                                 )
                                 .addPhysics(new FixtureNodeSpec()
                                         .setShape(new B2DShapeSpec.PolygonRectangle(5, 5)))
                 )
                 .addNode(
                         new NodeSpec()
-                                .addRender(new B2DRenderSpec()
-                                        .color.set(Color.BLUE)
+                                .addRender(RenderBuilder.b2d()
+                                        .setColor(Color.BLUE)
                                         .setLayer(0)
                                         .setPriority(0)
+                                        .build()
                                 )
                                 .addPhysics(new FixtureNodeSpec()
                                         .setShape(new B2DShapeSpec.PolygonRectangle(5, 5))

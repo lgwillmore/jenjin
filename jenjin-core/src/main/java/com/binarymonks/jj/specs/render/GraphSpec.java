@@ -1,28 +1,22 @@
-package com.binarymonks.jj.render.specs;
+package com.binarymonks.jj.specs.render;
 
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import com.binarymonks.jj.render.GraphType;
 
-public class GraphSpec<OWNER> implements Json.Serializable {
+public class GraphSpec implements Json.Serializable {
 
-    OWNER self;
     public GraphType type = GraphType.DEFAULT;
 
-    public GraphSpec(OWNER self) {
-        this.self = self;
-    }
 
     public GraphSpec(){}
 
-    public OWNER setToDefault() {
+    public void setToDefault() {
         type = GraphType.DEFAULT;
-        return self;
     }
 
-    public OWNER setToLightSource() {
+    public void setToLightSource() {
         type = GraphType.LIGHT_SOURCE;
-        return self;
     }
 
     @Override
@@ -47,7 +41,7 @@ public class GraphSpec<OWNER> implements Json.Serializable {
         if (this == o) return true;
         if (!(o instanceof GraphSpec)) return false;
 
-        GraphSpec<?> graphSpec = (GraphSpec<?>) o;
+        GraphSpec graphSpec = (GraphSpec) o;
 
         return type.equals(graphSpec.type);
 

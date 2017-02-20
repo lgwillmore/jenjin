@@ -1,4 +1,4 @@
-package com.binarymonks.jj.physics.specs;
+package com.binarymonks.jj.specs.physics;
 
 /**
  * Created by lwillmore on 25/01/17.

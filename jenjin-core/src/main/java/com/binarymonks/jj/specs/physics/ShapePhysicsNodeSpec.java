@@ -1,7 +1,4 @@
-package com.binarymonks.jj.physics.specs;
-
-import com.badlogic.gdx.math.Vector2;
-import com.binarymonks.jj.pools.N;
+package com.binarymonks.jj.specs.physics;
 
 
 public class ShapePhysicsNodeSpec implements PhysicsNodeSpec {

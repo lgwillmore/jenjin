@@ -1,16 +1,14 @@
 package com.binarymonks.jj.things;
 
 import com.badlogic.gdx.physics.box2d.JointDef;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.async.Function;
 import com.binarymonks.jj.async.OneTimeTask;
-import com.binarymonks.jj.async.Task;
 import com.binarymonks.jj.backend.Global;
-import com.binarymonks.jj.physics.specs.b2d.B2DCompositeSpec;
-import com.binarymonks.jj.things.specs.InstanceSpec;
+import com.binarymonks.jj.specs.B2DCompositeSpec;
+import com.binarymonks.jj.specs.InstanceSpec;
 
 public class SceneLoader {
 

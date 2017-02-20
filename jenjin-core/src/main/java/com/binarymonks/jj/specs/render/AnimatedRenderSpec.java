@@ -1,4 +1,4 @@
-package com.binarymonks.jj.render.specs;
+package com.binarymonks.jj.specs.render;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -8,43 +8,22 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.assets.AssetReference;
-import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
+import com.binarymonks.jj.specs.physics.PhysicsNodeSpec;
 import com.binarymonks.jj.render.nodes.AnimationProvider;
 import com.binarymonks.jj.render.nodes.RenderNode;
 import com.binarymonks.jj.render.nodes.TextureRenderNode;
 import com.binarymonks.jj.things.InstanceParams;
 
 
-public class AnimatedRenderSpec extends SpatialRenderSpec<AnimatedRenderSpec> {
+public class AnimatedRenderSpec extends SpatialRenderSpec {
 
     public BackingTexture backingTexture;
     public int rows;
     public int columns;
     public float width;
     public float height;
-    Array<AnimationSequence> sequences = new Array<>();
+    public Array<AnimationSequence> sequences = new Array<>();
 
-    public AnimatedRenderSpec addAnimation(AnimationSequence sequence) {
-        sequences.add(sequence);
-        return this;
-    }
-
-    public AnimatedRenderSpec setBackingTexture(BackingTexture backingTexture) {
-        this.backingTexture = backingTexture;
-        return this;
-    }
-
-    public AnimatedRenderSpec setRowsNColumns(int rows, int columns) {
-        this.rows = rows;
-        this.columns = columns;
-        return this;
-    }
-
-    public AnimatedRenderSpec setDimensions(float width, float height) {
-        this.width = width;
-        this.height = height;
-        return this;
-    }
 
     @Override
     public RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec, InstanceParams instanceParams) {

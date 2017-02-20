@@ -1,10 +1,11 @@
-package com.binarymonks.jj.render.specs;
+package com.binarymonks.jj.specs.render;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
-import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
-import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
+import com.binarymonks.jj.specs.NodeSpec;
+import com.binarymonks.jj.specs.physics.PhysicsNodeSpec;
+import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
+import com.binarymonks.jj.specs.physics.FixtureNodeSpec;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.render.nodes.PolygonRenderNode;
 import com.binarymonks.jj.render.nodes.RenderNode;
@@ -12,9 +13,9 @@ import com.binarymonks.jj.render.nodes.ShapeRenderNode;
 import com.binarymonks.jj.things.InstanceParams;
 
 /**
- * This {@link RenderSpec} will attempt to render the box2d fixture from its parent {@link com.binarymonks.jj.things.specs.NodeSpec}
+ * This {@link RenderSpec} will attempt to render the box2d fixture from its parent {@link NodeSpec}
  */
-public class B2DRenderSpec extends RenderSpec<B2DRenderSpec> {
+public class B2DRenderSpec extends RenderSpec {
 
     @Override
     public RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec, InstanceParams instanceParams) {

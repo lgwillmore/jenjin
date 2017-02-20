@@ -1,7 +1,7 @@
 package com.binarymonks.jj.api;
 
 import com.binarymonks.jj.async.Function;
-import com.binarymonks.jj.things.specs.ThingSpec;
+import com.binarymonks.jj.specs.ThingSpec;
 
 public interface Specs {
 

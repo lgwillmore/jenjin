@@ -1,10 +1,9 @@
-package com.binarymonks.jj.physics.specs.b2d;
+package com.binarymonks.jj.specs;
 
 import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.things.InstanceParams;
-import com.binarymonks.jj.things.specs.InstanceSpec;
 
 
 public class B2DCompositeSpec {

@@ -1,4 +1,4 @@
-package com.binarymonks.jj.things.specs;
+package com.binarymonks.jj.specs;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;

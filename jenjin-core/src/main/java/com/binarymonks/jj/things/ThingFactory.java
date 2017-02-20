@@ -17,10 +17,10 @@ import com.binarymonks.jj.physics.CollisionFunction;
 import com.binarymonks.jj.physics.CollisionGroups;
 import com.binarymonks.jj.physics.CollisionResolver;
 import com.binarymonks.jj.physics.PhysicsRoot;
-import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
-import com.binarymonks.jj.physics.specs.PhysicsRootSpec;
-import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
-import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
+import com.binarymonks.jj.specs.physics.PhysicsNodeSpec;
+import com.binarymonks.jj.specs.physics.PhysicsRootSpec;
+import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
+import com.binarymonks.jj.specs.physics.FixtureNodeSpec;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.pools.PoolManager;
 import com.binarymonks.jj.pools.Re;
@@ -28,8 +28,8 @@ import com.binarymonks.jj.render.RenderWorld;
 import com.binarymonks.jj.render.ThingLayer;
 import com.binarymonks.jj.render.nodes.RenderNode;
 import com.binarymonks.jj.specs.SpecTools;
-import com.binarymonks.jj.things.specs.NodeSpec;
-import com.binarymonks.jj.things.specs.ThingSpec;
+import com.binarymonks.jj.specs.NodeSpec;
+import com.binarymonks.jj.specs.ThingSpec;
 
 public class ThingFactory {
     int idCounter = 0;
@@ -156,7 +156,7 @@ public class ThingFactory {
         }
         for (ObjectMap.Entry<Integer, ThingLayer> layers : thingLayers) {
             layers.value.renderNodes.sort(
-                    (o1, o2) -> o1.spec.thingPriority - o2.spec.thingPriority
+                    (o1, o2) -> o1.spec.priority - o2.spec.priority
             );
         }
         return thingLayers;

@@ -11,17 +11,15 @@ import com.binarymonks.jj.layers.GameRenderingLayer;
 import com.binarymonks.jj.physics.collisions.DestroyCollision;
 import com.binarymonks.jj.physics.collisions.EmitEventCollision;
 import com.binarymonks.jj.physics.collisions.SoundCollision;
-import com.binarymonks.jj.physics.specs.PhysicsRootSpec;
-import com.binarymonks.jj.physics.specs.b2d.B2DCompositeSpec;
-import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
-import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
-import com.binarymonks.jj.render.specs.B2DRenderSpec;
-import com.binarymonks.jj.render.specs.ShapeRenderSpec;
+import com.binarymonks.jj.specs.physics.PhysicsRootSpec;
+import com.binarymonks.jj.specs.B2DCompositeSpec;
+import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
+import com.binarymonks.jj.specs.physics.FixtureNodeSpec;
+import com.binarymonks.jj.specs.render.RenderBuilder;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.Thing;
-import com.binarymonks.jj.things.specs.NodeSpec;
-import com.binarymonks.jj.things.specs.SceneSpec;
-import com.binarymonks.jj.things.specs.ThingSpec;
+import com.binarymonks.jj.specs.NodeSpec;
+import com.binarymonks.jj.specs.ThingSpec;
 
 public class D01_pong extends Game {
 
@@ -136,9 +134,9 @@ public class D01_pong extends Game {
                 )
                 .addNode(
                         new NodeSpec()
-                                .addRender(new ShapeRenderSpec.Rectangle()
-                                        .setDimension(BAT_WIDTH, BAT_HEIGHT)
-                                        .color.delegateToProperty("color")
+                                .addRender(RenderBuilder.shapeRectangle(BAT_WIDTH, BAT_HEIGHT)
+                                        .delegateColorTo("color")
+                                        .build()
                                 )
                                 .addPhysics(new FixtureNodeSpec()
                                         .setShape(new B2DShapeSpec.PolygonRectangle(BAT_WIDTH, BAT_HEIGHT))
@@ -157,7 +155,7 @@ public class D01_pong extends Game {
                 )
                 .addNode(
                         new NodeSpec()
-                                .addRender(new ShapeRenderSpec.Rectangle().setDimension(5, 5).color.set(Color.GREEN))
+                                .addRender(RenderBuilder.shapeRectangle(5, 5).setColor(Color.GREEN).build())
                                 .addPhysics(new FixtureNodeSpec()
                                         .setFriction(0)
                                         .setRestitution(1)
@@ -173,9 +171,9 @@ public class D01_pong extends Game {
                 .setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.StaticBody))
                 .addNode(
                         new NodeSpec()
-                                .addRender(new ShapeRenderSpec.Rectangle()
-                                        .setDimension(COURT_LENGTH - 2 * (BAT_INSET + BAT_WIDTH * 0.501f), BAT_WIDTH)
-                                        .color.set(Color.WHITE)
+                                .addRender(RenderBuilder.shapeRectangle(COURT_LENGTH - 2 * (BAT_INSET + BAT_WIDTH * 0.501f), BAT_WIDTH)
+                                        .setColor(Color.WHITE)
+                                        .build()
                                 )
                                 .addPhysics(new FixtureNodeSpec()
                                         .setShape(new B2DShapeSpec.PolygonRectangle(COURT_LENGTH - 2 * (BAT_INSET + BAT_WIDTH * 0.501f), BAT_WIDTH)
@@ -185,14 +183,16 @@ public class D01_pong extends Game {
     }
 
     private ThingSpec scoreWall() {
+        EmitEventCollision emitEventCollision = new EmitEventCollision();
+        emitEventCollision.message.delegateToProperty("score_message");
         return new ThingSpec()
                 .setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.StaticBody))
                 .addNode(
                         new NodeSpec()
-                                .addRender(new B2DRenderSpec().color.delegateToProperty("color"))
+                                .addRender(RenderBuilder.b2d().delegateColorTo("color").build())
                                 .addPhysics(new FixtureNodeSpec()
                                         .setShape(new B2DShapeSpec.PolygonRectangle(5, COURT_LENGTH * 1.1f))
-                                        .addInitialBeginCollision(new EmitEventCollision().message.delegateToProperty("score_message"))
+                                        .addInitialBeginCollision(emitEventCollision)
                                         .addFinalBeginCollision(new DestroyCollision(false, true))
                                 )
                 )

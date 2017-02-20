@@ -2,15 +2,13 @@ package com.binarymonks.jj.things;
 
 import box2dLight.Light;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.binarymonks.jj.async.Task;
-import com.binarymonks.jj.async.TaskMaster;
 import com.binarymonks.jj.audio.SoundEffects;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.behaviour.Behaviour;
 import com.binarymonks.jj.behaviour.BehaviourMaster;
 import com.binarymonks.jj.physics.PhysicsRoot;
 import com.binarymonks.jj.render.RenderRoot;
-import com.binarymonks.jj.things.specs.ThingSpec;
+import com.binarymonks.jj.specs.ThingSpec;
 
 public class Thing {
 

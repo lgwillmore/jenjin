@@ -1,10 +1,10 @@
-package com.binarymonks.jj.things.specs;
+package com.binarymonks.jj.specs;
 
 import com.badlogic.gdx.utils.Array;
 import com.binarymonks.jj.audio.SoundParams;
 import com.binarymonks.jj.behaviour.Behaviour;
 import com.binarymonks.jj.lights.specs.LightSpec;
-import com.binarymonks.jj.physics.specs.PhysicsRootSpec;
+import com.binarymonks.jj.specs.physics.PhysicsRootSpec;
 
 
 public class ThingSpec {

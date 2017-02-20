@@ -1,4 +1,4 @@
-package com.binarymonks.jj.things.specs;
+package com.binarymonks.jj.specs;
 
 import com.binarymonks.jj.things.InstanceParams;
 

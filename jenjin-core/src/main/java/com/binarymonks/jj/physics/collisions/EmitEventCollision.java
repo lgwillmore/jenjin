@@ -9,7 +9,7 @@ import com.binarymonks.jj.things.Thing;
 
 public class EmitEventCollision extends CollisionFunction {
 
-    public PropField<String, EmitEventCollision> message = new PropField<>(this);
+    public PropField<String> message = new PropField();
 
     public EmitEventCollision(String message) {
         super();

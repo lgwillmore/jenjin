@@ -3,6 +3,7 @@ package com.binarymonks.jj.things;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.pools.PoolManager;
+import com.binarymonks.jj.specs.ThingSpec;
 
 /**
  * This defines the parameters of an instance of a {@link Thing} on creation.
@@ -43,7 +44,7 @@ public class InstanceParams {
     /**
      * Scale where possible. Not all things will scale as you expect.
      * Also - IMPORTANT - scaling and pooling do not mix. If you are scaling, and creating and destroying the {@link Thing}
-     * you will have to set {@link com.binarymonks.jj.things.specs.ThingSpec#setPool(boolean)} to false. So scaling is good
+     * you will have to set {@link ThingSpec#setPool(boolean)} to false. So scaling is good
      * for things like scenery and terrain.
      *
      * @param scaleX

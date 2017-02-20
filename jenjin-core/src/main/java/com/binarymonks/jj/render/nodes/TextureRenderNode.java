@@ -5,11 +5,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Transform;
-import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.pools.N;
-import com.binarymonks.jj.render.specs.RenderSpec;
-import com.binarymonks.jj.render.specs.TextureRenderSpec;
+import com.binarymonks.jj.specs.render.RenderSpec;
 
 public class TextureRenderNode extends RenderNode<RenderSpec> {
 

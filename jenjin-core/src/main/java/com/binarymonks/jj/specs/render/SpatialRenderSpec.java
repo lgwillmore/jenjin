@@ -1,16 +1,11 @@
-package com.binarymonks.jj.render.specs;
+package com.binarymonks.jj.specs.render;
 
 
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 
-public abstract class SpatialRenderSpec<CONCRETE extends SpatialRenderSpec> extends RenderSpec<CONCRETE> implements Json.Serializable {
+public abstract class SpatialRenderSpec extends RenderSpec implements Json.Serializable {
     public Spatial spatial = new Spatial.Fixed();
-
-    public CONCRETE setSpatial(Spatial spatial) {
-        this.spatial = spatial;
-        return self;
-    }
 
     @Override
     public String toString() {
@@ -37,7 +32,7 @@ public abstract class SpatialRenderSpec<CONCRETE extends SpatialRenderSpec> exte
         if (!(o instanceof SpatialRenderSpec)) return false;
         if (!super.equals(o)) return false;
 
-        SpatialRenderSpec<?> that = (SpatialRenderSpec<?>) o;
+        SpatialRenderSpec that = (SpatialRenderSpec) o;
 
         return spatial.equals(that.spatial);
     }

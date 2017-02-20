@@ -1,4 +1,4 @@
-package com.binarymonks.jj.physics.specs;
+package com.binarymonks.jj.specs.physics;
 
 import com.badlogic.gdx.physics.box2d.BodyDef;
 

@@ -1,4 +1,4 @@
-package com.binarymonks.jj.render.specs;
+package com.binarymonks.jj.specs.render;
 
 /**
  * Created by lwillmore on 13/02/17.

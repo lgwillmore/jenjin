@@ -1,4 +1,4 @@
-package com.binarymonks.jj.physics.specs.b2d;
+package com.binarymonks.jj.specs.physics.b2d;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;

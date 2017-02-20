@@ -4,16 +4,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.layers.GameRenderingLayer;
-import com.binarymonks.jj.physics.specs.b2d.B2DCompositeSpec;
-import com.binarymonks.jj.physics.specs.b2d.B2DShapeSpec;
-import com.binarymonks.jj.physics.specs.b2d.FixtureNodeSpec;
-import com.binarymonks.jj.render.specs.ShapeRenderSpec;
-import com.binarymonks.jj.render.specs.Spatial;
+import com.binarymonks.jj.specs.B2DCompositeSpec;
+import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
+import com.binarymonks.jj.specs.physics.FixtureNodeSpec;
+import com.binarymonks.jj.specs.render.RenderBuilder;
+import com.binarymonks.jj.specs.render.ShapeRenderSpec;
+import com.binarymonks.jj.specs.render.Spatial;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.Thing;
-import com.binarymonks.jj.things.specs.NodeSpec;
-import com.binarymonks.jj.things.specs.SceneSpec;
-import com.binarymonks.jj.things.specs.ThingSpec;
+import com.binarymonks.jj.specs.NodeSpec;
+import com.binarymonks.jj.specs.ThingSpec;
 
 /**
  * The simplest of the simple - just draw something.
@@ -59,12 +59,12 @@ public class D00_Basic extends Game {
                 .addNode(
                         new NodeSpec()
                                 .addRender(
-                                        new ShapeRenderSpec.Rectangle()
+                                        RenderBuilder.shapeRectangle(10, 10)
                                                 .setLayer(0)
                                                 .setFill(true)
-                                                .setDimension(10, 10)
                                                 .setSpatial(new Spatial.Fixed().setOffset(5, 5).setRotationD(45))
-                                                .color.set(Color.BLUE)
+                                                .setColor(Color.BLUE)
+                                                .build()
                                 )
                                 .addPhysics(
                                         new FixtureNodeSpec()
@@ -76,12 +76,12 @@ public class D00_Basic extends Game {
                 .addNode(
                         new NodeSpec()
                                 .addRender(
-                                        new ShapeRenderSpec.Rectangle()
+                                        RenderBuilder.shapeRectangle(10, 10)
                                                 .setLayer(0)
                                                 .setFill(true)
-                                                .setDimension(10, 10)
                                                 .setSpatial(new Spatial.DelegateToPhysics())
-                                                .color.set(Color.RED)
+                                                .setColor(Color.RED)
+                                                .build()
                                 )
                                 .addPhysics(
                                         new FixtureNodeSpec()

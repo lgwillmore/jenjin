@@ -1,16 +1,16 @@
-package com.binarymonks.jj.render.specs;
+package com.binarymonks.jj.specs.render;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import com.binarymonks.jj.assets.AssetReference;
-import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
+import com.binarymonks.jj.specs.physics.PhysicsNodeSpec;
 import com.binarymonks.jj.render.nodes.RenderNode;
 import com.binarymonks.jj.render.nodes.TextureProvider;
 import com.binarymonks.jj.render.nodes.TextureRenderNode;
 import com.binarymonks.jj.things.InstanceParams;
 
-public class TextureRenderSpec extends SpatialRenderSpec<TextureRenderSpec> implements Json.Serializable {
+public class TextureRenderSpec extends SpatialRenderSpec implements Json.Serializable {
 
     public BackingTexture backingTexture;
     public float width;
@@ -23,17 +23,6 @@ public class TextureRenderSpec extends SpatialRenderSpec<TextureRenderSpec> impl
         this.backingTexture = backingTexture;
         this.width = width;
         this.height = height;
-    }
-
-    public TextureRenderSpec setBackingTexture(BackingTexture backingTexture) {
-        this.backingTexture = backingTexture;
-        return this;
-    }
-
-    public TextureRenderSpec setDimensions(float width, float height) {
-        this.width = width;
-        this.height = height;
-        return this;
     }
 
     @Override

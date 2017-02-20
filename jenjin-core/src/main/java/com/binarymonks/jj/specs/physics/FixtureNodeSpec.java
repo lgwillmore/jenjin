@@ -1,13 +1,13 @@
-package com.binarymonks.jj.physics.specs.b2d;
+package com.binarymonks.jj.specs.physics;
 
 import com.badlogic.gdx.utils.Array;
 import com.binarymonks.jj.physics.CollisionDataSpec;
 import com.binarymonks.jj.physics.CollisionFunction;
-import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
+import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
 
 public class FixtureNodeSpec implements PhysicsNodeSpec {
 
-    public CollisionDataSpec<FixtureNodeSpec> collisionData = new CollisionDataSpec<>(this);
+    public CollisionDataSpec collisionData = new CollisionDataSpec();
     public float density = 0.5f;
     public float friction = 0.1f;
     public float restitution = 0;

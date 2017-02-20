@@ -1,7 +1,7 @@
-package com.binarymonks.jj.things.specs;
+package com.binarymonks.jj.specs;
 
-import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
-import com.binarymonks.jj.render.specs.RenderSpec;
+import com.binarymonks.jj.specs.physics.PhysicsNodeSpec;
+import com.binarymonks.jj.specs.render.RenderSpec;
 
 
 public class NodeSpec {

@@ -1,6 +1,6 @@
-package com.binarymonks.jj.render.specs;
+package com.binarymonks.jj.specs.render;
 
-import com.binarymonks.jj.physics.specs.PhysicsNodeSpec;
+import com.binarymonks.jj.specs.physics.PhysicsNodeSpec;
 
 public interface Spatial {
 

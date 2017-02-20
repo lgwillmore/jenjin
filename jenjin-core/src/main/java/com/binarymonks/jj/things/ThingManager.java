@@ -3,13 +3,11 @@ package com.binarymonks.jj.things;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.api.Things;
 import com.binarymonks.jj.async.Function;
-import com.binarymonks.jj.async.FunctionLink;
 import com.binarymonks.jj.backend.Global;
-import com.binarymonks.jj.physics.specs.b2d.B2DCompositeSpec;
+import com.binarymonks.jj.specs.B2DCompositeSpec;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.pools.PoolManager;
 import com.binarymonks.jj.pools.Re;
-import com.binarymonks.jj.things.specs.SceneSpec;
 
 import java.util.function.Consumer;
 

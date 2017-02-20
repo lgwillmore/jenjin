@@ -2,7 +2,7 @@ package com.binarymonks.jj.render.nodes;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.binarymonks.jj.render.specs.RenderSpec;
+import com.binarymonks.jj.specs.render.RenderSpec;
 import com.binarymonks.jj.specs.PropField;
 import com.binarymonks.jj.things.Thing;
 
@@ -11,7 +11,7 @@ public abstract class RenderNode<SPEC extends RenderSpec> {
     public static RenderNode<?> NULL = new Null(new RenderSpec.Null());
     public SPEC spec;
     public String renderGraphName;
-    public PropField<Color, ?> color = new PropField<>(new Color(0, 0, 0, 1));
+    public PropField<Color> color = new PropField<>(new Color(0, 0, 0, 1));
 
     public RenderNode(SPEC spec) {
         this.spec = spec;

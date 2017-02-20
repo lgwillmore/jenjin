@@ -1,13 +1,11 @@
 package com.binarymonks.jj.render;
 
-import com.binarymonks.jj.render.specs.GraphSpec;
-
 public interface GraphType {
 
-    public static GraphType DEFAULT = new Default();
-    public static GraphType LIGHT_SOURCE = new LightSource();
+    GraphType DEFAULT = new Default();
+    GraphType LIGHT_SOURCE = new LightSource();
 
-    public String name();
+    String name();
 
     class Default implements GraphType {
 
@@ -50,7 +48,7 @@ public interface GraphType {
         }
     }
 
-    public static class Custom implements GraphType {
+    class Custom implements GraphType {
         String name;
 
         public Custom(String name) {

@@ -8,8 +8,8 @@ import com.binarymonks.jj.api.Specs;
 import com.binarymonks.jj.assets.AssetReference;
 import com.binarymonks.jj.async.Function;
 import com.binarymonks.jj.audio.SoundParams;
-import com.binarymonks.jj.things.specs.NodeSpec;
-import com.binarymonks.jj.things.specs.ThingSpec;
+import com.binarymonks.jj.specs.NodeSpec;
+import com.binarymonks.jj.specs.ThingSpec;
 
 public class Specifications implements Specs {
     ObjectMap<String, ThingSpec> specifications = new ObjectMap<>();

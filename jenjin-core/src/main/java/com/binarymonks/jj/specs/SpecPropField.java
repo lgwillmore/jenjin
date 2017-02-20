@@ -3,35 +3,28 @@ package com.binarymonks.jj.specs;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 
-public class SpecPropField<VALUE, OWNER> implements FieldPropertyDelegate<VALUE, OWNER>, Json.Serializable {
+public class SpecPropField<VALUE> implements FieldPropertyDelegate<VALUE>, Json.Serializable {
 
     VALUE value;
-    OWNER owner;
     String propertyDelegate;
 
     public SpecPropField() {
     }
 
 
-    public SpecPropField(OWNER owner, VALUE value) {
+    public SpecPropField(VALUE value) {
         this.value = value;
-        this.owner = owner;
     }
 
-    public SpecPropField(OWNER owner) {
-        this.owner = owner;
+
+    @Override
+    public void set(VALUE value) {
+        this.value = value;
     }
 
     @Override
-    public OWNER set(VALUE value) {
-        this.value = value;
-        return owner;
-    }
-
-    @Override
-    public OWNER delegateToProperty(String propertykey) {
+    public void delegateToProperty(String propertykey) {
         this.propertyDelegate = propertykey;
-        return owner;
     }
 
     @Override
@@ -59,7 +52,7 @@ public class SpecPropField<VALUE, OWNER> implements FieldPropertyDelegate<VALUE,
         if (this == o) return true;
         if (!(o instanceof SpecPropField)) return false;
 
-        SpecPropField<?, ?> that = (SpecPropField<?, ?>) o;
+        SpecPropField<?> that = (SpecPropField<?>) o;
 
         if (value != null ? !value.equals(that.value) : that.value != null) return false;
         return propertyDelegate != null ? propertyDelegate.equals(that.propertyDelegate) : that.propertyDelegate == null;
