@@ -1,13 +1,11 @@
 package com.binarymonks.jj.demo.d01;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.binarymonks.jj.behaviour.Behaviour;
+import com.binarymonks.jj.components.Component;
 
 import static com.binarymonks.jj.demo.d01.D01_pong.BAT_HEIGHT;
 import static com.binarymonks.jj.demo.d01.D01_pong.COURT_LENGTH;
 
-public class PlayerBehaviour extends Behaviour {
+public class PlayerComponent extends Component {
 
     float velocity = 30;
 
@@ -59,8 +57,8 @@ public class PlayerBehaviour extends Behaviour {
     }
 
     @Override
-    public Behaviour clone() {
-        return new PlayerBehaviour();
+    public Component clone() {
+        return new PlayerComponent();
     }
 
 }

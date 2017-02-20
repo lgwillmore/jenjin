@@ -4,12 +4,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.JJConfig;
-import com.binarymonks.jj.behaviour.DestroySelf;
+import com.binarymonks.jj.components.DestroySelf;
 import com.binarymonks.jj.layers.GameRenderingLayer;
-import com.binarymonks.jj.specs.B2DCompositeSpec;
+import com.binarymonks.jj.specs.SceneSpec;
 import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
 import com.binarymonks.jj.specs.physics.FixtureNodeSpec;
-import com.binarymonks.jj.specs.render.B2DRenderSpec;
 import com.binarymonks.jj.specs.render.RenderBuilder;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.specs.NodeSpec;
@@ -34,7 +33,7 @@ public class D03_pooling_load_test extends Game {
                 .set("emitter", emitter())
         ;
 
-        B2DCompositeSpec scene = new B2DCompositeSpec();
+        SceneSpec scene = new SceneSpec();
         scene.addThingSpec("emitter", InstanceParams.New().setPosition(WORLD_WIDTH * 0.25f, WORLD_HEIGHT * 0.25f));
         scene.addThingSpec("emitter", InstanceParams.New().setPosition(WORLD_WIDTH * 0.75f, WORLD_HEIGHT * 0.75f));
 

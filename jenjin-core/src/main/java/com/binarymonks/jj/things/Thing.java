@@ -4,8 +4,8 @@ import box2dLight.Light;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.audio.SoundEffects;
 import com.binarymonks.jj.backend.Global;
-import com.binarymonks.jj.behaviour.Behaviour;
-import com.binarymonks.jj.behaviour.BehaviourMaster;
+import com.binarymonks.jj.components.Component;
+import com.binarymonks.jj.components.ComponentMaster;
 import com.binarymonks.jj.physics.PhysicsRoot;
 import com.binarymonks.jj.render.RenderRoot;
 import com.binarymonks.jj.specs.ThingSpec;
@@ -20,7 +20,7 @@ public class Thing {
     public PhysicsRoot physicsroot;
     public SoundEffects sounds;
     boolean markedForDestruction = false;
-    public BehaviourMaster behaviourMaster = new BehaviourMaster();
+    public ComponentMaster componentMaster = new ComponentMaster();
     ObjectMap<String, Light> lights = new ObjectMap<>();
     ObjectMap<String, Object> properties = new ObjectMap<>();
     ObjectMap<String, ThingNode> nodes = new ObjectMap<>();
@@ -46,9 +46,9 @@ public class Thing {
         Global.thingWorld.remove(this);
     }
 
-    public void addBehaviour(Behaviour behaviour) {
-        behaviour.setParent(this);
-        behaviourMaster.addBehavior(behaviour);
+    public void addComponent(Component component) {
+        component.setParent(this);
+        componentMaster.addComponent(component);
     }
 
     public boolean isMarkedForDestruction() {
@@ -57,10 +57,10 @@ public class Thing {
 
 
     public void update() {
-        behaviourMaster.update();
+        componentMaster.update();
     }
 
-    public <T extends Behaviour> T getBehaviour(Class<T> behaviourType) {
-        return behaviourMaster.getTrackedBehaviour((Class<Behaviour>) behaviourType);
+    public <T extends Component> T getComponent(Class<T> componentType) {
+        return componentMaster.getTrackedComponent((Class<Component>) componentType);
     }
 }

@@ -4,11 +4,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.layers.GameRenderingLayer;
-import com.binarymonks.jj.specs.B2DCompositeSpec;
+import com.binarymonks.jj.specs.SceneSpec;
 import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
 import com.binarymonks.jj.specs.physics.FixtureNodeSpec;
 import com.binarymonks.jj.specs.render.RenderBuilder;
-import com.binarymonks.jj.specs.render.ShapeRenderSpec;
 import com.binarymonks.jj.specs.render.Spatial;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.Thing;
@@ -35,7 +34,7 @@ public class D00_Basic extends Game {
                 .set("squares", squares());
 
         //Add instances to a level
-        B2DCompositeSpec level = new B2DCompositeSpec();
+        SceneSpec level = new SceneSpec();
         level.addThingSpec("squares", InstanceParams.New().setPosition(10, 0).setRotationD(90));
         level.addThingSpec("squares", InstanceParams.New().setPosition(-10, 0).setRotationD(90));
 

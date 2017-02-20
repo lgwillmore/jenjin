@@ -2,11 +2,11 @@ package com.binarymonks.jj.demo.d03;
 
 import com.badlogic.gdx.math.Vector2;
 import com.binarymonks.jj.JJ;
-import com.binarymonks.jj.behaviour.Behaviour;
+import com.binarymonks.jj.components.Component;
 import com.binarymonks.jj.things.InstanceParams;
 
 
-public class Emitter extends Behaviour {
+public class Emitter extends Component {
 
     String specPath;
     float intervalSeconds;
@@ -43,7 +43,7 @@ public class Emitter extends Behaviour {
     }
 
     @Override
-    public Behaviour clone() {
+    public Component clone() {
         return new Emitter().setIntervalSeconds(intervalSeconds).setSpecPath(specPath);
     }
 }

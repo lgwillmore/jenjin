@@ -2,8 +2,8 @@ package com.binarymonks.jj.specs;
 
 import com.badlogic.gdx.utils.Array;
 import com.binarymonks.jj.audio.SoundParams;
-import com.binarymonks.jj.behaviour.Behaviour;
-import com.binarymonks.jj.lights.specs.LightSpec;
+import com.binarymonks.jj.components.Component;
+import com.binarymonks.jj.specs.lights.LightSpec;
 import com.binarymonks.jj.specs.physics.PhysicsRootSpec;
 
 
@@ -11,7 +11,7 @@ public class ThingSpec {
 
     public Array<NodeSpec> nodes = new Array<>();
 
-    public Array<Behaviour> behaviour = new Array<>();
+    public Array<Component> behaviour = new Array<>();
 
     public PhysicsRootSpec physics = new PhysicsRootSpec.B2D();
 
@@ -31,8 +31,8 @@ public class ThingSpec {
         return this;
     }
 
-    public ThingSpec addBehaviour(Behaviour behaviour) {
-        this.behaviour.add(behaviour);
+    public ThingSpec addBehaviour(Component component) {
+        this.behaviour.add(component);
         return this;
     }
 

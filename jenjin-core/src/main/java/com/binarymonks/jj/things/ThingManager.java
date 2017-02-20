@@ -4,7 +4,7 @@ import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.api.Things;
 import com.binarymonks.jj.async.Function;
 import com.binarymonks.jj.backend.Global;
-import com.binarymonks.jj.specs.B2DCompositeSpec;
+import com.binarymonks.jj.specs.SceneSpec;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.pools.PoolManager;
 import com.binarymonks.jj.pools.Re;
@@ -25,12 +25,12 @@ public class ThingManager implements Things {
     }
 
     @Override
-    public void load(B2DCompositeSpec sceneSpec, Function callback) {
+    public void load(SceneSpec sceneSpec, Function callback) {
         JJ.specs.loadSpecAssetsThen(() -> sceneLoader.load(sceneSpec, callback));
     }
 
     @Override
-    public void loadNow(B2DCompositeSpec sceneSpec) {
+    public void loadNow(SceneSpec sceneSpec) {
         JJ.specs.loadSpecAssetsNow();
         sceneLoader.load(sceneSpec, Function::doNothing);
     }

@@ -7,13 +7,13 @@ import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.async.Function;
 import com.binarymonks.jj.async.OneTimeTask;
 import com.binarymonks.jj.backend.Global;
-import com.binarymonks.jj.specs.B2DCompositeSpec;
+import com.binarymonks.jj.specs.SceneSpec;
 import com.binarymonks.jj.specs.InstanceSpec;
 
 public class SceneLoader {
 
 
-    public void load(B2DCompositeSpec sceneSpec, Function callback) {
+    public void load(SceneSpec sceneSpec, Function callback) {
         if (!Global.physics.isUpdating()) {
             JJ.tasks.addPostPhysicsTask(new SceneLoaderTask(callback, sceneSpec));
         } else {
@@ -24,9 +24,9 @@ public class SceneLoader {
     public class SceneLoaderTask extends OneTimeTask {
 
         Function callback;
-        B2DCompositeSpec scene;
+        SceneSpec scene;
 
-        public SceneLoaderTask(Function callback, B2DCompositeSpec scene) {
+        public SceneLoaderTask(Function callback, SceneSpec scene) {
             this.callback = callback;
             this.scene = scene;
         }
@@ -37,7 +37,7 @@ public class SceneLoader {
             for (ObjectMap.Entry<Integer, InstanceSpec> thingInstances : scene.thingPieces) {
                 thingsByID.put(thingInstances.key, JJ.things.createNow(thingInstances.value.thingSpecPath, thingInstances.value.instanceParams));
             }
-            for (B2DCompositeSpec.JointSpec jointSpec : scene.joints) {
+            for (SceneSpec.JointSpec jointSpec : scene.joints) {
                 createJoint(thingsByID.get(jointSpec.thingAID), thingsByID.get(jointSpec.thingBID), jointSpec.jointDef);
             }
             callback.call();

@@ -1,20 +1,19 @@
-package com.binarymonks.jj.behaviour;
+package com.binarymonks.jj.components;
 
-import com.binarymonks.jj.async.Task;
 import com.binarymonks.jj.specs.PropField;
 import com.binarymonks.jj.things.Thing;
 import com.binarymonks.jj.utils.Reflection;
 
 import java.lang.reflect.Field;
 
-public abstract class Behaviour {
+public abstract class Component {
 
     protected Thing parent;
 
-    public abstract Behaviour clone();
+    public abstract Component clone();
 
-    public Class<Behaviour> type() {
-        return (Class<Behaviour>) this.getClass();
+    public Class<Component> type() {
+        return (Class<Component>) this.getClass();
     }
 
     public abstract void doWork();

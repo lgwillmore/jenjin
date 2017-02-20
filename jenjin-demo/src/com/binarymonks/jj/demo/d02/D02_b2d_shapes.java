@@ -10,7 +10,7 @@ import com.binarymonks.jj.JJConfig;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.layers.GameRenderingLayer;
 import com.binarymonks.jj.pools.N;
-import com.binarymonks.jj.specs.B2DCompositeSpec;
+import com.binarymonks.jj.specs.SceneSpec;
 import com.binarymonks.jj.specs.NodeSpec;
 import com.binarymonks.jj.specs.ThingSpec;
 import com.binarymonks.jj.specs.physics.FixtureNodeSpec;
@@ -42,14 +42,14 @@ public class D02_b2d_shapes extends Game {
                 .set("chain", chain())
         ;
 
-        B2DCompositeSpec scene = buildScene();
+        SceneSpec scene = buildScene();
 
 
         JJ.things.loadNow(scene);
     }
 
-    private B2DCompositeSpec buildScene() {
-        B2DCompositeSpec scene = new B2DCompositeSpec();
+    private SceneSpec buildScene() {
+        SceneSpec scene = new SceneSpec();
         scene.addThingSpec("multi",
                 InstanceParams.New().setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 2).setRotationD(45)
         );

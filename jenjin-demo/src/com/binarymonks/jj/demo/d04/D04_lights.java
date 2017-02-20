@@ -6,16 +6,14 @@ import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.JJConfig;
 import com.binarymonks.jj.layers.GameRenderingLayer;
-import com.binarymonks.jj.lights.specs.LightSpec;
+import com.binarymonks.jj.specs.lights.LightSpec;
 import com.binarymonks.jj.physics.CollisionGroups;
 import com.binarymonks.jj.specs.physics.PhysicsRootSpec;
-import com.binarymonks.jj.specs.B2DCompositeSpec;
+import com.binarymonks.jj.specs.SceneSpec;
 import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
 import com.binarymonks.jj.specs.physics.FixtureNodeSpec;
-import com.binarymonks.jj.specs.render.B2DRenderSpec;
 import com.binarymonks.jj.specs.render.BackingTexture;
 import com.binarymonks.jj.specs.render.RenderBuilder;
-import com.binarymonks.jj.specs.render.TextureRenderSpec;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.Thing;
 import com.binarymonks.jj.specs.NodeSpec;
@@ -43,7 +41,7 @@ public class D04_lights extends Game {
                 .set("light", light())
         ;
 
-        B2DCompositeSpec scene = new B2DCompositeSpec();
+        SceneSpec scene = new SceneSpec();
         scene.addThingSpec("background", InstanceParams.New().setPosition(WORLD_WIDTH * 0.5f, WORLD_HEIGHT * 0.5f).setRotationD(90));
         scene.addThingSpec("block", InstanceParams.New().setPosition(300, 300));
         scene.addThingSpec("block", InstanceParams.New().setPosition(700, 700));

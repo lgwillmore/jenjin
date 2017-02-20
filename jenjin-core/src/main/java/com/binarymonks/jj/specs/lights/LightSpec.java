@@ -1,4 +1,4 @@
-package com.binarymonks.jj.lights.specs;
+package com.binarymonks.jj.specs.lights;
 
 import com.badlogic.gdx.graphics.Color;
 import com.binarymonks.jj.physics.CollisionDataSpec;

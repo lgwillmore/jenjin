@@ -11,8 +11,8 @@ import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.audio.SoundEffects;
 import com.binarymonks.jj.audio.SoundParams;
 import com.binarymonks.jj.backend.Global;
-import com.binarymonks.jj.behaviour.Behaviour;
-import com.binarymonks.jj.lights.specs.LightSpec;
+import com.binarymonks.jj.components.Component;
+import com.binarymonks.jj.specs.lights.LightSpec;
 import com.binarymonks.jj.physics.CollisionFunction;
 import com.binarymonks.jj.physics.CollisionGroups;
 import com.binarymonks.jj.physics.CollisionResolver;
@@ -75,7 +75,7 @@ public class ThingFactory {
 
     private void resetPooled(Context context) {
         ThingTools.resetPhysics(context.thing, context.instanceParams);
-        context.thing.behaviourMaster.reactivate();
+        context.thing.componentMaster.reactivate();
         for (ObjectMap.Entry<String, Light> light : context.thing.lights) {
             light.value.setActive(true);
         }
@@ -125,9 +125,9 @@ public class ThingFactory {
     }
 
     private void buildBehaviour(Context context) {
-        for (Behaviour behaviour : context.thingSpec.behaviour) {
-            Behaviour clone = behaviour.clone();
-            context.thing.addBehaviour(clone);
+        for (Component component : context.thingSpec.behaviour) {
+            Component clone = component.clone();
+            context.thing.addComponent(clone);
             clone.setParent(context.thing);
         }
     }

@@ -142,10 +142,6 @@ public abstract class SoundPlayer implements Sound {
             sound.setPan(soundId, pan, volume);
         }
 
-//        @Override
-//        public void setPriority(long soundId, int priority) {
-//            sound.setPriority(soundId, priority);
-//        }
 
     }
 
@@ -259,11 +255,6 @@ public abstract class SoundPlayer implements Sound {
         public void setPan(long soundId, float pan, float volume) {
             sound.setPan(pan, volume);
         }
-
-//        @Override
-//        public void setPriority(long soundId, int priority) {
-//
-//        }
 
     }
 

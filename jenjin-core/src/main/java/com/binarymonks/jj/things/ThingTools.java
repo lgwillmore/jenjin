@@ -23,7 +23,7 @@ public class ThingTools {
 
     static void destroy(Thing thing) {
         if (thing.spec.pool) {
-            thing.behaviourMaster.neutralise();
+            thing.componentMaster.neutralise();
             neutralisePhysics(thing);
             for (ObjectMap.Entry<String, Light> light : thing.lights) {
                 light.value.setActive(false);
@@ -31,7 +31,7 @@ public class ThingTools {
         } else {
             destroyRender(thing);
             destroyPhysics(thing);
-            thing.behaviourMaster.neutralise();
+            thing.componentMaster.neutralise();
             for (ObjectMap.Entry<String, Light> light : thing.lights) {
                 light.value.dispose();
             }

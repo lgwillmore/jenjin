@@ -12,7 +12,7 @@ import com.binarymonks.jj.physics.collisions.DestroyCollision;
 import com.binarymonks.jj.physics.collisions.EmitEventCollision;
 import com.binarymonks.jj.physics.collisions.SoundCollision;
 import com.binarymonks.jj.specs.physics.PhysicsRootSpec;
-import com.binarymonks.jj.specs.B2DCompositeSpec;
+import com.binarymonks.jj.specs.SceneSpec;
 import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
 import com.binarymonks.jj.specs.physics.FixtureNodeSpec;
 import com.binarymonks.jj.specs.render.RenderBuilder;
@@ -49,7 +49,7 @@ public class D01_pong extends Game {
         ;
 
         //Add instances of your ThingSpecs to a scene
-        B2DCompositeSpec level = new B2DCompositeSpec();
+        SceneSpec level = new SceneSpec();
         level.addThingSpec("player",
                 InstanceParams.New()
                         .setUniqueName("player2")
@@ -90,15 +90,15 @@ public class D01_pong extends Game {
 
     private void gameLoaded() {
         //Wire some controls into each player instance
-        PlayerBehaviour player1 = JJ.things.getThingByName("player1").getBehaviour(PlayerBehaviour.class);
+        PlayerComponent player1 = JJ.things.getThingByName("player1").getComponent(PlayerComponent.class);
         mapPlayerKeys(player1, Input.Keys.W, Input.Keys.S);
-        PlayerBehaviour player2 = JJ.things.getThingByName("player2").getBehaviour(PlayerBehaviour.class);
+        PlayerComponent player2 = JJ.things.getThingByName("player2").getComponent(PlayerComponent.class);
         mapPlayerKeys(player2, Input.Keys.UP, Input.Keys.DOWN);
 
         kickOff(JJ.things.getThingByName("ball"));
     }
 
-    private void mapPlayerKeys(PlayerBehaviour player, int up, int down) {
+    private void mapPlayerKeys(PlayerComponent player, int up, int down) {
         JJ.input.map(up, Actions.Key.PRESSED, player::goUp);
         JJ.input.map(up, Actions.Key.RELEASED, player::stopUp);
         JJ.input.map(down, Actions.Key.PRESSED, player::goDown);
@@ -143,7 +143,7 @@ public class D01_pong extends Game {
                                         .addInitialBeginCollision(new BatCollision())
                                 )
                 )
-                .addBehaviour(new PlayerBehaviour())
+                .addBehaviour(new PlayerComponent())
                 ;
     }
 
