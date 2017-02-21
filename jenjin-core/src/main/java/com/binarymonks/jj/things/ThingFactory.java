@@ -20,7 +20,7 @@ import com.binarymonks.jj.physics.PhysicsRoot;
 import com.binarymonks.jj.specs.physics.PhysicsNodeSpec;
 import com.binarymonks.jj.specs.physics.PhysicsRootSpec;
 import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
-import com.binarymonks.jj.specs.physics.FixtureNodeSpec;
+import com.binarymonks.jj.specs.physics.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.pools.PoolManager;
 import com.binarymonks.jj.pools.Re;
@@ -125,7 +125,7 @@ public class ThingFactory {
     }
 
     private void buildBehaviour(Context context) {
-        for (Component component : context.thingSpec.behaviour) {
+        for (Component component : context.thingSpec.components) {
             Component clone = component.clone();
             context.thing.addComponent(clone);
             clone.setParent(context.thing);

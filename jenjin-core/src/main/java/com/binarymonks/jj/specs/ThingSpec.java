@@ -11,7 +11,7 @@ public class ThingSpec {
 
     public Array<NodeSpec> nodes = new Array<>();
 
-    public Array<Component> behaviour = new Array<>();
+    public Array<Component> components = new Array<>();
 
     public PhysicsRootSpec physics = new PhysicsRootSpec.B2D();
 
@@ -27,12 +27,18 @@ public class ThingSpec {
     }
 
     public ThingSpec addNode(NodeSpec nodeSpec) {
-        this.nodes.add(nodeSpec);
+        nodes.add(nodeSpec);
         return this;
     }
 
+    public NodeSpec newNode(){
+        NodeSpec nodeSpec = new NodeSpec();
+        nodes.add(nodeSpec);
+        return nodeSpec;
+    }
+
     public ThingSpec addBehaviour(Component component) {
-        this.behaviour.add(component);
+        components.add(component);
         return this;
     }
 

@@ -8,7 +8,7 @@ import com.binarymonks.jj.components.DestroySelf;
 import com.binarymonks.jj.layers.GameRenderingLayer;
 import com.binarymonks.jj.specs.SceneSpec;
 import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
-import com.binarymonks.jj.specs.physics.FixtureNodeSpec;
+import com.binarymonks.jj.specs.physics.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.specs.render.RenderBuilder;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.specs.NodeSpec;
@@ -51,10 +51,10 @@ public class D03_pooling_load_test extends Game {
         return new ThingSpec()
                 .addNode(
                         new NodeSpec()
-                                .addRender(
+                                .setRender(
                                         RenderBuilder.b2d().setColor(Color.BLUE).build()
                                 )
-                                .addPhysics(new FixtureNodeSpec().setShape(new B2DShapeSpec.PolygonRectangle(5, 5)))
+                                .setPhysics(new FixtureNodeSpec().setShape(new B2DShapeSpec.PolygonRectangle(5, 5)))
                 )
                 .addBehaviour(destroySelf)
                 ;

@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Array;
 import com.binarymonks.jj.specs.NodeSpec;
 import com.binarymonks.jj.specs.physics.PhysicsNodeSpec;
 import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
-import com.binarymonks.jj.specs.physics.FixtureNodeSpec;
+import com.binarymonks.jj.specs.physics.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.render.nodes.PolygonRenderNode;
 import com.binarymonks.jj.render.nodes.RenderNode;

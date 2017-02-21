@@ -30,7 +30,7 @@ public class RenderWorld implements Lights {
 
     public RenderWorld() {
         rayHandler = new RayHandler(Global.physics.world);
-        rayHandler.setBlurNum(2);
+        rayHandler.setBlurNum(3);
         rayHandler.setAmbientLight(0.0f, 0.0f, 0.0f, 1f);
     }
 

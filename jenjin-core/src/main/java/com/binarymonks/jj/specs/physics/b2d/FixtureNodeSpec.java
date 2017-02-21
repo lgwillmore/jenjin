@@ -1,9 +1,9 @@
-package com.binarymonks.jj.specs.physics;
+package com.binarymonks.jj.specs.physics.b2d;
 
 import com.badlogic.gdx.utils.Array;
 import com.binarymonks.jj.physics.CollisionDataSpec;
 import com.binarymonks.jj.physics.CollisionFunction;
-import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
+import com.binarymonks.jj.specs.physics.PhysicsNodeSpec;
 
 public class FixtureNodeSpec implements PhysicsNodeSpec {
 

@@ -9,7 +9,6 @@ import com.binarymonks.jj.specs.render.AnimationSequence;
 import com.binarymonks.jj.specs.render.BackingTexture;
 import com.binarymonks.jj.specs.render.RenderBuilder;
 import com.binarymonks.jj.things.InstanceParams;
-import com.binarymonks.jj.specs.NodeSpec;
 import com.binarymonks.jj.specs.ThingSpec;
 
 public class D05_animations extends Game {
@@ -41,19 +40,17 @@ public class D05_animations extends Game {
     }
 
     private ThingSpec twinkleAnimated() {
-        return new ThingSpec()
-                .addNode(new NodeSpec()
-                        .addRender(
-                                RenderBuilder.animated(new BackingTexture.Simple("textures/count.png"),
-                                        3, 4,
-                                        100, 100)
-                                        .addAnimation(new AnimationSequence()
-                                                .setDuration(6f)
-                                                .setName("default")
-                                                .setStartEnd(4, 8)
-                                        ).build()
-                        )
-
-                );
+        ThingSpec spec = new ThingSpec();
+        spec.addNode()
+                .setRender(
+                        RenderBuilder.animated(new BackingTexture.Simple("textures/count.png"),
+                                3, 4,
+                                100, 100)
+                                .addAnimation(new AnimationSequence()
+                                        .setDuration(6f)
+                                        .setName("default")
+                                        .setStartEnd(4, 8)
+                                ).build());
+        return spec;
     }
 }

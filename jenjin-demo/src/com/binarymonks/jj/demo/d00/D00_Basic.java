@@ -6,7 +6,7 @@ import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.layers.GameRenderingLayer;
 import com.binarymonks.jj.specs.SceneSpec;
 import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
-import com.binarymonks.jj.specs.physics.FixtureNodeSpec;
+import com.binarymonks.jj.specs.physics.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.specs.render.RenderBuilder;
 import com.binarymonks.jj.specs.render.Spatial;
 import com.binarymonks.jj.things.InstanceParams;
@@ -57,7 +57,7 @@ public class D00_Basic extends Game {
         return new ThingSpec()
                 .addNode(
                         new NodeSpec()
-                                .addRender(
+                                .setRender(
                                         RenderBuilder.shapeRectangle(10, 10)
                                                 .setLayer(0)
                                                 .setFill(true)
@@ -65,7 +65,7 @@ public class D00_Basic extends Game {
                                                 .setColor(Color.BLUE)
                                                 .build()
                                 )
-                                .addPhysics(
+                                .setPhysics(
                                         new FixtureNodeSpec()
                                                 .setShape(new B2DShapeSpec.PolygonRectangle(10, 10))
                                                 .setOffset(5, 5)
@@ -74,7 +74,7 @@ public class D00_Basic extends Game {
                 )
                 .addNode(
                         new NodeSpec()
-                                .addRender(
+                                .setRender(
                                         RenderBuilder.shapeRectangle(10, 10)
                                                 .setLayer(0)
                                                 .setFill(true)
@@ -82,7 +82,7 @@ public class D00_Basic extends Game {
                                                 .setColor(Color.RED)
                                                 .build()
                                 )
-                                .addPhysics(
+                                .setPhysics(
                                         new FixtureNodeSpec()
                                                 .setShape(new B2DShapeSpec.PolygonRectangle(10, 10))
                                                 .setOffset(-20, 5)

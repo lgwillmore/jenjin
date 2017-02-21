@@ -15,13 +15,13 @@ public class NodeSpec {
         return this;
     }
 
-    public NodeSpec addRender(RenderSpec renderSpec) {
+    public NodeSpec setRender(RenderSpec renderSpec) {
         this.renderSpec = renderSpec;
         return this;
     }
 
 
-    public NodeSpec addPhysics(PhysicsNodeSpec physicsNodeSpec) {
+    public NodeSpec setPhysics(PhysicsNodeSpec physicsNodeSpec) {
         this.physicsNodeSpec = physicsNodeSpec;
         return this;
     }
