@@ -15,24 +15,15 @@ public class ImpulseMovement extends Component {
 
     public static float FREQUENCY_HERTZ = 30;
     public float damping=10;
-    public float maxForce =100;
 
     private Vector2 impulse = N.ew(Vector2.class);
     private boolean stop=false;
 
     private int impulseScheduleID;
 
-    public void setImpulseVector(Direction direction) {
+    public void setImpulseVector(float x, float y) {
         stop=false;
-        Vector2 currentLinearVelocity = parent.physicsroot.getB2DBody().getLinearVelocity();
-        impulse.set(direction.directionVector);
-        impulse.scl(direction.throttle* maxForce);
-        Vector2 oppositeDirection = N.ew(Vector2.class).set(impulse).scl(-1);
-        float badComponentOfVelocity = LinearAlgebra.componentOfAinB(currentLinearVelocity,oppositeDirection);
-        if(badComponentOfVelocity>0){
-            impulse.add(currentLinearVelocity.scl(-1));
-        }
-        Re.cycle(oppositeDirection,direction);
+        impulse.set(x, y);
     }
 
     public void stop(){
