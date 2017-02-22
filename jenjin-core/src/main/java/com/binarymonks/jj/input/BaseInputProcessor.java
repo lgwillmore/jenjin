@@ -18,6 +18,11 @@ public class BaseInputProcessor implements JJInput, InputProcessor {
         keyToActionToFunctionMap.get(keyCode).put(keyAction, function);
     }
 
+    @Override
+    public void mapTouch(int touchIndex, TouchHandler touchHandler) {
+        
+    }
+
 
     @Override
     public boolean keyDown(int keycode) {

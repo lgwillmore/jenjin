@@ -41,7 +41,7 @@ public class D05_animations extends Game {
 
     private ThingSpec twinkleAnimated() {
         ThingSpec spec = new ThingSpec();
-        spec.addNode()
+        spec.newNode()
                 .setRender(
                         RenderBuilder.animated(new BackingTexture.Simple("textures/count.png"),
                                 3, 4,

@@ -41,7 +41,7 @@ public class D03_pooling_load_test extends Game {
     }
 
     private ThingSpec emitter() {
-        return new ThingSpec().addBehaviour(new Emitter().setIntervalSeconds(0.05f).setSpecPath("square"));
+        return new ThingSpec().addComponent(new Emitter().setIntervalSeconds(0.05f).setSpecPath("square"));
     }
 
 
@@ -56,7 +56,7 @@ public class D03_pooling_load_test extends Game {
                                 )
                                 .setPhysics(new FixtureNodeSpec().setShape(new B2DShapeSpec.PolygonRectangle(5, 5)))
                 )
-                .addBehaviour(destroySelf)
+                .addComponent(destroySelf)
                 ;
     }
 }

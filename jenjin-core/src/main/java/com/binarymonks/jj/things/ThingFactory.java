@@ -196,6 +196,7 @@ public class ThingFactory {
             Re.cycle(cd);
 
             Fixture f = context.body.createFixture(fDef);
+//            shape.dispose();
             node.fixture = f;
             f.setUserData(node);
 

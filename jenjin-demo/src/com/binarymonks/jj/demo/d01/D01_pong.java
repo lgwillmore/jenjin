@@ -143,7 +143,7 @@ public class D01_pong extends Game {
                                         .addInitialBeginCollision(new BatCollision())
                                 )
                 )
-                .addBehaviour(new PlayerComponent())
+                .addComponent(new PlayerComponent())
                 ;
     }
 

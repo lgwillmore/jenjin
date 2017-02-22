@@ -50,13 +50,9 @@ public class D04_lights extends Game {
 
         JJ.lights.setAmbientLight(0, 0, 0, 0.3f);
 
-        JJ.things.load(scene, this::onLoad);
+        JJ.things.loadNow(scene);
     }
 
-    public void onLoad() {
-        Thing light = JJ.things.getThingByName("light");
-        gameRenderingLayer.addMouseDrag(light);
-    }
 
     private ThingSpec background() {
         float width = 1536f;

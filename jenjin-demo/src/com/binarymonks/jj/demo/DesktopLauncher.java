@@ -9,6 +9,7 @@ import com.binarymonks.jj.demo.d02.D02_b2d_shapes;
 import com.binarymonks.jj.demo.d03.D03_pooling_load_test;
 import com.binarymonks.jj.demo.d04.D04_lights;
 import com.binarymonks.jj.demo.d05.D05_animations;
+import com.binarymonks.jj.demo.d07.Swing;
 
 public class DesktopLauncher {
     public static void main(String[] arg) {
@@ -17,7 +18,7 @@ public class DesktopLauncher {
         lwjglConfig.width = 1000;
         JJConfig jjconfig = new JJConfig();
         jjconfig.b2dDebug = false;
-        new LwjglApplication(new D04_lights(jjconfig), lwjglConfig);
+        new LwjglApplication(new Swing(jjconfig), lwjglConfig);
 //        new LwjglApplication(new D03_pooling_load_test(jjconfig), lwjglConfig);
     }
 }

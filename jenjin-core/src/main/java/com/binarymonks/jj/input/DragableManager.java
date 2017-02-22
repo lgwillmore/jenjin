@@ -11,16 +11,16 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectSet;
 import com.binarymonks.jj.backend.Global;
+import com.binarymonks.jj.components.Touchable;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.pools.Poolable;
 import com.binarymonks.jj.pools.Re;
 import com.binarymonks.jj.things.Thing;
 import com.binarymonks.jj.things.ThingNode;
 
-public class TouchManager implements InputProcessor {
+public class DragableManager implements InputProcessor {
 
     OrthographicCamera camera;
-    ObjectMap<Integer, Thing> dragableThings = new ObjectMap<>();
     ObjectMap<Integer, Touch> touchTracker = new ObjectMap<>(10);
     Array<Integer> touchRemovals = new Array<>(10);
 
@@ -31,12 +31,8 @@ public class TouchManager implements InputProcessor {
     ObjectSet<Fixture> possibleBodies = new ObjectSet<>();
     Thing touchedThing = null;
 
-    public TouchManager(OrthographicCamera camera) {
-        this.camera=camera;
-    }
-
-    public void addMouseDrag(Thing thing) {
-        dragableThings.put(thing.id, thing);
+    public DragableManager(OrthographicCamera camera) {
+        this.camera = camera;
     }
 
 
@@ -55,6 +51,7 @@ public class TouchManager implements InputProcessor {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if (touchTracker.containsKey(pointer)) {
             Touch t = touchTracker.remove(pointer);
+            t.touchUp();
             Re.cycle(t);
         }
         return true;
@@ -67,10 +64,7 @@ public class TouchManager implements InputProcessor {
                 continue;
             }
             unproject(Gdx.input.getX(touch.key), Gdx.input.getY(touch.key));
-            Touch trackedTouch = touchTracker.get(touch.key);
-            if (!testPoint2.equals(trackedTouch.testPointCache)) {
-                touch.value.move(testPoint2);
-            }
+            touch.value.move(testPoint2);
         }
         for (Integer touch : touchRemovals) {
             Touch t = touchTracker.remove(touch);
@@ -110,7 +104,7 @@ public class TouchManager implements InputProcessor {
             if (node != null) {
                 Thing parent = node.parent;
                 if (!parent.isMarkedForDestruction()) {
-                    if (dragableThings.containsKey(parent.id)) {
+                    if (hasTouchale(parent)) {
                         touchedThing = parent;
                         Body hitBody = fixture.getBody();
                         Vector2 bodyPosition = N.ew(Vector2.class).set(hitBody.getPosition());
@@ -122,6 +116,10 @@ public class TouchManager implements InputProcessor {
             }
         }
         possibleBodies.clear();
+    }
+
+    private boolean hasTouchale(Thing parent) {
+        return parent.getComponent(Touchable.class) != null;
     }
 
     public boolean reportFixture(Fixture fixture) {
@@ -166,8 +164,12 @@ public class TouchManager implements InputProcessor {
         public void move(Vector2 newTouchLocation) {
             testPointCache.set(newTouchLocation);
             Vector2 newPosition = N.ew(Vector2.class).set(newTouchLocation).add(touchOffset);
-            touchedThing.physicsroot.setPosition(newPosition.x, newPosition.y);
+            touchedThing.getComponent(Touchable.class).onTouchMove(newPosition);
             Re.cycle(newPosition);
+        }
+
+        public void touchUp() {
+            touchedThing.getComponent(Touchable.class).onTouchUp();
         }
     }
 

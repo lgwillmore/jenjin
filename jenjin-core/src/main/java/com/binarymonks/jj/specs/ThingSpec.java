@@ -37,7 +37,7 @@ public class ThingSpec {
         return nodeSpec;
     }
 
-    public ThingSpec addBehaviour(Component component) {
+    public ThingSpec addComponent(Component component) {
         components.add(component);
         return this;
     }

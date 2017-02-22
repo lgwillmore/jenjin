@@ -12,8 +12,8 @@ public abstract class Component {
 
     public abstract Component clone();
 
-    public Class<Component> type() {
-        return (Class<Component>) this.getClass();
+    public <T extends Component> Class<T> type() {
+        return (Class<T>) this.getClass();
     }
 
     public abstract void doWork();

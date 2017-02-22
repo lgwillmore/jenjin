@@ -9,6 +9,14 @@ public class FixtureBuilder {
 
     FixtureNodeSpec spec = new FixtureNodeSpec();
 
+    public static FixtureBuilder New(){
+        return new FixtureBuilder();
+    }
+
+    private FixtureBuilder(){
+
+    }
+
     public FixtureBuilder setDensity(float density) {
         spec.density = density;
         return this;

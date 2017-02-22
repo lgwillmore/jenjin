@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.async.FunctionLink;
+import com.binarymonks.jj.components.ImpulseMovement;
 import com.binarymonks.jj.physics.CollisionGroups;
 import com.binarymonks.jj.pools.managers.Matrix3PoolManager;
 import com.binarymonks.jj.pools.managers.Vector2PoolManager;
@@ -14,13 +15,13 @@ import com.binarymonks.jj.pools.managers.Vector3PoolManager;
 import com.binarymonks.jj.things.InstanceParams;
 
 /**
- * If your thing is {@link Poolable} thenDo you can just checkPools new ones and recycle old ones here.
+ * If your thing is {@link Poolable} then you can just get new ones and recycle old ones here.
  * If not - A {@link PoolManager} must be registered.
  * <p>
  * Pools is a place to register new {@link PoolManager}s for things that you want to pool.
- * Then you can checkPools and recycle the Pooled thing as you wish. There is one of these
+ * Then you can get and recycle the Pooled thing as you wish. There is one of these
  * ready to use and access from anywhere in {@link com.binarymonks.jj.JJ}. Or even better at
- * {@link N#ew(Class)} and {@link Re#cycle(Object)}
+ * {@link N#ew(Class)} and {@link Re#cycle(Object...)}
  * <p>
  * Pools also comes with some default managers already registered for:
  * - {@link Vector2}
@@ -38,16 +39,17 @@ public class Pools {
         registerManager(new Matrix3PoolManager(), Matrix3.class);
         registerManager(new FunctionLink.FunctionLinkPoolManager(), FunctionLink.class);
         registerManager(new CollisionGroups.CollisionDataPoolManager(), CollisionGroups.CollisionData.class);
+        registerManager(new ImpulseMovement.DirectionPoolManager(), ImpulseMovement.Direction.class);
     }
 
     /**
      * Get something from the pool or make a new one.
      * <p>
-     * If your thing is {@link Poolable} thenDo all is done for you.
+     * If your thing is {@link Poolable} then all is done for you.
      * If not - A {@link PoolManager} must be registered.
      * <p>
      * There is a nice little convenience function with much less to type {@link N#ew(Class)}
-     * Be sure to {@link Re#cycle(Object)} it when you are done.
+     * Be sure to {@link Re#cycle(Object...)} it when you are done.
      *
      * @param pooledClass the class of the object that is pooled
      * @param <T>
@@ -78,7 +80,7 @@ public class Pools {
 
     /**
      * Recycle the used pooled object. A {@link PoolManager} must be registered.
-     * There is a nice little convenience function with much less to type {@link Re#cycle(Object)}
+     * There is a nice little convenience function with much less to type {@link Re#cycle(Object...)}
      *
      * @param pooled
      */
