@@ -10,8 +10,8 @@ import com.binarymonks.jj.things.InstanceParams;
 public class Swing extends Game {
 
     GameRenderingLayer gameRenderingLayer;
-    float WORLD_WIDTH = 500;
-    float WORLD_HEIGHT = 500;
+    float WORLD_WIDTH = 100;
+    float WORLD_HEIGHT = 100;
 
     public Swing(JJConfig jjconfig) {
         super(jjconfig);

@@ -104,11 +104,17 @@ public class DragableManager implements InputProcessor {
             if (node != null) {
                 Thing parent = node.parent;
                 if (!parent.isMarkedForDestruction()) {
-                    if (hasTouchale(parent)) {
+                    Touchable t = parent.getComponent(Touchable.class);
+                    if (t!=null) {
                         touchedThing = parent;
                         Body hitBody = fixture.getBody();
                         Vector2 bodyPosition = N.ew(Vector2.class).set(hitBody.getPosition());
-                        touchOffset.set(bodyPosition.sub(testPoint.x, testPoint.y));
+                        if(t.trackTouchOffset()) {
+                            touchOffset.set(bodyPosition.sub(testPoint.x, testPoint.y));
+                        }
+                        else{
+                            touchOffset.set(0,0);
+                        }
                         Re.cycle(bodyPosition);
                         break;
                     }
@@ -118,9 +124,6 @@ public class DragableManager implements InputProcessor {
         possibleBodies.clear();
     }
 
-    private boolean hasTouchale(Thing parent) {
-        return parent.getComponent(Touchable.class) != null;
-    }
 
     public boolean reportFixture(Fixture fixture) {
         possibleBodies.add(fixture);

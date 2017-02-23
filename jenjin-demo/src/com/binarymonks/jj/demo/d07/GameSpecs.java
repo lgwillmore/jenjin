@@ -24,13 +24,13 @@ public class GameSpecs {
         spec.newNode()
                 .setPhysics(
                         FixtureBuilder.New()
-                                .setShape(new B2DShapeSpec.Circle(10))
+                                .setShape(new B2DShapeSpec.Circle(2.5f))
                                 .setDensity(density)
                                 .build()
                 )
                 .setRender(RenderBuilder.b2d().setColor(Color.BLUE).build());
         spec.addComponent(new ImpulseMovement());
-        spec.addComponent(new ImpulseTouchable());
+        spec.addComponent(new ImpulseTouchable().setMovementForce(8).setBreakingForce(3));
         return spec;
     }
 

@@ -10,6 +10,8 @@ public abstract class Touchable extends Component {
 
     public abstract void onTouchUp();
 
+    public abstract boolean trackTouchOffset();
+
     @Override
     public void doWork() {
 
