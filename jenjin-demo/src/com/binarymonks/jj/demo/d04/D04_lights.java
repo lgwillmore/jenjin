@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.JJConfig;
+import com.binarymonks.jj.components.VelocityTouchable;
 import com.binarymonks.jj.layers.GameRenderingLayer;
 import com.binarymonks.jj.specs.lights.LightSpec;
 import com.binarymonks.jj.physics.CollisionGroups;
@@ -21,8 +22,8 @@ import com.binarymonks.jj.specs.ThingSpec;
 
 public class D04_lights extends Game {
 
-    float WORLD_WIDTH = 1500;
-    float WORLD_HEIGHT = 1500;
+    float WORLD_WIDTH = 100;
+    float WORLD_HEIGHT = 100;
 
     public D04_lights(JJConfig jjconfig) {
         super(jjconfig);
@@ -43,10 +44,10 @@ public class D04_lights extends Game {
 
         SceneSpec scene = new SceneSpec();
         scene.addThingSpec("background", InstanceParams.New().setPosition(WORLD_WIDTH * 0.5f, WORLD_HEIGHT * 0.5f).setRotationD(90));
-        scene.addThingSpec("block", InstanceParams.New().setPosition(300, 300));
-        scene.addThingSpec("block", InstanceParams.New().setPosition(700, 700));
-        scene.addThingSpec("block", InstanceParams.New().setPosition(1100, 1100));
-        scene.addThingSpec("light", InstanceParams.New().setUniqueName("light").setPosition(1000, 400));
+        scene.addThingSpec("block", InstanceParams.New().setPosition(30, 30));
+        scene.addThingSpec("block", InstanceParams.New().setPosition(60, 60));
+        scene.addThingSpec("block", InstanceParams.New().setPosition(90, 90));
+        scene.addThingSpec("light", InstanceParams.New().setUniqueName("light").setPosition(90, 40));
 
         JJ.lights.setAmbientLight(0, 0, 0, 0.3f);
 
@@ -74,7 +75,7 @@ public class D04_lights extends Game {
 
     private ThingSpec block() {
         FixtureNodeSpec fixtureNodeSpec = new FixtureNodeSpec()
-                .setShape(new B2DShapeSpec.PolygonRectangle(100, 100));
+                .setShape(new B2DShapeSpec.PolygonRectangle(5, 5));
         fixtureNodeSpec
                 .collisionData.setToExplicit(CollisionGroups.EVERYTHING);
         return new ThingSpec()
@@ -92,7 +93,7 @@ public class D04_lights extends Game {
     private ThingSpec light() {
         LightSpec.Point point = new LightSpec.Point();
         point.color.set(Color.RED);
-        point.setReach(1000);
+        point.setReach(90);
         point.setRays(200);
         point.collisionData.setToExplicit(CollisionGroups.EVERYTHING);
         return new ThingSpec()
@@ -103,8 +104,9 @@ public class D04_lights extends Game {
                                 .setColor(new Color(1f, 0.8f, 0.8f, 1))
                                 .setGraphToLightSource().build()
                         )
-                        .setPhysics(new FixtureNodeSpec().setShape(new B2DShapeSpec.PolygonRectangle(50, 50)))
+                        .setPhysics(new FixtureNodeSpec().setShape(new B2DShapeSpec.PolygonRectangle(5, 5)))
                 )
+                .addComponent(new VelocityTouchable())
                 ;
     }
 

@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.async.FunctionLink;
+import com.binarymonks.jj.components.ForceMovement;
 import com.binarymonks.jj.physics.CollisionGroups;
 import com.binarymonks.jj.pools.managers.Matrix3PoolManager;
 import com.binarymonks.jj.pools.managers.Vector2PoolManager;
@@ -38,6 +39,7 @@ public class Pools {
         registerManager(new Matrix3PoolManager(), Matrix3.class);
         registerManager(new FunctionLink.FunctionLinkPoolManager(), FunctionLink.class);
         registerManager(new CollisionGroups.CollisionDataPoolManager(), CollisionGroups.CollisionData.class);
+        registerManager(new ForceMovement.SteerPoolManager(), ForceMovement.Steer.class);
     }
 
     /**

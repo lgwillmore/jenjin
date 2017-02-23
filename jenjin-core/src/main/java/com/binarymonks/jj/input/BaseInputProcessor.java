@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 public class BaseInputProcessor implements JJInput, InputProcessor {
 
     ObjectMap<Integer, ObjectMap<Actions.Key, Supplier<Boolean>>> keyToActionToFunctionMap = new ObjectMap<>();
+    ObjectMap<Integer, KeyHandler> keyToHandlerMap = new ObjectMap<>();
 
     @Override
     public void map(int keyCode, Actions.Key keyAction, Supplier<Boolean> function) {
@@ -19,8 +20,8 @@ public class BaseInputProcessor implements JJInput, InputProcessor {
     }
 
     @Override
-    public void mapTouch(int touchIndex, TouchHandler touchHandler) {
-        
+    public void map(int keyCode, KeyHandler keyHandler) {
+        keyToHandlerMap.put(keyCode,keyHandler);
     }
 
 
@@ -30,6 +31,7 @@ public class BaseInputProcessor implements JJInput, InputProcessor {
     }
 
     private boolean handleKey(int keycode, Actions.Key action) {
+        boolean handled = false;
         if (keyToActionToFunctionMap.containsKey(keycode)) {
             ObjectMap<Actions.Key, Supplier<Boolean>> actionToFunction = keyToActionToFunctionMap.get(keycode);
             if (actionToFunction.containsKey(action)) {
@@ -37,7 +39,10 @@ public class BaseInputProcessor implements JJInput, InputProcessor {
                 return true;
             }
         }
-        return false;
+        if(!handled && keyToHandlerMap.containsKey(keycode)){
+            handled=keyToHandlerMap.get(keycode).handle(action);
+        }
+        return handled;
     }
 
     @Override
