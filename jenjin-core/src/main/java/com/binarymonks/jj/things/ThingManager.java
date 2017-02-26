@@ -36,6 +36,11 @@ public class ThingManager implements Things {
     }
 
     @Override
+    public void appendScene(SceneSpec scene, SceneParams sceneParams) {
+        sceneLoader.load(scene,sceneParams,Function::doNothing);
+    }
+
+    @Override
     public void create(String thingSpecPath, InstanceParams instanceParams, Consumer<Thing> callback) {
         if (!Global.physics.isUpdating()) {
             Thing thing = Global.factories.things.create(thingSpecPath, instanceParams);

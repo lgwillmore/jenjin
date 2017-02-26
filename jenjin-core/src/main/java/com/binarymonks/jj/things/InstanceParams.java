@@ -71,7 +71,7 @@ public class InstanceParams {
     }
 
     /**
-     * Use this to checkPools a new one. This is so recycling and pooling
+     * Use this to get a new one. This is so recycling and pooling
      * can be handled automatically.
      */
     public static InstanceParams New() {

@@ -1,8 +1,10 @@
 package com.binarymonks.jj.specs;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.things.InstanceParams;
 
 

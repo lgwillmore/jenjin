@@ -8,7 +8,6 @@ import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.JJConfig;
 import com.binarymonks.jj.backend.Global;
-import com.binarymonks.jj.layers.GameRenderingLayer;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.specs.SceneSpec;
 import com.binarymonks.jj.specs.NodeSpec;

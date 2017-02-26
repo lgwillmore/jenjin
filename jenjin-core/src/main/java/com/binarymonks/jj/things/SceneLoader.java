@@ -21,6 +21,10 @@ public class SceneLoader {
         }
     }
 
+    public void load(SceneSpec scene, SceneParams sceneParams, Object doNothing) {
+
+    }
+
     public class SceneLoaderTask extends OneTimeTask {
 
         Function callback;

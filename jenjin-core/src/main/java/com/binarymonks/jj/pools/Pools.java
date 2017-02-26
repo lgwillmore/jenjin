@@ -13,6 +13,7 @@ import com.binarymonks.jj.pools.managers.Matrix3PoolManager;
 import com.binarymonks.jj.pools.managers.Vector2PoolManager;
 import com.binarymonks.jj.pools.managers.Vector3PoolManager;
 import com.binarymonks.jj.things.InstanceParams;
+import com.binarymonks.jj.things.SceneParams;
 
 /**
  * If your thing is {@link Poolable} then you can just get new ones and recycle old ones here.
@@ -36,6 +37,7 @@ public class Pools {
         registerManager(new Vector2PoolManager(), Vector2.class);
         registerManager(new Vector3PoolManager(), Vector3.class);
         registerManager(new InstanceParams.PM(), InstanceParams.class);
+        registerManager(new SceneParams.PM(), SceneParams.class);
         registerManager(new Matrix3PoolManager(), Matrix3.class);
         registerManager(new FunctionLink.FunctionLinkPoolManager(), FunctionLink.class);
         registerManager(new CollisionGroups.CollisionDataPoolManager(), CollisionGroups.CollisionData.class);

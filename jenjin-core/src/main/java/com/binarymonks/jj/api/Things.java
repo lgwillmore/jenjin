@@ -3,6 +3,7 @@ package com.binarymonks.jj.api;
 import com.binarymonks.jj.async.Function;
 import com.binarymonks.jj.specs.SceneSpec;
 import com.binarymonks.jj.things.InstanceParams;
+import com.binarymonks.jj.things.SceneParams;
 import com.binarymonks.jj.things.Thing;
 
 import java.util.function.Consumer;
@@ -23,6 +24,8 @@ public interface Things {
     void load(SceneSpec sceneSpec, Function callback);
 
     void loadNow(SceneSpec sceneSpec);
+
+    void appendScene(SceneSpec scene, SceneParams sceneParams);
 
     /**
      * Create a new object from a Specification.
