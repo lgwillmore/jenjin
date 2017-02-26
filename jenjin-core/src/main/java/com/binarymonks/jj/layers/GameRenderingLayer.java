@@ -21,13 +21,10 @@ public class GameRenderingLayer extends Layer {
     DragableManager dragableManager;
 
     public GameRenderingLayer(float worldBoxWidth, float posX, float posY) {
-        float w = Gdx.graphics.getWidth();
-        float h = Gdx.graphics.getHeight();
         // Constructs a new OrthographicCamera, using the given viewport width and height
         // Height is multiplied by aspect ratio.
-        camera = new OrthographicCamera(worldBoxWidth, worldBoxWidth * (h / w));
-        camera.position.set(posX, posY, 0);
-        camera.update();
+        camera = new OrthographicCamera();
+        setView(worldBoxWidth,posX,posY);
         dragableManager = new DragableManager(camera);
         inputMultiplexer.addProcessor(dragableManager);
     }
@@ -93,5 +90,14 @@ public class GameRenderingLayer extends Layer {
         for (RenderNode node : renderNodes) {
             node.render(camera);
         }
+    }
+
+    public void setView(float worldWidth, float cameraX, float cameraY) {
+        float w = Gdx.graphics.getWidth();
+        float h = Gdx.graphics.getHeight();
+        camera.viewportWidth=worldWidth;
+        camera.viewportHeight= worldWidth * (h / w);
+        camera.position.set(cameraX, cameraY, 0);
+        camera.update();
     }
 }

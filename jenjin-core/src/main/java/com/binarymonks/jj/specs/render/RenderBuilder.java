@@ -59,7 +59,7 @@ public abstract class RenderBuilder<SELF extends RenderBuilder, SPEC extends Ren
     }
 
     public static AnimatedBuilder animated(BackingTexture backingTexture, int rows, int columns, float width, float height){
-        return new AnimatedBuilder(backingTexture,width,height);
+        return new AnimatedBuilder(backingTexture,rows,columns,width,height);
     }
 
     static abstract class SpatialBuilder<SELF extends SpatialBuilder, SPEC extends SpatialRenderSpec> extends RenderBuilder<SELF, SPEC> {
@@ -114,9 +114,11 @@ public abstract class RenderBuilder<SELF extends RenderBuilder, SPEC extends Ren
 
     public static class AnimatedBuilder extends SpatialBuilder<AnimatedBuilder, AnimatedRenderSpec> {
 
-        public AnimatedBuilder(BackingTexture backingTexture, float width, float height) {
+        public AnimatedBuilder(BackingTexture backingTexture,int rows, int columns, float width, float height) {
             super(new AnimatedRenderSpec());
             spec.backingTexture=backingTexture;
+            spec.rows=rows;
+            spec.columns=columns;
             spec.width=width;
             spec.height=height;
         }

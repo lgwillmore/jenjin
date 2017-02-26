@@ -25,8 +25,6 @@ public class D03_pooling_load_test extends Game {
 
     @Override
     protected void gameOn() {
-        GameRenderingLayer gameRenderingLayer = new GameRenderingLayer(WORLD_WIDTH, WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
-        JJ.layers.addLayerTop(gameRenderingLayer);
 
         JJ.specs
                 .set("square", square())

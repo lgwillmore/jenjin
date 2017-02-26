@@ -271,6 +271,7 @@ public class ThingFactory {
         def.angularDamping = bodyDef.angularDamping;
         def.bullet = bodyDef.bullet;
         def.allowSleep = bodyDef.allowSleep;
+        def.gravityScale=bodyDef.gravityScale;
         context.body = Global.physics.world.createBody(def);
         PhysicsRoot.B2DPhysicsRoot physicsRoot = new PhysicsRoot.B2DPhysicsRoot(context.body);
         context.thing.physicsroot = physicsRoot;

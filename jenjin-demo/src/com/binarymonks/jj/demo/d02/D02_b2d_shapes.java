@@ -21,8 +21,8 @@ import com.binarymonks.jj.things.InstanceParams;
 
 
 public class D02_b2d_shapes extends Game {
-    float WORLD_WIDTH = 200;
-    float WORLD_HEIGHT = 200;
+    float WORLD_WIDTH = 100;
+    float WORLD_HEIGHT = 100;
 
     public D02_b2d_shapes(JJConfig jjconfig) {
         super(jjconfig);
@@ -30,8 +30,6 @@ public class D02_b2d_shapes extends Game {
 
     @Override
     protected void gameOn() {
-        GameRenderingLayer gameRenderingLayer = new GameRenderingLayer(WORLD_WIDTH, WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
-        JJ.layers.addLayerTop(gameRenderingLayer);
         Global.physics.world.setGravity(new Vector2(0, -20));
 
         JJ.specs
@@ -54,28 +52,28 @@ public class D02_b2d_shapes extends Game {
                 InstanceParams.New().setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 2).setRotationD(45)
         );
         scene.addThingSpec("polygon",
-                InstanceParams.New().setPosition(70, 70));
+                InstanceParams.New().setPosition(35, 35));
         scene.addThingSpec("rectangle", InstanceParams.New().setPosition(WORLD_WIDTH / 2, 0).setScale(WORLD_WIDTH, 10));
         scene.addThingSpec("rectangle", InstanceParams.New().setPosition(0, WORLD_WIDTH / 2).setRotationD(90).setScale(WORLD_WIDTH, 10));
         scene.addThingSpec("rectangle", InstanceParams.New().setPosition(WORLD_WIDTH, WORLD_WIDTH / 2).setRotationD(90).setScale(WORLD_WIDTH, 10));
-        int shelf = scene.addThingSpec("rectangle", InstanceParams.New().setPosition(150, 150 / 2).setScale(20, 10));
-        float lastBallY = 145;
-        int lastBall = scene.addThingSpec("ball", InstanceParams.New().setPosition(lastBallY, 150).setRotationD(45));
+        int shelf = scene.addThingSpec("rectangle", InstanceParams.New().setPosition(70, 80).setScale(20, 10));
+        float lastBallY = 70;
+        int lastBall = scene.addThingSpec("ball", InstanceParams.New().setPosition(lastBallY, 80).setRotationD(45));
         RevoluteJointDef revJoint = new RevoluteJointDef();
         revJoint.localAnchorA.set(0, 0);
-        revJoint.localAnchorB.set(0, 5);
+        revJoint.localAnchorB.set(0, 5/2);
         revJoint.enableLimit = false;
         revJoint.collideConnected=false;
         scene.addJoint(shelf, lastBall, revJoint);
         for (int i = 0; i < 7; i++) {
-            int newBall = scene.addThingSpec("ball", InstanceParams.New().setPosition(lastBallY, 150).setRotationD(45));
+            int newBall = scene.addThingSpec("ball", InstanceParams.New().setPosition(lastBallY, 80).setRotationD(45));
             revJoint = new RevoluteJointDef();
-            revJoint.localAnchorA.set(0, -5);
-            revJoint.localAnchorB.set(0, 5);
+            revJoint.localAnchorA.set(0, -5/2);
+            revJoint.localAnchorB.set(0, 5/2);
             revJoint.enableLimit = false;
             revJoint.collideConnected=false;
             scene.addJoint(lastBall, newBall, revJoint);
-            lastBallY += 5;
+            lastBallY += 5/2;
             lastBall = newBall;
         }
 
@@ -100,15 +98,15 @@ public class D02_b2d_shapes extends Game {
                                 )
                                 .setPhysics(new FixtureNodeSpec()
                                         .setShape(new B2DShapeSpec.Chain()
-                                                .add(N.ew(Vector2.class).set(-10, -10))
-                                                .add(N.ew(Vector2.class).set(-5, -10))
-                                                .add(N.ew(Vector2.class).set(-5, -5))
-                                                .add(N.ew(Vector2.class).set(0, -5))
+                                                .add(N.ew(Vector2.class).set(-10/2, -10/2))
+                                                .add(N.ew(Vector2.class).set(-5/2, -10/2))
+                                                .add(N.ew(Vector2.class).set(-5/2, -5/2))
+                                                .add(N.ew(Vector2.class).set(0, -5/2))
                                                 .add(N.ew(Vector2.class).set(0, 0))
-                                                .add(N.ew(Vector2.class).set(5, 0))
-                                                .add(N.ew(Vector2.class).set(5, 5))
-                                                .add(N.ew(Vector2.class).set(10, 5))
-                                                .add(N.ew(Vector2.class).set(10, 10))
+                                                .add(N.ew(Vector2.class).set(5/2, 0))
+                                                .add(N.ew(Vector2.class).set(5/2, 5/2))
+                                                .add(N.ew(Vector2.class).set(10/2, 5/2))
+                                                .add(N.ew(Vector2.class).set(10/2, 10/2))
                                         )
                                         .setRestitution(0.0f)
                                         .setDensity(0.5f)
@@ -160,14 +158,14 @@ public class D02_b2d_shapes extends Game {
                                 .setRender(RenderBuilder.b2d().setColor(Color.PINK).build())
                                 .setPhysics(new FixtureNodeSpec()
                                         .setShape(new B2DShapeSpec.Polygon()
-                                                .add(N.ew(Vector2.class).set(-10, -10))
-                                                .add(N.ew(Vector2.class).set(-15, 0))
-                                                .add(N.ew(Vector2.class).set(-10, 10))
-                                                .add(N.ew(Vector2.class).set(0, 15))
-                                                .add(N.ew(Vector2.class).set(10, 10))
-                                                .add(N.ew(Vector2.class).set(15, 0))
-                                                .add(N.ew(Vector2.class).set(10, -10))
-                                                .add(N.ew(Vector2.class).set(0, -15))
+                                                .add(N.ew(Vector2.class).set(-10/2, -10/2))
+                                                .add(N.ew(Vector2.class).set(-15/2, 0))
+                                                .add(N.ew(Vector2.class).set(-10/2, 10/2))
+                                                .add(N.ew(Vector2.class).set(0, 15/2))
+                                                .add(N.ew(Vector2.class).set(10/2, 10/2))
+                                                .add(N.ew(Vector2.class).set(15/2, 0))
+                                                .add(N.ew(Vector2.class).set(10/2, -10/2))
+                                                .add(N.ew(Vector2.class).set(0, -15/2))
                                         )
                                 )
                 )
@@ -189,7 +187,7 @@ public class D02_b2d_shapes extends Game {
                                         .build()
                                 )
                                 .setPhysics(new FixtureNodeSpec()
-                                        .setShape(new B2DShapeSpec.PolygonRectangle(20, 20)))
+                                        .setShape(new B2DShapeSpec.PolygonRectangle(10/2, 10/2)))
                 )
                 .addNode(
                         new NodeSpec()
@@ -200,7 +198,7 @@ public class D02_b2d_shapes extends Game {
                                         .build()
                                 )
                                 .setPhysics(new FixtureNodeSpec()
-                                        .setShape(new B2DShapeSpec.PolygonRectangle(5, 5)))
+                                        .setShape(new B2DShapeSpec.PolygonRectangle(5/2, 5/2)))
                 )
                 .addNode(
                         new NodeSpec()
@@ -211,8 +209,8 @@ public class D02_b2d_shapes extends Game {
                                         .build()
                                 )
                                 .setPhysics(new FixtureNodeSpec()
-                                        .setShape(new B2DShapeSpec.PolygonRectangle(5, 5))
-                                        .setOffset(-10, 10)
+                                        .setShape(new B2DShapeSpec.PolygonRectangle(5/2, 5/2))
+                                        .setOffset(-10/2, 10/2)
                                 )
                 )
                 ;

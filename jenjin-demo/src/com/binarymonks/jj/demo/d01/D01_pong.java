@@ -37,8 +37,6 @@ public class D01_pong extends Game {
 
     @Override
     protected void gameOn() {
-        GameRenderingLayer gameRenderingLayer = new GameRenderingLayer(COURT_LENGTH, COURT_LENGTH / 2, COURT_LENGTH / 2);
-        JJ.layers.addLayerTop(gameRenderingLayer);
 
         //Define your ThingSpecs
         JJ.specs

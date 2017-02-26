@@ -4,14 +4,15 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 
 public interface PhysicsRootSpec {
 
-    public static class Basic implements PhysicsRootSpec {
+    class Basic implements PhysicsRootSpec {
     }
 
-    public static class B2D implements PhysicsRootSpec {
+    class B2D implements PhysicsRootSpec {
         public BodyDef.BodyType bodyType = BodyDef.BodyType.DynamicBody;
         public boolean fixedRotation=false;
         public float linearDamping;
         public float angularDamping;
+        public float gravityScale=1;
         public boolean bullet = false;
         public boolean allowSleep = true;
 
@@ -42,6 +43,11 @@ public interface PhysicsRootSpec {
 
         public B2D setAllowSleep(boolean allowSleep) {
             this.allowSleep = allowSleep;
+            return this;
+        }
+
+        public B2D setGravityScale(float gravityScale) {
+            this.gravityScale = gravityScale;
             return this;
         }
     }

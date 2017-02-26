@@ -33,8 +33,7 @@ public class D04_lights extends Game {
 
     @Override
     protected void gameOn() {
-        gameRenderingLayer = new GameRenderingLayer(WORLD_WIDTH, WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
-        JJ.layers.addLayerTop(gameRenderingLayer);
+        gameRenderingLayer = JJ.layers.getDefaultGameLayer();
 
         JJ.specs
                 .set("background", background())

@@ -1,20 +1,16 @@
 package com.binarymonks.jj.demo.d07;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.JJConfig;
 import com.binarymonks.jj.components.ForceMovement;
-import com.binarymonks.jj.layers.GameRenderingLayer;
 import com.binarymonks.jj.specs.SceneSpec;
 import com.binarymonks.jj.things.InstanceParams;
 
 public class Swing extends Game {
 
-    GameRenderingLayer gameRenderingLayer;
     float WORLD_WIDTH = 100;
     float WORLD_HEIGHT = 100;
 
@@ -24,8 +20,6 @@ public class Swing extends Game {
 
     @Override
     protected void gameOn() {
-        gameRenderingLayer = new GameRenderingLayer(WORLD_WIDTH, WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
-        JJ.layers.addLayerTop(gameRenderingLayer);
 
         JJ.specs.set("player", GameSpecs.player());
         JJ.specs.set("link", GameSpecs.link());
@@ -78,8 +72,5 @@ public class Swing extends Game {
         JJ.input.map(Input.Keys.DOWN,keyboardControls::down);
         JJ.input.map(Input.Keys.LEFT,keyboardControls::left);
         JJ.input.map(Input.Keys.RIGHT,keyboardControls::right);
-        for(Controller controller: Controllers.getControllers()){
-            System.out.println(controller.getName());
-        }
     }
 }

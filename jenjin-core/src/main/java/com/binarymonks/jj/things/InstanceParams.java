@@ -1,5 +1,6 @@
 package com.binarymonks.jj.things;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.pools.PoolManager;
@@ -28,6 +29,12 @@ public class InstanceParams {
     public InstanceParams setPosition(float x, float y) {
         this.x = x;
         this.y = y;
+        return this;
+    }
+
+    public InstanceParams setPosition(Vector2 position){
+        this.x = position.x;
+        this.y = position.y;
         return this;
     }
 

@@ -14,11 +14,14 @@ public interface PhysicsRoot {
     /**
      * Be careful if you are using Box2D physics.
      * Rather apply forces through {@link PhysicsRoot#getB2DBody()}
-     *
-     * @param x
-     * @param y
      */
     void setPosition(float x, float y);
+
+    /**
+     * Be careful if you are using Box2D physics.
+     * Rather apply forces through {@link PhysicsRoot#getB2DBody()}
+     */
+    void setPosition(Vector2 position);
 
     /**
      * Be careful if you are using Box2D physics.
@@ -52,6 +55,11 @@ public interface PhysicsRoot {
         @Override
         public void setPosition(float x, float y) {
             body.setTransform(x, y, body.getAngle());
+        }
+
+        @Override
+        public void setPosition(Vector2 position) {
+            body.setTransform(position.x,position.y,body.getAngle());
         }
 
         @Override
@@ -89,6 +97,11 @@ public interface PhysicsRoot {
         @Override
         public void setPosition(float x, float y) {
             position.set(x, y);
+        }
+
+        @Override
+        public void setPosition(Vector2 position) {
+            position.set(position);
         }
 
         @Override

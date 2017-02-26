@@ -107,6 +107,9 @@ public class DragableManager implements InputProcessor {
                     Touchable t = parent.getComponent(Touchable.class);
                     if (t!=null) {
                         touchedThing = parent;
+                        Vector2 touchLocation = N.ew(Vector2.class).set(testPoint.x,testPoint.y);
+                        t.onTouchDown(touchLocation);
+                        Re.cycle(touchLocation);
                         Body hitBody = fixture.getBody();
                         Vector2 bodyPosition = N.ew(Vector2.class).set(hitBody.getPosition());
                         if(t.trackTouchOffset()) {

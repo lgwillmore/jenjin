@@ -12,8 +12,8 @@ import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.specs.ThingSpec;
 
 public class D05_animations extends Game {
-    float WORLD_WIDTH = 200;
-    float WORLD_HEIGHT = 200;
+    float WORLD_WIDTH = 100;
+    float WORLD_HEIGHT = 100;
 
     public D05_animations(JJConfig jjconfig) {
         super(jjconfig);
@@ -23,9 +23,6 @@ public class D05_animations extends Game {
 
     @Override
     protected void gameOn() {
-        gameRenderingLayer = new GameRenderingLayer(WORLD_WIDTH, WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
-        JJ.layers.addLayerTop(gameRenderingLayer);
-
         JJ.specs.set("twinkle_animated", twinkleAnimated());
 
         SceneSpec scene = new SceneSpec();
@@ -45,7 +42,7 @@ public class D05_animations extends Game {
                 .setRender(
                         RenderBuilder.animated(new BackingTexture.Simple("textures/count.png"),
                                 3, 4,
-                                100, 100)
+                                50, 50)
                                 .addAnimation(new AnimationSequence()
                                         .setDuration(6f)
                                         .setName("default")
