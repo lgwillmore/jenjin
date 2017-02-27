@@ -7,9 +7,9 @@ import com.binarymonks.jj.specs.lights.LightSpec;
 import com.binarymonks.jj.specs.physics.PhysicsRootSpec;
 
 
-public class ThingSpec {
+public class ThingSpec implements SceneNodeSpec{
 
-    public Array<NodeSpec> nodes = new Array<>();
+    public Array<ThingNodeSpec> nodes = new Array<>();
 
     public Array<Component> components = new Array<>();
 
@@ -26,15 +26,15 @@ public class ThingSpec {
         return this;
     }
 
-    public ThingSpec addNode(NodeSpec nodeSpec) {
-        nodes.add(nodeSpec);
+    public ThingSpec addNode(ThingNodeSpec thingNodeSpec) {
+        nodes.add(thingNodeSpec);
         return this;
     }
 
-    public NodeSpec newNode(){
-        NodeSpec nodeSpec = new NodeSpec();
-        nodes.add(nodeSpec);
-        return nodeSpec;
+    public ThingNodeSpec newNode(){
+        ThingNodeSpec thingNodeSpec = new ThingNodeSpec();
+        nodes.add(thingNodeSpec);
+        return thingNodeSpec;
     }
 
     public ThingSpec addComponent(Component component) {

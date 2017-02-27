@@ -19,6 +19,7 @@ hs_err_pid*
 .gradle
 jenjin-core/build/
 jenjin-demo/build/
+jenjin-spine/build/
 
 # Ignore Gradle GUI jjConfig
 gradle-app.setting

@@ -2,7 +2,7 @@ package com.binarymonks.jj.specs.render;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.binarymonks.jj.specs.NodeSpec;
+import com.binarymonks.jj.specs.ThingNodeSpec;
 import com.binarymonks.jj.specs.physics.PhysicsNodeSpec;
 import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
 import com.binarymonks.jj.specs.physics.b2d.FixtureNodeSpec;
@@ -13,7 +13,7 @@ import com.binarymonks.jj.render.nodes.ShapeRenderNode;
 import com.binarymonks.jj.things.InstanceParams;
 
 /**
- * This {@link RenderSpec} will attempt to render the box2d fixture from its parent {@link NodeSpec}
+ * This {@link RenderSpec} will attempt to render the box2d fixture from its parent {@link ThingNodeSpec}
  */
 public class B2DRenderSpec extends RenderSpec {
 

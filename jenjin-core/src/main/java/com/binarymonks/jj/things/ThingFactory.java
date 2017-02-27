@@ -12,24 +12,25 @@ import com.binarymonks.jj.audio.SoundEffects;
 import com.binarymonks.jj.audio.SoundParams;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.components.Component;
-import com.binarymonks.jj.specs.lights.LightSpec;
 import com.binarymonks.jj.physics.CollisionFunction;
 import com.binarymonks.jj.physics.CollisionGroups;
 import com.binarymonks.jj.physics.CollisionResolver;
 import com.binarymonks.jj.physics.PhysicsRoot;
-import com.binarymonks.jj.specs.physics.PhysicsNodeSpec;
-import com.binarymonks.jj.specs.physics.PhysicsRootSpec;
-import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
-import com.binarymonks.jj.specs.physics.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.pools.PoolManager;
 import com.binarymonks.jj.pools.Re;
 import com.binarymonks.jj.render.RenderWorld;
 import com.binarymonks.jj.render.ThingLayer;
 import com.binarymonks.jj.render.nodes.RenderNode;
+import com.binarymonks.jj.specs.SceneNodeSpec;
 import com.binarymonks.jj.specs.SpecTools;
-import com.binarymonks.jj.specs.NodeSpec;
+import com.binarymonks.jj.specs.ThingNodeSpec;
 import com.binarymonks.jj.specs.ThingSpec;
+import com.binarymonks.jj.specs.lights.LightSpec;
+import com.binarymonks.jj.specs.physics.PhysicsNodeSpec;
+import com.binarymonks.jj.specs.physics.PhysicsRootSpec;
+import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
+import com.binarymonks.jj.specs.physics.b2d.FixtureNodeSpec;
 
 public class ThingFactory {
     int idCounter = 0;
@@ -41,20 +42,25 @@ public class ThingFactory {
     }
 
     public Thing create(String thingSpecPath, InstanceParams instanceParams) {
-        Context context = N.ew(Context.class);
-        context.thingSpec = Global.specs.specifications.get(thingSpecPath);
-        context.instanceParams = instanceParams;
-        if (context.thingSpec.pool) {
-            getPooled(thingSpecPath, context);
+        SceneNodeSpec spec = Global.specs.specifications.get(thingSpecPath);
+        if (!(spec instanceof ThingSpec)) {
+            throw new NotAThingException(thingSpecPath);
         } else {
-            buildNew(thingSpecPath, context);
+            Context context = N.ew(Context.class);
+            context.thingSpec = (ThingSpec) spec;
+            context.instanceParams = instanceParams;
+            if (context.thingSpec.pool) {
+                getPooled(thingSpecPath, context);
+            } else {
+                buildNew(thingSpecPath, context);
+            }
+            setProperties(context);
+            Global.renderWorld.addThing(context.thing);
+            Global.thingWorld.add(context.thing);
+            Thing thing = context.thing;
+            Re.cycle(context);
+            return thing;
         }
-        setProperties(context);
-        Global.renderWorld.addThing(context.thing);
-        Global.thingWorld.add(context.thing);
-        Thing thing = context.thing;
-        Re.cycle(context);
-        return thing;
     }
 
     private void getPooled(String thingSpecPath, Context context) {
@@ -163,12 +169,12 @@ public class ThingFactory {
     }
 
     private void buildNodes(Context context) {
-        for (NodeSpec nodeSpec : context.thingSpec.nodes) {
+        for (ThingNodeSpec nodeSpec : context.thingSpec.nodes) {
             ThingNode node = new ThingNode(nodeSpec.name);
 
             buildFixture(nodeSpec.physicsNodeSpec, node, context);
 
-            RenderNode render = nodeSpec.renderSpec.makeNode(nodeSpec.physicsNodeSpec,context.instanceParams);
+            RenderNode render = nodeSpec.renderSpec.makeNode(nodeSpec.physicsNodeSpec, context.instanceParams);
             node.render = render;
             context.nodes.add(node);
 
@@ -271,7 +277,7 @@ public class ThingFactory {
         def.angularDamping = bodyDef.angularDamping;
         def.bullet = bodyDef.bullet;
         def.allowSleep = bodyDef.allowSleep;
-        def.gravityScale=bodyDef.gravityScale;
+        def.gravityScale = bodyDef.gravityScale;
         context.body = Global.physics.world.createBody(def);
         PhysicsRoot.B2DPhysicsRoot physicsRoot = new PhysicsRoot.B2DPhysicsRoot(context.body);
         context.thing.physicsroot = physicsRoot;
@@ -314,6 +320,12 @@ public class ThingFactory {
             public void dispose(Context context) {
 
             }
+        }
+    }
+
+    private class NotAThingException extends RuntimeException {
+        public NotAThingException(String thingSpecPath) {
+            super(String.format("You cannot create a Thing from a non-Thing specification. Path=%s", thingSpecPath));
         }
     }
 }

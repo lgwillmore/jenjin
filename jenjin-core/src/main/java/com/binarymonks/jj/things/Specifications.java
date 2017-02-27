@@ -1,6 +1,7 @@
 package com.binarymonks.jj.things;
 
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.JJ;
@@ -8,18 +9,20 @@ import com.binarymonks.jj.api.Specs;
 import com.binarymonks.jj.assets.AssetReference;
 import com.binarymonks.jj.async.Function;
 import com.binarymonks.jj.audio.SoundParams;
-import com.binarymonks.jj.specs.NodeSpec;
+import com.binarymonks.jj.specs.SceneNodeSpec;
+import com.binarymonks.jj.specs.ThingNodeSpec;
 import com.binarymonks.jj.specs.ThingSpec;
+import com.binarymonks.jj.specs.spine.SpineSpec;
 
 public class Specifications implements Specs {
-    ObjectMap<String, ThingSpec> specifications = new ObjectMap<>();
+    ObjectMap<String, SceneNodeSpec> specifications = new ObjectMap<>();
 
     @Override
-    public Specs set(String path, ThingSpec thingSpec) {
+    public Specs set(String path, SceneNodeSpec sceneNodeSpec) {
         if (specifications.containsKey(path)) {
             throw new RuntimeException(String.format("There is already a specification for path %s", path));
         }
-        specifications.put(path, thingSpec);
+        specifications.put(path, sceneNodeSpec);
         return this;
     }
 
@@ -37,15 +40,23 @@ public class Specifications implements Specs {
 
     private Array<AssetReference> getAllAssets() {
         Array<AssetReference> assets = new Array<>();
-        for (ObjectMap.Entry<String, ThingSpec> specification : specifications) {
-            addSoundAssets(assets, specification.value);
-            addRenderAssets(assets, specification.value);
+        for (ObjectMap.Entry<String, SceneNodeSpec> specification : specifications) {
+            if (specification.value instanceof ThingSpec) {
+                ThingSpec spec = (ThingSpec) specification.value;
+                addSoundAssets(assets, spec);
+                addRenderAssets(assets, spec);
+            }
+            if(specification.value instanceof SpineSpec){
+                SpineSpec spec = (SpineSpec) specification.value;
+                assets.add(new AssetReference(TextureAtlas.class,spec.atlasPath));
+
+            }
         }
         return assets;
     }
 
     private void addRenderAssets(Array<AssetReference> assets, ThingSpec spec) {
-        for(NodeSpec node: spec.nodes){
+        for (ThingNodeSpec node : spec.nodes) {
             assets.addAll(node.renderSpec.getAssets());
         }
     }

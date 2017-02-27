@@ -7,7 +7,6 @@ import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.audio.SoundParams;
 import com.binarymonks.jj.input.Actions;
-import com.binarymonks.jj.layers.GameRenderingLayer;
 import com.binarymonks.jj.physics.collisions.DestroyCollision;
 import com.binarymonks.jj.physics.collisions.EmitEventCollision;
 import com.binarymonks.jj.physics.collisions.SoundCollision;
@@ -18,7 +17,7 @@ import com.binarymonks.jj.specs.physics.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.specs.render.RenderBuilder;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.Thing;
-import com.binarymonks.jj.specs.NodeSpec;
+import com.binarymonks.jj.specs.ThingNodeSpec;
 import com.binarymonks.jj.specs.ThingSpec;
 
 public class D01_pong extends Game {
@@ -131,7 +130,7 @@ public class D01_pong extends Game {
                         .setBodyType(BodyDef.BodyType.KinematicBody)
                 )
                 .addNode(
-                        new NodeSpec()
+                        new ThingNodeSpec()
                                 .setRender(RenderBuilder.shapeRectangle(BAT_WIDTH, BAT_HEIGHT)
                                         .delegateColorTo("color")
                                         .build()
@@ -152,7 +151,7 @@ public class D01_pong extends Game {
                         new SoundParams("pong").addPath("sounds/pong.mp3").setVolume(0.5f)
                 )
                 .addNode(
-                        new NodeSpec()
+                        new ThingNodeSpec()
                                 .setRender(RenderBuilder.shapeRectangle(5, 5).setColor(Color.GREEN).build())
                                 .setPhysics(new FixtureNodeSpec()
                                         .setFriction(0)
@@ -168,7 +167,7 @@ public class D01_pong extends Game {
         return new ThingSpec()
                 .setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.StaticBody))
                 .addNode(
-                        new NodeSpec()
+                        new ThingNodeSpec()
                                 .setRender(RenderBuilder.shapeRectangle(COURT_LENGTH - 2 * (BAT_INSET + BAT_WIDTH * 0.501f), BAT_WIDTH)
                                         .setColor(Color.WHITE)
                                         .build()
@@ -186,7 +185,7 @@ public class D01_pong extends Game {
         return new ThingSpec()
                 .setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.StaticBody))
                 .addNode(
-                        new NodeSpec()
+                        new ThingNodeSpec()
                                 .setRender(RenderBuilder.b2d().delegateColorTo("color").build())
                                 .setPhysics(new FixtureNodeSpec()
                                         .setShape(new B2DShapeSpec.PolygonRectangle(5, COURT_LENGTH * 1.1f))

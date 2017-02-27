@@ -10,7 +10,7 @@ import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
 import com.binarymonks.jj.specs.physics.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.specs.render.RenderBuilder;
 import com.binarymonks.jj.things.InstanceParams;
-import com.binarymonks.jj.specs.NodeSpec;
+import com.binarymonks.jj.specs.ThingNodeSpec;
 import com.binarymonks.jj.specs.ThingSpec;
 
 public class D03_pooling_load_test extends Game {
@@ -47,7 +47,7 @@ public class D03_pooling_load_test extends Game {
         destroySelf.timeToLive.set(4f);
         return new ThingSpec()
                 .addNode(
-                        new NodeSpec()
+                        new ThingNodeSpec()
                                 .setRender(
                                         RenderBuilder.b2d().setColor(Color.BLUE).build()
                                 )

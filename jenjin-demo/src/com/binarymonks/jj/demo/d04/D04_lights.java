@@ -16,7 +16,7 @@ import com.binarymonks.jj.specs.physics.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.specs.render.BackingTexture;
 import com.binarymonks.jj.specs.render.RenderBuilder;
 import com.binarymonks.jj.things.InstanceParams;
-import com.binarymonks.jj.specs.NodeSpec;
+import com.binarymonks.jj.specs.ThingNodeSpec;
 import com.binarymonks.jj.specs.ThingSpec;
 
 public class D04_lights extends Game {
@@ -59,7 +59,7 @@ public class D04_lights extends Game {
         float heightToWidth = height / width;
         return new ThingSpec()
                 .addNode(
-                        new NodeSpec()
+                        new ThingNodeSpec()
                                 .setRender(
                                         RenderBuilder.texture(
                                                 new BackingTexture.Simple("textures/circuit_background.png"),
@@ -78,7 +78,7 @@ public class D04_lights extends Game {
                 .collisionData.setToExplicit(CollisionGroups.EVERYTHING);
         return new ThingSpec()
                 .addNode(
-                        new NodeSpec()
+                        new ThingNodeSpec()
                                 .setRender(RenderBuilder.b2d()
                                         .setLayer(1)
                                         .setColor(Color.BLUE)
@@ -97,7 +97,7 @@ public class D04_lights extends Game {
         return new ThingSpec()
                 .setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.KinematicBody))
                 .addLight(point)
-                .addNode(new NodeSpec()
+                .addNode(new ThingNodeSpec()
                         .setRender(RenderBuilder.b2d()
                                 .setColor(new Color(1f, 0.8f, 0.8f, 1))
                                 .setGraphToLightSource().build()

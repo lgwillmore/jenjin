@@ -1,0 +1,33 @@
+apply plugin: "java"
+
+sourceCompatibility = 1.8
+sourceSets.main.java.srcDirs = ["src/"]
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+//            artifactId 'com.binarymonks.jj.spine'
+
+            from components.java
+        }
+    }
+}
+
+jar {
+    from configurations.compile.filter{
+        it.toString().contains("libs")? it :null
+    }.collect {
+        it.isDirectory() ? it : zipTree(it)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+

@@ -3,7 +3,6 @@ package com.binarymonks.jj.demo.d00;
 import com.badlogic.gdx.graphics.Color;
 import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
-import com.binarymonks.jj.layers.GameRenderingLayer;
 import com.binarymonks.jj.specs.SceneSpec;
 import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
 import com.binarymonks.jj.specs.physics.b2d.FixtureNodeSpec;
@@ -11,7 +10,7 @@ import com.binarymonks.jj.specs.render.RenderBuilder;
 import com.binarymonks.jj.specs.render.Spatial;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.Thing;
-import com.binarymonks.jj.specs.NodeSpec;
+import com.binarymonks.jj.specs.ThingNodeSpec;
 import com.binarymonks.jj.specs.ThingSpec;
 
 /**
@@ -52,7 +51,7 @@ public class D00_Basic extends Game {
     private ThingSpec squares() {
         return new ThingSpec()
                 .addNode(
-                        new NodeSpec()
+                        new ThingNodeSpec()
                                 .setRender(
                                         RenderBuilder.shapeRectangle(10, 10)
                                                 .setLayer(0)
@@ -69,7 +68,7 @@ public class D00_Basic extends Game {
                                 )
                 )
                 .addNode(
-                        new NodeSpec()
+                        new ThingNodeSpec()
                                 .setRender(
                                         RenderBuilder.shapeRectangle(10, 10)
                                                 .setLayer(0)
