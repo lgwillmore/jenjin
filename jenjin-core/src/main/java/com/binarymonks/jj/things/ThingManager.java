@@ -26,18 +26,18 @@ public class ThingManager implements Things {
 
     @Override
     public void load(SceneSpec sceneSpec, Function callback) {
-        JJ.specs.loadSpecAssetsThen(() -> sceneLoader.load(sceneSpec, callback));
+        JJ.specs.loadSpecAssetsThen(() -> sceneLoader.load(sceneSpec, SceneParams.New(), callback));
     }
 
     @Override
     public void loadNow(SceneSpec sceneSpec) {
         JJ.specs.loadSpecAssetsNow();
-        sceneLoader.load(sceneSpec, Function::doNothing);
+        sceneLoader.load(sceneSpec, SceneParams.New(), Function::doNothing);
     }
 
     @Override
     public void appendScene(SceneSpec scene, SceneParams sceneParams) {
-        sceneLoader.load(scene,sceneParams,Function::doNothing);
+        sceneLoader.load(scene, sceneParams, Function::doNothing);
     }
 
     @Override

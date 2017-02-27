@@ -75,7 +75,7 @@ public class Pools {
             try {
                 return pooledClass.newInstance();
             } catch (InstantiationException | IllegalAccessException e) {
-                throw new NoDefaultConstructorException(pooledClass);
+                throw new CouldNotCreateOneException(pooledClass);
             }
         }
     }
@@ -128,9 +128,9 @@ public class Pools {
         }
     }
 
-    public static class NoDefaultConstructorException extends RuntimeException {
-        public NoDefaultConstructorException(Class<?> noDefault) {
-            super(String.format("No Default constructor for %s. Make one to pool it.", noDefault.getCanonicalName()));
+    public static class CouldNotCreateOneException extends RuntimeException {
+        public CouldNotCreateOneException(Class<?> noDefault) {
+            super(String.format("Could not access a default constructor for %s. Check it exists, and check public static if nested.", noDefault.getCanonicalName()));
         }
     }
 }

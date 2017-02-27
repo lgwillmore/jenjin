@@ -32,18 +32,20 @@ public class D08_arrow_game extends Game {
         JJ.specs.set("bow", bow());
         JJ.specs.set("arrow", arrow());
         JJ.specs.set("quiver", quiver());
+        JJ.specs.set("floor",floor());
         JJ.specs.set("dummy/head", dummyHead());
         JJ.specs.set("dummy/body", dummyBody());
 
         SceneSpec scene = new SceneSpec();
-        scene.addThingSpec("bow", InstanceParams.New().setPosition(WORLD_WIDTH * 0.3f, WORLD_HEIGHT * 0.5f));
+        scene.addThingSpec("bow", InstanceParams.New().setPosition(WORLD_WIDTH * 0.3f, WORLD_HEIGHT * 0.6f));
         scene.addThingSpec("quiver", InstanceParams.New().setPosition(WORLD_WIDTH * 0.1f, WORLD_HEIGHT * 0.75f));
+        scene.addThingSpec("floor",InstanceParams.New().setPosition(WORLD_WIDTH*0.5f,WORLD_HEIGHT*0.5f));
 
         JJ.things.loadNow(scene);
 
         SceneSpec dummyScene = dummy();
 
-        JJ.things.appendScene(scene, SceneParams.New().setPosition(WORLD_WIDTH*0.7f,WORLD_HEIGHT * 0.5f));
+        JJ.things.appendScene(dummyScene, SceneParams.New().setPosition(WORLD_WIDTH*0.7f,WORLD_HEIGHT * 0.5f));
 
     }
 
@@ -105,7 +107,7 @@ public class D08_arrow_game extends Game {
         int body = scene.addThingSpec("dummy/body",InstanceParams.New().setPosition(0,1f));
 
         WeldJointDef wj = new WeldJointDef();
-        wj.localAnchorA.set(0,1.15f);
+        wj.localAnchorA.set(0,2f);
         wj.localAnchorB.set(0,0);
         scene.addJoint(body,head,wj);
 
@@ -120,7 +122,7 @@ public class D08_arrow_game extends Game {
         spec.newNode()
                 .setPhysics(
                         new FixtureNodeSpec()
-                                .setShape(new B2DShapeSpec.Circle(0.15f))
+                                .setShape(new B2DShapeSpec.Circle(0.5f))
                 );
         return spec;
     }
@@ -133,7 +135,20 @@ public class D08_arrow_game extends Game {
         spec.newNode()
                 .setPhysics(
                         new FixtureNodeSpec()
-                                .setShape(new B2DShapeSpec.PolygonRectangle(0.5f,2f))
+                                .setShape(new B2DShapeSpec.PolygonRectangle(1f,3f))
+                );
+        return spec;
+    }
+
+    public ThingSpec floor(){
+        ThingSpec spec = new ThingSpec();
+
+        spec.setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.StaticBody));
+
+        spec.newNode()
+                .setPhysics(
+                        new FixtureNodeSpec()
+                                .setShape(new B2DShapeSpec.PolygonRectangle(WORLD_WIDTH,1))
                 );
         return spec;
     }

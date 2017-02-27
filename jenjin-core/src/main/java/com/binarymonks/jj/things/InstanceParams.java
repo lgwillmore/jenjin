@@ -32,7 +32,7 @@ public class InstanceParams {
         return this;
     }
 
-    public InstanceParams setPosition(Vector2 position){
+    public InstanceParams setPosition(Vector2 position) {
         this.x = position.x;
         this.y = position.y;
         return this;
@@ -46,6 +46,18 @@ public class InstanceParams {
     public InstanceParams setUniqueName(String uniqueName) {
         this.uniqueInstanceName = uniqueName;
         return this;
+    }
+
+    public InstanceParams clone() {
+        InstanceParams copy = InstanceParams.New();
+        copy.setPosition(x, y);
+        copy.setScale(scaleX, scaleY);
+        copy.setUniqueName(uniqueInstanceName);
+        copy.setRotationD(rotationD);
+        for (ObjectMap.Entry<String, Object> prop : properties.entries()) {
+            copy.setProperty(prop.key, prop.value);
+        }
+        return copy;
     }
 
     /**
