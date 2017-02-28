@@ -9,6 +9,8 @@ public interface Specs {
 
     Specs set(String path, SceneNodeSpec thingSpec);
 
+    boolean isDirty();
+
     void loadSpecAssetsThen(Function callback);
 
     void loadSpecAssetsNow();

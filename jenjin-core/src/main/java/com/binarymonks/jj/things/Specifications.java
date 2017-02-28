@@ -16,6 +16,7 @@ import com.binarymonks.jj.specs.spine.SpineSpec;
 
 public class Specifications implements Specs {
     ObjectMap<String, SceneNodeSpec> specifications = new ObjectMap<>();
+    boolean dirty = false;
 
     @Override
     public Specs set(String path, SceneNodeSpec sceneNodeSpec) {
@@ -23,19 +24,31 @@ public class Specifications implements Specs {
             throw new RuntimeException(String.format("There is already a specification for path %s", path));
         }
         specifications.put(path, sceneNodeSpec);
+        dirty = true;
         return this;
     }
 
     @Override
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    @Override
     public void loadSpecAssetsThen(Function callback) {
-        Array<AssetReference> assets = getAllAssets();
-        JJ.assets.loadThen(assets, callback);
+        if (dirty) {
+            Array<AssetReference> assets = getAllAssets();
+            JJ.assets.loadThen(assets, callback);
+        } else {
+            callback.call();
+        }
     }
 
     @Override
     public void loadSpecAssetsNow() {
-        Array<AssetReference> assets = getAllAssets();
-        JJ.assets.loadNow(assets);
+        if (dirty) {
+            Array<AssetReference> assets = getAllAssets();
+            JJ.assets.loadNow(assets);
+        }
     }
 
     private Array<AssetReference> getAllAssets() {
@@ -46,9 +59,9 @@ public class Specifications implements Specs {
                 addSoundAssets(assets, spec);
                 addRenderAssets(assets, spec);
             }
-            if(specification.value instanceof SpineSpec){
+            if (specification.value instanceof SpineSpec) {
                 SpineSpec spec = (SpineSpec) specification.value;
-                assets.add(new AssetReference(TextureAtlas.class,spec.atlasPath));
+                assets.add(new AssetReference(TextureAtlas.class, spec.atlasPath));
 
             }
         }
