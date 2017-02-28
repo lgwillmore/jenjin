@@ -47,31 +47,31 @@ public class D01_pong extends Game {
 
         //Add instances of your ThingSpecs to a scene
         SceneSpec level = new SceneSpec();
-        level.addThingSpec("player",
+        level.addInstance("player",
                 InstanceParams.New()
                         .setUniqueName("player2")
                         .setPosition(COURT_LENGTH - BAT_INSET, COURT_LENGTH / 2)
                         .setProperty("color", Color.BLUE)
         );
-        level.addThingSpec("player",
+        level.addInstance("player",
                 InstanceParams.New()
                         .setUniqueName("player1")
                         .setPosition(BAT_INSET, COURT_LENGTH / 2)
                         .setProperty("color", Color.RED)
         );
-        level.addThingSpec("ball",
+        level.addInstance("ball",
                 InstanceParams.New()
                         .setUniqueName("ball")
                         .setPosition(COURT_LENGTH / 2, COURT_LENGTH / 2));
-        level.addThingSpec("wall", InstanceParams.New().setPosition(COURT_LENGTH / 2, COURT_LENGTH - BAT_HEIGHT / 2));
-        level.addThingSpec("wall", InstanceParams.New().setPosition(COURT_LENGTH / 2, BAT_HEIGHT / 2));
-        level.addThingSpec("scoreWall",
+        level.addInstance("wall", InstanceParams.New().setPosition(COURT_LENGTH / 2, COURT_LENGTH - BAT_HEIGHT / 2));
+        level.addInstance("wall", InstanceParams.New().setPosition(COURT_LENGTH / 2, BAT_HEIGHT / 2));
+        level.addInstance("scoreWall",
                 InstanceParams.New()
                         .setPosition(COURT_LENGTH, COURT_LENGTH / 2)
                         .setProperty("color", Color.RED)
                         .setProperty("score_message", MSG_PLAYER2_SCORE)
         );
-        level.addThingSpec("scoreWall",
+        level.addInstance("scoreWall",
                 InstanceParams.New()
                         .setPosition(0, COURT_LENGTH / 2)
                         .setProperty("color", Color.BLUE)

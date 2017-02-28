@@ -30,8 +30,8 @@ public class D00_Basic extends Game {
 
         //Add instances to a level
         SceneSpec level = new SceneSpec();
-        level.addThingSpec("squares", InstanceParams.New().setPosition(60, 50).setRotationD(90));
-        level.addThingSpec("squares", InstanceParams.New().setPosition(40, 50).setRotationD(90));
+        level.addInstance("squares", InstanceParams.New().setPosition(60, 50).setRotationD(90));
+        level.addInstance("squares", InstanceParams.New().setPosition(40, 50).setRotationD(90));
 
         //Load the level asynchronously with a callback when it is done
         JJ.things.load(level, this::onLevelLoaded);

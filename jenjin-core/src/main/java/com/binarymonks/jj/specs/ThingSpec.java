@@ -7,7 +7,7 @@ import com.binarymonks.jj.specs.lights.LightSpec;
 import com.binarymonks.jj.specs.physics.PhysicsRootSpec;
 
 
-public class ThingSpec implements SceneNodeSpec{
+public class ThingSpec extends SceneNodeSpec{
 
     public Array<ThingNodeSpec> nodes = new Array<>();
 

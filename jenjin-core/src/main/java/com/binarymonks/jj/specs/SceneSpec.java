@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.things.InstanceParams;
 
 
-public class SceneSpec implements SceneNodeSpec{
+public class SceneSpec extends SceneNodeSpec{
 
     int pieceIDCounter = 0;
 
@@ -14,7 +14,7 @@ public class SceneSpec implements SceneNodeSpec{
     public Array<JointSpec> joints = new Array<>();
 
 
-    public int addThingSpec(String thingSpecPath, InstanceParams instanceParams) {
+    public int addInstance(String thingSpecPath, InstanceParams instanceParams) {
         int id = pieceIDCounter++;
         thingPieces.put(id, new InstanceSpec(thingSpecPath, instanceParams));
         return id;

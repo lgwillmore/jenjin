@@ -24,6 +24,7 @@ public class Specifications implements Specs {
             throw new RuntimeException(String.format("There is already a specification for path %s", path));
         }
         specifications.put(path, sceneNodeSpec);
+        sceneNodeSpec.setPath(path);
         dirty = true;
         return this;
     }

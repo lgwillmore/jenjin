@@ -47,17 +47,17 @@ public class D02_b2d_shapes extends Game {
 
     private SceneSpec buildScene() {
         SceneSpec scene = new SceneSpec();
-        scene.addThingSpec("multi",
+        scene.addInstance("multi",
                 InstanceParams.New().setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 2).setRotationD(45)
         );
-        scene.addThingSpec("polygon",
+        scene.addInstance("polygon",
                 InstanceParams.New().setPosition(35, 35));
-        scene.addThingSpec("rectangle", InstanceParams.New().setPosition(WORLD_WIDTH / 2, 0).setScale(WORLD_WIDTH, 10));
-        scene.addThingSpec("rectangle", InstanceParams.New().setPosition(0, WORLD_WIDTH / 2).setRotationD(90).setScale(WORLD_WIDTH, 10));
-        scene.addThingSpec("rectangle", InstanceParams.New().setPosition(WORLD_WIDTH, WORLD_WIDTH / 2).setRotationD(90).setScale(WORLD_WIDTH, 10));
-        int shelf = scene.addThingSpec("rectangle", InstanceParams.New().setPosition(70, 80).setScale(20, 10));
+        scene.addInstance("rectangle", InstanceParams.New().setPosition(WORLD_WIDTH / 2, 0).setScale(WORLD_WIDTH, 10));
+        scene.addInstance("rectangle", InstanceParams.New().setPosition(0, WORLD_WIDTH / 2).setRotationD(90).setScale(WORLD_WIDTH, 10));
+        scene.addInstance("rectangle", InstanceParams.New().setPosition(WORLD_WIDTH, WORLD_WIDTH / 2).setRotationD(90).setScale(WORLD_WIDTH, 10));
+        int shelf = scene.addInstance("rectangle", InstanceParams.New().setPosition(70, 80).setScale(20, 10));
         float lastBallY = 70;
-        int lastBall = scene.addThingSpec("ball", InstanceParams.New().setPosition(lastBallY, 80).setRotationD(45));
+        int lastBall = scene.addInstance("ball", InstanceParams.New().setPosition(lastBallY, 80).setRotationD(45));
         RevoluteJointDef revJoint = new RevoluteJointDef();
         revJoint.localAnchorA.set(0, 0);
         revJoint.localAnchorB.set(0, 5/2);
@@ -65,7 +65,7 @@ public class D02_b2d_shapes extends Game {
         revJoint.collideConnected=false;
         scene.addJoint(shelf, lastBall, revJoint);
         for (int i = 0; i < 7; i++) {
-            int newBall = scene.addThingSpec("ball", InstanceParams.New().setPosition(lastBallY, 80).setRotationD(45));
+            int newBall = scene.addInstance("ball", InstanceParams.New().setPosition(lastBallY, 80).setRotationD(45));
             revJoint = new RevoluteJointDef();
             revJoint.localAnchorA.set(0, -5/2);
             revJoint.localAnchorB.set(0, 5/2);
@@ -76,11 +76,11 @@ public class D02_b2d_shapes extends Game {
             lastBall = newBall;
         }
 
-        scene.addThingSpec("ball", InstanceParams.New().setPosition(20, WORLD_HEIGHT));
-        scene.addThingSpec("ball", InstanceParams.New().setPosition(40, WORLD_HEIGHT));
-        scene.addThingSpec("ball", InstanceParams.New().setPosition(60, WORLD_HEIGHT));
-        scene.addThingSpec("ball", InstanceParams.New().setPosition(80, WORLD_HEIGHT));
-        scene.addThingSpec("chain", InstanceParams.New().setPosition(60, 15));
+        scene.addInstance("ball", InstanceParams.New().setPosition(20, WORLD_HEIGHT));
+        scene.addInstance("ball", InstanceParams.New().setPosition(40, WORLD_HEIGHT));
+        scene.addInstance("ball", InstanceParams.New().setPosition(60, WORLD_HEIGHT));
+        scene.addInstance("ball", InstanceParams.New().setPosition(80, WORLD_HEIGHT));
+        scene.addInstance("chain", InstanceParams.New().setPosition(60, 15));
         return scene;
     }
 

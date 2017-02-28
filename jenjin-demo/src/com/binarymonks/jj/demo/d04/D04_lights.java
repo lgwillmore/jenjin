@@ -41,11 +41,11 @@ public class D04_lights extends Game {
         ;
 
         SceneSpec scene = new SceneSpec();
-        scene.addThingSpec("background", InstanceParams.New().setPosition(WORLD_WIDTH * 0.5f, WORLD_HEIGHT * 0.5f).setRotationD(90));
-        scene.addThingSpec("block", InstanceParams.New().setPosition(30, 30));
-        scene.addThingSpec("block", InstanceParams.New().setPosition(60, 60));
-        scene.addThingSpec("block", InstanceParams.New().setPosition(90, 90));
-        scene.addThingSpec("light", InstanceParams.New().setUniqueName("light").setPosition(90, 40));
+        scene.addInstance("background", InstanceParams.New().setPosition(WORLD_WIDTH * 0.5f, WORLD_HEIGHT * 0.5f).setRotationD(90));
+        scene.addInstance("block", InstanceParams.New().setPosition(30, 30));
+        scene.addInstance("block", InstanceParams.New().setPosition(60, 60));
+        scene.addInstance("block", InstanceParams.New().setPosition(90, 90));
+        scene.addInstance("light", InstanceParams.New().setUniqueName("light").setPosition(90, 40));
 
         JJ.lights.setAmbientLight(0, 0, 0, 0.3f);
 

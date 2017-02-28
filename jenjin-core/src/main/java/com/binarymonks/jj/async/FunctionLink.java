@@ -24,10 +24,13 @@ public class FunctionLink implements Function {
         return this;
     }
 
-    public static FunctionLink Do(Function doBefore) {
-        FunctionLink fc =  N.ew(FunctionLink.class);
-        fc.doBefore = doBefore;
-        return fc;
+    public FunctionLink Do(Function doBefore) {
+        this.doBefore = doBefore;
+        return this;
+    }
+
+    public static FunctionLink New(){
+        return N.ew(FunctionLink.class);
     }
 
 

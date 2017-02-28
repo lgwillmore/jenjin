@@ -26,7 +26,7 @@ public class D05_animations extends Game {
         JJ.specs.set("twinkle_animated", twinkleAnimated());
 
         SceneSpec scene = new SceneSpec();
-        scene.addThingSpec("twinkle_animated", InstanceParams.New().setPosition(WORLD_WIDTH * 0.5f, WORLD_HEIGHT * 0.5f));
+        scene.addInstance("twinkle_animated", InstanceParams.New().setPosition(WORLD_WIDTH * 0.5f, WORLD_HEIGHT * 0.5f));
 
 
         JJ.things.load(scene, this::gameLoaded);

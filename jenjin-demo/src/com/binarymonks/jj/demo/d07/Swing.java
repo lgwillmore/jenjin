@@ -27,9 +27,9 @@ public class Swing extends Game {
 
         float linkOffset=0.45f;
         SceneSpec scene = new SceneSpec();
-        int player = scene.addThingSpec("player", InstanceParams.New().setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 2).setUniqueName("player"));
+        int player = scene.addInstance("player", InstanceParams.New().setPosition(WORLD_WIDTH / 2, WORLD_HEIGHT / 2).setUniqueName("player"));
         float lastLinkY = WORLD_HEIGHT / 2+linkOffset*2;
-        int lastLink = scene.addThingSpec("link", InstanceParams.New().setPosition(WORLD_WIDTH / 2, lastLinkY));
+        int lastLink = scene.addInstance("link", InstanceParams.New().setPosition(WORLD_WIDTH / 2, lastLinkY));
         RevoluteJointDef revJoint = new RevoluteJointDef();
         revJoint.localAnchorA.set(0, 0);
         revJoint.localAnchorB.set(0, -linkOffset);
@@ -38,7 +38,7 @@ public class Swing extends Game {
         scene.addJoint(player, lastLink, revJoint);
         for (int i = 0; i < 20; i++) {
             lastLinkY=lastLinkY+linkOffset*2;
-            int newLink = scene.addThingSpec("link", InstanceParams.New().setPosition(WORLD_WIDTH / 2, lastLinkY));
+            int newLink = scene.addInstance("link", InstanceParams.New().setPosition(WORLD_WIDTH / 2, lastLinkY));
             revJoint = new RevoluteJointDef();
             revJoint.localAnchorA.set(0, linkOffset);
             revJoint.localAnchorB.set(0, -linkOffset);
@@ -48,7 +48,7 @@ public class Swing extends Game {
             lastLink = newLink;
         }
         lastLinkY=lastLinkY+linkOffset*2;
-        int ball=scene.addThingSpec("ball", InstanceParams.New().setPosition(WORLD_WIDTH / 2, lastLinkY));
+        int ball=scene.addInstance("ball", InstanceParams.New().setPosition(WORLD_WIDTH / 2, lastLinkY));
         revJoint = new RevoluteJointDef();
         revJoint.localAnchorA.set(0, 0);
         revJoint.localAnchorB.set(0, linkOffset);
@@ -56,10 +56,10 @@ public class Swing extends Game {
         revJoint.collideConnected=false;
         scene.addJoint(ball, lastLink, revJoint);
 
-        scene.addThingSpec("ball", InstanceParams.New().setPosition(30, 30));
-        scene.addThingSpec("ball", InstanceParams.New().setPosition(80, 80));
-        scene.addThingSpec("ball", InstanceParams.New().setPosition(30, 80));
-        scene.addThingSpec("ball", InstanceParams.New().setPosition(80, 30));
+        scene.addInstance("ball", InstanceParams.New().setPosition(30, 30));
+        scene.addInstance("ball", InstanceParams.New().setPosition(80, 80));
+        scene.addInstance("ball", InstanceParams.New().setPosition(30, 80));
+        scene.addInstance("ball", InstanceParams.New().setPosition(80, 30));
 
         JJ.things.load(scene, this::onLoad);
 

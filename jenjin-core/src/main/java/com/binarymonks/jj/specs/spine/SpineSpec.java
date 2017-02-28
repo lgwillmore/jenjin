@@ -2,7 +2,7 @@ package com.binarymonks.jj.specs.spine;
 
 import com.binarymonks.jj.specs.SceneNodeSpec;
 
-public class SpineSpec implements SceneNodeSpec{
+public class SpineSpec extends SceneNodeSpec{
 
     public enum DataType {JSON, SKEL}
 

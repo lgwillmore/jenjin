@@ -41,18 +41,14 @@ public class ThingFactory {
         JJ.pools.registerManager(new Context.BuildContextPoolManager(), Context.class);
     }
 
-    public Thing create(String thingSpecPath, InstanceParams instanceParams) {
-        SceneNodeSpec spec = Global.specs.specifications.get(thingSpecPath);
-        if (!(spec instanceof ThingSpec)) {
-            throw new NotAThingException(thingSpecPath);
-        } else {
+    public Thing create(ThingSpec thingSpec, InstanceParams instanceParams) {
             Context context = N.ew(Context.class);
-            context.thingSpec = (ThingSpec) spec;
+            context.thingSpec = thingSpec;
             context.instanceParams = instanceParams;
             if (context.thingSpec.pool) {
-                getPooled(thingSpecPath, context);
+                getPooled(thingSpec.getPath(), context);
             } else {
-                buildNew(thingSpecPath, context);
+                buildNew(context);
             }
             setProperties(context);
             Global.renderWorld.addThing(context.thing);
@@ -60,13 +56,12 @@ public class ThingFactory {
             Thing thing = context.thing;
             Re.cycle(context);
             return thing;
-        }
     }
 
     private void getPooled(String thingSpecPath, Context context) {
         context.thing = checkPools(thingSpecPath);
         if (context.thing == null) {
-            buildNew(thingSpecPath, context);
+            buildNew(context);
         } else {
             resetPooled(context);
         }
@@ -87,8 +82,8 @@ public class ThingFactory {
         }
     }
 
-    private void buildNew(String thingSpecPath, Context context) {
-        context.thing = new Thing(thingSpecPath, idCounter++, context.instanceParams.uniqueInstanceName, context.thingSpec);
+    private void buildNew(Context context) {
+        context.thing = new Thing(context.thingSpec.getPath(), idCounter++, context.instanceParams.uniqueInstanceName, context.thingSpec);
         buildPhysicsRoot(context);
         buildNodes(context);
         wireInRenderNodes(context);

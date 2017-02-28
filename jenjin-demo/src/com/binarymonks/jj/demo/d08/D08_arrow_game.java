@@ -35,18 +35,15 @@ public class D08_arrow_game extends Game {
         JJ.specs.set("floor",floor());
         JJ.specs.set("dummy/head", dummyHead());
         JJ.specs.set("dummy/body", dummyBody());
+        JJ.specs.set("dummy", dummy());
 
         SceneSpec scene = new SceneSpec();
-        scene.addThingSpec("bow", InstanceParams.New().setPosition(WORLD_WIDTH * 0.3f, WORLD_HEIGHT * 0.6f));
-        scene.addThingSpec("quiver", InstanceParams.New().setPosition(WORLD_WIDTH * 0.1f, WORLD_HEIGHT * 0.75f));
-        scene.addThingSpec("floor",InstanceParams.New().setPosition(WORLD_WIDTH*0.5f,WORLD_HEIGHT*0.5f));
+        scene.addInstance("bow", InstanceParams.New().setPosition(WORLD_WIDTH * 0.3f, WORLD_HEIGHT * 0.6f));
+        scene.addInstance("quiver", InstanceParams.New().setPosition(WORLD_WIDTH * 0.1f, WORLD_HEIGHT * 0.75f));
+        scene.addInstance("floor",InstanceParams.New().setPosition(WORLD_WIDTH*0.5f,WORLD_HEIGHT*0.5f));
+        scene.addInstance("dummy",InstanceParams.New().setPosition(WORLD_WIDTH*0.7f,WORLD_HEIGHT * 0.5f));
 
         JJ.things.loadNow(scene);
-
-        SceneSpec dummyScene = dummy();
-
-        JJ.things.appendScene(dummyScene, SceneParams.New().setPosition(WORLD_WIDTH*0.7f,WORLD_HEIGHT * 0.5f));
-
     }
 
 
@@ -103,8 +100,8 @@ public class D08_arrow_game extends Game {
 
     public SceneSpec dummy(){
         SceneSpec scene = new SceneSpec();
-        int head = scene.addThingSpec("dummy/head",InstanceParams.New().setPosition(0,2.15f));
-        int body = scene.addThingSpec("dummy/body",InstanceParams.New().setPosition(0,1f));
+        int head = scene.addInstance("dummy/head",InstanceParams.New().setPosition(0,2.15f));
+        int body = scene.addInstance("dummy/body",InstanceParams.New().setPosition(0,1f));
 
         WeldJointDef wj = new WeldJointDef();
         wj.localAnchorA.set(0,2f);

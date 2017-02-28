@@ -2,6 +2,7 @@ package com.binarymonks.jj.demo.d09;
 
 import com.binarymonks.jj.Game;
 import com.binarymonks.jj.JJ;
+import com.binarymonks.jj.JJConfig;
 import com.binarymonks.jj.specs.SceneSpec;
 import com.binarymonks.jj.specs.spine.SpineSpec;
 import com.binarymonks.jj.things.InstanceParams;
@@ -11,6 +12,10 @@ public class D09_spine extends Game{
     public static float WORLD_WIDTH=45;
     public static float WORLD_HEIGHT=45;
 
+    public D09_spine(JJConfig jjconfig) {
+        super(jjconfig);
+    }
+
     @Override
     protected void gameOn() {
         JJ.layers.getDefaultGameLayer().setView(WORLD_WIDTH, WORLD_WIDTH / 2, WORLD_HEIGHT / 2);
@@ -18,7 +23,7 @@ public class D09_spine extends Game{
         JJ.specs.set("spineboy",spineBoy());
 
         SceneSpec scene = new SceneSpec();
-        scene.addThingSpec("spineboy", InstanceParams.New().setPosition(WORLD_WIDTH/2,WORLD_HEIGHT/2));
+        scene.addInstance("spineboy", InstanceParams.New().setPosition(WORLD_WIDTH/2,WORLD_HEIGHT/2));
 
         JJ.things.loadNow(scene);
     }
