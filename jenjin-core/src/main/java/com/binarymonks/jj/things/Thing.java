@@ -8,6 +8,7 @@ import com.binarymonks.jj.components.Component;
 import com.binarymonks.jj.components.ComponentMaster;
 import com.binarymonks.jj.physics.PhysicsRoot;
 import com.binarymonks.jj.render.RenderRoot;
+import com.binarymonks.jj.specs.SceneNodeSpec;
 import com.binarymonks.jj.specs.ThingSpec;
 
 public class Thing {
@@ -15,7 +16,7 @@ public class Thing {
     public String path;
     public int id;
     public String uniqueName;
-    public ThingSpec spec;
+    public SceneNodeSpec spec;
     public RenderRoot renderRoot = new RenderRoot();
     public PhysicsRoot physicsroot;
     public SoundEffects sounds;
@@ -24,9 +25,10 @@ public class Thing {
     ObjectMap<String, Light> lights = new ObjectMap<>();
     ObjectMap<String, Object> properties = new ObjectMap<>();
     ObjectMap<String, ThingNode> nodes = new ObjectMap<>();
+    public boolean pool=true;
 
 
-    public Thing(String path, int id, String uniqueName, ThingSpec spec) {
+    public Thing(String path, int id, String uniqueName, SceneNodeSpec spec) {
         this.path = path;
         this.id = id;
         this.uniqueName = uniqueName;
@@ -62,5 +64,9 @@ public class Thing {
 
     public <T extends Component> T getComponent(Class<T> componentType) {
         return componentMaster.getTrackedComponent((Class<Component>) componentType);
+    }
+
+    public void setPool(boolean pool) {
+        this.pool = pool;
     }
 }

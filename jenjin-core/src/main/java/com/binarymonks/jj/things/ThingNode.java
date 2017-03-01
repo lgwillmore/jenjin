@@ -12,7 +12,7 @@ public class ThingNode {
     public RenderNode render;
     public ObjectMap<String, Object> properties = new ObjectMap<>();
     public CollisionResolver collisionResolver = new CollisionResolver();
-    String name;
+    public String name;
 
     public ThingNode(String name) {
         this.name = name;

@@ -101,7 +101,7 @@ public class ThingManager implements Things {
             }
             if (spec instanceof SpineSpec){
                 SpineSpec spineSpec = (SpineSpec) spec;
-                Global.factories.spine.create(spineSpec,instanceParams);
+                thing = Global.factories.spine.create(spineSpec,instanceParams);
             }
             callback.accept(thing);
             Re.cycle(this);

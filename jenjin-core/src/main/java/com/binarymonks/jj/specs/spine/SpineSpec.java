@@ -1,8 +1,8 @@
 package com.binarymonks.jj.specs.spine;
 
-import com.binarymonks.jj.specs.SceneNodeSpec;
+import com.binarymonks.jj.specs.ThingSpec;
 
-public class SpineSpec extends SceneNodeSpec{
+public class SpineSpec extends ThingSpec {
 
     public enum DataType {JSON, SKEL}
 
@@ -17,8 +17,7 @@ public class SpineSpec extends SceneNodeSpec{
 
     public SpineSpec setData(String dataPath, DataType type) {
         this.dataPath = dataPath;
-        this.dataType=type;
+        this.dataType = type;
         return this;
     }
-
 }

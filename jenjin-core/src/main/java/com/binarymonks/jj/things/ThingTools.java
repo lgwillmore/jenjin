@@ -22,7 +22,7 @@ public class ThingTools {
     private static Vector2 physicsPoolLocation = new Vector2(10000, 10000);
 
     static void destroy(Thing thing) {
-        if (thing.spec.pool) {
+        if (thing.pool) {
             thing.componentMaster.neutralise();
             neutralisePhysics(thing);
             for (ObjectMap.Entry<String, Light> light : thing.lights) {
@@ -64,7 +64,7 @@ public class ThingTools {
             body.setAngularVelocity(0);
             body.setActive(false);
             body.setAwake(false);
-            Global.factories.things.recycle(thing);
+            Global.factories.recycle(thing);
         } else {
             Global.tasks.addPostPhysicsTask(
                     N.ew(NeutralisePhysics.class)

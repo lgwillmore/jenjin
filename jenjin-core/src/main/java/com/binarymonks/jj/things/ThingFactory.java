@@ -22,7 +22,6 @@ import com.binarymonks.jj.pools.Re;
 import com.binarymonks.jj.render.RenderWorld;
 import com.binarymonks.jj.render.ThingLayer;
 import com.binarymonks.jj.render.nodes.RenderNode;
-import com.binarymonks.jj.specs.SceneNodeSpec;
 import com.binarymonks.jj.specs.SpecTools;
 import com.binarymonks.jj.specs.ThingNodeSpec;
 import com.binarymonks.jj.specs.ThingSpec;
@@ -32,73 +31,64 @@ import com.binarymonks.jj.specs.physics.PhysicsRootSpec;
 import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
 import com.binarymonks.jj.specs.physics.b2d.FixtureNodeSpec;
 
-public class ThingFactory {
-    int idCounter = 0;
+public class ThingFactory<SPEC extends ThingSpec> {
+
     int lightCounter = 0;
-    ObjectMap<String, Array<Thing>> pooledThings = new ObjectMap<>();
 
-    public ThingFactory() {
-        JJ.pools.registerManager(new Context.BuildContextPoolManager(), Context.class);
-    }
-
-    public Thing create(ThingSpec thingSpec, InstanceParams instanceParams) {
-            Context context = N.ew(Context.class);
-            context.thingSpec = thingSpec;
-            context.instanceParams = instanceParams;
-            if (context.thingSpec.pool) {
-                getPooled(thingSpec.getPath(), context);
-            } else {
-                buildNew(context);
-            }
-            setProperties(context);
-            Global.renderWorld.addThing(context.thing);
-            Global.thingWorld.add(context.thing);
-            Thing thing = context.thing;
-            Re.cycle(context);
-            return thing;
-    }
-
-    private void getPooled(String thingSpecPath, Context context) {
-        context.thing = checkPools(thingSpecPath);
-        if (context.thing == null) {
-            buildNew(context);
+    public Thing create(SPEC thingSpec, InstanceParams instanceParams) {
+        Thing thing = null;
+        if (thingSpec.pool) {
+            thing = getPooled(thingSpec, instanceParams);
         } else {
-            resetPooled(context);
+            thing = buildNew(thingSpec, instanceParams);
         }
+        wireIn(thing, instanceParams);
+        return thing;
     }
 
-    private Thing checkPools(String thingSpecPath) {
-        if (pooledThings.containsKey(thingSpecPath) && pooledThings.get(thingSpecPath).size > 0) {
-            return pooledThings.get(thingSpecPath).pop();
-        }
-        return null;
+    protected void wireIn(Thing thing, InstanceParams instanceParams) {
+        setProperties(thing, instanceParams.properties);
+        Global.renderWorld.addThing(thing);
+        Global.thingWorld.add(thing);
     }
 
-    private void resetPooled(Context context) {
-        ThingTools.resetPhysics(context.thing, context.instanceParams);
-        context.thing.componentMaster.reactivate();
-        for (ObjectMap.Entry<String, Light> light : context.thing.lights) {
+    protected Thing getPooled(SPEC thingSpec, InstanceParams instanceParams) {
+        Thing thing = Global.factories.checkPools(thingSpec.getPath());
+        if (thing == null) {
+            return buildNew(thingSpec, instanceParams);
+        } else {
+            resetPooled(thing, instanceParams);
+        }
+        return thing;
+    }
+
+    protected void resetPooled(Thing thing, InstanceParams instanceParams) {
+        ThingTools.resetPhysics(thing, instanceParams);
+        thing.componentMaster.reactivate();
+        for (ObjectMap.Entry<String, Light> light : thing.lights) {
             light.value.setActive(true);
         }
     }
 
-    private void buildNew(Context context) {
-        context.thing = new Thing(context.thingSpec.getPath(), idCounter++, context.instanceParams.uniqueInstanceName, context.thingSpec);
-        buildPhysicsRoot(context);
-        buildNodes(context);
-        wireInRenderNodes(context);
-        buildBehaviour(context);
-        buildSounds(context);
-        buildLights(context);
+    protected Thing buildNew(SPEC thingSpec, InstanceParams instanceParams) {
+        Thing thing = new Thing(thingSpec.getPath(), Global.factories.nextID(), instanceParams.uniqueInstanceName, thingSpec);
+        thing.setPool(thingSpec.pool);
+        Body body = buildPhysicsRoot(thing, thingSpec, instanceParams);
+        Array<ThingNode> nodes = buildNodes(thing, thingSpec, instanceParams, body);
+        wireInRenderNodes(thing, nodes);
+        buildBehaviour(thing, thingSpec);
+        buildSounds(thing, thingSpec);
+        buildLights(thing, thingSpec, instanceParams, body);
+        return thing;
     }
 
-    private void buildLights(Context context) {
-        for (LightSpec lightSpec : context.thingSpec.lights) {
-            addLight(lightSpec, context.thing, context.body, context.instanceParams.properties);
+    protected void buildLights(Thing thing, SPEC thingSpec, InstanceParams instanceParams, Body body) {
+        for (LightSpec lightSpec : thingSpec.lights) {
+            addLight(lightSpec, thing, body, instanceParams.properties);
         }
     }
 
-    private void addLight(LightSpec lightSpec, Thing thing, Body body, ObjectMap<String, Object> properties) {
+    protected void addLight(LightSpec lightSpec, Thing thing, Body body, ObjectMap<String, Object> properties) {
         Light light = null;
         if (lightSpec instanceof LightSpec.Point) {
             LightSpec.Point pointSpec = (LightSpec.Point) lightSpec;
@@ -111,39 +101,39 @@ public class ThingFactory {
         thing.lights.put(lightSpec.name, light);
     }
 
-    private void setProperties(Context context) {
-        for (ObjectMap.Entry<String, Object> prop : context.instanceParams.properties) {
-            context.thing.properties.put(prop.key, prop.value);
+    protected void setProperties(Thing thing, ObjectMap<String, Object> instanceProps) {
+        for (ObjectMap.Entry<String, Object> prop : instanceProps) {
+            thing.properties.put(prop.key, prop.value);
         }
     }
 
-    private void buildSounds(Context context) {
+    protected void buildSounds(Thing thing, SPEC thingSpec) {
         SoundEffects soundEffects = new SoundEffects();
-        for (SoundParams soundP : context.thingSpec.sounds) {
+        for (SoundParams soundP : thingSpec.sounds) {
             soundEffects.addSoundEffect(soundP);
         }
-        context.thing.sounds = soundEffects;
+        thing.sounds = soundEffects;
     }
 
-    private void buildBehaviour(Context context) {
-        for (Component component : context.thingSpec.components) {
+    protected void buildBehaviour(Thing thing, SPEC thingSpec) {
+        for (Component component : thingSpec.components) {
             Component clone = component.clone();
-            context.thing.addComponent(clone);
-            clone.setParent(context.thing);
+            thing.addComponent(clone);
+            clone.setParent(thing);
         }
     }
 
-    private void wireInRenderNodes(Context context) {
-        ObjectMap<Integer, ThingLayer> defaultLayers = buildLayers(context, RenderWorld.DEFAULT_RENDER_GRAPH);
-        ObjectMap<Integer, ThingLayer> lightSourceLayers = buildLayers(context, RenderWorld.LIGHTSOURCE_RENDER_GRAPH);
-        context.thing.renderRoot.defaultThingLayers = defaultLayers;
-        context.thing.renderRoot.lightSourceThingLayers = lightSourceLayers;
+    protected void wireInRenderNodes(Thing thing, Array<ThingNode> nodes) {
+        ObjectMap<Integer, ThingLayer> defaultLayers = buildLayers(thing, nodes, RenderWorld.DEFAULT_RENDER_GRAPH);
+        ObjectMap<Integer, ThingLayer> lightSourceLayers = buildLayers(thing, nodes, RenderWorld.LIGHTSOURCE_RENDER_GRAPH);
+        thing.renderRoot.defaultThingLayers = defaultLayers;
+        thing.renderRoot.lightSourceThingLayers = lightSourceLayers;
     }
 
-    private ObjectMap<Integer, ThingLayer> buildLayers(Context context, String defaultRenderGraph) {
+    protected ObjectMap<Integer, ThingLayer> buildLayers(Thing thing, Array<ThingNode> nodes, String renderGraph) {
         ObjectMap<Integer, ThingLayer> thingLayers = new ObjectMap<>();
-        for (ThingNode node : context.nodes) {
-            if (!(node.render == RenderNode.NULL) && node.render.renderGraphName.equals(defaultRenderGraph)) {
+        for (ThingNode node : nodes) {
+            if (!(node.render == RenderNode.NULL) && node.render.renderGraphName.equals(renderGraph)) {
                 int layer = node.render.spec.layer;
                 if (layer < 0) {
                     throw new RuntimeException("You cannot have a layer less than 0");
@@ -152,7 +142,7 @@ public class ThingFactory {
                     thingLayers.put(layer, new ThingLayer(layer));
                 }
                 thingLayers.get(layer).renderNodes.add(node.render);
-                node.render.setParent(context.thing);
+                node.render.setParent(thing);
             }
         }
         for (ObjectMap.Entry<Integer, ThingLayer> layers : thingLayers) {
@@ -163,28 +153,30 @@ public class ThingFactory {
         return thingLayers;
     }
 
-    private void buildNodes(Context context) {
-        for (ThingNodeSpec nodeSpec : context.thingSpec.nodes) {
+    protected Array<ThingNode> buildNodes(Thing thing, SPEC thingSpec, InstanceParams instanceParams, Body body) {
+        Array<ThingNode> nodes = new Array<>();
+        for (ThingNodeSpec nodeSpec : thingSpec.nodes) {
             ThingNode node = new ThingNode(nodeSpec.name);
 
-            buildFixture(nodeSpec.physicsNodeSpec, node, context);
+            buildFixture(nodeSpec.physicsNodeSpec, thing, node, instanceParams, body);
 
-            RenderNode render = nodeSpec.renderSpec.makeNode(nodeSpec.physicsNodeSpec, context.instanceParams);
+            RenderNode render = nodeSpec.renderSpec.makeNode(nodeSpec.physicsNodeSpec, instanceParams);
             node.render = render;
-            context.nodes.add(node);
+            nodes.add(node);
 
             if (node.name == null) {
-                node.name = "ANON_NODE_" + context.thing.nodes.size;
+                node.name = "ANON_NODE_" + thing.nodes.size;
             }
-            context.thing.nodes.put(node.name, node);
-            node.parent = context.thing;
+            thing.nodes.put(node.name, node);
+            node.parent = thing;
         }
+        return nodes;
     }
 
-    private void buildFixture(PhysicsNodeSpec nodeSpec, ThingNode node, Context context) {
+    protected void buildFixture(PhysicsNodeSpec nodeSpec, Thing thing, ThingNode node, InstanceParams instanceParams, Body body) {
         if (nodeSpec instanceof FixtureNodeSpec) {
             FixtureNodeSpec fixtureSpec = (FixtureNodeSpec) nodeSpec;
-            Shape shape = buildShape(fixtureSpec, context.instanceParams);
+            Shape shape = buildShape(fixtureSpec, instanceParams);
             FixtureDef fDef = new FixtureDef();
             fDef.shape = shape;
             fDef.density = fixtureSpec.density;
@@ -196,13 +188,12 @@ public class ThingFactory {
             fDef.filter.maskBits = cd.mask;
             Re.cycle(cd);
 
-            Fixture f = context.body.createFixture(fDef);
-//            shape.dispose();
+            Fixture f = body.createFixture(fDef);
             node.fixture = f;
             f.setUserData(node);
 
             CollisionResolver resolver = new CollisionResolver();
-            resolver.setSelf(context.thing);
+            resolver.setSelf(thing);
             for (CollisionFunction ibegin : fixtureSpec.initialBeginCollisions) {
                 resolver.addInitialBegin(ibegin.clone());
             }
@@ -219,15 +210,7 @@ public class ThingFactory {
         }
     }
 
-    private boolean hasCollisions(FixtureNodeSpec nodeSpec) {
-        return (
-                nodeSpec.initialBeginCollisions.size > 0
-                        || nodeSpec.finalBeginCollisions.size > 0
-                        || nodeSpec.endCollisions.size > 0
-        );
-    }
-
-    private Shape buildShape(FixtureNodeSpec nodeSpec, InstanceParams instanceParams) {
+    protected Shape buildShape(FixtureNodeSpec nodeSpec, InstanceParams instanceParams) {
         if (nodeSpec.shape instanceof B2DShapeSpec.PolygonRectangle) {
             B2DShapeSpec.PolygonRectangle polygonRectangle = (B2DShapeSpec.PolygonRectangle) nodeSpec.shape;
             PolygonShape boxshape = new PolygonShape();
@@ -261,11 +244,11 @@ public class ThingFactory {
         return null;
     }
 
-    private void buildPhysicsRoot(Context context) {
-        PhysicsRootSpec.B2D bodyDef = (PhysicsRootSpec.B2D) context.thingSpec.physics;
+    protected Body buildPhysicsRoot(Thing thing, SPEC thingSpec, InstanceParams instanceParams) {
+        PhysicsRootSpec.B2D bodyDef = (PhysicsRootSpec.B2D) thingSpec.physics;
         BodyDef def = new BodyDef();
-        def.position.set(context.instanceParams.x, context.instanceParams.y);
-        def.angle = context.instanceParams.rotationD * MathUtils.degreesToRadians;
+        def.position.set(instanceParams.x, instanceParams.y);
+        def.angle = instanceParams.rotationD * MathUtils.degreesToRadians;
         def.type = bodyDef.bodyType;
         def.fixedRotation = bodyDef.fixedRotation;
         def.linearDamping = bodyDef.linearDamping;
@@ -273,54 +256,10 @@ public class ThingFactory {
         def.bullet = bodyDef.bullet;
         def.allowSleep = bodyDef.allowSleep;
         def.gravityScale = bodyDef.gravityScale;
-        context.body = Global.physics.world.createBody(def);
-        PhysicsRoot.B2DPhysicsRoot physicsRoot = new PhysicsRoot.B2DPhysicsRoot(context.body);
-        context.thing.physicsroot = physicsRoot;
-        context.body.setUserData(context.thing);
-    }
-
-    public void recycle(Thing thing) {
-        if (!pooledThings.containsKey(thing.path)) {
-            pooledThings.put(thing.path, new Array<>());
-        }
-        pooledThings.get(thing.path).add(thing);
-    }
-
-
-    public static class Context {
-        ThingSpec thingSpec;
-        InstanceParams instanceParams;
-        Thing thing;
-        Body body;
-        Array<ThingNode> nodes = new Array<>();
-
-        public static class BuildContextPoolManager implements PoolManager<Context> {
-
-            @Override
-            public void reset(Context context) {
-                context.thingSpec = null;
-                Re.cycle(context.instanceParams);
-                context.instanceParams = null;
-                context.thing = null;
-                context.body = null;
-                context.nodes.clear();
-            }
-
-            @Override
-            public Context create_new() {
-                return new Context();
-            }
-
-            @Override
-            public void dispose(Context context) {
-
-            }
-        }
-    }
-
-    private class NotAThingException extends RuntimeException {
-        public NotAThingException(String thingSpecPath) {
-            super(String.format("You cannot create a Thing from a non-Thing specification. Path=%s", thingSpecPath));
-        }
+        Body body = Global.physics.world.createBody(def);
+        PhysicsRoot.B2DPhysicsRoot physicsRoot = new PhysicsRoot.B2DPhysicsRoot(body);
+        thing.physicsroot = physicsRoot;
+        body.setUserData(thing);
+        return body;
     }
 }
