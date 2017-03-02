@@ -9,8 +9,8 @@ import com.binarymonks.jj.things.InstanceParams;
 
 public class D09_spine extends Game{
 
-    public static float WORLD_WIDTH=45;
-    public static float WORLD_HEIGHT=45;
+    public static float WORLD_WIDTH=20;
+    public static float WORLD_HEIGHT=20;
 
     public D09_spine(JJConfig jjconfig) {
         super(jjconfig);
@@ -32,6 +32,9 @@ public class D09_spine extends Game{
         SpineSpec spec = new SpineSpec();
         spec.setAtlasPath("spine/spineboy/spineboy-pma.atlas");
         spec.setData("spine/spineboy/spineboy.json", SpineSpec.DataType.JSON);
+        spec.setOrigin(0,247f);
+        spec.setScale(1/247f);
+        spec.setStartingAnimation("walk");
         return spec;
     }
 }
