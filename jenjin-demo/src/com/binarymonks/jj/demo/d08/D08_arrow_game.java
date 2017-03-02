@@ -1,5 +1,6 @@
 package com.binarymonks.jj.demo.d08;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
@@ -12,13 +13,15 @@ import com.binarymonks.jj.specs.ThingSpec;
 import com.binarymonks.jj.specs.physics.PhysicsRootSpec;
 import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
 import com.binarymonks.jj.specs.physics.b2d.FixtureNodeSpec;
+import com.binarymonks.jj.specs.render.B2DRenderSpec;
+import com.binarymonks.jj.specs.render.RenderBuilder;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.SceneParams;
 
 public class D08_arrow_game extends Game {
 
-    public static float WORLD_WIDTH = 60;
-    public static float WORLD_HEIGHT = 30;
+    public static float WORLD_WIDTH = 40;
+    public static float WORLD_HEIGHT = 40;
 
     public D08_arrow_game(JJConfig jjconfig) {
         super(jjconfig);
@@ -32,16 +35,16 @@ public class D08_arrow_game extends Game {
         JJ.specs.set("bow", bow());
         JJ.specs.set("arrow", arrow());
         JJ.specs.set("quiver", quiver());
-        JJ.specs.set("floor",floor());
+        JJ.specs.set("floor", floor());
         JJ.specs.set("dummy/head", dummyHead());
         JJ.specs.set("dummy/body", dummyBody());
         JJ.specs.set("dummy", dummy());
 
         SceneSpec scene = new SceneSpec();
-        scene.addInstance("bow", InstanceParams.New().setPosition(WORLD_WIDTH * 0.3f, WORLD_HEIGHT * 0.6f));
+        scene.addInstance("bow", InstanceParams.New().setPosition(WORLD_WIDTH * 0.15f, WORLD_HEIGHT * 0.6f));
         scene.addInstance("quiver", InstanceParams.New().setPosition(WORLD_WIDTH * 0.1f, WORLD_HEIGHT * 0.75f));
-        scene.addInstance("floor",InstanceParams.New().setPosition(WORLD_WIDTH*0.5f,WORLD_HEIGHT*0.5f));
-        scene.addInstance("dummy",InstanceParams.New().setPosition(WORLD_WIDTH*0.7f,WORLD_HEIGHT * 0.5f));
+        scene.addInstance("floor", InstanceParams.New().setPosition(WORLD_WIDTH * 0.5f, WORLD_HEIGHT * 0.5f));
+        scene.addInstance("dummy", InstanceParams.New().setPosition(WORLD_WIDTH * 0.8f, WORLD_HEIGHT * 0.5f));
 
         JJ.things.loadNow(scene);
     }
@@ -58,7 +61,7 @@ public class D08_arrow_game extends Game {
                                 .setShape(new B2DShapeSpec.Circle(1.5f))
                                 .setSensor(true)
                                 .addInitialBeginCollision(new BowNotchCollision())
-                );
+                ).setRender(RenderBuilder.b2d().setColor(new Color(0.2f,0.2f,0.2f,0.5f)).build());
         spec.addComponent(new Bow());
         return spec;
     }
@@ -71,14 +74,16 @@ public class D08_arrow_game extends Game {
         spec.newNode()
                 .setPhysics(
                         new FixtureNodeSpec()
-                                .setShape(new B2DShapeSpec.PolygonRectangle(2,0.1f))
-                );
+                                .setShape(new B2DShapeSpec.PolygonRectangle(2, 0.1f))
+                )
+                .setRender(RenderBuilder.b2d().setColor(Color.BROWN).setLayer(1).build());
         spec.newNode()
                 .setPhysics(
-                  new FixtureNodeSpec()
-                        .setShape(new B2DShapeSpec.Circle(0.15f))
-                        .setOffset(0.85f,0)
-                );
+                        new FixtureNodeSpec()
+                                .setShape(new B2DShapeSpec.Circle(0.15f))
+                                .setOffset(0.85f, 0)
+                )
+                .setRender(RenderBuilder.b2d().setColor(Color.GRAY).setLayer(1).build());
         spec.addComponent(new Arrow());
         return spec;
     }
@@ -92,26 +97,26 @@ public class D08_arrow_game extends Game {
                 .setPhysics(
                         new FixtureNodeSpec()
                                 .setShape(new B2DShapeSpec.PolygonRectangle(1, 2))
-                        .setSensor(true)
-                );
+                                .setSensor(true)
+                ).setRender(RenderBuilder.b2d().setColor(Color.BLUE).build());
         spec.addComponent(new QuiverTouch());
         return spec;
     }
 
-    public SceneSpec dummy(){
+    public SceneSpec dummy() {
         SceneSpec scene = new SceneSpec();
-        int head = scene.addInstance("dummy/head",InstanceParams.New().setPosition(0,2.15f));
-        int body = scene.addInstance("dummy/body",InstanceParams.New().setPosition(0,1f));
+        int head = scene.addInstance("dummy/head", InstanceParams.New().setPosition(0, 2.15f));
+        int body = scene.addInstance("dummy/body", InstanceParams.New().setPosition(0, 1f));
 
         WeldJointDef wj = new WeldJointDef();
-        wj.localAnchorA.set(0,2f);
-        wj.localAnchorB.set(0,0);
-        scene.addJoint(body,head,wj);
+        wj.localAnchorA.set(0, 2f);
+        wj.localAnchorB.set(0, 0);
+        scene.addJoint(body, head, wj);
 
         return scene;
     }
 
-    public ThingSpec dummyHead(){
+    public ThingSpec dummyHead() {
         ThingSpec spec = new ThingSpec();
 
         spec.setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.DynamicBody));
@@ -120,11 +125,11 @@ public class D08_arrow_game extends Game {
                 .setPhysics(
                         new FixtureNodeSpec()
                                 .setShape(new B2DShapeSpec.Circle(0.5f))
-                );
+                ).setRender(RenderBuilder.b2d().setColor(Color.YELLOW).build());
         return spec;
     }
 
-    public ThingSpec dummyBody(){
+    public ThingSpec dummyBody() {
         ThingSpec spec = new ThingSpec();
 
         spec.setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.DynamicBody));
@@ -132,12 +137,12 @@ public class D08_arrow_game extends Game {
         spec.newNode()
                 .setPhysics(
                         new FixtureNodeSpec()
-                                .setShape(new B2DShapeSpec.PolygonRectangle(1f,3f))
-                );
+                                .setShape(new B2DShapeSpec.PolygonRectangle(1f, 3f))
+                ).setRender(RenderBuilder.b2d().setColor(Color.YELLOW).build());
         return spec;
     }
 
-    public ThingSpec floor(){
+    public ThingSpec floor() {
         ThingSpec spec = new ThingSpec();
 
         spec.setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.StaticBody));
@@ -145,8 +150,8 @@ public class D08_arrow_game extends Game {
         spec.newNode()
                 .setPhysics(
                         new FixtureNodeSpec()
-                                .setShape(new B2DShapeSpec.PolygonRectangle(WORLD_WIDTH,1))
-                );
+                                .setShape(new B2DShapeSpec.PolygonRectangle(WORLD_WIDTH, 1))
+                ).setRender(RenderBuilder.b2d().setColor(Color.GREEN).build());
         return spec;
     }
 
