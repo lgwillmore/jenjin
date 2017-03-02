@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.ShortArray;
 import com.binarymonks.jj.api.Lights;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.things.Thing;
+import com.esotericsoftware.spine.SkeletonRenderer;
 
 public class RenderWorld implements Lights {
     public static final String DEFAULT_RENDER_GRAPH = "DEFAULT_RENDERGRAPH";
@@ -20,6 +21,7 @@ public class RenderWorld implements Lights {
     int renderIDCounter = 0;
     public ShapeRenderer shapeRenderer = new ShapeRenderer();
     public PolygonSpriteBatch polyBatch = new PolygonSpriteBatch();
+    public SkeletonRenderer skeletonRenderer = new SkeletonRenderer();
     public RayHandler rayHandler;
     public RenderGraph defaultRenderGraph = new RenderGraph();
     public RenderGraph lightSourceRenderGraph = new RenderGraph();

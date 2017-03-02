@@ -4,8 +4,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import com.binarymonks.jj.assets.AssetReference;
-import com.binarymonks.jj.specs.physics.PhysicsNodeSpec;
 import com.binarymonks.jj.render.nodes.RenderNode;
+import com.binarymonks.jj.specs.physics.PhysicsNodeSpec;
 import com.binarymonks.jj.render.nodes.TextureProvider;
 import com.binarymonks.jj.render.nodes.TextureRenderNode;
 import com.binarymonks.jj.things.InstanceParams;
@@ -31,7 +31,7 @@ public class TextureRenderSpec extends SpatialRenderSpec implements Json.Seriali
     }
 
     @Override
-    public RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec, InstanceParams instanceParams) {
+    public RenderNode makeNode(PhysicsNodeSpec physicsNodeSpec, InstanceParams instanceParams) {
         TextureProvider provider = this.backingTexture.getProvider();
         return new TextureRenderNode(
                 this,

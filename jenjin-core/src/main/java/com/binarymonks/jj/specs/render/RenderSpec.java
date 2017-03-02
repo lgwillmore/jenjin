@@ -20,7 +20,7 @@ public abstract class RenderSpec implements Json.Serializable {
     public GraphSpec renderGraph = new GraphSpec();
     public SpecPropField<Color> color = new SpecPropField<>(Color.WHITE);
 
-    public abstract RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec, InstanceParams instanceParams);
+    public abstract RenderNode makeNode(PhysicsNodeSpec physicsNodeSpec, InstanceParams instanceParams);
 
     public Array<AssetReference> getAssets() {
         return Empty.Array();
@@ -81,7 +81,7 @@ public abstract class RenderSpec implements Json.Serializable {
 
 
         @Override
-        public RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec, InstanceParams instanceParams) {
+        public RenderNode makeNode(PhysicsNodeSpec physicsNodeSpec, InstanceParams instanceParams) {
             return RenderNode.NULL;
         }
 

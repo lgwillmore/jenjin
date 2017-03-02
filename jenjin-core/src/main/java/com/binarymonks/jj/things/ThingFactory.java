@@ -164,11 +164,7 @@ public class ThingFactory<SPEC extends ThingSpec> {
             node.render = render;
             nodes.add(node);
 
-            if (node.name == null) {
-                node.name = "ANON_NODE_" + thing.nodes.size;
-            }
-            thing.nodes.put(node.name, node);
-            node.parent = thing;
+            ThingTools.addNodeToThing(thing,node);
         }
         return nodes;
     }

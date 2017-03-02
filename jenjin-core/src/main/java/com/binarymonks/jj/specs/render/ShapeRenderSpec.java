@@ -2,10 +2,10 @@ package com.binarymonks.jj.specs.render;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.binarymonks.jj.render.nodes.RenderNode;
 import com.binarymonks.jj.specs.physics.PhysicsNodeSpec;
 import com.binarymonks.jj.pools.N;
 import com.binarymonks.jj.render.nodes.PolygonRenderNode;
-import com.binarymonks.jj.render.nodes.RenderNode;
 import com.binarymonks.jj.things.InstanceParams;
 
 public abstract class ShapeRenderSpec extends SpatialRenderSpec {
@@ -26,7 +26,7 @@ public abstract class ShapeRenderSpec extends SpatialRenderSpec {
 
 
         @Override
-        public RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec, InstanceParams instanceParams) {
+        public RenderNode makeNode(PhysicsNodeSpec physicsNodeSpec, InstanceParams instanceParams) {
             if (PolygonRenderNode.haveBuilt(this)) {
                 return PolygonRenderNode.rebuild(this, instanceParams);
             } else {

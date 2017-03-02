@@ -18,7 +18,7 @@ import com.binarymonks.jj.things.InstanceParams;
 public class B2DRenderSpec extends RenderSpec {
 
     @Override
-    public RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec, InstanceParams instanceParams) {
+    public RenderNode makeNode(PhysicsNodeSpec physicsNodeSpec, InstanceParams instanceParams) {
         if (PolygonRenderNode.haveBuilt(this)) {
             return PolygonRenderNode.rebuild(this, instanceParams);
         }

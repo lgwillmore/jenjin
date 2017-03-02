@@ -8,9 +8,9 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.assets.AssetReference;
+import com.binarymonks.jj.render.nodes.RenderNode;
 import com.binarymonks.jj.specs.physics.PhysicsNodeSpec;
 import com.binarymonks.jj.render.nodes.AnimationProvider;
-import com.binarymonks.jj.render.nodes.RenderNode;
 import com.binarymonks.jj.render.nodes.TextureRenderNode;
 import com.binarymonks.jj.things.InstanceParams;
 
@@ -26,7 +26,7 @@ public class AnimatedRenderSpec extends SpatialRenderSpec {
 
 
     @Override
-    public RenderNode<?> makeNode(PhysicsNodeSpec physicsNodeSpec, InstanceParams instanceParams) {
+    public RenderNode makeNode(PhysicsNodeSpec physicsNodeSpec, InstanceParams instanceParams) {
         ObjectMap<String, Animation> animations = new ObjectMap<>();
         Disposable realAsset = getAsset();
         TextureRegion[][] textureRegionGrid = buildTextureRegionGrid(realAsset);

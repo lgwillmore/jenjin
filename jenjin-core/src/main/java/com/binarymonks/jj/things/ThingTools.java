@@ -112,6 +112,14 @@ public class ThingTools {
         }
     }
 
+    public static void addNodeToThing(Thing thing, ThingNode node) {
+        if (node.name == null) {
+            node.name = "ANON_NODE_" + thing.nodes.size;
+        }
+        thing.nodes.put(node.name, node);
+        node.parent = thing;
+    }
+
     public static class DestroyThingBody extends OneTimeTask implements Poolable {
 
         Body body;
