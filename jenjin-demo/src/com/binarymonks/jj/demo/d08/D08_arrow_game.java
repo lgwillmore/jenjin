@@ -16,6 +16,7 @@ import com.binarymonks.jj.specs.physics.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.specs.render.B2DRenderSpec;
 import com.binarymonks.jj.specs.render.RenderBuilder;
 import com.binarymonks.jj.specs.spine.SpineSpec;
+import com.binarymonks.jj.spine.SpineSkeletonSpec;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.SceneParams;
 
@@ -40,12 +41,14 @@ public class D08_arrow_game extends Game {
         JJ.specs.set("dummy/head", dummyHead());
         JJ.specs.set("dummy/body", dummyBody());
         JJ.specs.set("dummy", dummy());
+        JJ.specs.set("spine_dummy", spineDummy());
 
         SceneSpec scene = new SceneSpec();
         scene.addInstance("bow", InstanceParams.New().setPosition(WORLD_WIDTH * 0.15f, WORLD_HEIGHT * 0.6f));
         scene.addInstance("quiver", InstanceParams.New().setPosition(WORLD_WIDTH * 0.1f, WORLD_HEIGHT * 0.75f));
         scene.addInstance("floor", InstanceParams.New().setPosition(WORLD_WIDTH * 0.5f, WORLD_HEIGHT * 0.5f));
-        scene.addInstance("dummy", InstanceParams.New().setPosition(WORLD_WIDTH * 0.8f, WORLD_HEIGHT * 0.5f));
+        scene.addInstance("spine_dummy", InstanceParams.New().setPosition(WORLD_WIDTH * 0.8f, WORLD_HEIGHT * 0.5f+2));
+        scene.addInstance("dummy", InstanceParams.New().setPosition(WORLD_WIDTH * 0.6f, WORLD_HEIGHT * 0.5f));
 
         JJ.things.loadNow(scene);
     }
@@ -160,9 +163,17 @@ public class D08_arrow_game extends Game {
         SpineSpec spec = new SpineSpec();
         spec.setAtlasPath("spine/spineboy/spineboy-pma.atlas");
         spec.setData("spine/spineboy/spineboy.json", SpineSpec.DataType.JSON);
-        spec.setOrigin(0,247f);
-        spec.setScale(1/247f);
+        spec.setOrigin(0, 247f);
+        spec.setScale(1 / 150f);
         spec.setStartingAnimation("walk");
+        spec.setSkeletonSpec(new SpineSkeletonSpec()
+                .setBoneOverride(
+                        "head",
+                        new FixtureNodeSpec()
+                                .setShape(new B2DShapeSpec.Circle(0.4f))
+                                .setOffset(0.4f, 0)
+                )
+        );
         return spec;
     }
 

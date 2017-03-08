@@ -17,7 +17,7 @@ public class DesktopLauncher {
         jjconfig.gameViewConfig.worldBoxWidth=100;
         jjconfig.gameViewConfig.cameraPosX=50;
         jjconfig.gameViewConfig.cameraPosY=50;
-        new LwjglApplication(new D09_spine(jjconfig), lwjglConfig);
+        new LwjglApplication(new D08_arrow_game(jjconfig), lwjglConfig);
 //        new LwjglApplication(new D03_pooling_load_test(jjconfig), lwjglConfig);
     }
 }

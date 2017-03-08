@@ -20,7 +20,7 @@ public class SpineSpec extends ThingSpec {
     public String startingAnimation;
 
     public SpineSpec() {
-        setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.KinematicBody));
+        setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.StaticBody));
     }
 
     public SpineSpec(String atlasPath, String dataPath, DataType dataType) {

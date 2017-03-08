@@ -30,6 +30,7 @@ public class SpineComponent extends Component {
 
     public void addBone(String name, SpineBoneComponent spineBoneComponent){
         spineBoneComponents.put(name,spineBoneComponent);
+        spineBoneComponent.spineParent=this;
     }
 
     public void triggerRagDoll() {

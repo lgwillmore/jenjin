@@ -1,12 +1,14 @@
 package com.binarymonks.jj.spine;
 
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.backend.Global;
 import com.binarymonks.jj.physics.CollisionGroups;
 import com.binarymonks.jj.specs.ThingSpec;
+import com.binarymonks.jj.specs.physics.PhysicsRootSpec;
 import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
 import com.binarymonks.jj.specs.physics.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.specs.spine.SpineSpec;
@@ -76,8 +78,9 @@ public class SpineFactory extends ThingFactory<SpineSpec> {
         } else {
             float boneLength = bone.getData().getLength();
             partSpec = new ThingSpec();
+            partSpec.setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.StaticBody));
             partSpec.setPath(thingSlotPath);
-            FixtureNodeSpec fixtureNodeSpec = null;
+            FixtureNodeSpec fixtureNodeSpec;
             if (thingspec.spineSkeletonSpec.boneOverrides.containsKey(boneName)) {
                 fixtureNodeSpec = thingspec.spineSkeletonSpec.boneOverrides.get(boneName);
             } else if (boneLength > 0) {
@@ -85,24 +88,22 @@ public class SpineFactory extends ThingFactory<SpineSpec> {
                         .setShape(new B2DShapeSpec.PolygonRectangle(boneLength, thingspec.spineSkeletonSpec.boneWidth))
                         .setOffset(boneLength / 2, 0);
                 fixtureNodeSpec.collisionData = thingspec.spineSkeletonSpec.collisionData;
-            }
-            else{
+            } else {
                 fixtureNodeSpec = new FixtureNodeSpec()
                         .setShape(new B2DShapeSpec.Circle(thingspec.spineSkeletonSpec.boneWidth));
                 fixtureNodeSpec.collisionData = thingspec.spineSkeletonSpec.collisionData;
             }
-            if (fixtureNodeSpec != null) {
-                partSpec.newNode().setPhysics(
-                        fixtureNodeSpec
-                );
-            }
+            fixtureNodeSpec.addInitialBeginCollision(new TriggerRagDollCollision());
+            partSpec.newNode().setPhysics(
+                    fixtureNodeSpec
+            );
             partSpec.addComponent(new SpineBoneComponent());
 
             box2dThings.put(thingSlotPath, partSpec);
         }
 
         SpineBoneComponent part = Global.factories.things.create(partSpec, InstanceParams.New()).getComponent(SpineBoneComponent.class);
-        spineComponent.addBone(boneName,part);
+        spineComponent.addBone(boneName, part);
         part.setBone((RagDollBone) bone);
         return part;
     }
