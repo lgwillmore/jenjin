@@ -2,6 +2,7 @@ package com.binarymonks.jj;
 
 public class JJConfig {
     public boolean b2dDebug = false;
+    public boolean renderSpine = true;
     public GameViewConfig gameViewConfig = new GameViewConfig();
 
     public static class GameViewConfig{

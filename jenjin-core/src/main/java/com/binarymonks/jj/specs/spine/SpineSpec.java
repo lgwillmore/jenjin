@@ -1,8 +1,13 @@
 package com.binarymonks.jj.specs.spine;
 
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.binarymonks.jj.specs.ThingSpec;
+import com.binarymonks.jj.specs.physics.PhysicsRootSpec;
+import com.binarymonks.jj.spine.SpineSkeletonSpec;
 
 public class SpineSpec extends ThingSpec {
+
+    public SpineSkeletonSpec spineSkeletonSpec;
 
     public enum DataType {JSON, SKEL}
 
@@ -15,10 +20,11 @@ public class SpineSpec extends ThingSpec {
     public String startingAnimation;
 
     public SpineSpec() {
-
+        setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.KinematicBody));
     }
 
     public SpineSpec(String atlasPath, String dataPath, DataType dataType) {
+        this();
         this.atlasPath = atlasPath;
         this.dataPath = dataPath;
         this.dataType = dataType;
@@ -64,6 +70,11 @@ public class SpineSpec extends ThingSpec {
 
     public SpineSpec setStartingAnimation(String startingAnimation) {
         this.startingAnimation = startingAnimation;
+        return this;
+    }
+
+    public SpineSpec setSkeletonSpec(SpineSkeletonSpec skeletonSpec) {
+        this.spineSkeletonSpec = skeletonSpec;
         return this;
     }
 }

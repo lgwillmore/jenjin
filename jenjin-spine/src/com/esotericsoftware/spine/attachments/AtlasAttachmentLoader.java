@@ -41,7 +41,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
  * Spine Runtimes Guide. */
 @SuppressWarnings("javadoc")
 public class AtlasAttachmentLoader implements AttachmentLoader {
-	private TextureAtlas atlas;
+	protected TextureAtlas atlas;
 
 	public AtlasAttachmentLoader (TextureAtlas atlas) {
 		if (atlas == null) throw new IllegalArgumentException("atlas cannot be null.");

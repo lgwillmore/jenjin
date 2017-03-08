@@ -42,9 +42,10 @@ public class SpineRenderNode extends RenderNode<SpineRenderSpec> {
         skeleton.setPosition(position.x, position.y);
         skeleton.updateWorldTransform();
 
-
-        Global.renderWorld.switchToBatch();
-        Global.renderWorld.skeletonRenderer.draw(Global.renderWorld.polyBatch, skeleton);
+        if (Global.config.renderSpine) {
+            Global.renderWorld.switchToBatch();
+            Global.renderWorld.skeletonRenderer.draw(Global.renderWorld.polyBatch, skeleton);
+        }
 
     }
 

@@ -15,6 +15,7 @@ import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
 import com.binarymonks.jj.specs.physics.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.specs.render.B2DRenderSpec;
 import com.binarymonks.jj.specs.render.RenderBuilder;
+import com.binarymonks.jj.specs.spine.SpineSpec;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.SceneParams;
 
@@ -152,6 +153,16 @@ public class D08_arrow_game extends Game {
                         new FixtureNodeSpec()
                                 .setShape(new B2DShapeSpec.PolygonRectangle(WORLD_WIDTH, 1))
                 ).setRender(RenderBuilder.b2d().setColor(Color.GREEN).build());
+        return spec;
+    }
+
+    public SpineSpec spineDummy(){
+        SpineSpec spec = new SpineSpec();
+        spec.setAtlasPath("spine/spineboy/spineboy-pma.atlas");
+        spec.setData("spine/spineboy/spineboy.json", SpineSpec.DataType.JSON);
+        spec.setOrigin(0,247f);
+        spec.setScale(1/247f);
+        spec.setStartingAnimation("walk");
         return spec;
     }
 

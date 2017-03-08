@@ -24,7 +24,7 @@ public class GameRenderingLayer extends Layer {
         // Constructs a new OrthographicCamera, using the given viewport width and height
         // Height is multiplied by aspect ratio.
         camera = new OrthographicCamera();
-        setView(worldBoxWidth,posX,posY);
+        setView(worldBoxWidth, posX, posY);
         dragableManager = new DragableManager(camera);
         inputMultiplexer.addProcessor(dragableManager);
     }
@@ -44,12 +44,12 @@ public class GameRenderingLayer extends Layer {
     }
 
     private void updateScreenToWorldScale() {
-        float worldDistance= 1000;
-        Vector3 worldLeft = N.ew(Vector3.class).set(0,0,0);
-        Vector3 worldRight = N.ew(Vector3.class).set(worldDistance,0,0);
+        float worldDistance = 1000;
+        Vector3 worldLeft = N.ew(Vector3.class).set(0, 0, 0);
+        Vector3 worldRight = N.ew(Vector3.class).set(worldDistance, 0, 0);
         Vector3 screenLeft = camera.project(worldLeft);
         Vector3 screenRight = camera.project(worldRight);
-        Global.renderWorld.worldToScreenScale=(screenRight.x-screenLeft.x)/worldDistance;
+        Global.renderWorld.worldToScreenScale = (screenRight.x - screenLeft.x) / worldDistance;
     }
 
     private void renderGraph(RenderGraph renderGraph) {
@@ -95,8 +95,8 @@ public class GameRenderingLayer extends Layer {
     public void setView(float worldWidth, float cameraX, float cameraY) {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
-        camera.viewportWidth=worldWidth;
-        camera.viewportHeight= worldWidth * (h / w);
+        camera.viewportWidth = worldWidth;
+        camera.viewportHeight = worldWidth * (h / w);
         camera.position.set(cameraX, cameraY, 0);
         camera.update();
     }

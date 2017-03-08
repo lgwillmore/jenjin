@@ -12,11 +12,12 @@ public class DesktopLauncher {
         lwjglConfig.height = 1000;
         lwjglConfig.width = 1000;
         JJConfig jjconfig = new JJConfig();
-        jjconfig.b2dDebug = false;
+        jjconfig.b2dDebug = true;
+        jjconfig.renderSpine = true;
         jjconfig.gameViewConfig.worldBoxWidth=100;
         jjconfig.gameViewConfig.cameraPosX=50;
         jjconfig.gameViewConfig.cameraPosY=50;
-        new LwjglApplication(new D08_arrow_game(jjconfig), lwjglConfig);
+        new LwjglApplication(new D09_spine(jjconfig), lwjglConfig);
 //        new LwjglApplication(new D03_pooling_load_test(jjconfig), lwjglConfig);
     }
 }
