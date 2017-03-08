@@ -48,7 +48,7 @@ public class D08_arrow_game extends Game {
         scene.addInstance("quiver", InstanceParams.New().setPosition(WORLD_WIDTH * 0.1f, WORLD_HEIGHT * 0.75f));
         scene.addInstance("floor", InstanceParams.New().setPosition(WORLD_WIDTH * 0.5f, WORLD_HEIGHT * 0.5f));
         scene.addInstance("spine_dummy", InstanceParams.New().setPosition(WORLD_WIDTH * 0.8f, WORLD_HEIGHT * 0.5f+2));
-        scene.addInstance("dummy", InstanceParams.New().setPosition(WORLD_WIDTH * 0.6f, WORLD_HEIGHT * 0.5f));
+//        scene.addInstance("dummy", InstanceParams.New().setPosition(WORLD_WIDTH * 0.6f, WORLD_HEIGHT * 0.5f));
 
         JJ.things.loadNow(scene);
     }
@@ -154,7 +154,7 @@ public class D08_arrow_game extends Game {
         spec.newNode()
                 .setPhysics(
                         new FixtureNodeSpec()
-                                .setShape(new B2DShapeSpec.PolygonRectangle(WORLD_WIDTH, 1))
+                                .setShape(new B2DShapeSpec.PolygonRectangle(WORLD_WIDTH*0.9f, 1))
                 ).setRender(RenderBuilder.b2d().setColor(Color.GREEN).build());
         return spec;
     }
@@ -170,8 +170,8 @@ public class D08_arrow_game extends Game {
                 .setBoneOverride(
                         "head",
                         new FixtureNodeSpec()
-                                .setShape(new B2DShapeSpec.Circle(0.4f))
-                                .setOffset(0.4f, 0)
+                                .setShape(new B2DShapeSpec.Circle(0.6f))
+                                .setOffset(0.6f, 0)
                 )
         );
         return spec;

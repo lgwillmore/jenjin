@@ -6,7 +6,6 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.backend.Global;
-import com.binarymonks.jj.physics.CollisionGroups;
 import com.binarymonks.jj.specs.ThingSpec;
 import com.binarymonks.jj.specs.physics.PhysicsRootSpec;
 import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
@@ -46,28 +45,29 @@ public class SpineFactory extends ThingFactory<SpineSpec> {
 
 
     private void buildBoneRecurse(SpineComponent spineComponent, Bone rootBone, SpineSpec thingspec, Skeleton skeleton) {
-        SpineBoneComponent part = buildBone(spineComponent, rootBone, thingspec, skeleton);
+        SpineBoneComponent part = buildBone(spineComponent, rootBone, thingspec, skeleton, thingspec.spineSkeletonSpec.coreMass);
         for (Bone childBone : rootBone.getChildren()) {
-            buildRecurseHelper(spineComponent, part, childBone, thingspec, skeleton);
+            buildRecurseHelper(spineComponent, part, childBone, thingspec, skeleton, thingspec.spineSkeletonSpec.coreMass);
         }
     }
 
-    private void buildRecurseHelper(SpineComponent spineComponent, SpineBoneComponent parentPart, Bone childBone, SpineSpec thingspec, Skeleton skeleton) {
-        SpineBoneComponent part = buildBone(spineComponent, childBone, thingspec, skeleton);
+    private void buildRecurseHelper(SpineComponent spineComponent, SpineBoneComponent parentPart, Bone childBone, SpineSpec thingspec, Skeleton skeleton, float currentMass) {
+        float mass = currentMass * thingspec.spineSkeletonSpec.massFallOff;
+        SpineBoneComponent part = buildBone(spineComponent, childBone, thingspec, skeleton, mass);
         RevoluteJointDef revoluteJointDef = new RevoluteJointDef();
         revoluteJointDef.bodyA = parentPart.getParent().physicsroot.getB2DBody();
         revoluteJointDef.bodyB = part.getParent().physicsroot.getB2DBody();
         revoluteJointDef.localAnchorA.set(part.bone.getX(), part.bone.getY());
         revoluteJointDef.localAnchorB.set(0, 0);
-        revoluteJointDef.collideConnected = false;
+        revoluteJointDef.collideConnected = true;
         revoluteJointDef.enableLimit = false;
         Global.physics.world.createJoint(revoluteJointDef);
         for (Bone grandChildBone : childBone.getChildren()) {
-            buildRecurseHelper(spineComponent, part, grandChildBone, thingspec, skeleton);
+            buildRecurseHelper(spineComponent, part, grandChildBone, thingspec, skeleton, mass);
         }
     }
 
-    private SpineBoneComponent buildBone(SpineComponent spineComponent, Bone bone, SpineSpec thingspec, Skeleton skeleton) {
+    private SpineBoneComponent buildBone(SpineComponent spineComponent, Bone bone, SpineSpec thingspec, Skeleton skeleton, float mass) {
         String boneName = bone.getData().getName();
 
         String thingSlotPath = thingspec.getPath() + "/" + boneName;
@@ -86,11 +86,13 @@ public class SpineFactory extends ThingFactory<SpineSpec> {
             } else if (boneLength > 0) {
                 fixtureNodeSpec = new FixtureNodeSpec()
                         .setShape(new B2DShapeSpec.PolygonRectangle(boneLength, thingspec.spineSkeletonSpec.boneWidth))
-                        .setOffset(boneLength / 2, 0);
+                        .setOffset(boneLength / 2, 0)
+                        .setDensity(mass);
                 fixtureNodeSpec.collisionData = thingspec.spineSkeletonSpec.collisionData;
             } else {
                 fixtureNodeSpec = new FixtureNodeSpec()
-                        .setShape(new B2DShapeSpec.Circle(thingspec.spineSkeletonSpec.boneWidth));
+                        .setShape(new B2DShapeSpec.Circle(thingspec.spineSkeletonSpec.boneWidth))
+                        .setDensity(mass);
                 fixtureNodeSpec.collisionData = thingspec.spineSkeletonSpec.collisionData;
             }
             fixtureNodeSpec.addInitialBeginCollision(new TriggerRagDollCollision());
