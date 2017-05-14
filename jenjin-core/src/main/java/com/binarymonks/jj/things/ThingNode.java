@@ -24,7 +24,14 @@ public class ThingNode {
         } else {
             return properties.containsKey(propertyKey);
         }
+    }
 
+    public <T> T getProperty(String propertyKey){
+        if (!properties.containsKey(propertyKey) && parent != null) {
+            return parent.getProperty(propertyKey);
+        } else {
+            return (T) properties.get(propertyKey);
+        }
     }
 
     public CollisionResolver getCollisionResolver() {

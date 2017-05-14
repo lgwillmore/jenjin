@@ -2,7 +2,6 @@ package com.binarymonks.jj.demo.d08;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Transform;
 import com.binarymonks.jj.JJ;
 import com.binarymonks.jj.components.Component;
 import com.binarymonks.jj.pools.N;
@@ -13,13 +12,14 @@ public class Arrow extends Component {
     public Vector2 flightLocation = N.ew(Vector2.class).set(-1, 0);
     public float flightDragFactor = 0.05f;
     private int flightDragScheduleID;
+    private boolean embedded = false;
 
 
     @Override
     public Component clone() {
         Arrow clone = new Arrow();
         clone.flightLocation.set(flightLocation);
-        clone.flightDragFactor=flightDragFactor;
+        clone.flightDragFactor = flightDragFactor;
         return clone;
     }
 
@@ -32,6 +32,8 @@ public class Arrow extends Component {
     public void tearDown() {
         notchedBow = null;
         JJ.time.cancelScheduled(flightDragScheduleID);
+        embedded = false;
+        parent.physicsroot.getB2DBody().setGravityScale(1);
     }
 
     @Override
@@ -40,15 +42,17 @@ public class Arrow extends Component {
     }
 
     private void applyFlightDrag() {
-        Body body = parent.physicsroot.getB2DBody();
-        Vector2 pointingDirection = body.getWorldVector(N.ew(Vector2.class).set(1,0));
-        Vector2 flightDirection = body.getLinearVelocity();
-        float flightSpeed = flightDirection.len();
-        float dot = flightDirection.nor().dot(pointingDirection);
-        float dragForce = (1 - Math.abs(dot)) * flightSpeed *flightSpeed*flightDragFactor * body.getMass();
-        Vector2 flightPositionWorld = body.getWorldPoint(N.ew(Vector2.class).set(flightLocation));
-        body.applyForce(flightDirection.scl(-1*dragForce),flightPositionWorld,true);
-        Re.cycle(pointingDirection,flightPositionWorld);
+        if (!embedded) {
+            Body body = parent.physicsroot.getB2DBody();
+            Vector2 pointingDirection = body.getWorldVector(N.ew(Vector2.class).set(1, 0));
+            Vector2 flightDirection = body.getLinearVelocity();
+            float flightSpeed = flightDirection.len();
+            float dot = flightDirection.nor().dot(pointingDirection);
+            float dragForce = (1 - Math.abs(dot)) * flightSpeed * flightSpeed * flightDragFactor * body.getMass();
+            Vector2 flightPositionWorld = body.getWorldPoint(N.ew(Vector2.class).set(flightLocation));
+            body.applyForce(flightDirection.scl(-1 * dragForce), flightPositionWorld, true);
+            Re.cycle(pointingDirection, flightPositionWorld);
+        }
     }
 
     public void updatePosition(Vector2 position) {
@@ -75,5 +79,14 @@ public class Arrow extends Component {
 
     public void notchIn(Bow bow) {
         notchedBow = bow;
+    }
+
+    public boolean isEmbedded() {
+        return embedded;
+    }
+
+    public void embed() {
+        this.embedded = true;
+        parent.physicsroot.getB2DBody().setGravityScale(0);
     }
 }

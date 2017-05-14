@@ -16,14 +16,14 @@ import com.binarymonks.jj.specs.physics.b2d.FixtureNodeSpec;
 import com.binarymonks.jj.specs.render.B2DRenderSpec;
 import com.binarymonks.jj.specs.render.RenderBuilder;
 import com.binarymonks.jj.specs.spine.SpineSpec;
-import com.binarymonks.jj.spine.SpineSkeletonSpec;
+import com.binarymonks.jj.spine.*;
 import com.binarymonks.jj.things.InstanceParams;
 import com.binarymonks.jj.things.SceneParams;
 
 public class D08_arrow_game extends Game {
 
-    public static float WORLD_WIDTH = 40;
-    public static float WORLD_HEIGHT = 40;
+    public static float WORLD_WIDTH = 25;
+    public static float WORLD_HEIGHT = 25;
 
     public D08_arrow_game(JJConfig jjconfig) {
         super(jjconfig);
@@ -47,7 +47,7 @@ public class D08_arrow_game extends Game {
         scene.addInstance("bow", InstanceParams.New().setPosition(WORLD_WIDTH * 0.15f, WORLD_HEIGHT * 0.6f));
         scene.addInstance("quiver", InstanceParams.New().setPosition(WORLD_WIDTH * 0.1f, WORLD_HEIGHT * 0.75f));
         scene.addInstance("floor", InstanceParams.New().setPosition(WORLD_WIDTH * 0.5f, WORLD_HEIGHT * 0.5f));
-        scene.addInstance("spine_dummy", InstanceParams.New().setPosition(WORLD_WIDTH * 0.8f, WORLD_HEIGHT * 0.5f+2));
+        scene.addInstance("spine_dummy", InstanceParams.New().setPosition(WORLD_WIDTH * 0.8f, WORLD_HEIGHT * 0.5f + 2));
 //        scene.addInstance("dummy", InstanceParams.New().setPosition(WORLD_WIDTH * 0.6f, WORLD_HEIGHT * 0.5f));
 
         JJ.things.loadNow(scene);
@@ -65,7 +65,7 @@ public class D08_arrow_game extends Game {
                                 .setShape(new B2DShapeSpec.Circle(1.5f))
                                 .setSensor(true)
                                 .addInitialBeginCollision(new BowNotchCollision())
-                ).setRender(RenderBuilder.b2d().setColor(new Color(0.2f,0.2f,0.2f,0.5f)).build());
+                ).setRender(RenderBuilder.b2d().setColor(new Color(0.2f, 0.2f, 0.2f, 0.5f)).build());
         spec.addComponent(new Bow());
         return spec;
     }
@@ -75,19 +75,25 @@ public class D08_arrow_game extends Game {
 
         spec.setPhysics(new PhysicsRootSpec.B2D().setBullet(true));
 
+        //Shaft
         spec.newNode()
                 .setPhysics(
                         new FixtureNodeSpec()
                                 .setShape(new B2DShapeSpec.PolygonRectangle(2, 0.1f))
                 )
-                .setRender(RenderBuilder.b2d().setColor(Color.BROWN).setLayer(1).build());
+                .setRender(RenderBuilder.b2d().setColor(Color.BROWN).setLayer(1).build())
+        ;
+
+        //Head
         spec.newNode()
                 .setPhysics(
                         new FixtureNodeSpec()
                                 .setShape(new B2DShapeSpec.Circle(0.15f))
                                 .setOffset(0.85f, 0)
                 )
-                .setRender(RenderBuilder.b2d().setColor(Color.GRAY).setLayer(1).build());
+                .setRender(RenderBuilder.b2d().setColor(Color.GRAY).setLayer(1).build())
+                .setProperty(Props.sharpness, 0.05f);
+        ;
         spec.addComponent(new Arrow());
         return spec;
     }
@@ -154,12 +160,12 @@ public class D08_arrow_game extends Game {
         spec.newNode()
                 .setPhysics(
                         new FixtureNodeSpec()
-                                .setShape(new B2DShapeSpec.PolygonRectangle(WORLD_WIDTH*0.9f, 1))
+                                .setShape(new B2DShapeSpec.PolygonRectangle(WORLD_WIDTH * 0.8f, 1))
                 ).setRender(RenderBuilder.b2d().setColor(Color.GREEN).build());
         return spec;
     }
 
-    public SpineSpec spineDummy(){
+    public SpineSpec spineDummy() {
         SpineSpec spec = new SpineSpec();
         spec.setAtlasPath("spine/spineboy/spineboy-pma.atlas");
         spec.setData("spine/spineboy/spineboy.json", SpineSpec.DataType.JSON);
@@ -173,6 +179,17 @@ public class D08_arrow_game extends Game {
                                 .setShape(new B2DShapeSpec.Circle(0.6f))
                                 .setOffset(0.6f, 0)
                 )
+                .everyBone.setAllAppend(
+                        new BoneAppendSpec()
+                                .addNode(new BoneAppendNodeSpec().setPhysics(
+                                        new BonePhysicsNodeSpec.BoneShadowNode()
+                                                .setSensor(true)
+                                                .addInitialBeginCollision(new SoftObjectCollision())
+                                ))
+                                .addComponent(new PenetrationTracker())
+                )
+                .everyBone.setSensor(true)
+
         );
         return spec;
     }

@@ -39,8 +39,8 @@ public class Thing {
         return properties.containsKey(propertyKey);
     }
 
-    public Object getProperty(String key) {
-        return properties.get(key);
+    public <T> T getProperty(String key) {
+        return (T) properties.get(key);
     }
 
     public void markForDestruction() {
@@ -68,5 +68,21 @@ public class Thing {
 
     public void setPool(boolean pool) {
         this.pool = pool;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Thing)) return false;
+
+        Thing thing = (Thing) o;
+
+        return id == thing.id;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
     }
 }

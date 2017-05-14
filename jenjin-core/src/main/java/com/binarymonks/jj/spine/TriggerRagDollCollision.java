@@ -17,7 +17,7 @@ public class TriggerRagDollCollision extends CollisionFunction {
     @Override
     public void collision(Thing me, Fixture myFixture, Thing other, Fixture otherFixture, Contact contact) {
         SpineBoneComponent boneComponent = me.getComponent(SpineBoneComponent.class);
-        JJ.tasks.addPostPhysicsTask(N.ew(DelayedTriggerRagDoll.class).set(boneComponent,other));
+        JJ.tasks.addPostPhysicsTask(N.ew(DelayedTriggerRagDoll.class).set(boneComponent, other));
     }
 
     @Override
@@ -25,13 +25,13 @@ public class TriggerRagDollCollision extends CollisionFunction {
         return new TriggerRagDollCollision();
     }
 
-    public static class DelayedTriggerRagDoll extends OneTimeTask implements Poolable{
+    public static class DelayedTriggerRagDoll extends OneTimeTask implements Poolable {
         SpineBoneComponent spineBone;
         Thing other;
 
-        public DelayedTriggerRagDoll set(SpineBoneComponent spineBoneComponent, Thing other){
+        public DelayedTriggerRagDoll set(SpineBoneComponent spineBoneComponent, Thing other) {
             this.spineBone = spineBoneComponent;
-            this.other=other;
+            this.other = other;
             return this;
         }
 
@@ -41,16 +41,20 @@ public class TriggerRagDollCollision extends CollisionFunction {
             Body otherBody = other.physicsroot.getB2DBody();
             Vector2 otherVelocity = otherBody.getLinearVelocity();
             float mass = otherBody.getMass();
-            float momentum = otherVelocity.len()*mass;
+            float momentum = otherVelocity.len() * mass;
             otherVelocity.nor().scl(momentum);
-            spineBone.getParent().physicsroot.getB2DBody().applyForceToCenter(otherVelocity,true);
+            Body myBody = spineBone.getParent().physicsroot.getB2DBody();
+            for (Fixture fixture : myBody.getFixtureList()) {
+                fixture.setSensor(false);
+            }
+            myBody.applyForceToCenter(otherVelocity, true);
             Re.cycle(this);
         }
 
         @Override
         public void reset() {
-            spineBone=null;
-            other=null;
+            spineBone = null;
+            other = null;
         }
     }
 }

@@ -1,48 +1,44 @@
-package com.binarymonks.jj.specs;
+package com.binarymonks.jj.spine;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.badlogic.gdx.utils.ObjectSet;
 import com.binarymonks.jj.components.Component;
-import com.binarymonks.jj.specs.physics.PhysicsNodeSpec;
 import com.binarymonks.jj.specs.render.RenderSpec;
-import com.binarymonks.jj.things.ThingNode;
 
-
-public class ThingNodeSpec {
+public class BoneAppendNodeSpec {
 
     public RenderSpec renderSpec = new RenderSpec.Null();
-    public PhysicsNodeSpec physicsNodeSpec = new PhysicsNodeSpec.Null();
+    public BonePhysicsNodeSpec physicsNodeSpec;
     public ObjectMap<String, Object> properties = new ObjectMap<>();
     public Array<Component> components = new Array<>();
     public String name;
 
-    public ThingNodeSpec setName(String name) {
+    public BoneAppendNodeSpec setName(String name) {
         this.name = name;
         return this;
     }
 
-    public ThingNodeSpec setRender(RenderSpec renderSpec) {
+    public BoneAppendNodeSpec setRender(RenderSpec renderSpec) {
         this.renderSpec = renderSpec;
         return this;
     }
 
-    public ThingNodeSpec setPhysics(PhysicsNodeSpec physicsNodeSpec) {
+    public BoneAppendNodeSpec setPhysics(BonePhysicsNodeSpec physicsNodeSpec) {
         this.physicsNodeSpec = physicsNodeSpec;
         return this;
     }
 
-    public ThingNodeSpec setProperty(String key, Object value){
+    public BoneAppendNodeSpec setProperty(String key, Object value){
         properties.put(key,value);
         return this;
     }
 
-    public ThingNodeSpec setProperty(String key){
+    public BoneAppendNodeSpec setProperty(String key){
         properties.put(key, null);
         return this;
     }
 
-    public ThingNodeSpec addComponent(Component component) {
+    public BoneAppendNodeSpec addComponent(Component component) {
         components.add(component);
         return this;
     }

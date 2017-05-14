@@ -73,4 +73,8 @@ public class RagDollBone extends Bone {
     public void triggerRagDoll() {
         ragDoll = true;
     }
+
+    public void reverseRagDoll() {
+        ragDoll = false;
+    }
 }

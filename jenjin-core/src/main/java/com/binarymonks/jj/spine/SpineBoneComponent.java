@@ -52,4 +52,13 @@ public class SpineBoneComponent extends Component {
         bone.spinePart=this;
         this.bone=bone;
     }
+
+    public void reverseRagDoll() {
+        if (ragDoll) {
+            ragDoll = false;
+            bone.reverseRagDoll();
+            parent.physicsroot.getB2DBody().setType(BodyDef.BodyType.StaticBody);
+            spineParent.reverseRagDoll();
+        }
+    }
 }

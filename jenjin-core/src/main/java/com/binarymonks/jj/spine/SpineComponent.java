@@ -20,7 +20,8 @@ public class SpineComponent extends Component {
 
     @Override
     public void tearDown() {
-
+        reverseRagDoll();
+        spineBoneComponents.clear();
     }
 
     @Override
@@ -31,6 +32,15 @@ public class SpineComponent extends Component {
     public void addBone(String name, SpineBoneComponent spineBoneComponent){
         spineBoneComponents.put(name,spineBoneComponent);
         spineBoneComponent.spineParent=this;
+    }
+
+    public void reverseRagDoll(){
+        if(ragDoll){
+            ragDoll=false;
+            for (ObjectMap.Entry<String, SpineBoneComponent> partEntry : spineBoneComponents) {
+                partEntry.value.reverseRagDoll();
+            }
+        }
     }
 
     public void triggerRagDoll() {

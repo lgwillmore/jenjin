@@ -165,6 +165,7 @@ public class ThingFactory<SPEC extends ThingSpec> {
             nodes.add(node);
 
             ThingTools.addNodeToThing(thing,node);
+            node.properties.putAll(nodeSpec.properties);
         }
         return nodes;
     }

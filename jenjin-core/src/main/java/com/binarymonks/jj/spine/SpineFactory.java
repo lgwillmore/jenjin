@@ -6,7 +6,9 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.binarymonks.jj.backend.Global;
+import com.binarymonks.jj.specs.ThingNodeSpec;
 import com.binarymonks.jj.specs.ThingSpec;
+import com.binarymonks.jj.specs.physics.PhysicsNodeSpec;
 import com.binarymonks.jj.specs.physics.PhysicsRootSpec;
 import com.binarymonks.jj.specs.physics.b2d.B2DShapeSpec;
 import com.binarymonks.jj.specs.physics.b2d.FixtureNodeSpec;
@@ -45,14 +47,14 @@ public class SpineFactory extends ThingFactory<SpineSpec> {
 
 
     private void buildBoneRecurse(SpineComponent spineComponent, Bone rootBone, SpineSpec thingspec, Skeleton skeleton) {
-        SpineBoneComponent part = buildBone(spineComponent, rootBone, thingspec, skeleton, thingspec.spineSkeletonSpec.coreMass);
+        SpineBoneComponent part = buildBone(spineComponent, rootBone, thingspec, skeleton, thingspec.spineSkeletonSpec.everyBone.coreMass);
         for (Bone childBone : rootBone.getChildren()) {
-            buildRecurseHelper(spineComponent, part, childBone, thingspec, skeleton, thingspec.spineSkeletonSpec.coreMass);
+            buildRecurseHelper(spineComponent, part, childBone, thingspec, skeleton, thingspec.spineSkeletonSpec.everyBone.coreMass);
         }
     }
 
     private void buildRecurseHelper(SpineComponent spineComponent, SpineBoneComponent parentPart, Bone childBone, SpineSpec thingspec, Skeleton skeleton, float currentMass) {
-        float mass = currentMass * thingspec.spineSkeletonSpec.massFallOff;
+        float mass = currentMass * thingspec.spineSkeletonSpec.everyBone.coreMass;
         SpineBoneComponent part = buildBone(spineComponent, childBone, thingspec, skeleton, mass);
         RevoluteJointDef revoluteJointDef = new RevoluteJointDef();
         revoluteJointDef.bodyA = parentPart.getParent().physicsroot.getB2DBody();
@@ -76,38 +78,99 @@ public class SpineFactory extends ThingFactory<SpineSpec> {
         if (box2dThings.containsKey(thingSlotPath)) {
             partSpec = box2dThings.get(thingSlotPath);
         } else {
-            float boneLength = bone.getData().getLength();
-            partSpec = new ThingSpec();
-            partSpec.setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.StaticBody));
-            partSpec.setPath(thingSlotPath);
-            FixtureNodeSpec fixtureNodeSpec;
-            if (thingspec.spineSkeletonSpec.boneOverrides.containsKey(boneName)) {
-                fixtureNodeSpec = thingspec.spineSkeletonSpec.boneOverrides.get(boneName);
-            } else if (boneLength > 0) {
-                fixtureNodeSpec = new FixtureNodeSpec()
-                        .setShape(new B2DShapeSpec.PolygonRectangle(boneLength, thingspec.spineSkeletonSpec.boneWidth))
-                        .setOffset(boneLength / 2, 0)
-                        .setDensity(mass);
-                fixtureNodeSpec.collisionData = thingspec.spineSkeletonSpec.collisionData;
-            } else {
-                fixtureNodeSpec = new FixtureNodeSpec()
-                        .setShape(new B2DShapeSpec.Circle(thingspec.spineSkeletonSpec.boneWidth))
-                        .setDensity(mass);
-                fixtureNodeSpec.collisionData = thingspec.spineSkeletonSpec.collisionData;
-            }
-            fixtureNodeSpec.addInitialBeginCollision(new TriggerRagDollCollision());
-            partSpec.newNode().setPhysics(
-                    fixtureNodeSpec
-            );
-            partSpec.addComponent(new SpineBoneComponent());
-
-            box2dThings.put(thingSlotPath, partSpec);
+            partSpec = buildNewBoneSpec(thingSlotPath, boneName, bone, thingspec.spineSkeletonSpec, mass);
         }
 
         SpineBoneComponent part = Global.factories.things.create(partSpec, InstanceParams.New()).getComponent(SpineBoneComponent.class);
         spineComponent.addBone(boneName, part);
         part.setBone((RagDollBone) bone);
         return part;
+    }
+
+    private ThingSpec buildNewBoneSpec(String thingSlotPath, String boneName, Bone bone, SpineSkeletonSpec spineSkeletonSpec, float mass) {
+        ThingSpec partSpec;
+        float boneLength = bone.getData().getLength();
+        partSpec = new ThingSpec();
+        partSpec.setPhysics(new PhysicsRootSpec.B2D().setBodyType(BodyDef.BodyType.DynamicBody));
+        partSpec.setPath(thingSlotPath);
+        if(spineSkeletonSpec.everyBone.append!=null){
+            append(boneName,spineSkeletonSpec,mass,partSpec,boneLength,spineSkeletonSpec.everyBone.append);
+        }
+        if (spineSkeletonSpec.boneAppendices.containsKey(boneName)) {
+            BoneAppendSpec appendixSpec = spineSkeletonSpec.boneAppendices.get(boneName);
+            append(boneName, spineSkeletonSpec, mass, partSpec, boneLength, appendixSpec);
+        }
+        FixtureNodeSpec fixtureNodeSpec = getFixtureNodeSpec(boneName, spineSkeletonSpec, mass, boneLength);
+        partSpec.newNode().setPhysics(
+                fixtureNodeSpec
+        );
+        partSpec.addComponent(new SpineBoneComponent());
+        box2dThings.put(thingSlotPath, partSpec);
+        return partSpec;
+    }
+
+    private void append(String boneName, SpineSkeletonSpec spineSkeletonSpec, float mass, ThingSpec partSpec, float boneLength, BoneAppendSpec appendixSpec) {
+        for (BoneAppendNodeSpec node : appendixSpec.nodes) {
+            ThingNodeSpec nodeSpec = new ThingNodeSpec();
+            nodeSpec.properties.putAll(node.properties);
+            nodeSpec.renderSpec = node.renderSpec;
+            nodeSpec.components.addAll(node.components);
+            nodeSpec.setName(node.name);
+            if (node.physicsNodeSpec instanceof BonePhysicsNodeSpec.B2DBoneFixture) {
+                BonePhysicsNodeSpec.B2DBoneFixture copySpec = (BonePhysicsNodeSpec.B2DBoneFixture) node.physicsNodeSpec;
+                FixtureNodeSpec fixtureSpec = getFixtureNodeSpec(boneName, spineSkeletonSpec, mass, boneLength);
+                fixtureSpec.initialBeginCollisions.addAll(copySpec.initialBeginCollisions);
+                fixtureSpec.finalBeginCollisions.addAll(copySpec.finalBeginCollisions);
+                fixtureSpec.endCollisions.addAll(copySpec.endCollisions);
+                fixtureSpec.isSensor = copySpec.isSensor;
+                fixtureSpec.density=0;
+                fixtureSpec.shape= copySpec.shape;
+                fixtureSpec.offsetX=copySpec.offsetX;
+                fixtureSpec.offsetY=copySpec.offsetY;
+                nodeSpec.physicsNodeSpec = (PhysicsNodeSpec) node.physicsNodeSpec;
+            }
+            if (node.physicsNodeSpec instanceof BonePhysicsNodeSpec.BoneShadowNode) {
+                BonePhysicsNodeSpec.BoneShadowNode copySpec = (BonePhysicsNodeSpec.BoneShadowNode) node.physicsNodeSpec;
+                FixtureNodeSpec fixtureSpec = getFixtureNodeSpec(boneName, spineSkeletonSpec, mass, boneLength);
+                fixtureSpec.initialBeginCollisions.addAll(copySpec.initialBeginCollisions);
+                fixtureSpec.finalBeginCollisions.addAll(copySpec.finalBeginCollisions);
+                fixtureSpec.endCollisions.addAll(copySpec.endCollisions);
+                fixtureSpec.isSensor = copySpec.isSensor;
+                fixtureSpec.density=0;
+                nodeSpec.physicsNodeSpec = fixtureSpec;
+            }
+            partSpec.nodes.add(nodeSpec);
+        }
+        partSpec.components.addAll(appendixSpec.components);
+        partSpec.lights.addAll(appendixSpec.lights);
+    }
+
+    private FixtureNodeSpec getFixtureNodeSpec(String boneName, SpineSkeletonSpec spineSkeletonSpec, float mass, float boneLength) {
+        FixtureNodeSpec fixtureNodeSpec;
+        if (spineSkeletonSpec.boneOverrides.containsKey(boneName)) {
+            fixtureNodeSpec = spineSkeletonSpec.boneOverrides.get(boneName);
+        } else {
+            if (boneLength > 0) {
+                fixtureNodeSpec = new FixtureNodeSpec()
+                        .setShape(new B2DShapeSpec.PolygonRectangle(boneLength, spineSkeletonSpec.everyBone.boneWidth))
+                        .setOffset(boneLength / 2, 0)
+                        .setDensity(mass)
+                        .setSensor(spineSkeletonSpec.everyBone.isSensor)
+                ;
+                fixtureNodeSpec.collisionData = spineSkeletonSpec.everyBone.collisionData;
+            } else {
+                fixtureNodeSpec = new FixtureNodeSpec()
+                        .setShape(new B2DShapeSpec.Circle(spineSkeletonSpec.everyBone.boneWidth))
+                        .setDensity(mass)
+                        .setSensor(spineSkeletonSpec.everyBone.isSensor)
+                ;
+                fixtureNodeSpec.collisionData = spineSkeletonSpec.everyBone.collisionData;
+            }
+            if (spineSkeletonSpec.everyBone.collisionFunction != null) {
+                fixtureNodeSpec.addInitialBeginCollision(spineSkeletonSpec.everyBone.collisionFunction.clone());
+            }
+        }
+        return fixtureNodeSpec;
     }
 
 
