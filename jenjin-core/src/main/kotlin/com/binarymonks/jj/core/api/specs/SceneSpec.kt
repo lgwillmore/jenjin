@@ -18,26 +18,25 @@ class SceneSpecRefProxy(val sceneSpec: SceneSpec) : SceneSpecRef {
 
 open class SceneSpec {
 
-    var thingSpec: ThingSpec =
-
+    var thingSpec :ThingSpecI = ThingSpecNull()
 
     /**
-     * Add a node [SceneSpec] instance
+     * Add a addNode [SceneSpec] instance
      *
      * @param scene The scene to instantiate
      * @param instanceParams The instance specific parameters
      */
-    fun node(scene: SceneSpec, instanceParams: InstanceParams = InstanceParams.new()) {
+    fun addNode(scene: SceneSpec, instanceParams: InstanceParams = InstanceParams.new()) {
 
     }
 
     /**
-     * Add a node [SceneSpec] instance
+     * Add a addNode [SceneSpec] instance
      *
-     * @param scenePath The path to the node[SceneSpec].
+     * @param scenePath The path to the addNode[SceneSpec].
      * @param instanceParams The instance specific parameters
      */
-    fun node(scenePath: String, instanceParams: InstanceParams = InstanceParams.new()) {
+    fun addNode(scenePath: String, instanceParams: InstanceParams = InstanceParams.new()) {
 
     }
 

@@ -1,6 +1,15 @@
 package com.binarymonks.jj.core.api.specs
 
 
-class ThingSpec : SceneSpec() {
+interface ThingSpecI{
+
+}
+
+class ThingSpecNull: ThingSpecI{
+
+}
+
+
+class ThingSpec : ThingSpecI {
 
 }

@@ -3,6 +3,7 @@ import com.binarymonks.jj.core.api.specs.B2DSceneSpec
 import com.binarymonks.jj.core.api.specs.InstanceParams
 import com.binarymonks.jj.core.api.specs.SceneSpec
 import com.binarymonks.jj.core.api.specs.ThingSpec
+import sun.security.jca.GetInstance
 
 /**
  * This provides builders for [com.binarymonks.jj.core.api.specs.SceneSpec]s
@@ -29,10 +30,15 @@ fun scene(init: SceneSpec.() -> Unit): SceneSpec {
 /**
  * A [ThingSpec] builder
  */
-fun thing(init: ThingSpec.() ->Unit): ThingSpec{
-    val thingSpec = ThingSpec()
-    thingSpec.init()
-    return thingSpec
+fun SceneSpec.node(instanceParams:InstanceParams = InstanceParams.new(), init: SceneSpec.() ->Unit): SceneSpec{
+    val sceneSpec = SceneSpec()
+    sceneSpec.init()
+    this.addNode(sceneSpec,instanceParams)
+    return sceneSpec
+}
+
+fun SceneSpec.nodeRef(instanceParams: InstanceParams= InstanceParams.new(), getRef: ()->String){
+    this.addNode(getRef.invoke(),)
 }
 
 /**

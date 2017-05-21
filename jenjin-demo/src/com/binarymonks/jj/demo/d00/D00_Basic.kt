@@ -19,12 +19,15 @@ class D00_Basic(jjConfig: JJConfig) : Game(jjConfig) {
 
         // A scene we build in place using builders
         val initialSceneSpec = scene {
-            node(thing {
-            }, params {})
-            node("squares", params {})
-            node(b2dscene {
-                node(thing {}, params { name = "thingA" })
-                node(thing {}, params { name = "thingB" })
+            addNode(scene{
+                thing {
+
+                }
+            })
+            addNode("squares", params {})
+            addNode(b2dscene {
+                addNode(thing {}, params { name = "thingA" })
+                addNode(thing {}, params { name = "thingB" })
                 joint("thingA","thingB", revolute {
 
                 })
