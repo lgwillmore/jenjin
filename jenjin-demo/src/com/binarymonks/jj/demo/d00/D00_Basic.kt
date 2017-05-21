@@ -3,9 +3,8 @@ package com.binarymonks.jj.demo.d00
 import com.binarymonks.jj.core.Game
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
-import com.binarymonks.jj.core.api.specs.builders.*
-import com.binarymonks.jj.core.api.specs.BasicScene
 import com.binarymonks.jj.core.api.specs.InstanceParams
+import com.binarymonks.jj.core.api.specs.builders.*
 import com.binarymonks.jj.core.api.specs.SceneSpec
 
 
@@ -20,11 +19,11 @@ class D00_Basic(jjConfig: JJConfig) : Game(jjConfig) {
         JJ.scenes.addSceneSpec("squares",squares())
 
         // A scene we build in place using builders
-        val initialSceneSpec = basicScene {
-            node(InstanceParams.new()) {
-                basicScene { }
-            }
-            node(InstanceParams.new(),"squares")
+        val initialSceneSpec = scene {
+            addNode(scene {
+
+            }, InstanceParams.new())
+            addNode("squares", InstanceParams.new())
         }
 
         // And then we instantiate the scene
@@ -37,6 +36,6 @@ class D00_Basic(jjConfig: JJConfig) : Game(jjConfig) {
 
     private fun squares(): SceneSpec {
         // A scene we build without builders
-        return BasicScene()
+        return SceneSpec()
     }
 }

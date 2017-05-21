@@ -1,7 +1,5 @@
 package com.binarymonks.jj.core.api.specs
 
-import com.badlogic.gdx.utils.ObjectMap
-
 interface SceneSpecRef {
     fun resolve(): SceneSpec
 }
@@ -27,7 +25,7 @@ open class SceneSpec {
      * @param scene The scene to instantiate
      * @param instanceParams The instance specific parameters
      */
-    fun addChild(scene: SceneSpec, instanceParams: InstanceParams = InstanceParams.new()) {
+    fun addNode(scene: SceneSpec, instanceParams: InstanceParams = InstanceParams.new()) {
 
     }
 
@@ -37,7 +35,7 @@ open class SceneSpec {
      * @param scenePath The path to the node[SceneSpec].
      * @param instanceParams The instance specific parameters
      */
-    fun addChild(scenePath: String, instanceParams: InstanceParams = InstanceParams.new()) {
+    fun addNode(scenePath: String, instanceParams: InstanceParams = InstanceParams.new()) {
 
     }
 
