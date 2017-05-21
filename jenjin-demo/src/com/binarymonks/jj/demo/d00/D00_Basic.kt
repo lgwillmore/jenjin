@@ -1,10 +1,12 @@
 package com.binarymonks.jj.demo.d00
 
+import com.badlogic.gdx.physics.box2d.BodyDef
 import com.binarymonks.jj.core.Game
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
-import com.binarymonks.jj.core.api.specs.SceneSpec
-import com.binarymonks.jj.core.api.specs.builders.*
+import com.binarymonks.jj.core.specs.SceneSpec
+import com.binarymonks.jj.core.specs.builders.*
+import com.binarymonks.jj.core.specs.physics.Circle
 
 
 /**
@@ -14,24 +16,20 @@ class D00_Basic(jjConfig: JJConfig) : Game(jjConfig) {
 
     public override fun gameOn() {
 
-        // A scene we can use again by referring to its path
-        JJ.scenes.addSceneSpec("square", squares())
+        // Scenes we can use again by referring to the path
+        JJ.scenes.addSceneSpec("square", square())
+        JJ.scenes.addSceneSpec("circle", circle())
+        JJ.scenes.addSceneSpec("floor", floor())
 
-        // A scene we build in place using builders
+        // A composite scene
         val initialSceneSpec = scene {
-            addNode(scene{
-                thing {
-
-                }
-            })
-            addNode("squares", params {})
-            addNode(b2dscene {
-                addNode(thing {}, params { name = "thingA" })
-                addNode(thing {}, params { name = "thingB" })
-                joint("thingA","thingB", revolute {
-
-                })
-            }, params { })
+            node { thing { } }
+            node(params { x = 2f; y = 2f }) {
+                nodeRef(params { name = "square1" }) { "square" }
+                nodeRef(params { name = "square2" }) { "square" }
+                joint("square1", "square2", revolute { })
+            }
+            nodeRef { "square" }
         }
 
         // And then we instantiate some scenes
@@ -42,8 +40,24 @@ class D00_Basic(jjConfig: JJConfig) : Game(jjConfig) {
         println("Scene Loaded")
     }
 
-    private fun squares(): SceneSpec {
-        // A scene we build without builders
-        return SceneSpec()
+    private fun square(): SceneSpec {
+        // The default values mean that we get a simple dynamic square
+        return scene { thing { physics { fixture { } } } }
+    }
+
+    private fun circle(): SceneSpec {
+        // Sticking to default values to get a circle
+        return scene { thing { physics { fixture { shape = Circle() } } } }
+    }
+
+    private fun floor(): SceneSpec{
+        // A static floor object
+        return scene{
+            thing{
+                physics{
+                    bodyType=BodyDef.BodyType.StaticBody
+                }
+            }
+        }
     }
 }

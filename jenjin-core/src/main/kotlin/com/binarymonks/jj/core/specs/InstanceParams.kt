@@ -1,4 +1,4 @@
-package com.binarymonks.jj.core.api.specs
+package com.binarymonks.jj.core.specs
 
 
 class InstanceParams private constructor(){
@@ -15,9 +15,9 @@ class InstanceParams private constructor(){
     /**
      * This must be a name that is unique to its parent SceneSpec child nodes if set
      */
-    var name: String = ""
+    var name: String? = null
     /**
      * This must be a name that is globally unique if set. It is used for retrieving
      */
-    var uniqueInstanceName: String = ""
+    var uniqueInstanceName: String? = null
 }

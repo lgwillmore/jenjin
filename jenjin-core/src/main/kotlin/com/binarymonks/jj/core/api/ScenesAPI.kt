@@ -1,7 +1,7 @@
 package com.binarymonks.jj.core.api
 
-import com.binarymonks.jj.core.api.specs.InstanceParams
-import com.binarymonks.jj.core.api.specs.SceneSpec
+import com.binarymonks.jj.core.specs.InstanceParams
+import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.async.UnitBond
 
 

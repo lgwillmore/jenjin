@@ -1,7 +1,7 @@
 package com.binarymonks.jj.core
 
 import com.badlogic.gdx.ApplicationListener
-import com.binarymonks.jj.core.api.specs.SceneSpec
+import com.binarymonks.jj.core.specs.SceneSpec
 
 /**
  * A Game
