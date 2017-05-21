@@ -3,9 +3,8 @@ package com.binarymonks.jj.demo.d00
 import com.binarymonks.jj.core.Game
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
-import com.binarymonks.jj.core.api.specs.InstanceParams
-import com.binarymonks.jj.core.api.specs.builders.*
 import com.binarymonks.jj.core.api.specs.SceneSpec
+import com.binarymonks.jj.core.api.specs.builders.*
 
 
 /**
@@ -16,21 +15,27 @@ class D00_Basic(jjConfig: JJConfig) : Game(jjConfig) {
     public override fun gameOn() {
 
         // A scene we can use again by referring to its path
-        JJ.scenes.addSceneSpec("squares",squares())
+        JJ.scenes.addSceneSpec("square", squares())
 
         // A scene we build in place using builders
         val initialSceneSpec = scene {
-            addNode(scene {
+            node(thing {
+            }, params {})
+            node("squares", params {})
+            node(b2dscene {
+                node(thing {}, params { name = "thingA" })
+                node(thing {}, params { name = "thingB" })
+                joint("thingA","thingB", revolute {
 
-            }, InstanceParams.new())
-            addNode("squares", InstanceParams.new())
+                })
+            }, params { })
         }
 
-        // And then we instantiate the scene
+        // And then we instantiate some scenes
         JJ.scenes.instantiate(initialSceneSpec).then(this::onLoad)
     }
 
-    private fun onLoad(){
+    private fun onLoad() {
         println("Scene Loaded")
     }
 
