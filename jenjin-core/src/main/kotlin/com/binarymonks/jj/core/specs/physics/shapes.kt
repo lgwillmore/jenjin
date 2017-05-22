@@ -2,6 +2,8 @@ package com.binarymonks.jj.core.specs.physics
 
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
+import com.binarymonks.jj.core.pools.new
+
 /**
  * Some shapes that correlate to B2D shapes.
  */
@@ -19,10 +21,18 @@ class Circle constructor(
 
 class Polygon constructor(
         var vertices: Array<Vector2> = Array()
-) : ShapeSpec
+) : ShapeSpec {
+    constructor(vararg vertices: Vector2) : this() {
+        vertices.forEach { this.vertices.add(it) }
+    }
+}
 
 class Chain constructor(
         var vertices: Array<Vector2> = Array()
-) : ShapeSpec
+) : ShapeSpec {
+    constructor(vararg vertices: Vector2) : this() {
+        vertices.forEach { this.vertices.add(it) }
+    }
+}
 
 

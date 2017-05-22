@@ -4,13 +4,20 @@ import com.badlogic.gdx.physics.box2d.BodyDef
 import com.binarymonks.jj.core.Game
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
+import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.*
 import com.binarymonks.jj.core.specs.physics.Circle
+import com.binarymonks.jj.core.specs.physics.Polygon
+import com.binarymonks.jj.core.specs.physics.Rectangle
 
 
 /**
- * The simplest of the simple - compose some scenes and instantiate one.
+ * The simplest of the simple
+ *
+ * Create some scenes and instantiate them.
+ *
+ * Uses physics rendering
  */
 class D00_Basic(jjConfig: JJConfig) : Game(jjConfig) {
 
@@ -23,17 +30,31 @@ class D00_Basic(jjConfig: JJConfig) : Game(jjConfig) {
 
         // A composite scene
         val initialSceneSpec = scene {
-            nodeRef{"circle"}
-            nodeRef{"circle"}
-            nodeRef{"circle"}
-            nodeRef{"circle"}
-            nodeRef { "square" }
-            nodeRef { "square" }
-            nodeRef { "floor" }
+            nodeRef(params { x = 4f; y = 8f }) { "circle" }
+            nodeRef(params { x = 8f; y = 8f }) { "circle" }
+            nodeRef(params { x = 12f; y = 8f }) { "circle" }
+            nodeRef(params { x = 16f; y = 8f }) { "circle" }
+            nodeRef(params { x = 4f; y = 5f; rotationD = 45f }) { "square" }
+            nodeRef(params { x = 16f; y = 5f; rotationD = 45f }) { "square" }
+            node(params { x = 10f; y = 6f }) {
+                thing {
+                    physics {
+                        bodyType = BodyDef.BodyType.StaticBody
+                        fixture {
+                            shape = Polygon(
+                                    vec2(0f, 1f),
+                                    vec2(-1f, 0f),
+                                    vec2(1f, 0f)
+                            )
+                        }
+                    }
+                }
+            }
+            nodeRef(params { x = 0f; y = 0f }) { "floor" }
         }
 
         // And then we instantiate some scenes
-        JJ.scenes.instantiate(initialSceneSpec).then({println("Scene Loaded")})
+        JJ.scenes.instantiate(initialSceneSpec).then({ println("Scene Loaded") })
     }
 
     fun onLoad() {
@@ -50,12 +71,15 @@ class D00_Basic(jjConfig: JJConfig) : Game(jjConfig) {
         return scene { thing { physics { fixture { shape = Circle() } } } }
     }
 
-    private fun floor(): SceneSpec{
+    private fun floor(): SceneSpec {
         // A static floor object
-        return scene{
-            thing{
-                physics{
-                    bodyType=BodyDef.BodyType.StaticBody
+        return scene {
+            thing {
+                physics {
+                    bodyType = BodyDef.BodyType.StaticBody
+                    fixture {
+                        shape = Rectangle(width = 20f, height = 1f)
+                    }
                 }
             }
         }

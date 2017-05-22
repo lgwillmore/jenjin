@@ -7,20 +7,48 @@ import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.JJ
+import com.binarymonks.jj.core.api.PoolsAPI
 import com.binarymonks.jj.core.pools.managers.Matrix3PoolManager
 import com.binarymonks.jj.core.pools.managers.Vector2PoolManager
 import com.binarymonks.jj.core.pools.managers.Vector3PoolManager
+import kotlin.reflect.KClass
 
+/**
+ * Get a new instance of a pooled class
+ *
+ * @param pooledClass the class of the object that is pooled
+ * *
+ * @return an instance of the pooled class
+ **/
 fun <T> new(clazz: Class<T>): T {
-    return JJ.pools.nuw(clazz)
+    return JJ.B.pools.nuw(clazz)
 }
 
+/**
+ * Get a new instance of a pooled class
+ *
+ * @param pooledClass the class of the object that is pooled
+ * *
+ * @return an instance of the pooled class
+ **/
+fun <T : Any> new(pooledClass: KClass<T>): T {
+    return new(pooledClass.java)
+}
+
+
+/**
+ * Recycle a pooled object
+ */
 fun recycle(vararg objects: Any) {
     for (o in objects) {
-        JJ.pools.recycle(o)
+        JJ.B.pools.recycle(o)
     }
 }
 
+
+/**
+ * Recycle a collection of pooled objects
+ */
 fun recycleItems(collectionOfObjects: Iterable<*>) {
     for (o in collectionOfObjects) {
         if (o != null) recycle(o)
@@ -28,14 +56,14 @@ fun recycleItems(collectionOfObjects: Iterable<*>) {
 }
 
 /**
+ * A place to manage your pools and pooled objects.
+ *
  * If your thing is [Poolable] then you can just get new ones and recycle old ones here.
  * If not - A [PoolManager] must be registered.
  *
- * Pools is a place to register new [PoolManager]s for things that you want to pool.
- * Then you can get and recycle the Pooled thing as you wish with [new], [recycle] and [recycleItems]
- *
+ * Once you have that you can use [new], [recycle] and [recycleItems] to deal with your pooled objects
  */
-class Pools {
+class Pools : PoolsAPI{
 
     internal var pools = ObjectMap<Class<*>, Pool<*>>()
     internal var poolablePools = ObjectMap<Class<*>, Array<Poolable>>()
@@ -54,16 +82,15 @@ class Pools {
      * If not - A [PoolManager] must be registered.
      *
      *
-     * There is a nice little convenience function with much less to type [N.ew]
-     * Be sure to [Re.cycle] it when you are done.
+     * There is a nice little convenience function with much less to type [new]
+     * Be sure to [recycle] it when you are done.
 
      * @param pooledClass the class of the object that is pooled
      * *
-     * @param <T>
-     * *
      * @return an instance of the pooled class
-    </T> */
+     **/
     fun <T> nuw(pooledClass: Class<T>): T {
+
         if (Poolable::class.java.isAssignableFrom(pooledClass)) {
             return nuwPoolable(pooledClass)
         }
@@ -72,6 +99,25 @@ class Pools {
         } else {
             return pools.get(pooledClass).getPooled() as T
         }
+    }
+
+    /**
+     * Get something from the pool or make a new one.
+     *
+     *
+     * If your thing is [Poolable] then all is done for you.
+     * If not - A [PoolManager] must be registered.
+     *
+     *
+     * There is a nice little convenience function with much less to type [new]
+     * Be sure to [recycle] it when you are done.
+
+     * @param pooledClass the class of the object that is pooled
+     * *
+     * @return an instance of the pooled class
+     **/
+    fun <T : Any> nuw(pooledClass: KClass<T>): T {
+        return nuw(pooledClass.java)
     }
 
     private fun <T> nuwPoolable(pooledClass: Class<T>): T {
@@ -121,11 +167,21 @@ class Pools {
 
      * @param clazzToClear
      */
-    fun clearPool(clazzToClear: Class<*>) {
+    override fun clearPool(clazzToClear: Class<*>) {
         pools.get(clazzToClear).clear()
     }
 
-    fun <P, T : PoolManager<P>> registerManager(poolManager: T, thingToPoolClass: Class<P>) {
+    /**
+     * Use this if you want to dump the pooled objects.
+     * They will be disposed by the PoolManager before being removed from the pool.
+
+     * @param clazzToClear
+     */
+    override fun clearPool(clazzToClear: KClass<*>) {
+        pools.get(clazzToClear.java).clear()
+    }
+
+    override fun <P, T : PoolManager<P>> registerManager(poolManager: T, thingToPoolClass: Class<P>) {
         if (!pools.containsKey(thingToPoolClass)) {
             pools.put(thingToPoolClass, Pool(poolManager))
         }
@@ -133,5 +189,5 @@ class Pools {
 
     class NoPoolManagerException(classWithMissingPool: Class<*>) : RuntimeException(String.format("No PoolManager for %s. Register a pool manager.", classWithMissingPool.canonicalName))
 
-    class CouldNotCreateOneException(noDefault: Class<*>) : RuntimeException(String.format("Could not access a default constructor for %s. Check it exists, and check public static if nested.", noDefault.canonicalName))
+    class CouldNotCreateOneException(noDefault: Class<*>) : RuntimeException(String.format("Could not access a default constructor for %s", noDefault.canonicalName))
 }

@@ -1,8 +1,8 @@
 package com.binarymonks.jj.core
 
 import com.binarymonks.jj.core.api.LayersAPI
+import com.binarymonks.jj.core.api.PoolsAPI
 import com.binarymonks.jj.core.api.ScenesAPI
-import com.binarymonks.jj.core.layers.Layer
 import com.binarymonks.jj.core.layers.LayerStack
 import com.binarymonks.jj.core.pools.Pools
 import com.binarymonks.jj.core.render.RenderWorld
@@ -18,7 +18,7 @@ import com.binarymonks.jj.core.scenes.Scenes
 object JJ {
     lateinit var scenes: ScenesAPI
     lateinit var layers: LayersAPI
-    var pools: Pools = Pools()
+    lateinit var pools: PoolsAPI
 
     lateinit var B: Backend
 
@@ -26,9 +26,11 @@ object JJ {
         B = Backend(
                 Scenes(),
                 LayerStack(),
-                RenderWorld()
+                RenderWorld(),
+                Pools()
         )
         scenes = B.scenes
         layers = B.layers
+        pools = B.pools
     }
 }

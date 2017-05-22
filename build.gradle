@@ -10,7 +10,7 @@ allprojects {
         gdxVersion = '1.9.4'
         box2DLightsVersion = '1.4'
         junitVersion = '4.12'
-        kotlinVersion = '1.1.0'
+        kotlinVersion = '1.1.2'
     }
 
     repositories {
@@ -23,7 +23,7 @@ allprojects {
 
 buildscript {
 
-    ext.kotlinVersion = '1.1.0'
+    ext.kotlinVersion = '1.1.2'
 
     repositories {
         mavenCentral()
