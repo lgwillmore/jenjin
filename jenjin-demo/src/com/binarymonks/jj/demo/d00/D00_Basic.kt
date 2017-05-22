@@ -23,20 +23,20 @@ class D00_Basic(jjConfig: JJConfig) : Game(jjConfig) {
 
         // A composite scene
         val initialSceneSpec = scene {
-            node { thing { } }
-            node(params { x = 2f; y = 2f }) {
-                nodeRef(params { name = "square1" }) { "square" }
-                nodeRef(params { name = "square2" }) { "square" }
-                joint("square1", "square2", revolute { })
-            }
+            nodeRef{"circle"}
+            nodeRef{"circle"}
+            nodeRef{"circle"}
+            nodeRef{"circle"}
             nodeRef { "square" }
+            nodeRef { "square" }
+            nodeRef { "floor" }
         }
 
         // And then we instantiate some scenes
-        JJ.scenes.instantiate(initialSceneSpec).then(this::onLoad)
+        JJ.scenes.instantiate(initialSceneSpec).then({println("Scene Loaded")})
     }
 
-    private fun onLoad() {
+    fun onLoad() {
         println("Scene Loaded")
     }
 

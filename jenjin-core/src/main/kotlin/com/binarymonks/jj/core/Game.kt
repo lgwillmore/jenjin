@@ -11,9 +11,11 @@ import com.binarymonks.jj.core.specs.SceneSpec
  *
  * @property jjConfig Configuration for your game.
  */
-abstract class Game (val jjConfig: JJConfig) : ApplicationListener{
+abstract class Game (val jjConfig: JJConfig = JJConfig()) : ApplicationListener{
 
     override fun create() {
+        JJ.initialise(this.jjConfig)
+        gameOn()
     }
 
     override fun pause() {
@@ -22,6 +24,7 @@ abstract class Game (val jjConfig: JJConfig) : ApplicationListener{
     override fun resize(width: Int, height: Int) {
     }
     override fun render() {
+        JJ.B.layers.update()
     }
 
     override fun resume() {

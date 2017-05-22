@@ -1,5 +1,6 @@
 package com.binarymonks.jj.core.async
 
+
 class UnitBond {
     private var callback: () -> Unit = { Unit }
 
