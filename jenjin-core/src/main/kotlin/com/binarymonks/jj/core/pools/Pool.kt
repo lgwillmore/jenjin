@@ -5,16 +5,15 @@ import com.badlogic.gdx.utils.Array
 class Pool<POOLED>(internal var manager: PoolManager<POOLED>) {
     internal var pool = Array<POOLED>()
 
-    val new: POOLED
-        get() {
-            if (pool.size == 0) {
-                return manager.create_new()
-            }
-            return pool.pop()
+    fun getPooled(): POOLED{
+        if (pool.size == 0) {
+            return manager.create_new()
         }
+        return pool.pop()
+    }
 
-    fun add(pooled: POOLED) {
-        manager.reset(pooled)
+    fun add(pooled: Any) {
+        manager.reset(pooled as POOLED)
         pool.add(pooled)
     }
 

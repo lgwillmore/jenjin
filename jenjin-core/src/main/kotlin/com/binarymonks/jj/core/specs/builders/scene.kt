@@ -33,8 +33,8 @@ fun SceneSpec.node(instanceParams: InstanceParams = InstanceParams.new(), init: 
     return sceneSpec
 }
 
-fun SceneSpec.nodeRef(instanceParams: InstanceParams = InstanceParams.new(), getRef: () -> String) {
-    this.addNode(getRef.invoke(), instanceParams)
+fun SceneSpec.nodeRef(instanceParams: InstanceParams = InstanceParams.new(), pathProvider: () -> String) {
+    this.addNode(pathProvider.invoke(), instanceParams)
 }
 
 fun SceneSpec.thing(init: ThingSpec.() -> Unit): ThingSpec {

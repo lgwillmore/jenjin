@@ -70,7 +70,7 @@ class Pools {
         if (!pools.containsKey(pooledClass)) {
             throw NoPoolManagerException(pooledClass)
         } else {
-            return pools.get(pooledClass).new as T
+            return pools.get(pooledClass).getPooled() as T
         }
     }
 
@@ -103,7 +103,7 @@ class Pools {
         if (!pools.containsKey(pooled.javaClass)) {
             throw NoPoolManagerException(pooled.javaClass)
         } else {
-            pools.get(pooled.javaClass).add(pooled)
+            var pool = pools.get(pooled.javaClass).add(pooled)
         }
     }
 
