@@ -7,10 +7,12 @@ import com.badlogic.gdx.utils.Array
 class PhysicsSpec {
     var bodyType = BodyDef.BodyType.DynamicBody
     var linearDamping = 0f
-    var angularDapmping = 0f
+    var angularDamping = 0f
     var gravityScale = 1f
     var bullet = false
+    val fixedRotation: Boolean = false
     var allowSleep = true
+
     private var fixtures: Array<FixtureSpec> = Array()
 
     fun addFixture(fixtureSpec: FixtureSpec) {

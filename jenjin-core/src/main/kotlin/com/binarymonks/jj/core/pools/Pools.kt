@@ -11,6 +11,8 @@ import com.binarymonks.jj.core.api.PoolsAPI
 import com.binarymonks.jj.core.pools.managers.Matrix3PoolManager
 import com.binarymonks.jj.core.pools.managers.Vector2PoolManager
 import com.binarymonks.jj.core.pools.managers.Vector3PoolManager
+import com.binarymonks.jj.core.specs.InstanceParams
+import com.binarymonks.jj.core.specs.ParamsPoolManager
 import kotlin.reflect.KClass
 
 /**
@@ -72,6 +74,7 @@ class Pools : PoolsAPI{
         registerManager(Vector2PoolManager(), Vector2::class.java)
         registerManager(Vector3PoolManager(), Vector3::class.java)
         registerManager(Matrix3PoolManager(), Matrix3::class.java)
+        registerManager(ParamsPoolManager(), InstanceParams::class.java)
     }
 
     /**

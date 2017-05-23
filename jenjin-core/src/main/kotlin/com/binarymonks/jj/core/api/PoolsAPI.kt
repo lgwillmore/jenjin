@@ -7,7 +7,7 @@ import kotlin.reflect.KClass
  * Manage your pools here
  *
  * Use [com.binarymonks.jj.core.pools.new], [com.binarymonks.jj.core.pools.recycle] and
- * [com.binarymonks.jj.core.pools.recycleItems] to create and retrun your pooled objects.
+ * [com.binarymonks.jj.core.pools.recycleItems] to create and return your pooled objects.
  */
 interface PoolsAPI {
 

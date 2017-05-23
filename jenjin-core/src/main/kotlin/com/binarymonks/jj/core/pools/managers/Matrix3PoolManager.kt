@@ -4,10 +4,9 @@ import com.badlogic.gdx.math.Matrix3
 import com.binarymonks.jj.core.pools.PoolManager
 
 class Matrix3PoolManager : PoolManager<Matrix3> {
-    private var clear = floatArrayOf(1f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 1f)
 
     override fun reset(matrix3: Matrix3) {
-        matrix3.set(clear)
+        matrix3.idt()
     }
 
     override fun create_new(): Matrix3 {

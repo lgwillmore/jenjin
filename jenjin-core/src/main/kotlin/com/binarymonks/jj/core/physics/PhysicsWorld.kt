@@ -25,7 +25,7 @@ class PhysicsWorld : PhysicsAPI {
 //        for (function in postPhysicsFunctions) {
 //            function.call()
 //        }
-//        postPhysicsFunctions.clear()
+//        postPhysicsFunctions.clear3()
         isUpdating = false
     }
 
