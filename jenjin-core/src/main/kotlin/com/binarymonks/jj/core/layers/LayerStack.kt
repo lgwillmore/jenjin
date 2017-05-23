@@ -6,8 +6,15 @@ import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.utils.Array
+import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.api.LayersAPI
 
+
+/**
+ * A stack of [Layers] to render in order.
+ *
+ * T
+ */
 class LayerStack : LayersAPI {
 
     private var inputMultiplexer = InputMultiplexer()

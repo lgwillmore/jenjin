@@ -1,4 +1,104 @@
 package com.binarymonks.jj.core.render
 
+import box2dLight.RayHandler
+import com.badlogic.gdx.graphics.Pixmap
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.PolygonRegion
+import com.badlogic.gdx.graphics.g2d.PolygonSprite
+import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.math.EarClippingTriangulator
+import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.utils.Array
+import com.badlogic.gdx.utils.ObjectMap
+import com.binarymonks.jj.core.JJ
+import com.binarymonks.jj.core.things.Thing
 
-class RenderWorld
+class RenderWorld {
+    internal var renderIDCounter = 0
+    var shapeRenderer = ShapeRenderer()
+    var polyBatch = PolygonSpriteBatch()
+    var rayHandler: RayHandler
+    var defaultRenderGraph = RenderGraph()
+    var lightSourceRenderGraph = RenderGraph()
+    var polySpriteCache = ObjectMap<Int, PolygonSprite>()
+    internal var triangulator = EarClippingTriangulator()
+    var worldToScreenScale: Float = 0.toFloat()
+    private var currentShapeFill = false
+
+    init {
+        rayHandler = RayHandler(JJ.B.physicsWorld.b2dworld)
+        rayHandler.setBlurNum(3)
+        rayHandler.setAmbientLight(0.0f, 0.0f, 0.0f, 1f)
+    }
+
+    fun addThing(thing: Thing) {
+//        defaultRenderGraph.add(thing.path, thing.id, thing.renderRoot.defaultThingLayers)
+//        lightSourceRenderGraph.add(thing.path, thing.id, thing.renderRoot.lightSourceThingLayers)
+    }
+
+    fun nextRenderID(): Int {
+        return renderIDCounter++
+    }
+
+    fun polygonSprite(renderSpecID: Int, points: Array<Vector2>): PolygonSprite {
+        val pix = Pixmap(1, 1, Pixmap.Format.RGBA8888)
+        pix.setColor(0xFFFFFFFF.toInt())
+        pix.fill()
+        val textureSolid = Texture(pix)
+        val vertices = FloatArray(points.size * 2)
+        val triangleIndices = triangulator.computeTriangles(vertices)
+        for (i in 0..points.size - 1) {
+            val point = points.get(i)
+            val offset = i * 2
+            vertices[offset] = point.x
+            vertices[offset + 1] = point.y
+        }
+        val polyReg = PolygonRegion(TextureRegion(textureSolid),
+                vertices, triangleIndices.toArray())
+        val poly = PolygonSprite(polyReg)
+        polySpriteCache.put(renderSpecID, poly)
+        return poly
+    }
+
+    fun removeThing(removal: Thing) {
+//        defaultRenderGraph.remove(removal.path, removal.id, removal.renderRoot.defaultThingLayers)
+//        lightSourceRenderGraph.remove(removal.path, removal.id, removal.renderRoot.lightSourceThingLayers)
+    }
+
+    fun setAmbientLight(r: Float, g: Float, b: Float, a: Float) {
+        rayHandler.setAmbientLight(r, g, b, a)
+    }
+
+    fun switchToShapes(fill: Boolean) {
+        if (!shapeRenderer.isDrawing) {
+            polyBatch.end()
+            shapeRenderer.begin(if (fill) ShapeRenderer.ShapeType.Filled else ShapeRenderer.ShapeType.Line)
+        } else if (fill != currentShapeFill) {
+            currentShapeFill = fill
+            shapeRenderer.end()
+            shapeRenderer.begin(if (fill) ShapeRenderer.ShapeType.Filled else ShapeRenderer.ShapeType.Line)
+        }
+    }
+
+    fun switchToBatch() {
+        if (!polyBatch.isDrawing) {
+            shapeRenderer.end()
+            polyBatch.begin()
+        }
+    }
+
+    fun end() {
+        if (polyBatch.isDrawing) {
+            polyBatch.end()
+        } else {
+            shapeRenderer.end()
+        }
+    }
+
+    companion object {
+        val DEFAULT_RENDER_GRAPH = "DEFAULT_RENDERGRAPH"
+        val LIGHTSOURCE_RENDER_GRAPH = "LIGHTSOURCE_RENDERGRAPH"
+    }
+}

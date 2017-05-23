@@ -36,6 +36,7 @@ class D00_Basic(jjConfig: JJConfig) : Game(jjConfig) {
             nodeRef(params { x = 16f; y = 8f }) { "circle" }
             nodeRef(params { x = 4f; y = 5f; rotationD = 45f }) { "square" }
             nodeRef(params { x = 16f; y = 5f; rotationD = 45f }) { "square" }
+            //Build a node in a scene
             node(params { x = 10f; y = 6f }) {
                 thing {
                     physics {
