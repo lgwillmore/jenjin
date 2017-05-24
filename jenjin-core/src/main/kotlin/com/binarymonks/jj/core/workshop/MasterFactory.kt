@@ -1,6 +1,8 @@
 package com.binarymonks.jj.core.workshop
 
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.Matrix3
+import com.badlogic.gdx.math.Vector
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.*
 import com.badlogic.gdx.utils.Array
@@ -56,8 +58,26 @@ class MasterFactory {
 
     private fun buildPhysicsRoot(physicsSpec: PhysicsSpec, params: InstanceParams, paramsStack: Array<InstanceParams>): PhysicsRoot {
         val def = BodyDef()
-        def.position.set(params.x, params.y)
-        def.angle = params.rotationD * MathUtils.degreesToRadians
+
+        var transformMatrix = new(Matrix3::class)
+        var rotationD = 0f
+        var scaleX = 1f
+        var scaleY = 1f
+        for (params in paramsStack) {
+            transformMatrix.mul(params.getTransformMatrix())
+            rotationD += params.rotationD
+            scaleX = scaleX * params.scaleX
+            scaleY = scaleY * params.scaleY
+        }
+        rotationD += params.rotationD
+        scaleX = scaleX * params.scaleX
+        scaleY = scaleY * params.scaleY
+        transformMatrix.mul(params.getTransformMatrix())
+
+        var worldPosition = new(Vector2::class).mul(transformMatrix)
+
+        def.position.set(worldPosition.x, worldPosition.y)
+        def.angle = rotationD * MathUtils.degreesToRadians
         def.type = physicsSpec.bodyType
         def.fixedRotation = physicsSpec.fixedRotation
         def.linearDamping = physicsSpec.linearDamping
@@ -67,27 +87,27 @@ class MasterFactory {
         def.gravityScale = physicsSpec.gravityScale
         val body = JJ.B.physicsWorld.b2dworld.createBody(def)
 
-        for (fixtureSpec in physicsSpec.fixtures){
-            buildFixture(fixtureSpec,body,params, paramsStack)
+        for (fixtureSpec in physicsSpec.fixtures) {
+            buildFixture(fixtureSpec, body, scaleX, scaleY)
         }
 
         return PhysicsRoot(body)
     }
 
-    private fun buildFixture(fixtureSpec: FixtureSpec, body: Body, instanceParams: InstanceParams, paramsStack: Array<InstanceParams>) {
-            val shape = buildShape(fixtureSpec, instanceParams, paramsStack)
-            val fDef = FixtureDef()
-            fDef.shape = shape
-            fDef.density = fixtureSpec.density
-            fDef.friction = fixtureSpec.friction
-            fDef.restitution = fixtureSpec.restitution
-            fDef.isSensor = fixtureSpec.isSensor
+    private fun buildFixture(fixtureSpec: FixtureSpec, body: Body, scaleX: Float, scaleY: Float) {
+        val shape = buildShape(fixtureSpec, scaleX, scaleY)
+        val fDef = FixtureDef()
+        fDef.shape = shape
+        fDef.density = fixtureSpec.density
+        fDef.friction = fixtureSpec.friction
+        fDef.restitution = fixtureSpec.restitution
+        fDef.isSensor = fixtureSpec.isSensor
 //            val cd = Global.physics.collisionGroups.getCollisionData(fixtureSpec.collisionData)
 //            fDef.filter.categoryBits = cd.category
 //            fDef.filter.maskBits = cd.mask
 //            Re.cycle(cd)
 
-            val f = body.createFixture(fDef)
+        val f = body.createFixture(fDef)
 //            node.fixture = f
 //            f.userData = node
 
@@ -105,19 +125,19 @@ class MasterFactory {
 //
 //            node.collisionResolver = resolver
 
-            shape!!.dispose()
+        shape!!.dispose()
     }
 
-    private fun buildShape(nodeSpec: FixtureSpec, instanceParams: InstanceParams, paramsStack: Array<InstanceParams>): Shape? {
+    private fun buildShape(nodeSpec: FixtureSpec, scaleX: Float, scaleY: Float): Shape? {
         if (nodeSpec.shape is Rectangle) {
             val polygonRectangle = nodeSpec.shape as Rectangle
             val boxshape = PolygonShape()
-            boxshape.setAsBox(polygonRectangle.width * instanceParams.scaleX / 2.0f, polygonRectangle.height * instanceParams.scaleY / 2.0f, new(Vector2::class.java).set(nodeSpec.offsetX * instanceParams.scaleX, nodeSpec.offsetY * instanceParams.scaleY), nodeSpec.rotationD * MathUtils.degreesToRadians)
+            boxshape.setAsBox(polygonRectangle.width * scaleX / 2.0f, polygonRectangle.height * scaleY / 2.0f, new(Vector2::class.java).set(nodeSpec.offsetX * scaleX, nodeSpec.offsetY * scaleY), nodeSpec.rotationD * MathUtils.degreesToRadians)
             return boxshape
         } else if (nodeSpec.shape is Circle) {
             val circle = nodeSpec.shape as Circle
             val circleShape = CircleShape()
-            circleShape.radius = circle.radius* instanceParams.scaleX
+            circleShape.radius = circle.radius * scaleX
             circleShape.position = new(Vector2::class).set(nodeSpec.offsetX, nodeSpec.offsetY)
             return circleShape
         } else if (nodeSpec.shape is Polygon) {

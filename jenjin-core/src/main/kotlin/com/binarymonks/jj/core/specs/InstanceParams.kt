@@ -26,15 +26,15 @@ class InstanceParams internal constructor() {
      */
     var uniqueInstanceName: String? = null
 
-    var transformMatrix: Matrix3 = new(Matrix3::class)
-        private set
-        get() {
-            transformMatrix.idt()
-            transformMatrix.scale(scaleX, scaleY)
-            transformMatrix.translate(x, y)
-            transformMatrix.rotate(rotationD)
-            return transformMatrix
-        }
+    private var transformMatrix: Matrix3 = new(Matrix3::class)
+
+    fun getTransformMatrix(): Matrix3 {
+        transformMatrix.idt()
+        transformMatrix.scale(scaleX, scaleY)
+        transformMatrix.translate(x, y)
+        transformMatrix.rotate(rotationD)
+        return transformMatrix
+    }
 
 }
 
