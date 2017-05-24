@@ -40,6 +40,7 @@ fun SceneSpec.nodeRef(instanceParams: InstanceParams = InstanceParams.new(), pat
 fun SceneSpec.thing(init: ThingSpec.() -> Unit): ThingSpec {
     val thing = ThingSpec()
     thing.init()
+    this.thingSpec = thing
     return thing
 }
 

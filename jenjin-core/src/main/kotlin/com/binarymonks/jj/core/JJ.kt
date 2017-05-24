@@ -4,6 +4,7 @@ import com.binarymonks.jj.core.api.LayersAPI
 import com.binarymonks.jj.core.api.PoolsAPI
 import com.binarymonks.jj.core.api.ScenesAPI
 import com.binarymonks.jj.core.api.TimeAPI
+import com.binarymonks.jj.core.layers.GameRenderingLayer
 import com.binarymonks.jj.core.layers.LayerStack
 import com.binarymonks.jj.core.physics.PhysicsWorld
 import com.binarymonks.jj.core.pools.Pools
@@ -27,15 +28,16 @@ object JJ {
     lateinit var B: Backend
 
     fun initialise(config: JJConfig) {
-        B = Backend(
-                config,
-                TimeControls(),
-                Scenes(),
-                LayerStack(),
-                RenderWorld(),
-                PhysicsWorld(),
-                Pools()
-        )
+        B = Backend()
+        B.config = config
+        B.time = TimeControls()
+        B.scenes = Scenes()
+        B.layers = LayerStack()
+        B.physicsWorld = PhysicsWorld()
+        B.renderWorld = RenderWorld()
+        B.pools = Pools()
+        B.layers.addLayerTop(GameRenderingLayer(config.gameViewConfig))
+
         scenes = B.scenes
         layers = B.layers
         pools = B.pools

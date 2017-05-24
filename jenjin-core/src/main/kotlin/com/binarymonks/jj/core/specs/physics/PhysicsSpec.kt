@@ -13,7 +13,7 @@ class PhysicsSpec {
     val fixedRotation: Boolean = false
     var allowSleep = true
 
-    private var fixtures: Array<FixtureSpec> = Array()
+    internal var fixtures: Array<FixtureSpec> = Array()
 
     fun addFixture(fixtureSpec: FixtureSpec) {
         fixtures.add(fixtureSpec)

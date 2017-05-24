@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
+import com.binarymonks.jj.core.GameViewConfig
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.pools.new
@@ -24,7 +25,7 @@ class GameRenderingLayer(
         setView(worldBoxWidth, posX, posY)
     }
 
-    constructor(viewConfig: JJConfig.GameViewConfig): this(
+    constructor(viewConfig: GameViewConfig): this(
             viewConfig.worldBoxWidth,
             viewConfig.cameraPosX,
             viewConfig.cameraPosY)
@@ -36,7 +37,7 @@ class GameRenderingLayer(
         renderGraph(JJ.B.renderWorld.defaultRenderGraph)
         renderLights()
         renderGraph(JJ.B.renderWorld.lightSourceRenderGraph)
-        if (JJ.B.config.b2dDebug) {
+        if (JJ.B.config.b2dConfig.debug) {
             drenderer.render(JJ.B.physicsWorld.b2dworld, JJ.B.renderWorld.polyBatch.getProjectionMatrix())
         }
     }

@@ -11,9 +11,6 @@ object DesktopLauncher {
         lwjglConfig.height = 1000
         lwjglConfig.width = 1000
 
-        val jjConfig = JJConfig()
-        jjConfig.b2dDebug=true
-
-        LwjglApplication(D00_Basic(jjConfig), lwjglConfig)
+        LwjglApplication(D00_Basic(), lwjglConfig)
     }
 }
