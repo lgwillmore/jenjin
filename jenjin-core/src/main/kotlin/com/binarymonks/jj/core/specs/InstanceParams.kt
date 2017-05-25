@@ -30,8 +30,8 @@ class InstanceParams internal constructor() {
 
     fun getTransformMatrix(): Matrix3 {
         transformMatrix.idt()
-        transformMatrix.scale(scaleX, scaleY)
         transformMatrix.translate(x, y)
+        transformMatrix.scale(scaleX, scaleY)
         transformMatrix.rotate(rotationD)
         return transformMatrix
     }

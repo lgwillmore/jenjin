@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.*
 import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.JJ
+import com.binarymonks.jj.core.extensions.copy
 import com.binarymonks.jj.core.physics.PhysicsRoot
 import com.binarymonks.jj.core.pools.new
 import com.binarymonks.jj.core.pools.recycle
@@ -22,41 +23,40 @@ class MasterFactory {
 
     fun createScene(scene: SceneSpec, params: InstanceParams): Thing? {
         var paramsStack = paramsStack()
-        paramsStack.add(InstanceParams.new())
-        var myThing: Thing? = createSceneHelper(scene, params, paramsStack)
+        paramsStack.add(params)
+        var myThing: Thing? = createSceneHelper(scene, paramsStack)
         returnParamsStack(paramsStack)
         return myThing
     }
 
     private fun createSceneHelper(
             scene: SceneSpec,
-            instanceParams: InstanceParams,
             paramsStack: Array<InstanceParams>): Thing? {
 
-        val myThing = createThing(scene.thingSpec, instanceParams, paramsStack)
+        val myThing = createThing(scene.thingSpec, paramsStack)
 
         for (entry in scene.nodes) {
             val nodeScene = entry.value.resolve()
             val nodeParams = entry.value.params
             paramsStack.add(nodeParams)
-            createSceneHelper(nodeScene, nodeParams, paramsStack)
+            createSceneHelper(nodeScene, paramsStack)
             paramsStack.pop()
         }
         return myThing
     }
 
-    private fun createThing(thingSpec: ThingSpec?, params: InstanceParams, paramsStack: Array<InstanceParams>): Thing? {
+    private fun createThing(thingSpec: ThingSpec?, paramsStack: Array<InstanceParams>): Thing? {
         if (thingSpec == null) return null
 
-        val physicsRoot: PhysicsRoot = buildPhysicsRoot(thingSpec.physics, params, paramsStack)
+        val physicsRoot: PhysicsRoot = buildPhysicsRoot(thingSpec.physics, paramsStack)
 
         return Thing(
-                params.uniqueInstanceName,
+                paramsStack.peek().uniqueInstanceName,
                 physicsRoot
         )
     }
 
-    private fun buildPhysicsRoot(physicsSpec: PhysicsSpec, params: InstanceParams, paramsStack: Array<InstanceParams>): PhysicsRoot {
+    private fun buildPhysicsRoot(physicsSpec: PhysicsSpec, paramsStack: Array<InstanceParams>): PhysicsRoot {
         val def = BodyDef()
 
         var transformMatrix = new(Matrix3::class)
@@ -69,10 +69,6 @@ class MasterFactory {
             scaleX = scaleX * params.scaleX
             scaleY = scaleY * params.scaleY
         }
-        rotationD += params.rotationD
-        scaleX = scaleX * params.scaleX
-        scaleY = scaleY * params.scaleY
-        transformMatrix.mul(params.getTransformMatrix())
 
         var worldPosition = new(Vector2::class).mul(transformMatrix)
 
@@ -145,7 +141,7 @@ class MasterFactory {
             val polygonShape = PolygonShape()
             val vertices = arrayOfNulls<Vector2>(polygonSpec.vertices.size)
             for (i in 0..polygonSpec.vertices.size - 1) {
-                vertices[i] = polygonSpec.vertices.get(i)
+                vertices[i] = polygonSpec.vertices.get(i).copy().scl(scaleX,scaleY)
             }
             polygonShape.set(vertices)
             return polygonShape
