@@ -2,7 +2,6 @@ package com.binarymonks.jj.core.workshop
 
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Matrix3
-import com.badlogic.gdx.math.Vector
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.*
 import com.badlogic.gdx.utils.Array
@@ -10,7 +9,6 @@ import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.extensions.copy
 import com.binarymonks.jj.core.physics.PhysicsRoot
 import com.binarymonks.jj.core.pools.new
-import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.specs.InstanceParams
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.ThingSpec
@@ -19,7 +17,7 @@ import com.binarymonks.jj.core.things.Thing
 
 class MasterFactory {
 
-    private var paramsStackCache: Array<Array<InstanceParams>> = Array()
+    private var paramsStackCache: Array<ParamStack> = Array()
 
     fun createScene(scene: SceneSpec, params: InstanceParams): Thing? {
         var paramsStack = paramsStack()
@@ -31,7 +29,7 @@ class MasterFactory {
 
     private fun createSceneHelper(
             scene: SceneSpec,
-            paramsStack: Array<InstanceParams>): Thing? {
+            paramsStack: ParamStack): Thing? {
 
         val myThing = createThing(scene.thingSpec, paramsStack)
 
@@ -45,7 +43,7 @@ class MasterFactory {
         return myThing
     }
 
-    private fun createThing(thingSpec: ThingSpec?, paramsStack: Array<InstanceParams>): Thing? {
+    private fun createThing(thingSpec: ThingSpec?, paramsStack: ParamStack): Thing? {
         if (thingSpec == null) return null
 
         val physicsRoot: PhysicsRoot = buildPhysicsRoot(thingSpec.physics, paramsStack)
@@ -56,24 +54,13 @@ class MasterFactory {
         )
     }
 
-    private fun buildPhysicsRoot(physicsSpec: PhysicsSpec, paramsStack: Array<InstanceParams>): PhysicsRoot {
+    private fun buildPhysicsRoot(physicsSpec: PhysicsSpec, paramsStack: ParamStack): PhysicsRoot {
         val def = BodyDef()
 
-        var transformMatrix = new(Matrix3::class)
-        var rotationD = 0f
-        var scaleX = 1f
-        var scaleY = 1f
-        for (params in paramsStack) {
-            transformMatrix.mul(params.getTransformMatrix())
-            rotationD += params.rotationD
-            scaleX = scaleX * params.scaleX
-            scaleY = scaleY * params.scaleY
-        }
-
-        var worldPosition = new(Vector2::class).mul(transformMatrix)
+        var worldPosition = new(Vector2::class).mul(paramsStack.transformMatrix)
 
         def.position.set(worldPosition.x, worldPosition.y)
-        def.angle = rotationD * MathUtils.degreesToRadians
+        def.angle = paramsStack.rotationD * MathUtils.degreesToRadians
         def.type = physicsSpec.bodyType
         def.fixedRotation = physicsSpec.fixedRotation
         def.linearDamping = physicsSpec.linearDamping
@@ -84,7 +71,7 @@ class MasterFactory {
         val body = JJ.B.physicsWorld.b2dworld.createBody(def)
 
         for (fixtureSpec in physicsSpec.fixtures) {
-            buildFixture(fixtureSpec, body, scaleX, scaleY)
+            buildFixture(fixtureSpec, body, paramsStack.scaleX, paramsStack.scaleY)
         }
 
         return PhysicsRoot(body)
@@ -141,7 +128,7 @@ class MasterFactory {
             val polygonShape = PolygonShape()
             val vertices = arrayOfNulls<Vector2>(polygonSpec.vertices.size)
             for (i in 0..polygonSpec.vertices.size - 1) {
-                vertices[i] = polygonSpec.vertices.get(i).copy().scl(scaleX,scaleY)
+                vertices[i] = polygonSpec.vertices.get(i).copy().scl(scaleX, scaleY)
             }
             polygonShape.set(vertices)
             return polygonShape
@@ -158,18 +145,57 @@ class MasterFactory {
         return null
     }
 
-    private fun paramsStack(): Array<InstanceParams> {
+    private fun paramsStack(): ParamStack {
         if (paramsStackCache.size > 0) {
             return paramsStackCache.pop()
         }
-        return Array()
+        return ParamStack()
     }
 
-    private fun returnParamsStack(stack: Array<InstanceParams>) {
-        stack.forEach { recycle(it) }
+    private fun returnParamsStack(stack: ParamStack) {
         stack.clear()
+        stack.rotationD=0f
+        stack.x=0f
+        stack.y=0f
+        stack.scaleX=1f
+        stack.scaleY=1f
+        stack.transformMatrix.idt()
         paramsStackCache.add(stack)
     }
 
 
+}
+
+
+private class ParamStack() : Array<InstanceParams>() {
+
+    var rotationD =0f
+    var x = 0f
+    var y = 0f
+    var scaleX =1f
+    var scaleY =1f
+    var transformMatrix : Matrix3 = new(Matrix3::class)
+
+    override fun add(params: InstanceParams) {
+        super.add(params)
+        rotationD += params.rotationD
+        x += params.x
+        y += params.y
+        scaleX *= params.scaleX
+        scaleY *= params.scaleY
+        transformMatrix.mul(params.getTransformMatrix())
+    }
+
+    override fun pop(): InstanceParams? {
+        var removing = super.pop()
+        if (removing != null) {
+            rotationD -= removing.rotationD
+            x -= removing.x
+            y -= removing.y
+            scaleX /= removing.scaleX
+            scaleY /= removing.scaleY
+            transformMatrix.mul(removing.getTransformMatrix().inv())
+        }
+        return removing
+    }
 }
