@@ -25,4 +25,12 @@ interface ScenesAPI {
 
 
     fun addSceneSpec(path: String, scene: SceneSpec)
+
+
+    /**
+     * Load any assets that can be identified in the currently loaded [SceneSpec]s.
+     *
+     * This is a synchronous call, so your code and your game will be halted where it is while this happens.
+     */
+    fun loadAssetsNow()
 }

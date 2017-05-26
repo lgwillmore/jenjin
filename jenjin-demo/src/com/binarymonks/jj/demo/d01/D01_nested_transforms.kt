@@ -20,6 +20,10 @@ class D01_nested_transforms : Game(MyConfig.jjConfig) {
         JJ.scenes.addSceneSpec("nestedCircles", nestedCircles())
         JJ.scenes.addSceneSpec("nestedRectangles", nestedRectangles())
         JJ.scenes.addSceneSpec("nestedPolygons", nestedPolygons())
+        JJ.scenes.addSceneSpec("nestedImages", nestedImages())
+
+        // We are using Images now, so we have to load the assets first
+        JJ.scenes.loadAssetsNow()
 
         /*
         A composite Scene. This scene is using deeply nested nodes.
@@ -30,12 +34,14 @@ class D01_nested_transforms : Game(MyConfig.jjConfig) {
         val initialSceneSpec = scene {
             nodeRef(params { x = 10f;y = 6f }) { "nestedCircles" }
             nodeRef(params { x = -10f; y = 6f }) { "nestedRectangles" }
-            nodeRef(params { x = 0f; y = -15f }) { "nestedPolygons" }
+            nodeRef(params { x = 10f; y = -15f }) { "nestedPolygons" }
+            nodeRef(params { x = -10f; y = -15f }) { "nestedImages" }
         }
 
         // And then we instantiate some scenes
         JJ.scenes.instantiate(initialSceneSpec).then({ println("Scene Loaded") })
     }
+
 
     fun onLoad() {
         println("Scene Loaded")
@@ -205,6 +211,38 @@ class D01_nested_transforms : Game(MyConfig.jjConfig) {
                                 fixture {
                                     shape = polygonTriangle
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun nestedImages(): SceneSpec {
+        val nestedParams = params { x = 4.1f; y = 4.1f; scaleX = 0.5f; scaleY = 0.75f; rotationD = 45f }
+        return scene {
+            thing {
+                render {
+                    imageTexture("textures/binarymonk.png") { width = 4f; height = 4f }
+                }
+            }
+            node(nestedParams) {
+                thing {
+                    render {
+                        imageTexture("textures/binarymonk.png") { width = 4f; height = 4f }
+                    }
+                }
+                node(nestedParams) {
+                    thing {
+                        render {
+                            imageTexture("textures/binarymonk.png") { width = 4f; height = 4f }
+                        }
+                    }
+                    node(nestedParams) {
+                        thing {
+                            render {
+                                imageTexture("textures/binarymonk.png") { width = 4f; height = 4f }
                             }
                         }
                     }

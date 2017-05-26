@@ -18,7 +18,7 @@ class D02_rendering : Game(MyConfig.jjConfig) {
         A composite Scene. This scene demonstrates the various ways we can draw things
          */
         val initialSceneSpec = scene {
-            nodeRef(params { x = 10f;y = 6f }) { "simpleTexture" }
+            nodeRef { "simpleTexture" }
         }
 
         // And then we instantiate some scenes
@@ -33,15 +33,16 @@ class D02_rendering : Game(MyConfig.jjConfig) {
         // The scale, rotation and translation of nested nodes happens in parents space.
         return scene {
             thing {
-                render{
-                 texture {
-                     path="/some/thing.png";
-                 }
+                render {
+                    imageTexture("textures/circuit_background.png") {
+                        width = 50f
+                    }
                 }
             }
         }
     }
 }
+
 
 object MyConfig {
     var jjConfig: JJConfig = JJConfig()

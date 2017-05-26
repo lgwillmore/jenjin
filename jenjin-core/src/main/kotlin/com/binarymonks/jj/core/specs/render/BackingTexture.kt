@@ -38,10 +38,9 @@ class Simple : BackingTexture {
 
     override fun provider(): TextureProvider {
         if (path == null) {
-            throw Exception("No Path set in backing texture")
+            throw Exception("No Path set in backing image")
         }
         return SimpleTextureProvider(JJ.B.assets.getAsset(path!!, Texture::class))
-
     }
 
     override fun assets(): Array<AssetReference> {
