@@ -1,5 +1,6 @@
 package com.binarymonks.jj.core
 
+import com.binarymonks.jj.core.assets.Assets
 import com.binarymonks.jj.core.layers.LayerStack
 import com.binarymonks.jj.core.physics.PhysicsWorld
 import com.binarymonks.jj.core.pools.Pools
@@ -18,4 +19,5 @@ class Backend{
     lateinit var renderWorld: RenderWorld
     lateinit var physicsWorld: PhysicsWorld
     lateinit var pools: Pools
+    lateinit var assets: Assets
 }

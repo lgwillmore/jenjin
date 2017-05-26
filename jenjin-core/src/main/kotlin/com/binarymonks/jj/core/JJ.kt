@@ -4,6 +4,7 @@ import com.binarymonks.jj.core.api.LayersAPI
 import com.binarymonks.jj.core.api.PoolsAPI
 import com.binarymonks.jj.core.api.ScenesAPI
 import com.binarymonks.jj.core.api.TimeAPI
+import com.binarymonks.jj.core.assets.Assets
 import com.binarymonks.jj.core.layers.GameRenderingLayer
 import com.binarymonks.jj.core.layers.LayerStack
 import com.binarymonks.jj.core.physics.PhysicsWorld
@@ -36,6 +37,7 @@ object JJ {
         B.physicsWorld = PhysicsWorld()
         B.renderWorld = RenderWorld()
         B.pools = Pools()
+        B.assets = Assets()
         B.layers.addLayerTop(GameRenderingLayer(config.gameViewConfig))
 
         scenes = B.scenes

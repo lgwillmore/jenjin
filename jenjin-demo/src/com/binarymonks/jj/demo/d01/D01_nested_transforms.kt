@@ -34,7 +34,6 @@ class D01_nested_transforms : Game(MyConfig.jjConfig) {
         }
 
         // And then we instantiate some scenes
-        println("Instantiating")
         JJ.scenes.instantiate(initialSceneSpec).then({ println("Scene Loaded") })
     }
 
@@ -45,6 +44,7 @@ class D01_nested_transforms : Game(MyConfig.jjConfig) {
     private fun nestedCircles(): SceneSpec {
         // The scale, rotation and translation of nested nodes happens in parents space.
         val nestedParams = params { x = 4.1f; y = 4.1f; scaleX = 0.5f; scaleY = 0.5f; rotationD = 45f }
+        val nestedParams2 = params { x = -4.1f; y = 4.1f; scaleX = 0.5f; scaleY = 0.5f; rotationD = -45f }
         return scene {
             thing {
                 physics {
@@ -73,6 +73,36 @@ class D01_nested_transforms : Game(MyConfig.jjConfig) {
                         }
                     }
                     node(nestedParams) {
+                        thing {
+                            physics {
+                                bodyType = BodyDef.BodyType.StaticBody
+                                fixture {
+                                    shape = Circle(4f)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            node(nestedParams2) {
+                thing {
+                    physics {
+                        bodyType = BodyDef.BodyType.StaticBody
+                        fixture {
+                            shape = Circle(4f)
+                        }
+                    }
+                }
+                node(nestedParams2) {
+                    thing {
+                        physics {
+                            bodyType = BodyDef.BodyType.StaticBody
+                            fixture {
+                                shape = Circle(4f)
+                            }
+                        }
+                    }
+                    node(nestedParams2) {
                         thing {
                             physics {
                                 bodyType = BodyDef.BodyType.StaticBody

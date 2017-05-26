@@ -5,7 +5,7 @@ package com.binarymonks.jj.core.specs
  * Used to indicate fields that can be set by value or by looking up a property of the runtime parent
  * [com.binarymonks.jj.core.things.Thing]
  */
-class PropDelegatable<T>(value: T) {
+class PropDelegate<T>(value: T) {
 
     var value: T = value
         private set

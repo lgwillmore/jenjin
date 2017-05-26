@@ -1,17 +1,8 @@
 package com.binarymonks.jj.core.specs.render
 
-import com.badlogic.gdx.graphics.Color
-import com.binarymonks.jj.core.specs.PropDelegatable
+import com.badlogic.gdx.utils.Array
 
 
-abstract class RenderSpec {
-    var name: String = ""
-    var layer: Int = 0
-    var priority: Int = 0
-    var color: PropDelegatable<Color> = PropDelegatable(Color.WHITE)
-}
-
-class TextureRenderSpec : RenderSpec() {
-    var width: Float = 0f
-    var height: Float = 0f
+class RenderSpec {
+    var renderNodes : Array<RenderNodeSpec> = Array()
 }

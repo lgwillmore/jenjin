@@ -54,7 +54,6 @@ class D00_Basic: Game(MyConfig.jjConfig) {
         }
 
         // And then we instantiate some scenes
-        println("Instantiating")
         JJ.scenes.instantiate(initialSceneSpec).then({ println("Scene Loaded") })
     }
 
@@ -100,9 +99,9 @@ object MyConfig{
     init {
         jjConfig.b2dConfig.debug = true
 
-        jjConfig.gameViewConfig.worldBoxWidth = 50f
+        jjConfig.gameViewConfig.worldBoxWidth = 30f
         jjConfig.gameViewConfig.cameraPosX = 0f
-        jjConfig.gameViewConfig.cameraPosY = 0f
+        jjConfig.gameViewConfig.cameraPosY = 10f
     }
 }
 
