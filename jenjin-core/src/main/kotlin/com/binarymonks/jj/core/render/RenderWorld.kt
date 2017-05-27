@@ -1,6 +1,7 @@
 package com.binarymonks.jj.core.render
 
 import box2dLight.RayHandler
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.PolygonRegion
@@ -26,6 +27,7 @@ class RenderWorld {
     internal var triangulator = EarClippingTriangulator()
     var worldToScreenScale: Float = 0.toFloat()
     private var currentShapeFill = false
+    private var batchStoredColor = Color.WHITE
 
     init {
         rayHandler = RayHandler(JJ.B.physicsWorld.b2dworld)
@@ -87,6 +89,15 @@ class RenderWorld {
             shapeRenderer.end()
             polyBatch.begin()
         }
+    }
+
+    fun switchBatchColorTo(color: Color){
+        batchStoredColor = polyBatch.color
+        polyBatch.color = color
+    }
+
+    fun switchBatchColorBack(){
+        polyBatch.color = batchStoredColor
     }
 
     fun end() {

@@ -1,4 +1,4 @@
-package com.binarymonks.jj.demo.d00
+package com.binarymonks.jj.demo
 
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.binarymonks.jj.core.Game
@@ -18,7 +18,7 @@ import com.binarymonks.jj.core.specs.physics.Polygon
  *
  * Uses physics rendering
  */
-class D00_Basic: Game(MyConfig.jjConfig) {
+class D00_Basic: Game(MyConfig01.jjConfig) {
 
     public override fun gameOn() {
 
@@ -94,8 +94,8 @@ class D00_Basic: Game(MyConfig.jjConfig) {
     }
 }
 
-object MyConfig{
-    var jjConfig: JJConfig=JJConfig()
+object MyConfig00 {
+    var jjConfig: JJConfig = JJConfig()
     init {
         jjConfig.b2dConfig.debug = true
 

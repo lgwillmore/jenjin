@@ -28,6 +28,13 @@ class PropDelegate<T>(value: T) {
         this.propRefKey = propertyKey
     }
 
+    /**
+     * Get the actual value dependent on property or value state
+     */
+    fun resolve(): T{
+       return value
+    }
+
     fun copy():PropDelegate<T>{
         val clone = PropDelegate(value)
         clone.propRefKey = propRefKey

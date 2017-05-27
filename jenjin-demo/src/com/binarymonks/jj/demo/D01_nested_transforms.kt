@@ -1,4 +1,4 @@
-package com.binarymonks.jj.demo.d01
+package com.binarymonks.jj.demo
 
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.binarymonks.jj.core.Game
@@ -12,7 +12,7 @@ import com.binarymonks.jj.core.specs.physics.Polygon
 import com.binarymonks.jj.core.specs.physics.Rectangle
 
 
-class D01_nested_transforms : Game(MyConfig.jjConfig) {
+class D01_nested_transforms : Game(MyConfig01.jjConfig) {
 
     public override fun gameOn() {
 
@@ -240,7 +240,7 @@ class D01_nested_transforms : Game(MyConfig.jjConfig) {
         return scene {
             thing {
                 physics{
-                    bodyType=BodyDef.BodyType.StaticBody
+                    bodyType= BodyDef.BodyType.StaticBody
                 }
                 render {
                     imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
@@ -249,7 +249,7 @@ class D01_nested_transforms : Game(MyConfig.jjConfig) {
             node(nestedParams) {
                 thing {
                     physics{
-                        bodyType=BodyDef.BodyType.StaticBody
+                        bodyType= BodyDef.BodyType.StaticBody
                     }
                     render {
                         imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
@@ -258,7 +258,7 @@ class D01_nested_transforms : Game(MyConfig.jjConfig) {
                 node(nestedParams) {
                     thing {
                         physics{
-                            bodyType=BodyDef.BodyType.StaticBody
+                            bodyType= BodyDef.BodyType.StaticBody
                         }
                         render {
                             imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
@@ -267,7 +267,7 @@ class D01_nested_transforms : Game(MyConfig.jjConfig) {
                     node(nestedParams) {
                         thing {
                             physics{
-                                bodyType=BodyDef.BodyType.StaticBody
+                                bodyType= BodyDef.BodyType.StaticBody
                             }
                             render {
                                 imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
@@ -280,7 +280,7 @@ class D01_nested_transforms : Game(MyConfig.jjConfig) {
     }
 }
 
-object MyConfig {
+object MyConfig01 {
     var jjConfig: JJConfig = JJConfig()
 
     init {
