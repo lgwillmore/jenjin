@@ -1,20 +1,25 @@
 package com.binarymonks.jj.core.things
 
 import com.binarymonks.jj.core.JJ
+import com.binarymonks.jj.core.audio.SoundEffects
 import com.binarymonks.jj.core.physics.PhysicsRoot
 import com.binarymonks.jj.core.render.RenderRoot
-
 
 class Thing(
         val uniqueName: String?,
         val physicsRoot: PhysicsRoot,
-        val renderRoot: RenderRoot
+        val renderRoot: RenderRoot,
+        val soundEffects: SoundEffects
 ) {
     var id = JJ.B.nextID()
 
     init {
         physicsRoot.parent = this
         renderRoot.parent = this
+    }
+
+    fun hasProperty(propertyKey: String): Boolean {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 

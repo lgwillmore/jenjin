@@ -15,7 +15,7 @@ import com.binarymonks.jj.core.specs.builders.*
  * [com.binarymonks.jj.core.specs.render.RenderNodeSpec.priority] Controls the render order
  * of the [com.binarymonks.jj.core.things.Thing] nodes as they appear in a Layer.
  *
- * This lets you add arbitrary internal layers to a [com.binarymonks.jj.core.things.Thing] to build the composite render you want. At the same time
+ * This lets you add arbitrary internal layers to a [com.binarymonks.jj.core.things.Thing] to build the composite render you want. At the same clock
  * it lets [com.binarymonks.jj.core.things.Thing]s in the world with interleaving layers render as you would expect them to when they overlap.
  *
  * If 1 of your objects suddenly needs more layer complexity
@@ -40,12 +40,7 @@ class D02_rendering_layers : Game(MyConfig01.jjConfig) {
             nodeRef(params { y = 10f }) { "1" }
         }
 
-
-        JJ.scenes.instantiate(initialSceneSpec).then({ println("Scene Loaded") })
-    }
-
-    fun onLoad() {
-        println("Scene Loaded")
+        JJ.scenes.instantiate(initialSceneSpec)
     }
 
     private fun layer0And2(): SceneSpec {

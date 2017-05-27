@@ -8,6 +8,7 @@ import com.binarymonks.jj.core.things.Thing
 class RenderRoot(var specID: Int) {
     var parent: Thing? = null
         set(value) {
+            field = value
             defaultRenderLayers.forEach {
                 it.value.renderNodes.forEach {
                     it.parent = value

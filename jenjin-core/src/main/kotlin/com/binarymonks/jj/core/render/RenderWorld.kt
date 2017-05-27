@@ -20,7 +20,7 @@ class RenderWorld {
     internal var renderIDCounter = 0
     var shapeRenderer = ShapeRenderer()
     var polyBatch = PolygonSpriteBatch()
-    var rayHandler: RayHandler
+    var rayHandler: RayHandler = RayHandler(JJ.B.physicsWorld.b2dworld)
     var defaultRenderGraph = RenderGraph()
     var lightSourceRenderGraph = RenderGraph()
     var polySpriteCache = ObjectMap<Int, PolygonSprite>()
@@ -30,7 +30,6 @@ class RenderWorld {
     private var batchStoredColor = Color.WHITE
 
     init {
-        rayHandler = RayHandler(JJ.B.physicsWorld.b2dworld)
         rayHandler.setBlurNum(3)
         rayHandler.setAmbientLight(0.0f, 0.0f, 0.0f, 1f)
     }

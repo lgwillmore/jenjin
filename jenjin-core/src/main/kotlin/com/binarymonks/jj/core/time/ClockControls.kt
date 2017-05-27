@@ -1,9 +1,9 @@
 package com.binarymonks.jj.core.time
 
 import com.badlogic.gdx.Gdx
-import com.binarymonks.jj.core.api.TimeAPI
+import com.binarymonks.jj.core.api.ClockAPI
 
-class TimeControls : TimeAPI {
+class ClockControls : ClockAPI {
 
     override val delta: Double
         get() = DELTA
@@ -31,16 +31,20 @@ class TimeControls : TimeAPI {
         get() = fixedDelta * realToGameRatio
 
     fun setFixedDelta(fixedTime: Double) {
-        TimeControls.fixedDelta = fixedTime
-        TimeControls.fixedDeltaFloat = fixedTime.toFloat()
+        ClockControls.fixedDelta = fixedTime
+        ClockControls.fixedDeltaFloat = fixedTime.toFloat()
     }
 
-    fun getRealToGameRatio(): Double {
+    fun getRealToGameRatioDouble(): Double {
         return realToGameRatio.toDouble()
     }
 
+    fun getRealToGameRatio(): Float {
+        return realToGameRatio
+    }
+
     fun setRealToGameRatio(realToGameRatio: Float) {
-        TimeControls.realToGameRatio = realToGameRatio
+        ClockControls.realToGameRatio = realToGameRatio
     }
 
     fun getTimeFunction(): TimeFunction {

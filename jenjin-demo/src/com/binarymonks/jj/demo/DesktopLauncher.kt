@@ -9,6 +9,7 @@ object DesktopLauncher {
         lwjglConfig.height = 1000
         lwjglConfig.width = 1000
 
-        LwjglApplication(D02_rendering_layers(), lwjglConfig)
+        //Swap out the various demo Games here
+        LwjglApplication(D03_collisions(), lwjglConfig)
     }
 }

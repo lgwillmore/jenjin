@@ -6,7 +6,10 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.*
 import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.JJ
+import com.binarymonks.jj.core.audio.SoundEffects
+import com.binarymonks.jj.core.audio.SoundParams
 import com.binarymonks.jj.core.extensions.copy
+import com.binarymonks.jj.core.physics.PhysicsNode
 import com.binarymonks.jj.core.physics.PhysicsRoot
 import com.binarymonks.jj.core.pools.new
 import com.binarymonks.jj.core.render.RenderRoot
@@ -51,16 +54,23 @@ class MasterFactory {
         val thing = Thing(
                 paramsStack.peek().uniqueInstanceName,
                 physicsRoot = buildPhysicsRoot(thingSpec.physics, paramsStack),
-                renderRoot = buildRenderRoot(thingSpec.render, paramsStack)
+                renderRoot = buildRenderRoot(thingSpec.render, paramsStack),
+                soundEffects = buildSoundEffects(thingSpec.sounds)
         )
         JJ.B.renderWorld.addThing(thing)
         return thing
     }
 
+    private fun buildSoundEffects(sounds: Array<SoundParams>): SoundEffects {
+        val soundEffects = SoundEffects()
+        soundEffects.addSoundEffects(sounds)
+        return soundEffects
+    }
+
     private fun buildRenderRoot(renderSpec: RenderSpec, paramsStack: ParamStack): RenderRoot {
-        val renderRoot : RenderRoot = RenderRoot(renderSpec.id)
-        for (nodeSpec in renderSpec.renderNodes){
-            val node : RenderNode = nodeSpec.makeNode(paramsStack)
+        val renderRoot: RenderRoot = RenderRoot(renderSpec.id)
+        for (nodeSpec in renderSpec.renderNodes) {
+            val node: RenderNode = nodeSpec.makeNode(paramsStack)
             renderRoot.addNode(nodeSpec.layer, node)
         }
         return renderRoot
@@ -82,14 +92,27 @@ class MasterFactory {
         def.gravityScale = physicsSpec.gravityScale
         val body = JJ.B.physicsWorld.b2dworld.createBody(def)
 
-        for (fixtureSpec in physicsSpec.fixtures) {
-            buildFixture(fixtureSpec, body, paramsStack.scaleX, paramsStack.scaleY)
+        val physicsRoot = PhysicsRoot(body)
+
+        for (ibegin in physicsSpec.beginCollisions) {
+            physicsRoot.collisionResolver.addInitialBegin(ibegin.clone())
+        }
+        for (fbegin in physicsSpec.finalBeginCollisions) {
+            physicsRoot.collisionResolver.addFinalBegin(fbegin.clone())
+        }
+        for (end in physicsSpec.endCollisions) {
+            physicsRoot.collisionResolver.addInitialBegin(end.clone())
         }
 
-        return PhysicsRoot(body)
+        for (fixtureSpec in physicsSpec.fixtures) {
+            buildFixture(physicsRoot, fixtureSpec, body, paramsStack.scaleX, paramsStack.scaleY)
+        }
+
+        return physicsRoot
+
     }
 
-    private fun buildFixture(fixtureSpec: FixtureSpec, body: Body, scaleX: Float, scaleY: Float) {
+    private fun buildFixture(physicsRoot: PhysicsRoot, fixtureSpec: FixtureSpec, body: Body, scaleX: Float, scaleY: Float) {
         val shape = buildShape(fixtureSpec, scaleX, scaleY)
         val fDef = FixtureDef()
         fDef.shape = shape
@@ -102,24 +125,9 @@ class MasterFactory {
 //            fDef.filter.maskBits = cd.mask
 //            Re.cycle(cd)
 
-        val f = body.createFixture(fDef)
-//            node.fixture = f
-//            f.userData = node
-
-//            val resolver = CollisionResolver()
-//            resolver.setSelf(thing)
-//            for (ibegin in fixtureSpec.initialBeginCollisions) {
-//                resolver.addInitialBegin(ibegin.clone())
-//            }
-//            for (fbegin in fixtureSpec.finalBeginCollisions) {
-//                resolver.addFinalBegin(fbegin.clone())
-//            }
-//            for (end in fixtureSpec.endCollisions) {
-//                resolver.addInitialBegin(end.clone())
-//            }
-//
-//            node.collisionResolver = resolver
-
+        val fixture = body.createFixture(fDef)
+        val physicsNode = PhysicsNode(fixture, physicsRoot)
+        fixture.userData = physicsNode
         shape!!.dispose()
     }
 
@@ -166,11 +174,11 @@ class MasterFactory {
 
     private fun returnParamsStack(stack: ParamStack) {
         stack.clear()
-        stack.rotationD=0f
-        stack.x=0f
-        stack.y=0f
-        stack.scaleX=1f
-        stack.scaleY=1f
+        stack.rotationD = 0f
+        stack.x = 0f
+        stack.y = 0f
+        stack.scaleX = 1f
+        stack.scaleY = 1f
         stack.transformMatrix.idt()
         paramsStackCache.add(stack)
     }
@@ -181,12 +189,12 @@ class MasterFactory {
 
 class ParamStack : Array<InstanceParams>() {
 
-    var rotationD =0f
+    var rotationD = 0f
     var x = 0f
     var y = 0f
-    var scaleX =1f
-    var scaleY =1f
-    var transformMatrix : Matrix3 = new(Matrix3::class)
+    var scaleX = 1f
+    var scaleY = 1f
+    var transformMatrix: Matrix3 = new(Matrix3::class)
 
     override fun add(params: InstanceParams) {
         super.add(params)

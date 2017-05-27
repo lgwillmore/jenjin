@@ -54,11 +54,7 @@ class D00_Basic: Game(MyConfig01.jjConfig) {
         }
 
         // And then we instantiate some scenes
-        JJ.scenes.instantiate(initialSceneSpec).then({ println("Scene Loaded") })
-    }
-
-    fun onLoad() {
-        println("Scene Loaded")
+        JJ.scenes.instantiate(initialSceneSpec)
     }
 
     private fun square(): SceneSpec {

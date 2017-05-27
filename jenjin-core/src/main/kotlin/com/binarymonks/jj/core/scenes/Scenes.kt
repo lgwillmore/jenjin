@@ -1,7 +1,8 @@
 package com.binarymonks.jj.core.scenes
 
-import com.badlogic.gdx.utils.ObjectMap
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.utils.Array
+import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.api.ScenesAPI
 import com.binarymonks.jj.core.assets.AssetReference
@@ -51,9 +52,18 @@ class Scenes : ScenesAPI {
         for (entry in sceneSpecs) {
             if (entry.value.thingSpec != null) {
                 addRenderAssets(assets, entry.value.thingSpec!!)
+                addSoundAssets(assets, entry.value.thingSpec!!)
             }
         }
         return assets
+    }
+
+    private fun addSoundAssets(assets: Array<AssetReference>, thingSpec: ThingSpec) {
+        for (soundParams in thingSpec.sounds) {
+            for (path in soundParams.soundPaths) {
+                assets.add(AssetReference(Sound::class, path))
+            }
+        }
     }
 
     private fun addRenderAssets(assets: Array<AssetReference>, thingSpec: ThingSpec) {

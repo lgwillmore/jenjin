@@ -1,6 +1,6 @@
 package com.binarymonks.jj.core.api
 
-interface TimeAPI {
+interface ClockAPI {
 
     val delta: Double
 

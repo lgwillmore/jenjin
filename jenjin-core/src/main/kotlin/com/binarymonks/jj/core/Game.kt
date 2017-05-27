@@ -24,7 +24,7 @@ abstract class Game (val jjConfig: JJConfig = JJConfig()) : ApplicationListener{
     override fun resize(width: Int, height: Int) {
     }
     override fun render() {
-        JJ.B.time.update()
+        JJ.B.clock.update()
         JJ.B.assets.update()
 //        JJ.B.tasks.preloopTasks.update()
 //        JJ.B.thingWorld.update()
