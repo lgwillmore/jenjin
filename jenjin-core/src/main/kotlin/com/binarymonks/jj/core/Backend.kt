@@ -20,4 +20,11 @@ class Backend{
     lateinit var physicsWorld: PhysicsWorld
     lateinit var pools: Pools
     lateinit var assets: Assets
+
+    private var idCounter = 0
+
+    fun nextID():Int{
+        return idCounter++
+    }
+
 }

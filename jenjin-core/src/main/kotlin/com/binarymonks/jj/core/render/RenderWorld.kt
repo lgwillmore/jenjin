@@ -34,7 +34,7 @@ class RenderWorld {
     }
 
     fun addThing(thing: Thing) {
-//        defaultRenderGraph.add(thing.path, thing.id, thing.renderRoot.defaultThingLayers)
+        defaultRenderGraph.add(thing.renderRoot.specID, thing.id, thing.renderRoot.defaultRenderLayers)
 //        lightSourceRenderGraph.add(thing.path, thing.id, thing.renderRoot.lightSourceThingLayers)
     }
 
@@ -63,7 +63,7 @@ class RenderWorld {
     }
 
     fun removeThing(removal: Thing) {
-//        defaultRenderGraph.remove(removal.path, removal.id, removal.renderRoot.defaultThingLayers)
+        defaultRenderGraph.remove(removal.renderRoot.specID, removal.id, removal.renderRoot.defaultRenderLayers)
 //        lightSourceRenderGraph.remove(removal.path, removal.id, removal.renderRoot.lightSourceThingLayers)
     }
 

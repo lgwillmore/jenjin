@@ -30,7 +30,7 @@ abstract class BackingTexture : Json.Serializable {
     }
 }
 
-class Simple : BackingTexture {
+class SimpleImage : BackingTexture {
 
     constructor() : super()
 

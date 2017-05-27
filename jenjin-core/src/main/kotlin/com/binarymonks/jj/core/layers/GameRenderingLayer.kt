@@ -4,11 +4,15 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
+import com.badlogic.gdx.utils.ObjectMap
+import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.GameViewConfig
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.pools.new
 import com.binarymonks.jj.core.render.RenderGraph
+import com.binarymonks.jj.core.render.RenderLayer
+import com.binarymonks.jj.core.render.nodes.RenderNode
 
 class GameRenderingLayer(
         worldBoxWidth: Float,
@@ -52,19 +56,19 @@ class GameRenderingLayer(
     }
 
     private fun renderGraph(renderGraph: RenderGraph) {
-//        val layers = renderGraph.renderLayers
+        val layers = renderGraph.graphLayers
         JJ.B.renderWorld.polyBatch.enableBlending()
         JJ.B.renderWorld.polyBatch.setProjectionMatrix(camera.combined)
         JJ.B.renderWorld.polyBatch.begin()
-//        var renderedCount = 0
-//        var layerIndex = 0
-//        while (renderedCount < layers.size) {
-//            if (layers.containsKey(layerIndex)) {
-//                renderedCount++
-//                updateLayer(layers.get(layerIndex))
-//            }
-//            layerIndex++
-//        }
+        var renderedCount = 0
+        var layerIndex = 0
+        while (renderedCount < layers.size) {
+            if (layers.containsKey(layerIndex)) {
+                renderedCount++
+                updateLayer(layers.get(layerIndex))
+            }
+            layerIndex++
+        }
         JJ.B.renderWorld.end()
     }
 
@@ -73,23 +77,23 @@ class GameRenderingLayer(
         JJ.B.renderWorld.rayHandler.updateAndRender()
     }
 
-//    private fun updateLayer(layer: RenderGraph.RenderLayer) {
-//        for (componentsByThing in layer.thingLayersByThingPathAndID) {
-//            updateThingLayers(componentsByThing.value)
-//        }
-//    }
-//
-//    private fun updateThingLayers(thingLayers: ObjectMap<Int, ThingLayer>) {
-//        for (thingLayer in thingLayers) {
-//            updateThingNodes(thingLayer.value.renderNodes)
-//        }
-//    }
-//
-//    private fun updateThingNodes(renderNodes: Array<RenderNode>) {
-//        for (node in renderNodes) {
-//            node.render(camera)
-//        }
-//    }
+    private fun updateLayer(layer: RenderGraph.GraphLayer) {
+        for (componentsByThing in layer.thingLayersByThingPathAndID) {
+            updateThingLayers(componentsByThing.value)
+        }
+    }
+
+    private fun updateThingLayers(thingLayers: ObjectMap<Int, RenderLayer>) {
+        for (thingLayer in thingLayers) {
+            updateThingNodes(thingLayer.value.renderNodes)
+        }
+    }
+
+    private fun updateThingNodes(renderNodes: Array<RenderNode>) {
+        for (node in renderNodes) {
+            node.render(camera)
+        }
+    }
 
     fun setView(worldWidth: Float, cameraX: Float, cameraY: Float) {
         val w = Gdx.graphics.width.toFloat()

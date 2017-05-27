@@ -57,8 +57,8 @@ class Scenes : ScenesAPI {
     }
 
     private fun addRenderAssets(assets: Array<AssetReference>, thingSpec: ThingSpec) {
-        for(node in thingSpec.render.renderNodes){
-            node?: assets.addAll(node.getAssets())
+        for (node in thingSpec.render.renderNodes) {
+            assets.addAll(node.getAssets())
         }
     }
 }

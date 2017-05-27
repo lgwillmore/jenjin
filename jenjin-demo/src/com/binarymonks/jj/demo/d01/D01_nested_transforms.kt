@@ -126,13 +126,18 @@ class D01_nested_transforms : Game(MyConfig.jjConfig) {
     private fun nestedRectangles(): SceneSpec {
         // The scale, rotation and translation of nested nodes happens in parents space.
         val nestedParams = params { x = 4.1f; y = 4.1f; scaleX = 0.5f; scaleY = 0.75f; rotationD = 45f }
-        val rectangle = Rectangle(8f, 8f)
+        val imageWidth = 8f
+        val imageheight = 8f
+        val rectangle = Rectangle(imageWidth, imageheight)
         return scene {
             thing {
                 physics {
                     bodyType = BodyDef.BodyType.StaticBody
                     fixture {
                         shape = rectangle
+                    }
+                    render {
+                        imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
                     }
                 }
             }
@@ -143,6 +148,9 @@ class D01_nested_transforms : Game(MyConfig.jjConfig) {
                         fixture {
                             shape = rectangle
                         }
+                        render {
+                            imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
+                        }
                     }
                 }
                 node(nestedParams) {
@@ -152,6 +160,9 @@ class D01_nested_transforms : Game(MyConfig.jjConfig) {
                             fixture {
                                 shape = rectangle
                             }
+                            render {
+                                imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
+                            }
                         }
                     }
                     node(nestedParams) {
@@ -160,6 +171,9 @@ class D01_nested_transforms : Game(MyConfig.jjConfig) {
                                 bodyType = BodyDef.BodyType.StaticBody
                                 fixture {
                                     shape = rectangle
+                                }
+                                render {
+                                    imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
                                 }
                             }
                         }
@@ -221,28 +235,42 @@ class D01_nested_transforms : Game(MyConfig.jjConfig) {
 
     private fun nestedImages(): SceneSpec {
         val nestedParams = params { x = 4.1f; y = 4.1f; scaleX = 0.5f; scaleY = 0.75f; rotationD = 45f }
+        val imageWidth = 8f
+        val imageheight = 8f
         return scene {
             thing {
+                physics{
+                    bodyType=BodyDef.BodyType.StaticBody
+                }
                 render {
-                    imageTexture("textures/binarymonk.png") { width = 4f; height = 4f }
+                    imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
                 }
             }
             node(nestedParams) {
                 thing {
+                    physics{
+                        bodyType=BodyDef.BodyType.StaticBody
+                    }
                     render {
-                        imageTexture("textures/binarymonk.png") { width = 4f; height = 4f }
+                        imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
                     }
                 }
                 node(nestedParams) {
                     thing {
+                        physics{
+                            bodyType=BodyDef.BodyType.StaticBody
+                        }
                         render {
-                            imageTexture("textures/binarymonk.png") { width = 4f; height = 4f }
+                            imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
                         }
                     }
                     node(nestedParams) {
                         thing {
+                            physics{
+                                bodyType=BodyDef.BodyType.StaticBody
+                            }
                             render {
-                                imageTexture("textures/binarymonk.png") { width = 4f; height = 4f }
+                                imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
                             }
                         }
                     }

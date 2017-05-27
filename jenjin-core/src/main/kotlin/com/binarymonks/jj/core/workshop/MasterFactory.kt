@@ -9,10 +9,13 @@ import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.extensions.copy
 import com.binarymonks.jj.core.physics.PhysicsRoot
 import com.binarymonks.jj.core.pools.new
+import com.binarymonks.jj.core.render.RenderRoot
+import com.binarymonks.jj.core.render.nodes.RenderNode
 import com.binarymonks.jj.core.specs.InstanceParams
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.ThingSpec
 import com.binarymonks.jj.core.specs.physics.*
+import com.binarymonks.jj.core.specs.render.RenderSpec
 import com.binarymonks.jj.core.things.Thing
 
 class MasterFactory {
@@ -45,13 +48,22 @@ class MasterFactory {
 
     private fun createThing(thingSpec: ThingSpec?, paramsStack: ParamStack): Thing? {
         if (thingSpec == null) return null
-
-        val physicsRoot: PhysicsRoot = buildPhysicsRoot(thingSpec.physics, paramsStack)
-
-        return Thing(
+        val thing = Thing(
                 paramsStack.peek().uniqueInstanceName,
-                physicsRoot
+                physicsRoot = buildPhysicsRoot(thingSpec.physics, paramsStack),
+                renderRoot = buildRenderRoot(thingSpec.render, paramsStack)
         )
+        JJ.B.renderWorld.addThing(thing)
+        return thing
+    }
+
+    private fun buildRenderRoot(renderSpec: RenderSpec, paramsStack: ParamStack): RenderRoot {
+        val renderRoot : RenderRoot = RenderRoot(renderSpec.id)
+        for (nodeSpec in renderSpec.renderNodes){
+            val node : RenderNode = nodeSpec.makeNode(paramsStack)
+            renderRoot.addNode(nodeSpec.layer, node)
+        }
+        return renderRoot
     }
 
     private fun buildPhysicsRoot(physicsSpec: PhysicsSpec, paramsStack: ParamStack): PhysicsRoot {
@@ -167,7 +179,7 @@ class MasterFactory {
 }
 
 
-private class ParamStack() : Array<InstanceParams>() {
+class ParamStack : Array<InstanceParams>() {
 
     var rotationD =0f
     var x = 0f

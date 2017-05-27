@@ -1,0 +1,41 @@
+package com.binarymonks.jj.core.render.nodes
+
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.physics.box2d.Transform
+import com.binarymonks.jj.core.JJ
+import com.binarymonks.jj.core.pools.new
+import com.binarymonks.jj.core.specs.PropDelegate
+
+class TextureRenderNode(
+        priority: Int,
+        color: PropDelegate<Color>,
+        internal var provider: TextureProvider,
+        internal var offsetX: Float,
+        internal var offsetY: Float,
+        internal var rotationD: Float,
+        internal var width: Float,
+        internal var height: Float,
+        internal var scaleX: Float,
+        internal var scaleY: Float) : RenderNode(priority, color) {
+
+    override fun render(camera: OrthographicCamera) {
+        var relativeRotationD = myParent().physicsRoot.rotationR() * MathUtils.radiansToDegrees + rotationD;
+
+        var frame : TextureRegion = provider.getFrame(relativeRotationD)
+        if (frame != null) {
+            JJ.B.renderWorld.switchToBatch()
+            val transform : Transform = myParent().physicsRoot.transform
+            val position = new(Vector2::class).set(offsetX, offsetY)
+            transform.mul(position)
+            JJ.B.renderWorld.polyBatch.draw(frame, position.x - (width / 2f), position.y - (height / 2f), width / 2f, height / 2f, width, height, scaleX, scaleY, relativeRotationD)
+        }
+    }
+
+    override fun dispose() {
+        provider.dispose()
+    }
+}

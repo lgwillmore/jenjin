@@ -7,10 +7,10 @@ package com.binarymonks.jj.core.specs
  */
 class PropDelegate<T>(value: T) {
 
-    var value: T = value
+    private var value: T = value
         private set
 
-    var propRefKey: String? = null
+    private var propRefKey: String? = null
         private set
 
     /**
@@ -26,6 +26,12 @@ class PropDelegate<T>(value: T) {
      */
     fun setToPropRef(propertyKey: String) {
         this.propRefKey = propertyKey
+    }
+
+    fun copy():PropDelegate<T>{
+        val clone = PropDelegate(value)
+        clone.propRefKey = propRefKey
+        return clone
     }
 
 
