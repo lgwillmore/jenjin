@@ -3,19 +3,17 @@ package com.binarymonks.jj.core.physics
 import com.badlogic.gdx.physics.box2d.World
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.api.PhysicsAPI
-import com.binarymonks.jj.core.physics.collisions.JJContactListener
 
 class PhysicsWorld : PhysicsAPI {
 
     var b2dworld: World = World(JJ.B.config.b2dConfig.gravigy, true)
     var velocityIterations = 10
     var positionIterations = 20
-//    var collisionGroups: CollisionGroups = CollisionGroupsBasic()
-//    internal var postPhysicsFunctions: Array<Function> = Array()
+    override var collisionGroups = CollisionGroups()
     var isUpdating = false
         internal set
 
-    init{
+    init {
         b2dworld.setContactListener(JJContactListener())
     }
 
@@ -39,4 +37,5 @@ class PhysicsWorld : PhysicsAPI {
 //    fun addPostPhysicsFunction(function: Function) {
 //        postPhysicsFunctions.add(function)
 //    }
+
 }

@@ -3,7 +3,6 @@ package com.binarymonks.jj.core.physics
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.Transform
-import com.binarymonks.jj.core.physics.collisions.CollisionResolver
 import com.binarymonks.jj.core.things.Thing
 
 class PhysicsRoot(val b2DBody: Body) {

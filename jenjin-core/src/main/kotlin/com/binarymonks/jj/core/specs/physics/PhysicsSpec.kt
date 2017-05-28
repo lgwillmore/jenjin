@@ -2,7 +2,7 @@ package com.binarymonks.jj.core.specs.physics
 
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.utils.Array
-import com.binarymonks.jj.core.physics.collisions.CollisionHandler
+import com.binarymonks.jj.core.physics.CollisionHandler
 
 
 class PhysicsSpec {

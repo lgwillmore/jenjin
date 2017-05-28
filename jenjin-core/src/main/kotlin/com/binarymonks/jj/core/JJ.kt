@@ -1,9 +1,6 @@
 package com.binarymonks.jj.core
 
-import com.binarymonks.jj.core.api.LayersAPI
-import com.binarymonks.jj.core.api.PoolsAPI
-import com.binarymonks.jj.core.api.ScenesAPI
-import com.binarymonks.jj.core.api.ClockAPI
+import com.binarymonks.jj.core.api.*
 import com.binarymonks.jj.core.assets.Assets
 import com.binarymonks.jj.core.audio.Audio
 import com.binarymonks.jj.core.layers.GameRenderingLayer
@@ -26,6 +23,7 @@ object JJ {
     lateinit var layers: LayersAPI
     lateinit var pools: PoolsAPI
     lateinit var clock: ClockAPI
+    lateinit var physics: PhysicsAPI
 
     lateinit var B: Backend
 
@@ -46,5 +44,6 @@ object JJ {
         layers = B.layers
         pools = B.pools
         clock = B.clock
+        physics = B.physicsWorld
     }
 }

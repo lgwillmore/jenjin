@@ -1,4 +1,4 @@
-package com.binarymonks.jj.core.physics.collisions
+package com.binarymonks.jj.core.physics
 
 import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.Fixture
@@ -8,14 +8,14 @@ import com.binarymonks.jj.core.things.Thing
 
 abstract class CollisionHandler {
 
-    protected var ignoreProperties = Array<String>()
-    protected var matchProperties = Array<String>()
+    protected var ignoreProperties = com.badlogic.gdx.utils.Array<String>()
+    protected var matchProperties = com.badlogic.gdx.utils.Array<String>()
     private var enabled = true
 
-    fun performCollision(me: Thing, myFixture: Fixture,
-                         other: Thing, otherFixture: Fixture, contact: Contact) {
+    fun performCollision(me: com.binarymonks.jj.core.things.Thing, myFixture: com.badlogic.gdx.physics.box2d.Fixture,
+                         other: com.binarymonks.jj.core.things.Thing, otherFixture: com.badlogic.gdx.physics.box2d.Fixture, contact: com.badlogic.gdx.physics.box2d.Contact) {
         if (enabled) {
-            val gameData = otherFixture.userData as PhysicsNode
+            val gameData = otherFixture.userData as com.binarymonks.jj.core.physics.PhysicsNode
             for (ignore in ignoreProperties) {
                 if (gameData.hasProperty(ignore)) {
                     return
@@ -34,11 +34,11 @@ abstract class CollisionHandler {
         }
     }
 
-    abstract fun collision(me: Thing, myFixture: Fixture, other: Thing, otherFixture: Fixture, contact: Contact)
+    abstract fun collision(me: com.binarymonks.jj.core.things.Thing, myFixture: com.badlogic.gdx.physics.box2d.Fixture, other: com.binarymonks.jj.core.things.Thing, otherFixture: com.badlogic.gdx.physics.box2d.Fixture, contact: com.badlogic.gdx.physics.box2d.Contact)
 
-    abstract fun clone(): CollisionHandler
+    abstract fun clone(): com.binarymonks.jj.core.physics.CollisionHandler
 
-    fun copyProperties(copyFrom: CollisionHandler) {
+    fun copyProperties(copyFrom: com.binarymonks.jj.core.physics.CollisionHandler) {
         this.matchProperties.addAll(copyFrom.matchProperties)
         this.ignoreProperties.addAll(copyFrom.ignoreProperties)
     }

@@ -9,6 +9,17 @@ import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.*
 import com.binarymonks.jj.core.specs.physics.Circle
 
+/**
+ * Collisions are obviously very important.
+ *
+ * To hook into the collision lifecycle you need to implement a [com.binarymonks.jj.core.physics.collisions.CollisionHandler]
+ *
+ * Here we use a built in [com.binarymonks.jj.core.physics.collisions.CollisionHandler] to trigger a sound.
+ *
+ * Deciding what can collide with what is also important for how your physics behaves with things such as layers, projectiles and terrain.
+ *
+ * For that you can configure your collision groups with [com.binarymonks.jj.core.JJ.physics.setCollisionGroups]
+ */
 class D03_collisions: Game(MyConfig01.jjConfig) {
 
     public override fun gameOn() {
@@ -19,11 +30,20 @@ class D03_collisions: Game(MyConfig01.jjConfig) {
         JJ.scenes.loadAssetsNow()
 
         val initialSceneSpec = scene {
-            nodeRef(params { x = -8f; y = 8f }) { "ball" }
-            nodeRef(params { x = -2f; y = 9f; scaleX = 2f; scaleY = 2f }) { "ball" }
-            nodeRef(params { x = 2f; y = 10f }) { "ball" }
-            nodeRef(params { x = +8f; y = 11f }) { "ball" }
-            nodeRef(params { x = 0f; y = 0f; scaleX = 20f }) { "floor" }
+            nodeRef(params {
+                x = -8f
+                y = 8f
+                setProperty("collisionGroup", )
+            })
+            { "ball" }
+            nodeRef(params { x = -2f; y = 9f; scaleX = 2f; scaleY = 2f })
+            { "ball" }
+            nodeRef(params { x = 2f; y = 10f })
+            { "ball" }
+            nodeRef(params { x = +8f; y = 11f })
+            { "ball" }
+            nodeRef(params { x = 0f; y = 0f; scaleX = 20f })
+            { "floor" }
         }
 
         JJ.scenes.instantiate(initialSceneSpec)
@@ -39,6 +59,8 @@ class D03_collisions: Game(MyConfig01.jjConfig) {
                     fixture {
                         shape = Circle()
                         restitution = 0.7f
+                        // We bind the collision group to a property key
+                        collisionGroupProperty("collisionGroup")
                     }
                     beginCollision(SoundCollision(soundName = "bounce"))
                 }
@@ -52,14 +74,14 @@ class D03_collisions: Game(MyConfig01.jjConfig) {
                 physics {
                     bodyType = BodyDef.BodyType.StaticBody
                     fixture {
+                        // We bind the collision group to a property key
+                        collisionGroupProperty("collisionGroup")
                     }
                 }
             }
         }
     }
 }
-
-
 
 object MyConfig03 {
     var jjConfig: JJConfig = JJConfig()

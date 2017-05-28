@@ -1,6 +1,7 @@
 package com.binarymonks.jj.core.specs
 
 import com.badlogic.gdx.math.Matrix3
+import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.pools.PoolManager
 import com.binarymonks.jj.core.pools.new
 
@@ -17,6 +18,7 @@ class InstanceParams internal constructor() {
     var scaleX: Float = 1f
     var scaleY: Float = 1f
     var rotationD: Float = 0f
+    var properties: ObjectMap<String, Any> = ObjectMap()
     /**
      * This must be a name that is unique to its parent SceneSpec child nodes if set
      */
@@ -25,8 +27,11 @@ class InstanceParams internal constructor() {
      * This must be a name that is globally unique if set. It is used for retrieving
      */
     var uniqueInstanceName: String? = null
-
     private var transformMatrix: Matrix3 = new(Matrix3::class)
+
+    fun setProperty(name: String, value: Any? = null){
+        properties.put(name,value)
+    }
 
     fun getTransformMatrix(): Matrix3 {
         transformMatrix.idt()
@@ -46,6 +51,8 @@ class ParamsPoolManager : PoolManager<InstanceParams> {
         instanceParams.scaleX = 1f
         instanceParams.scaleY = 1f
         instanceParams.rotationD = 0f
+        instanceParams.properties.clear()
+
     }
 
     override fun create_new(): InstanceParams {

@@ -3,6 +3,7 @@ package com.binarymonks.jj.core.physics.collisions
 import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.Fixture
 import com.binarymonks.jj.core.audio.SoundMode
+import com.binarymonks.jj.core.physics.CollisionHandler
 import com.binarymonks.jj.core.things.Thing
 
 /**

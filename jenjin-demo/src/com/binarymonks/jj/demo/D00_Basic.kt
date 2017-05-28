@@ -16,18 +16,16 @@ import com.binarymonks.jj.core.specs.physics.Polygon
  *
  * Create some scenes and instantiate them.
  *
- * Uses physics rendering
+ * Box2D provides the physics, so being familiar with it is obviously very useful. There are loads of online resources.
  */
 class D00_Basic: Game(MyConfig01.jjConfig) {
 
     public override fun gameOn() {
 
-        // Scenes we can use again by referring to the path
         JJ.scenes.addSceneSpec("square", square())
         JJ.scenes.addSceneSpec("circle", circle())
         JJ.scenes.addSceneSpec("floor", floor())
 
-        // A composite scene
         val initialSceneSpec = scene {
             nodeRef(params { x = -8f; y = 8f }) { "circle" }
             nodeRef(params { x = -2f; y = 8f; scaleX = 2f; scaleY = 2f }) { "circle" }
@@ -35,7 +33,6 @@ class D00_Basic: Game(MyConfig01.jjConfig) {
             nodeRef(params { x = +8f; y = 8f }) { "circle" }
             nodeRef(params { x = -6f; y = 5f; rotationD = 45f }) { "square" }
             nodeRef(params { x = +6f; y = 5f; rotationD = 45f }) { "square" }
-            //Build a node in a scene
             node(params { x = 0f; y = 6f }) {
                 thing {
                     physics {
@@ -53,17 +50,14 @@ class D00_Basic: Game(MyConfig01.jjConfig) {
             nodeRef(params { x = 0f; y = 0f; scaleX = 20f }) { "floor" }
         }
 
-        // And then we instantiate some scenes
         JJ.scenes.instantiate(initialSceneSpec)
     }
 
     private fun square(): SceneSpec {
-        // The default values mean that we get a simple dynamic square
         return scene { thing { physics { fixture { } } } }
     }
 
     private fun circle(): SceneSpec {
-        // A bouncy ball with mostly default settings
         return scene {
             thing {
                 physics {
@@ -77,7 +71,6 @@ class D00_Basic: Game(MyConfig01.jjConfig) {
     }
 
     private fun floor(): SceneSpec {
-        // A static floor object
         return scene {
             thing {
                 physics {

@@ -29,12 +29,8 @@ class D02_rendering_layers : Game(MyConfig01.jjConfig) {
 
         JJ.scenes.addSceneSpec("0and2", layer0And2())
         JJ.scenes.addSceneSpec("1", layer1())
-
         JJ.scenes.loadAssetsNow()
 
-        /*
-        A composite Scene. This scene demonstrates the 2 Thing's layers overlapping
-         */
         val initialSceneSpec = scene {
             nodeRef { "0and2" }
             nodeRef(params { y = 10f }) { "1" }
@@ -44,7 +40,6 @@ class D02_rendering_layers : Game(MyConfig01.jjConfig) {
     }
 
     private fun layer0And2(): SceneSpec {
-        // The scale, rotation and translation of nested nodes happens in parents space.
         return scene {
             thing {
                 physics {
@@ -91,7 +86,6 @@ class D02_rendering_layers : Game(MyConfig01.jjConfig) {
     }
 
     private fun layer1(): SceneSpec {
-        // The scale, rotation and translation of nested nodes happens in parents space.
         return scene {
             thing {
                 physics {

@@ -1,7 +1,6 @@
 package com.binarymonks.jj.core.specs.builders
 
-import com.binarymonks.jj.core.specs.physics.FixtureSpec
-import com.binarymonks.jj.core.specs.physics.PhysicsSpec
+import com.binarymonks.jj.core.specs.physics.*
 
 fun PhysicsSpec.fixture(init: FixtureSpec.() -> Unit): FixtureSpec {
     var fixtureSpec = FixtureSpec()

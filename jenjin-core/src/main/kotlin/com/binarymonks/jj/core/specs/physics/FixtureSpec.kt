@@ -8,5 +8,29 @@ class FixtureSpec {
     var offsetX = 0f
     var offsetY = 0f
     var isSensor = false
+    var collisionGroup: CollisionGroupSpec = CollisionGroupSpecExplicit()
+        private set
     var shape: ShapeSpec = Rectangle()
+
+    /**
+     * Puts the fixture in a collision group by name.
+     * This must be set  in [com.binarymonks.jj.core.JJ.physics.collisionGroups]
+     */
+    fun collsionGroup(name: String) {
+        this.collisionGroup = CollisionGroupSpecName(name)
+    }
+
+    /**
+     * Set the collision mask and category to explicit values.
+     */
+    fun collsionGroupExplicit(category: Short, mask: Short) {
+        this.collisionGroup = CollisionGroupSpecExplicit(category, mask)
+    }
+
+    /**
+     * Bind the fixtures collision group to a property. This is evaluated at instantiation only. Not constantly
+     */
+    fun collisionGroupProperty(propertyName: String){
+        this.collisionGroup = CollisionGroupSpecProperty(propertyName)
+    }
 }

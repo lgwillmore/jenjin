@@ -1,15 +1,11 @@
-package com.binarymonks.jj.core.physics.collisions
+package com.binarymonks.jj.core.physics
 
-import com.badlogic.gdx.physics.box2d.*
-import com.binarymonks.jj.core.physics.PhysicsNode
-import com.binarymonks.jj.core.things.Thing
-
-class JJContactListener : ContactListener {
+class JJContactListener : com.badlogic.gdx.physics.box2d.ContactListener {
 
     /**
      * beginContact is the only hook that will guarantee that the objects have not been disposed.
      */
-    override fun beginContact(contact: Contact) {
+    override fun beginContact(contact: com.badlogic.gdx.physics.box2d.Contact) {
         val fixtureA = contact.fixtureA
         val thingA = getThing(fixtureA)
         val resolverA = getResolver(fixtureA)
@@ -26,12 +22,12 @@ class JJContactListener : ContactListener {
         resolverB.finalBeginContact(thingA, fixtureA, contact, fixtureB)
     }
 
-    private fun getResolver(fixture: Fixture): CollisionResolver {
-        return checkNotNull((fixture.userData as PhysicsNode).physicsRoot).collisionResolver
+    private fun getResolver(fixture: com.badlogic.gdx.physics.box2d.Fixture): com.binarymonks.jj.core.physics.collisions.CollisionResolver {
+        return checkNotNull((fixture.userData as com.binarymonks.jj.core.physics.PhysicsNode).physicsRoot).collisionResolver
     }
 
-    private fun getThing(fixture: Fixture): Thing {
-        val node = fixture.userData as PhysicsNode
+    private fun getThing(fixture: com.badlogic.gdx.physics.box2d.Fixture): com.binarymonks.jj.core.things.Thing {
+        val node = fixture.userData as com.binarymonks.jj.core.physics.PhysicsNode
         return checkNotNull(node.physicsRoot.parent)
     }
 
@@ -39,7 +35,7 @@ class JJContactListener : ContactListener {
     /**
      * There may be several game loops before a contact ends. Objects may have been disposed by the beginContact.
      */
-    override fun endContact(contact: Contact) {
+    override fun endContact(contact: com.badlogic.gdx.physics.box2d.Contact) {
         val fixtureA = contact.fixtureA
         val objectA = getThing(fixtureA)
         val resolverA = getResolver(fixtureA)
@@ -52,8 +48,8 @@ class JJContactListener : ContactListener {
         resolverB.endContact(objectA, fixtureA, contact, fixtureB)
     }
 
-    override fun preSolve(contact: Contact, oldManifold: Manifold) {}
+    override fun preSolve(contact: com.badlogic.gdx.physics.box2d.Contact, oldManifold: com.badlogic.gdx.physics.box2d.Manifold) {}
 
-    override fun postSolve(contact: Contact, impulse: ContactImpulse) {}
+    override fun postSolve(contact: com.badlogic.gdx.physics.box2d.Contact, impulse: com.badlogic.gdx.physics.box2d.ContactImpulse) {}
 
 }

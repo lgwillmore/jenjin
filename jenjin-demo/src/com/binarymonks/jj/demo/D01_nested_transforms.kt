@@ -11,26 +11,19 @@ import com.binarymonks.jj.core.specs.physics.Circle
 import com.binarymonks.jj.core.specs.physics.Polygon
 import com.binarymonks.jj.core.specs.physics.Rectangle
 
-
+/**
+ * A SceneNode's transforms (translation, rotation, scale) operate in the space of the parent.
+ * All the way up to the global b2d world space.
+ */
 class D01_nested_transforms : Game(MyConfig01.jjConfig) {
 
     public override fun gameOn() {
-
-        // Scenes we can use again by referring to the path
         JJ.scenes.addSceneSpec("nestedCircles", nestedCircles())
         JJ.scenes.addSceneSpec("nestedRectangles", nestedRectangles())
         JJ.scenes.addSceneSpec("nestedPolygons", nestedPolygons())
         JJ.scenes.addSceneSpec("nestedImages", nestedImages())
-
-        // We are using Images now, so we have to load the assets first
         JJ.scenes.loadAssetsNow()
 
-        /*
-        A composite Scene. This scene is using deeply nested nodes.
-
-        The nodes transforms (translation, rotation, scale) operate in the space of the parent.
-        All the way up to the global b2d world space.
-         */
         val initialSceneSpec = scene {
             nodeRef(params { x = 10f;y = 6f }) { "nestedCircles" }
             nodeRef(params { x = -10f; y = 6f }) { "nestedRectangles" }
@@ -38,12 +31,10 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
             nodeRef(params { x = -10f; y = -15f }) { "nestedImages" }
         }
 
-        // And then we instantiate some scenes
         JJ.scenes.instantiate(initialSceneSpec)
     }
 
     private fun nestedCircles(): SceneSpec {
-        // The scale, rotation and translation of nested nodes happens in parents space.
         val nestedParams = params { x = 4.1f; y = 4.1f; scaleX = 0.5f; scaleY = 0.5f; rotationD = 45f }
         val nestedParams2 = params { x = -4.1f; y = 4.1f; scaleX = 0.5f; scaleY = 0.5f; rotationD = -45f }
         return scene {
@@ -119,7 +110,6 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
     }
 
     private fun nestedRectangles(): SceneSpec {
-        // The scale, rotation and translation of nested nodes happens in parents space.
         val nestedParams = params { x = 4.1f; y = 4.1f; scaleX = 0.5f; scaleY = 0.75f; rotationD = 45f }
         val imageWidth = 8f
         val imageheight = 8f
@@ -179,7 +169,6 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
     }
 
     private fun nestedPolygons(): SceneSpec {
-        // The scale, rotation and translation of nested nodes happens in parents space.
         val nestedParams = params { x = 4.1f; y = 4.1f; scaleX = 0.5f; scaleY = 0.75f; rotationD = 45f }
         val polygonTriangle = Polygon(
                 vec2(0f, 8f),
