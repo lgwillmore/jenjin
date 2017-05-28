@@ -23,14 +23,16 @@ class FixtureSpec {
     /**
      * Set the collision mask and category to explicit values.
      */
-    fun collsionGroupExplicit(category: Short, mask: Short) {
+    fun collisionGroupExplicit(category: Short, mask: Short) {
         this.collisionGroup = CollisionGroupSpecExplicit(category, mask)
     }
 
     /**
-     * Bind the fixtures collision group to a property. This is evaluated at instantiation only. Not constantly
+     * Works the same as [collisionGroup], but the name of the group is retrieved from a property
+     *
+     * This is evaluated at instantiation only. Not constantly.
      */
-    fun collisionGroupProperty(propertyName: String){
+    fun collisionGroupProperty(propertyName: String) {
         this.collisionGroup = CollisionGroupSpecProperty(propertyName)
     }
 }

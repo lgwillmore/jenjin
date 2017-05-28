@@ -1,6 +1,7 @@
 package com.binarymonks.jj.core.specs.builders
 
 import com.binarymonks.jj.core.audio.SoundParams
+import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.specs.ThingSpec
 import com.binarymonks.jj.core.specs.physics.PhysicsSpec
 import com.binarymonks.jj.core.specs.render.RenderSpec
@@ -21,5 +22,11 @@ fun ThingSpec.sound(name: String, path: String, init: SoundParams.() -> Unit): S
     soundParams.init()
     this.sounds.add(soundParams)
     return soundParams
+}
+
+fun <T : Component> ThingSpec.component(component: T, init: T.() -> Unit): T {
+    component.init()
+    this.components.add(component)
+    return component
 }
 

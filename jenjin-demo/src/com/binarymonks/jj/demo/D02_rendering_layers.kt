@@ -23,7 +23,7 @@ import com.binarymonks.jj.core.specs.builders.*
  *
  * In this example - there are only 3 world layers, but there are also several internal object layers.
  */
-class D02_rendering_layers : Game(MyConfig01.jjConfig) {
+class D02_rendering_layers : Game(MyConfig02.jjConfig) {
 
     public override fun gameOn() {
 

@@ -9,7 +9,7 @@ import com.binarymonks.jj.core.render.nodes.RenderNode
 import com.binarymonks.jj.core.render.nodes.SimpleTextureProvider
 import com.binarymonks.jj.core.render.nodes.TextureProvider
 import com.binarymonks.jj.core.render.nodes.TextureRenderNode
-import com.binarymonks.jj.core.specs.PropDelegate
+import com.binarymonks.jj.core.properties.PropDelegate
 import com.binarymonks.jj.core.workshop.ParamStack
 import kotlin.reflect.KClass
 

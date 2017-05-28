@@ -21,7 +21,8 @@ class CollisionGroupSpecName(val groupName: String) : CollisionGroupSpec {
 class CollisionGroupSpecProperty(val propertyName: String) : CollisionGroupSpec {
     override fun toCollisionData(properties: ObjectMap<String, Any>): CollisionData {
         if(properties.containsKey(propertyName)){
-            return properties.get(propertyName) as CollisionData
+            var groupName: String  =  properties.get(propertyName) as String
+            return JJ.B.physicsWorld.collisionGroups.getCollisionData(groupName)
         }
         throw Exception("No property set by name of $propertyName")
     }

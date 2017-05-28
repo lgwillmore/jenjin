@@ -18,7 +18,7 @@ import com.binarymonks.jj.core.specs.physics.Polygon
  *
  * Box2D provides the physics, so being familiar with it is obviously very useful. There are loads of online resources.
  */
-class D00_Basic: Game(MyConfig01.jjConfig) {
+class D00_Basic: Game(MyConfig00.jjConfig) {
 
     public override fun gameOn() {
 

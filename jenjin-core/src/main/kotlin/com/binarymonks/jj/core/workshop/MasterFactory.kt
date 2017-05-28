@@ -105,26 +105,24 @@ class MasterFactory {
         }
 
         for (fixtureSpec in physicsSpec.fixtures) {
-            buildFixture(physicsRoot, fixtureSpec, body, paramsStack.scaleX, paramsStack.scaleY)
+            buildFixture(physicsRoot, fixtureSpec, body, paramsStack)
         }
 
         return physicsRoot
 
     }
 
-    private fun buildFixture(physicsRoot: PhysicsRoot, fixtureSpec: FixtureSpec, body: Body, scaleX: Float, scaleY: Float) {
-        val shape = buildShape(fixtureSpec, scaleX, scaleY)
+    private fun buildFixture(physicsRoot: PhysicsRoot, fixtureSpec: FixtureSpec, body: Body, params: ParamStack) {
+        val shape = buildShape(fixtureSpec, params.scaleX, params.scaleY)
         val fDef = FixtureDef()
         fDef.shape = shape
         fDef.density = fixtureSpec.density
         fDef.friction = fixtureSpec.friction
         fDef.restitution = fixtureSpec.restitution
         fDef.isSensor = fixtureSpec.isSensor
-//            val cd = Global.physics.collisionGroups.getCollisionData(fixtureSpec.collisionData)
-//            fDef.filter.categoryBits = cd.category
-//            fDef.filter.maskBits = cd.mask
-//            Re.cycle(cd)
-
+        val cd = fixtureSpec.collisionGroup.toCollisionData(checkNotNull(params.peek()).properties)
+        fDef.filter.categoryBits = cd.category
+        fDef.filter.maskBits = cd.mask
         val fixture = body.createFixture(fDef)
         val physicsNode = PhysicsNode(fixture, physicsRoot)
         fixture.userData = physicsNode

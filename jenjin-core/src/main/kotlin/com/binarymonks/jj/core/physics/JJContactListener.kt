@@ -22,7 +22,7 @@ class JJContactListener : com.badlogic.gdx.physics.box2d.ContactListener {
         resolverB.finalBeginContact(thingA, fixtureA, contact, fixtureB)
     }
 
-    private fun getResolver(fixture: com.badlogic.gdx.physics.box2d.Fixture): com.binarymonks.jj.core.physics.collisions.CollisionResolver {
+    private fun getResolver(fixture: com.badlogic.gdx.physics.box2d.Fixture): CollisionResolver {
         return checkNotNull((fixture.userData as com.binarymonks.jj.core.physics.PhysicsNode).physicsRoot).collisionResolver
     }
 

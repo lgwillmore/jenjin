@@ -1,4 +1,4 @@
-package com.binarymonks.jj.core.specs
+package com.binarymonks.jj.core.properties
 
 
 /**
@@ -12,6 +12,10 @@ class PropDelegate<T>(value: T) {
 
     private var propRefKey: String? = null
         private set
+
+    private var hasProps:HasProps? = null
+        private get
+        set
 
     /**
      * Set to an explicit value - do not delegate to a property
@@ -31,14 +35,23 @@ class PropDelegate<T>(value: T) {
     /**
      * Get the actual value dependent on property or value state
      */
-    fun resolve(): T{
-       return value
+    fun resolve(): T {
+        if (hasProps == null && value == null) throw Exception("No properties and no value")
+        if (value != null) {
+            return value
+        }
+        return hasProps!!.fetchProps().get(checkNotNull(propRefKey)) as T
     }
 
-    fun copy():PropDelegate<T>{
+    fun copy(): PropDelegate<T> {
         val clone = PropDelegate(value)
         clone.propRefKey = propRefKey
         return clone
+    }
+
+    fun copyFrom(original: PropDelegate<T>) {
+        this.propRefKey = original.propRefKey
+        this.value = original.value
     }
 
 

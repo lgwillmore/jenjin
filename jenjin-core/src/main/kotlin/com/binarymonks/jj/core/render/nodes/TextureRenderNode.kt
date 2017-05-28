@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Transform
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.pools.new
-import com.binarymonks.jj.core.specs.PropDelegate
+import com.binarymonks.jj.core.properties.PropDelegate
 
 class TextureRenderNode(
         priority: Int,
