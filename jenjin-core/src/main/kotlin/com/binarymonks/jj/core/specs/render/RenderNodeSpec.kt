@@ -25,7 +25,6 @@ abstract class RenderNodeSpec {
 }
 
 
-
 abstract class SpatialRenderNodeSpec : RenderNodeSpec() {
     var offsetX = 0f
     var offsetY = 0f
@@ -56,9 +55,7 @@ class ShapeNodeSpec : SpatialRenderNodeSpec() {
             return PolygonRenderNode.buildNew(
                     this,
                     points,
-                    new(Vector2::class).set(
-                            offsetX,
-                            offsetY),
+                    new(Vector2::class).set(offsetX, offsetY),
                     rotationD,
                     paramsStack.scaleX,
                     paramsStack.scaleY
@@ -68,7 +65,7 @@ class ShapeNodeSpec : SpatialRenderNodeSpec() {
     }
 
     override fun getAssets(): Array<AssetReference> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Array()
     }
 }
 
