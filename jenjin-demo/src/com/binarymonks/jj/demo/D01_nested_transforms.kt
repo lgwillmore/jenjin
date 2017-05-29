@@ -7,9 +7,9 @@ import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.*
-import com.binarymonks.jj.core.specs.physics.Circle
-import com.binarymonks.jj.core.specs.physics.Polygon
-import com.binarymonks.jj.core.specs.physics.Rectangle
+import com.binarymonks.jj.core.specs.Circle
+import com.binarymonks.jj.core.specs.Polygon
+import com.binarymonks.jj.core.specs.Rectangle
 
 /**
  * A SceneNode's transforms (translation, rotation, scale) operate in the space of the parent.

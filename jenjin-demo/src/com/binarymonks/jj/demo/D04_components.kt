@@ -7,9 +7,10 @@ import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.pools.new
-import com.binarymonks.jj.core.properties.PropDelegate
+import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.*
+import com.binarymonks.jj.core.specs.Circle
 
 /**
  * Building [com.binarymonks.jj.core.components.Component]s is what lets you build the behaviour of your game. Along with
@@ -18,15 +19,16 @@ import com.binarymonks.jj.core.specs.builders.*
  * Components are the primary building blocks of any special mechanics of your game which make it more than
  * just a 2d physics simulator.
  *
- * Here we build a simple back and forth movement component [Platform] for some platforms as an example.
+ * Here we build a simple back and forth movement component [BackForwardMovement] for some platforms as an example.
  *
- * We build it in a way which makes it configurable as an instance.
+ * We build it in a way which makes it configurable and reusable across different objects.
  */
 class D04_components : Game(MyConfig04.jjConfig) {
 
     public override fun gameOn() {
 
         JJ.scenes.addSceneSpec("platform", platform())
+        JJ.scenes.addSceneSpec("orb", orb())
 
         JJ.scenes.loadAssetsNow()
 
@@ -35,23 +37,57 @@ class D04_components : Game(MyConfig04.jjConfig) {
                 x = -10f
                 y = 15f
                 scaleX = 3f
-                setProperty("direction", Direction.VERTICAL)
-                setProperty("movementRange", 5f)
-                setProperty("metersPerSecond", 1f)
+                prop("direction", Direction.VERTICAL)
+                prop("movementRange", 5f)
+                prop("metersPerSecond", 1f)
 
             }) { "platform" }
             nodeRef(params {
                 x = 0f
                 y = 4f
                 scaleX = 6f
-                setProperty("direction", Direction.HORIZONTAL)
-                setProperty("movementRange", 10f)
-                setProperty("metersPerSecond", 3f)
+                prop("direction", Direction.HORIZONTAL)
+                prop("movementRange", 10f)
+                prop("metersPerSecond", 3f)
             }) { "platform" }
+            nodeRef(params {
+                x = 6f
+                y = 20f
+                scaleX = 2f
+                prop("direction", Direction.VERTICAL)
+                prop("movementRange", 10f)
+                prop("metersPerSecond", 5f)
+            }) { "orb" }
+            //This instance does not set the properties, and so the defaults of the component will be used.
+            nodeRef(params {
+                x = 0f
+                y = 20f
+                scaleX = 3f
+            }) { "orb" }
 
         }
 
         JJ.scenes.instantiate(initialSceneSpec)
+    }
+
+    private fun orb(): SceneSpec {
+        return scene {
+            thing {
+                physics {
+                    // Kinematic is suited for direct movement of physics objects
+                    bodyType = BodyDef.BodyType.KinematicBody
+                    fixture {
+                        shape= Circle(0.5f)
+                    }
+                }
+                //Add our component to our thing and bind fields to properties
+                component(BackForwardMovement()) {
+                    direction.setPropOverride("direction")
+                    movementRange.setPropOverride("movementRange")
+                    metersPerSecond.setPropOverride("metersPerSecond")
+                }
+            }
+        }
     }
 
     private fun platform(): SceneSpec {
@@ -64,10 +100,10 @@ class D04_components : Game(MyConfig04.jjConfig) {
                     }
                 }
                 //Add our component to our thing and bind fields to properties
-                component(Platform()) {
-                    direction.setToPropRef("direction")
-                    movementRange.setToPropRef("movementRange")
-                    metersPerSecond.setToPropRef("metersPerSecond")
+                component(BackForwardMovement()) {
+                    direction.setPropOverride("direction")
+                    movementRange.setPropOverride("movementRange")
+                    metersPerSecond.setPropOverride("metersPerSecond")
                 }
             }
         }
@@ -76,15 +112,14 @@ class D04_components : Game(MyConfig04.jjConfig) {
 
 enum class Direction {HORIZONTAL, VERTICAL }
 
-
-//The component that controls the behaviour of our platform
-class Platform : Component() {
+//A reusable and configurable component that can be attache to any Thing
+class BackForwardMovement : Component() {
 
     //We want our component to have the option of delegating its values to properties.
     // These are our configurable fields.
-    var direction: PropDelegate<Direction> = PropDelegate(Direction.HORIZONTAL)
-    var movementRange: PropDelegate<Float> = PropDelegate(0f)
-    var metersPerSecond: PropDelegate<Float> = PropDelegate(0f)
+    var direction: PropOverride<Direction> = PropOverride(Direction.HORIZONTAL)
+    var movementRange: PropOverride<Float> = PropOverride(0f)
+    var metersPerSecond: PropOverride<Float> = PropOverride(0f)
 
     //These are our private fields for the running state
     private var startLocation: Vector2 = new(Vector2::class)
@@ -94,23 +129,24 @@ class Platform : Component() {
     // relative to that
     override fun onAddToWorld() {
         startLocation.set(myThing().physicsRoot.position())
-        when (direction.resolve()) {
-            Direction.VERTICAL -> velocity.set(0f, metersPerSecond.resolve())
-            Direction.HORIZONTAL -> velocity.set(metersPerSecond.resolve(), 0F)
-        }
-    }
-
-    override fun update() {
-        val distanceFromStart = myThing().physicsRoot.position().sub(startLocation).len()
-        if (distanceFromStart > movementRange.resolve()) {
-            velocity.scl(-1f)
+        when (direction.get()) {
+            Direction.VERTICAL -> velocity.set(0f, metersPerSecond.get())
+            Direction.HORIZONTAL -> velocity.set(metersPerSecond.get(), 0F)
         }
         myThing().physicsRoot.b2DBody.linearVelocity = velocity
     }
 
+    override fun update() {
+        val distanceFromStart = myThing().physicsRoot.position().sub(startLocation).len()
+        if (distanceFromStart > movementRange.get()) {
+            velocity.scl(-1f)
+            myThing().physicsRoot.b2DBody.linearVelocity = velocity
+        }
+    }
+
     //We clone our config fields
     override fun clone(): Component {
-        val duplicate = Platform()
+        val duplicate = BackForwardMovement()
         duplicate.direction.copyFrom(direction)
         duplicate.movementRange.copyFrom(movementRange)
         duplicate.metersPerSecond.copyFrom(metersPerSecond)

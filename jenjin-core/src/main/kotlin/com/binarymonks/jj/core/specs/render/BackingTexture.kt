@@ -6,8 +6,8 @@ import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonValue
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.assets.AssetReference
-import com.binarymonks.jj.core.render.nodes.SimpleTextureProvider
-import com.binarymonks.jj.core.render.nodes.TextureProvider
+import com.binarymonks.jj.core.render.nodes.TextureFrameProvider
+import com.binarymonks.jj.core.render.nodes.FrameProvider
 
 abstract class BackingTexture : Json.Serializable {
     var path: String? = null
@@ -18,7 +18,7 @@ abstract class BackingTexture : Json.Serializable {
         this.path = path
     }
 
-    abstract fun provider(): TextureProvider
+    abstract fun provider(): FrameProvider
 
     abstract fun assets(): Array<AssetReference>
 
@@ -36,11 +36,11 @@ class SimpleImage : BackingTexture {
 
     constructor(path: String) : super(path)
 
-    override fun provider(): TextureProvider {
+    override fun provider(): FrameProvider {
         if (path == null) {
             throw Exception("No Path set in backing image")
         }
-        return SimpleTextureProvider(JJ.B.assets.getAsset(path!!, Texture::class))
+        return TextureFrameProvider(JJ.B.assets.getAsset(path!!, Texture::class))
     }
 
     override fun assets(): Array<AssetReference> {

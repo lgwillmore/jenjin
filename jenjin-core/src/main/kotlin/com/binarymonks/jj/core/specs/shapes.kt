@@ -1,8 +1,7 @@
-package com.binarymonks.jj.core.specs.physics
+package com.binarymonks.jj.core.specs
 
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
-import com.binarymonks.jj.core.pools.new
 
 /**
  * Some shapes that correlate to B2D shapes.

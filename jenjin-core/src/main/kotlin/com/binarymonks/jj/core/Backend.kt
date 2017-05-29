@@ -7,6 +7,7 @@ import com.binarymonks.jj.core.physics.PhysicsWorld
 import com.binarymonks.jj.core.pools.Pools
 import com.binarymonks.jj.core.render.RenderWorld
 import com.binarymonks.jj.core.scenes.Scenes
+import com.binarymonks.jj.core.things.ThingWorld
 import com.binarymonks.jj.core.time.ClockControls
 
 /**
@@ -19,6 +20,7 @@ class Backend{
     lateinit var layers: LayerStack
     lateinit var renderWorld: RenderWorld
     lateinit var physicsWorld: PhysicsWorld
+    lateinit var thingWorld: ThingWorld
     lateinit var pools: Pools
     lateinit var assets: Assets
     lateinit var audio: Audio

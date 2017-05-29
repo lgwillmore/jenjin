@@ -14,9 +14,7 @@ import com.binarymonks.jj.core.physics.PhysicsRoot
 import com.binarymonks.jj.core.pools.new
 import com.binarymonks.jj.core.render.RenderRoot
 import com.binarymonks.jj.core.render.nodes.RenderNode
-import com.binarymonks.jj.core.specs.InstanceParams
-import com.binarymonks.jj.core.specs.SceneSpec
-import com.binarymonks.jj.core.specs.ThingSpec
+import com.binarymonks.jj.core.specs.*
 import com.binarymonks.jj.core.specs.physics.*
 import com.binarymonks.jj.core.specs.render.RenderSpec
 import com.binarymonks.jj.core.things.Thing
@@ -55,10 +53,21 @@ class MasterFactory {
                 paramsStack.peek().uniqueInstanceName,
                 physicsRoot = buildPhysicsRoot(thingSpec.physics, paramsStack),
                 renderRoot = buildRenderRoot(thingSpec.render, paramsStack),
-                soundEffects = buildSoundEffects(thingSpec.sounds)
+                soundEffects = buildSoundEffects(thingSpec.sounds),
+                properties = paramsStack.peek().properties.copy()
         )
+        addBehaviour(thing, thingSpec)
+
         JJ.B.renderWorld.addThing(thing)
+        JJ.B.thingWorld.add(thing)
+
         return thing
+    }
+
+    private fun addBehaviour(thing: Thing, thingSpec: ThingSpec) {
+        for(component in thingSpec.components){
+            thing.addComponent(component.clone())
+        }
     }
 
     private fun buildSoundEffects(sounds: Array<SoundParams>): SoundEffects {

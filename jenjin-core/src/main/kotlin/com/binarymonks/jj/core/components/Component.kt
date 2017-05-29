@@ -1,13 +1,31 @@
 package com.binarymonks.jj.core.components
 
+import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.things.Thing
 import kotlin.reflect.KClass
+import kotlin.reflect.KTypeProjection
+import kotlin.reflect.full.createType
+import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.full.isSubtypeOf
+import kotlin.reflect.full.memberProperties
+
+private val propDelegateType = PropOverride::class.createType(listOf(KTypeProjection(null,null)))
 
 abstract class Component {
 
     internal var parent: Thing? = null
+        set(value) {
+            field = value
+            this::class.declaredMemberProperties.forEach {
+                if(it.returnType.isSubtypeOf(propDelegateType)){
+                    val b = it.name
+                    val pd = this.javaClass.kotlin.memberProperties.first {it.name==b}.get(this) as PropOverride<*>
+                    pd.hasProps = value
+                }
+            }
+        }
 
-    fun myThing(): Thing{
+    fun myThing(): Thing {
         return checkNotNull(parent)
     }
 
@@ -23,8 +41,8 @@ abstract class Component {
      * But you may have several implementations of a type. This lets you specify the key type (or top level interface) that
      * will be used to store and retrieve your [Component] if you need to.
      */
-    open fun <T : Component> type(): KClass<out T> {
-        return this::class as KClass<out T>
+    open fun type(): KClass<Component> {
+        return this::class as KClass<Component>
     }
 
     /**

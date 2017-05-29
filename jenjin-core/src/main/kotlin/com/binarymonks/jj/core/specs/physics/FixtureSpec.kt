@@ -1,5 +1,8 @@
 package com.binarymonks.jj.core.specs.physics
 
+import com.binarymonks.jj.core.specs.Rectangle
+import com.binarymonks.jj.core.specs.ShapeSpec
+
 class FixtureSpec {
     var density = 0.5f
     var friction = 0.1f

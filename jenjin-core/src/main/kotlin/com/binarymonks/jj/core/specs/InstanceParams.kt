@@ -29,7 +29,7 @@ class InstanceParams internal constructor() {
     var uniqueInstanceName: String? = null
     private var transformMatrix: Matrix3 = new(Matrix3::class)
 
-    fun setProperty(name: String, value: Any? = null){
+    fun prop(name: String, value: Any? = null){
         properties.put(name,value)
     }
 

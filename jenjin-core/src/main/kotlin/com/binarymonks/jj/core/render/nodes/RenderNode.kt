@@ -2,13 +2,13 @@ package com.binarymonks.jj.core.render.nodes
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.binarymonks.jj.core.properties.PropDelegate
+import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.things.Thing
 
 
 abstract class RenderNode(
         var priority: Int = 0,
-        var color: PropDelegate<Color>
+        var color: PropOverride<Color>
 ) {
     var parent: Thing? = null
 

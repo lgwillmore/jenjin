@@ -7,7 +7,7 @@ import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.physics.collisions.SoundCollision
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.*
-import com.binarymonks.jj.core.specs.physics.Circle
+import com.binarymonks.jj.core.specs.Circle
 
 /**
  * Collisions are obviously very important.
@@ -41,13 +41,13 @@ class D03_collisions : Game(MyConfig03.jjConfig) {
 
         val initialSceneSpec = scene {
             //Set up some balls and a floor on 'layer1' collision group
-            nodeRef(params { x = -8f; y = 8f; setProperty("collisionGroup", "layer1") }) { "ball" }
-            nodeRef(params { x = -2f; y = 9f; scaleX = 2f; scaleY = 2f;setProperty("collisionGroup", "layer1") }) { "ball" }
-            nodeRef(params { x = 0f; y = 0f; scaleX = 20f;setProperty("collisionGroup", "layer1") }) { "floor" }
+            nodeRef(params { x = -8f; y = 8f; prop("collisionGroup", "layer1") }) { "ball" }
+            nodeRef(params { x = -2f; y = 9f; scaleX = 2f; scaleY = 2f;prop("collisionGroup", "layer1") }) { "ball" }
+            nodeRef(params { x = 0f; y = 0f; scaleX = 20f;prop("collisionGroup", "layer1") }) { "floor" }
             //Set up some balls and a floor on 'layer2' collision group
-            nodeRef(params { x = 2f; y = 10f;setProperty("collisionGroup", "layer2") }) { "ball" }
-            nodeRef(params { x = +8f; y = 11f; scaleX = 2f; scaleY = 2f;setProperty("collisionGroup", "layer2") }) { "ball" }
-            nodeRef(params { x = 0f; y = -10f; scaleX = 20f;setProperty("collisionGroup", "layer2") }) { "floor" }
+            nodeRef(params { x = 2f; y = 10f;prop("collisionGroup", "layer2") }) { "ball" }
+            nodeRef(params { x = +8f; y = 11f; scaleX = 2f; scaleY = 2f;prop("collisionGroup", "layer2") }) { "ball" }
+            nodeRef(params { x = 0f; y = -10f; scaleX = 20f;prop("collisionGroup", "layer2") }) { "floor" }
         }
 
         JJ.scenes.instantiate(initialSceneSpec)

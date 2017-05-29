@@ -9,6 +9,7 @@ import com.binarymonks.jj.core.physics.PhysicsWorld
 import com.binarymonks.jj.core.pools.Pools
 import com.binarymonks.jj.core.render.RenderWorld
 import com.binarymonks.jj.core.scenes.Scenes
+import com.binarymonks.jj.core.things.ThingWorld
 import com.binarymonks.jj.core.time.ClockControls
 
 /**
@@ -35,6 +36,7 @@ object JJ {
         B.layers = LayerStack()
         B.physicsWorld = PhysicsWorld()
         B.renderWorld = RenderWorld()
+        B.thingWorld = ThingWorld()
         B.pools = Pools()
         B.assets = Assets()
         B.audio = Audio()

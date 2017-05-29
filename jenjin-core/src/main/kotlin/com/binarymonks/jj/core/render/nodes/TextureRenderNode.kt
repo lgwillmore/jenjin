@@ -8,12 +8,12 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Transform
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.pools.new
-import com.binarymonks.jj.core.properties.PropDelegate
+import com.binarymonks.jj.core.properties.PropOverride
 
 class TextureRenderNode(
         priority: Int,
-        color: PropDelegate<Color>,
-        internal var provider: TextureProvider,
+        color: PropOverride<Color>,
+        internal var provider: FrameProvider,
         internal var offsetX: Float,
         internal var offsetY: Float,
         internal var rotationD: Float,
@@ -29,7 +29,7 @@ class TextureRenderNode(
         if (frame != null) {
             frame
             JJ.B.renderWorld.switchToBatch()
-            JJ.B.renderWorld.switchBatchColorTo(color.resolve())
+            JJ.B.renderWorld.switchBatchColorTo(color.get())
             val transform : Transform = myParent().physicsRoot.transform
             val position = new(Vector2::class).set(offsetX, offsetY)
             transform.mul(position)
