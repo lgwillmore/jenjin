@@ -10,6 +10,8 @@ import com.binarymonks.jj.core.pools.new
 import com.binarymonks.jj.core.pools.recycleItems
 import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.render.nodes.*
+import com.binarymonks.jj.core.specs.Circle
+import com.binarymonks.jj.core.specs.Polygon
 import com.binarymonks.jj.core.specs.Rectangle
 import com.binarymonks.jj.core.specs.ShapeSpec
 import com.binarymonks.jj.core.workshop.ParamStack
@@ -37,9 +39,36 @@ class ShapeNodeSpec : SpatialRenderNodeSpec() {
         val shape = this.shape
         when (shape) {
             is Rectangle -> return makeRectangle(shape, paramsStack)
+            is Polygon -> return makePolygon(shape, paramsStack)
+            is Circle -> return makeCircle(shape, paramsStack)
             else -> {
                 throw Exception("Unknown shape: ${shape::class.simpleName}")
             }
+        }
+    }
+
+    fun makeCircle(shape: Circle, paramsStack: ParamStack): RenderNode {
+        return CircleRenderNode(
+                this.priority,
+                this.color.copy(),
+                offsetX = offsetX,
+                offsetY = offsetY,
+                radius = shape.radius * paramsStack.scaleX
+        )
+    }
+
+    private fun makePolygon(shape: Polygon, paramsStack: ParamStack): RenderNode {
+        if (PolygonRenderNode.haveBuilt(this)) {
+            return PolygonRenderNode.rebuild(this, paramsStack.peek())
+        } else {
+            return PolygonRenderNode.buildNew(
+                    this,
+                    shape.vertices,
+                    new(Vector2::class).set(offsetX, offsetY),
+                    rotationD,
+                    paramsStack.scaleX,
+                    paramsStack.scaleY
+            )
         }
     }
 
@@ -97,7 +126,7 @@ class TextureNodeSpec : ImageNodeSpec<KClass<Texture>>() {
         } else {
             TextureFrameProvider(JJ.B.assets.getAsset(assetPath!!, Texture::class))
         }
-        return TextureRenderNode(
+        return FrameRenderNode(
                 priority = priority,
                 color = color.copy(),
                 provider = frameProvider,

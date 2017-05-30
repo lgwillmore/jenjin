@@ -10,6 +10,7 @@ import com.binarymonks.jj.core.GameViewConfig
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.pools.new
+import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.render.RenderGraph
 import com.binarymonks.jj.core.render.RenderLayer
 import com.binarymonks.jj.core.render.nodes.RenderNode
@@ -29,7 +30,7 @@ class GameRenderingLayer(
         setView(worldBoxWidth, posX, posY)
     }
 
-    constructor(viewConfig: GameViewConfig): this(
+    constructor(viewConfig: GameViewConfig) : this(
             viewConfig.worldBoxWidth,
             viewConfig.cameraPosX,
             viewConfig.cameraPosY)
@@ -53,6 +54,7 @@ class GameRenderingLayer(
         val screenLeft = camera.project(worldLeft)
         val screenRight = camera.project(worldRight)
         JJ.B.renderWorld.worldToScreenScale = (screenRight.x - screenLeft.x) / worldDistance
+        recycle(worldLeft, worldRight)
     }
 
     private fun renderGraph(renderGraph: RenderGraph) {

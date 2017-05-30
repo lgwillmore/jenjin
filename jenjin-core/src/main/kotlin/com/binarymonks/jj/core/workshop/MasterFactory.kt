@@ -122,7 +122,7 @@ class MasterFactory {
     }
 
     private fun buildFixture(physicsRoot: PhysicsRoot, fixtureSpec: FixtureSpec, body: Body, params: ParamStack) {
-        val shape = buildShape(fixtureSpec, params.scaleX, params.scaleY)
+        val shape = buildShape(fixtureSpec, params.scaleX, params.scaleY, fixtureSpec.offsetX,fixtureSpec.offsetY)
         val fDef = FixtureDef()
         fDef.shape = shape
         fDef.density = fixtureSpec.density
@@ -138,7 +138,7 @@ class MasterFactory {
         shape!!.dispose()
     }
 
-    private fun buildShape(nodeSpec: FixtureSpec, scaleX: Float, scaleY: Float): Shape? {
+    private fun buildShape(nodeSpec: FixtureSpec, scaleX: Float, scaleY: Float, offsetX:Float =0f,offsetY:Float=0f): Shape? {
         if (nodeSpec.shape is Rectangle) {
             val polygonRectangle = nodeSpec.shape as Rectangle
             val boxshape = PolygonShape()
@@ -155,7 +155,7 @@ class MasterFactory {
             val polygonShape = PolygonShape()
             val vertices = arrayOfNulls<Vector2>(polygonSpec.vertices.size)
             for (i in 0..polygonSpec.vertices.size - 1) {
-                vertices[i] = polygonSpec.vertices.get(i).copy().scl(scaleX, scaleY)
+                vertices[i] = polygonSpec.vertices.get(i).copy().add(offsetX,offsetY).scl(scaleX, scaleY)
             }
             polygonShape.set(vertices)
             return polygonShape
