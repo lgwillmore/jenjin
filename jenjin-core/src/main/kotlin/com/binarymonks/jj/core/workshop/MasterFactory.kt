@@ -155,7 +155,7 @@ class MasterFactory {
             val polygonShape = PolygonShape()
             val vertices = arrayOfNulls<Vector2>(polygonSpec.vertices.size)
             for (i in 0..polygonSpec.vertices.size - 1) {
-                vertices[i] = polygonSpec.vertices.get(i).copy().add(offsetX,offsetY).scl(scaleX, scaleY)
+                vertices[i] = polygonSpec.vertices.get(i).copy().scl(scaleX, scaleY).add(offsetX,offsetY)
             }
             polygonShape.set(vertices)
             return polygonShape

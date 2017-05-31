@@ -6,14 +6,12 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.assets.AssetReference
+import com.binarymonks.jj.core.extensions.copy
 import com.binarymonks.jj.core.pools.new
+import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.pools.recycleItems
 import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.render.nodes.*
-import com.binarymonks.jj.core.specs.Circle
-import com.binarymonks.jj.core.specs.Polygon
-import com.binarymonks.jj.core.specs.Rectangle
-import com.binarymonks.jj.core.specs.ShapeSpec
 import com.binarymonks.jj.core.workshop.ParamStack
 import kotlin.reflect.KClass
 
@@ -33,64 +31,45 @@ abstract class SpatialRenderNodeSpec : RenderNodeSpec() {
     var rotationD = 0f
 }
 
-class ShapeNodeSpec : SpatialRenderNodeSpec() {
-    var shape: ShapeSpec = Rectangle()
+class PolygonRenderNodeSpec : SpatialRenderNodeSpec() {
+    var vertices: Array<Vector2> = Array()
+
     override fun makeNode(paramsStack: ParamStack): RenderNode {
-        val shape = this.shape
-        when (shape) {
-            is Rectangle -> return makeRectangle(shape, paramsStack)
-            is Polygon -> return makePolygon(shape, paramsStack)
-            is Circle -> return makeCircle(shape, paramsStack)
-            else -> {
-                throw Exception("Unknown shape: ${shape::class.simpleName}")
-            }
+        if (PolygonRenderNode.haveBuilt(this)) {
+            return PolygonRenderNode.rebuild(this, paramsStack.scaleX, paramsStack.scaleY)
+        } else {
+        val vertCopy: Array<Vector2> = Array()
+        vertices.forEach { vertCopy.add(it.copy()) }
+        return PolygonRenderNode.buildNew(
+                this,
+                vertCopy,
+                new(Vector2::class).set(offsetX, offsetY),
+                rotationD,
+                paramsStack.scaleX,
+                paramsStack.scaleY
+        )
+        recycleItems(vertCopy)
         }
     }
 
-    fun makeCircle(shape: Circle, paramsStack: ParamStack): RenderNode {
+    override fun getAssets(): Array<AssetReference> {
+        return Array()
+    }
+}
+
+class CircleRenderNodeSpec : SpatialRenderNodeSpec() {
+    var radius: Float = 1f
+    var fill: Boolean = true
+
+    override fun makeNode(paramsStack: ParamStack): RenderNode {
         return CircleRenderNode(
                 this.priority,
                 this.color.copy(),
+                fill = fill,
                 offsetX = offsetX,
                 offsetY = offsetY,
-                radius = shape.radius * paramsStack.scaleX
+                radius = radius * paramsStack.scaleX
         )
-    }
-
-    private fun makePolygon(shape: Polygon, paramsStack: ParamStack): RenderNode {
-        if (PolygonRenderNode.haveBuilt(this)) {
-            return PolygonRenderNode.rebuild(this, paramsStack.peek())
-        } else {
-            return PolygonRenderNode.buildNew(
-                    this,
-                    shape.vertices,
-                    new(Vector2::class).set(offsetX, offsetY),
-                    rotationD,
-                    paramsStack.scaleX,
-                    paramsStack.scaleY
-            )
-        }
-    }
-
-    private fun makeRectangle(shape: Rectangle, paramsStack: ParamStack): RenderNode {
-        if (PolygonRenderNode.haveBuilt(this)) {
-            return PolygonRenderNode.rebuild(this, paramsStack.peek())
-        } else {
-            val points = Array<Vector2>()
-            points.add(new(Vector2::class).set(-shape.width / 2, -shape.height / 2))
-            points.add(new(Vector2::class).set(shape.width / 2, -shape.height / 2))
-            points.add(new(Vector2::class).set(shape.width / 2, shape.height / 2))
-            points.add(new(Vector2::class).set(-shape.width / 2, shape.height / 2))
-            return PolygonRenderNode.buildNew(
-                    this,
-                    points,
-                    new(Vector2::class).set(offsetX, offsetY),
-                    rotationD,
-                    paramsStack.scaleX,
-                    paramsStack.scaleY
-            )
-            recycleItems(points)
-        }
     }
 
     override fun getAssets(): Array<AssetReference> {

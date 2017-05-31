@@ -25,7 +25,10 @@ class PolygonRenderNode constructor(
         color: PropOverride<Color>,
         internal var poly: PolygonSprite,
         internal var scaleX: Float = 1f,
-        internal var scaleY: Float = 1f
+        internal var scaleY: Float = 1f,
+        internal var offsetX: Float = 0f,
+        internal var offsetY: Float = 0f,
+        internal var rotationD: Float = 0f
 ) : RenderNode(priority, color) {
 
     override fun render(camera: OrthographicCamera) {
@@ -34,8 +37,8 @@ class PolygonRenderNode constructor(
         poly.color = color.get()
         poly.setOrigin(0f, 0f)
         poly.setScale(scaleX, scaleY)
-        poly.rotation = parent!!.physicsRoot.rotationR() * MathUtils.radDeg
-        poly.setPosition(parentPos.x, parentPos.y)
+        poly.rotation = (parent!!.physicsRoot.rotationR() * MathUtils.radDeg)+rotationD
+        poly.setPosition(parentPos.x+offsetX, parentPos.y+offsetY)
         poly.draw(JJ.B.renderWorld.polyBatch)
     }
 
@@ -50,22 +53,15 @@ class PolygonRenderNode constructor(
             return spriteByNodeIDCache.containsKey(renderNodeSpec.id)
         }
 
-        fun rebuild(renderNodeSpec: RenderNodeSpec, instanceParams: InstanceParams): PolygonRenderNode {
+        fun rebuild(renderNodeSpec: RenderNodeSpec, scaleX: Float, scaleY: Float): PolygonRenderNode {
             val polygonSprite: PolygonSprite = spriteByNodeIDCache.get(renderNodeSpec.id)
-            return PolygonRenderNode(renderNodeSpec.priority, renderNodeSpec.color.copy(), polygonSprite, instanceParams.scaleX, instanceParams.scaleY)
+            return PolygonRenderNode(renderNodeSpec.priority, renderNodeSpec.color.copy(), polygonSprite, scaleX, scaleY)
         }
 
         fun buildNew(renderNodeSpec: RenderNodeSpec, vertices: Array<Vector2>, offset: Vector2, rotationD: Float, scaleX: Float, scaleY: Float): PolygonRenderNode {
-            val trMatrix = new(Matrix3::class.java)
-            trMatrix.translate(offset.x, offset.y)
-            trMatrix.rotate(rotationD)
-            for (vertex in vertices) {
-                vertex.mul(trMatrix)
-            }
             val polygonSprite: PolygonSprite = polygonSprite(vertices)
             spriteByNodeIDCache.put(renderNodeSpec.id, polygonSprite)
-            recycle(trMatrix)
-            return PolygonRenderNode(renderNodeSpec.priority, renderNodeSpec.color.copy(), polygonSprite, scaleX, scaleY)
+            return PolygonRenderNode(renderNodeSpec.priority, renderNodeSpec.color.copy(), polygonSprite, scaleX, scaleY, offset.x, offset.y,rotationD)
         }
 
         fun polygonSprite(points: Array<Vector2>): PolygonSprite {

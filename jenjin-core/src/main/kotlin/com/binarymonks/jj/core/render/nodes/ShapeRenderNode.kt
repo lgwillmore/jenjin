@@ -31,7 +31,8 @@ class CircleRenderNode(
         fill: Boolean = true,
         val offsetX: Float,
         val offsetY: Float,
-        val radius: Float
+        val radius: Float,
+        var segments: Int = 360
 ) : ShapeRenderNode(priority, color, fill) {
 
     private var positionCache: Vector2 = new(Vector2::class)
@@ -39,11 +40,10 @@ class CircleRenderNode(
 
     override fun drawShape(camera: OrthographicCamera) {
         val transform: Transform = myParent().physicsRoot.transform
-        positionCache.set(offsetX,offsetY)
+        positionCache.set(offsetX, offsetY)
         transform.mul(positionCache)
-        position3Cache.set(positionCache.x,positionCache.y,0f)
-        camera.project(position3Cache)
-        JJ.B.renderWorld.shapeRenderer.circle(position3Cache.x,position3Cache.y,radius * JJ.B.renderWorld.worldToScreenScale)
+        position3Cache.set(positionCache.x, positionCache.y, 0f)
+        JJ.B.renderWorld.shapeRenderer.circle(position3Cache.x, position3Cache.y, radius, segments)
     }
 
     override fun dispose() {

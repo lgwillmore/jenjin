@@ -16,10 +16,11 @@ import com.binarymonks.jj.core.render.RenderLayer
 import com.binarymonks.jj.core.render.nodes.RenderNode
 
 class GameRenderingLayer(
-        worldBoxWidth: Float,
-        posX: Float,
-        posY: Float
+        var worldBoxWidth: Float,
+        var posX: Float,
+        var posY: Float
 ) : Layer() {
+
     var camera: OrthographicCamera = OrthographicCamera()
 
     internal var drenderer = Box2DDebugRenderer()
@@ -60,7 +61,8 @@ class GameRenderingLayer(
     private fun renderGraph(renderGraph: RenderGraph) {
         val layers = renderGraph.graphLayers
         JJ.B.renderWorld.polyBatch.enableBlending()
-        JJ.B.renderWorld.polyBatch.setProjectionMatrix(camera.combined)
+        JJ.B.renderWorld.polyBatch.projectionMatrix = camera.combined
+        JJ.B.renderWorld.shapeRenderer.projectionMatrix = camera.combined
         JJ.B.renderWorld.polyBatch.begin()
         var renderedCount = 0
         var layerIndex = 0
@@ -98,11 +100,18 @@ class GameRenderingLayer(
     }
 
     fun setView(worldWidth: Float, cameraX: Float, cameraY: Float) {
-        val w = Gdx.graphics.width.toFloat()
-        val h = Gdx.graphics.height.toFloat()
+        val screenWidth = Gdx.graphics.width.toFloat()
+        val screenHeight = Gdx.graphics.height.toFloat()
         camera.viewportWidth = worldWidth
-        camera.viewportHeight = worldWidth * (h / w)
+        camera.viewportHeight = worldWidth * (screenHeight / screenWidth)
         camera.position.set(cameraX, cameraY, 0f)
+        camera.update()
+    }
+
+    override fun resize(width: Int, height: Int) {
+        val newWidth = Gdx.graphics.width.toFloat()
+        val newHeight = Gdx.graphics.height.toFloat()
+        camera.viewportHeight = camera.viewportWidth * (newHeight / newWidth)
         camera.update()
     }
 }

@@ -1,5 +1,6 @@
 package com.binarymonks.jj.demo
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.binarymonks.jj.core.Game
 import com.binarymonks.jj.core.JJ
@@ -21,14 +22,15 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
         JJ.scenes.addSceneSpec("nestedCircles", nestedCircles())
         JJ.scenes.addSceneSpec("nestedRectangles", nestedRectangles())
         JJ.scenes.addSceneSpec("nestedPolygons", nestedPolygons())
-        JJ.scenes.addSceneSpec("nestedImages", nestedImages())
         JJ.scenes.loadAssetsNow()
 
         val initialSceneSpec = scene {
             nodeRef(params { x = 10f;y = 6f }) { "nestedCircles" }
-            nodeRef(params { x = -10f; y = 6f }) { "nestedRectangles" }
+            nodeRef(params { x = 20f;y = 6f; scaleX = 0.5f; scaleY = 0.5f }) { "nestedCircles" }
+            nodeRef(params { x = -8f; y = 6f }) { "nestedRectangles" }
+            nodeRef(params { x = -18f; y = 6f; scaleX = 0.5f; scaleY = 0.5f }) { "nestedRectangles" }
             nodeRef(params { x = 10f; y = -15f }) { "nestedPolygons" }
-            nodeRef(params { x = -10f; y = -15f }) { "nestedImages" }
+            nodeRef(params { x = 20f; y = -15f; scaleX = 0.5f; scaleY = 0.5f }) { "nestedPolygons" }
         }
 
         JJ.scenes.instantiate(initialSceneSpec)
@@ -45,6 +47,11 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                         shape = Circle(4f)
                     }
                 }
+                render {
+                    circleRender(4f) {
+                        color.setToValue(Color.PURPLE)
+                    }
+                }
             }
             node(nestedParams) {
                 thing {
@@ -52,6 +59,11 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                         bodyType = BodyDef.BodyType.StaticBody
                         fixture {
                             shape = Circle(4f)
+                        }
+                    }
+                    render {
+                        circleRender(4f) {
+                            color.setToValue(Color.PURPLE)
                         }
                     }
                 }
@@ -63,6 +75,11 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                                 shape = Circle(4f)
                             }
                         }
+                        render {
+                            circleRender(4f) {
+                                color.setToValue(Color.PURPLE)
+                            }
+                        }
                     }
                     node(nestedParams) {
                         thing {
@@ -70,6 +87,11 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                                 bodyType = BodyDef.BodyType.StaticBody
                                 fixture {
                                     shape = Circle(4f)
+                                }
+                            }
+                            render {
+                                circleRender(4f) {
+                                    color.setToValue(Color.PURPLE)
                                 }
                             }
                         }
@@ -84,6 +106,11 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                             shape = Circle(4f)
                         }
                     }
+                    render {
+                        circleRender(4f) {
+                            color.setToValue(Color.PURPLE)
+                        }
+                    }
                 }
                 node(nestedParams2) {
                     thing {
@@ -93,6 +120,11 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                                 shape = Circle(4f)
                             }
                         }
+                        render {
+                            circleRender(4f) {
+                                color.setToValue(Color.PURPLE)
+                            }
+                        }
                     }
                     node(nestedParams2) {
                         thing {
@@ -100,6 +132,11 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                                 bodyType = BodyDef.BodyType.StaticBody
                                 fixture {
                                     shape = Circle(4f)
+                                }
+                            }
+                            render {
+                                circleRender(4f) {
+                                    color.setToValue(Color.PURPLE)
                                 }
                             }
                         }
@@ -183,6 +220,11 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                         shape = polygonTriangle
                     }
                 }
+                render {
+                    polygonRender(polygonTriangle.vertices) {
+                        color.setToValue(Color.CYAN)
+                    }
+                }
             }
             node(nestedParams) {
                 thing {
@@ -190,6 +232,11 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                         bodyType = BodyDef.BodyType.StaticBody
                         fixture {
                             shape = polygonTriangle
+                        }
+                    }
+                    render {
+                        polygonRender(polygonTriangle.vertices) {
+                            color.setToValue(Color.CYAN)
                         }
                     }
                 }
@@ -201,6 +248,11 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                                 shape = polygonTriangle
                             }
                         }
+                        render {
+                            polygonRender(polygonTriangle.vertices) {
+                                color.setToValue(Color.CYAN)
+                            }
+                        }
                     }
                     node(nestedParams) {
                         thing {
@@ -210,51 +262,10 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                                     shape = polygonTriangle
                                 }
                             }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private fun nestedImages(): SceneSpec {
-        val nestedParams = params { x = 4.1f; y = 4.1f; scaleX = 0.5f; scaleY = 0.75f; rotationD = 45f }
-        val imageWidth = 8f
-        val imageheight = 8f
-        return scene {
-            thing {
-                physics{
-                    bodyType= BodyDef.BodyType.StaticBody
-                }
-                render {
-                    imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
-                }
-            }
-            node(nestedParams) {
-                thing {
-                    physics{
-                        bodyType= BodyDef.BodyType.StaticBody
-                    }
-                    render {
-                        imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
-                    }
-                }
-                node(nestedParams) {
-                    thing {
-                        physics{
-                            bodyType= BodyDef.BodyType.StaticBody
-                        }
-                        render {
-                            imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
-                        }
-                    }
-                    node(nestedParams) {
-                        thing {
-                            physics{
-                                bodyType= BodyDef.BodyType.StaticBody
-                            }
                             render {
-                                imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
+                                polygonRender(polygonTriangle.vertices) {
+                                    color.setToValue(Color.CYAN)
+                                }
                             }
                         }
                     }

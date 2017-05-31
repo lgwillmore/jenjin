@@ -2,13 +2,13 @@ package com.binarymonks.jj.demo
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.physics.box2d.BodyDef
+import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.Game
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.specs.Circle
 import com.binarymonks.jj.core.specs.Polygon
-import com.binarymonks.jj.core.specs.Rectangle
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.*
 
@@ -18,10 +18,28 @@ class D05_rendering : Game(MyConfig05.jjConfig) {
         JJ.scenes.addSceneSpec("shapes", shapes())
 
         val initialScene = scene {
+            nodeRef(params { y = -5f; scaleX = 0.5f; scaleY = 0.5f }) { "shapes" }
             nodeRef { "shapes" }
         }
 
         JJ.scenes.instantiate(initialScene)
+    }
+
+    private fun line(): SceneSpec {
+        return scene {
+            thing {
+                render {
+                    polygonRender(
+                            vec2(0f, 0f),
+                            vec2(0f, 2f),
+                            vec2(0f, 2f),
+                            vec2(0f, 0f)
+                    ) {
+                        color.setToValue(Color.GREEN)
+                    }
+                }
+            }
+        }
     }
 
     //We can draw shapes - with the same dimensions as our fixtures
@@ -37,112 +55,71 @@ class D05_rendering : Game(MyConfig05.jjConfig) {
                 vec2(-1.5f, -1.5f)
         )
         return scene {
-            // Rectangle
-            node {
-                thing {
-                    physics {
-                        bodyType = BodyDef.BodyType.StaticBody
-                        fixture {
-                            offsetY = 3f
-                            shape = Rectangle(2f, 2f)
-                        }
-                    }
-                    render {
-                        shape {
-                            offsetY = 3f
-                            color.setToValue(Color.BLUE)
-                            shape = Rectangle(2f, 2f)
-                        }
-                    }
-                }
-                node(params { y = 3f ; scaleX=0.7f; scaleY=0.7f}) {
-                    thing {
-                        physics {
-                            bodyType = BodyDef.BodyType.StaticBody
-                            fixture {
-                                offsetY = 3f
-                                shape = Rectangle(2f, 2f)
-                            }
-                        }
-                        render {
-                            shape {
-                                offsetY = 3f
-                                color.setToValue(Color.BLUE)
-                                shape = Rectangle(2f, 2f)
-                            }
-                        }
-                    }
-                }
-            }
             // Polygon
             node {
                 thing {
                     physics {
                         bodyType = BodyDef.BodyType.StaticBody
                         fixture {
-                            offsetX = 3f
+                            offsetX = 4f
                             shape = poly
                         }
                     }
                     render {
-                        shape {
-                            offsetX = 3f
+                        polygonRender(poly.vertices) {
+                            offsetX = 4f
                             color.setToValue(Color.RED)
-                            shape = poly
                         }
                     }
                 }
-                node(params { x = 3f; scaleX = 0.7f; scaleY = 0.7f }) {
+                node(params { x = 4f; scaleX = 0.7f; scaleY = 0.7f }) {
                     thing {
                         physics {
                             bodyType = BodyDef.BodyType.StaticBody
                             fixture {
-                                offsetX = 3f
+                                offsetX = 4f
                                 shape = poly
                             }
                         }
                         render {
-                            shape {
-                                offsetX = 3f
+                            polygonRender(poly.vertices) {
+                                offsetX = 4f
                                 color.setToValue(Color.RED)
-                                shape = poly
                             }
                         }
                     }
                 }
             }
             // Circle
-            node{
-                thing{
-                    physics{
+            node {
+                thing {
+                    physics {
                         bodyType = BodyDef.BodyType.StaticBody
                         fixture {
-                            offsetX=-3f
-                            shape=Circle(1.5f)
+                            offsetX = -4f
+                            shape = Circle(2f)
                         }
                     }
-                    render{
-                        shape {
+                    render {
+                        circleRender(2f) {
                             color.setToValue(Color.GREEN)
-                            offsetX=-3f
-                            shape=Circle(1.5f)
+                            offsetX = -4f
                         }
                     }
                 }
-                node(params { x = -3f; scaleX = 0.7f; scaleY = 0.7f }){
-                    thing{
-                        physics{
+                node(params { x = -4f; scaleX = 0.7f; scaleY = 0.7f }) {
+                    thing {
+                        physics {
                             bodyType = BodyDef.BodyType.StaticBody
                             fixture {
-                                offsetX=-3f
-                                shape=Circle(1.5f)
+                                offsetX = -4f
+                                shape = Circle(2f)
                             }
                         }
-                        render{
-                            shape {
+                        render {
+                            circleRender(2f) {
                                 color.setToValue(Color.GREEN)
-                                offsetX=-3f
-                                shape=Circle(1.5f)
+                                offsetX = -4f
                             }
                         }
                     }

@@ -22,7 +22,9 @@ abstract class Game (val jjConfig: JJConfig = JJConfig()) : ApplicationListener{
     }
 
     override fun resize(width: Int, height: Int) {
+        JJ.B.layers.resize(width,height)
     }
+
     override fun render() {
         JJ.B.clock.update()
         JJ.B.assets.update()

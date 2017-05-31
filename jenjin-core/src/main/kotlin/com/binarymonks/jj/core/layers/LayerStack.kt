@@ -42,4 +42,8 @@ class LayerStack : LayersAPI {
     fun remove(layer: Layer) {
         layers.removeValue(layer, true)
     }
+
+    fun resize(width: Int, height: Int) {
+        layers.forEach { it.resize(width,height) }
+    }
 }

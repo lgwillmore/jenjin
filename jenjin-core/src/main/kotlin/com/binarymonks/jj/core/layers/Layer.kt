@@ -15,4 +15,6 @@ abstract class Layer {
             stack!!.remove(this)
         }
     }
+
+    abstract fun resize(width: Int, height: Int)
 }
