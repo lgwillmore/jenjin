@@ -18,6 +18,7 @@ import com.binarymonks.jj.core.pools.new
 import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.specs.InstanceParams
+import com.binarymonks.jj.core.specs.render.PolygonRenderNodeSpec
 import com.binarymonks.jj.core.specs.render.RenderNodeSpec
 
 class PolygonRenderNode constructor(
@@ -53,17 +54,6 @@ class PolygonRenderNode constructor(
             return spriteByNodeIDCache.containsKey(renderNodeSpec.id)
         }
 
-        fun rebuild(renderNodeSpec: RenderNodeSpec, scaleX: Float, scaleY: Float): PolygonRenderNode {
-            val polygonSprite: PolygonSprite = spriteByNodeIDCache.get(renderNodeSpec.id)
-            return PolygonRenderNode(renderNodeSpec.priority, renderNodeSpec.color.copy(), polygonSprite, scaleX, scaleY)
-        }
-
-        fun buildNew(renderNodeSpec: RenderNodeSpec, vertices: Array<Vector2>, offset: Vector2, rotationD: Float, scaleX: Float, scaleY: Float): PolygonRenderNode {
-            val polygonSprite: PolygonSprite = polygonSprite(vertices)
-            spriteByNodeIDCache.put(renderNodeSpec.id, polygonSprite)
-            return PolygonRenderNode(renderNodeSpec.priority, renderNodeSpec.color.copy(), polygonSprite, scaleX, scaleY, offset.x, offset.y,rotationD)
-        }
-
         fun polygonSprite(points: Array<Vector2>): PolygonSprite {
             val pix = Pixmap(1, 1, Pixmap.Format.RGBA8888)
             pix.setColor(0xFFFFFFFF.toInt())
@@ -82,6 +72,12 @@ class PolygonRenderNode constructor(
             val poly = PolygonSprite(polyReg)
             return poly
         }
+
+        fun getSprite(renderNodeSpec: RenderNodeSpec): PolygonSprite? {
+            return spriteByNodeIDCache[renderNodeSpec.id]
+        }
+
+
     }
 
 }

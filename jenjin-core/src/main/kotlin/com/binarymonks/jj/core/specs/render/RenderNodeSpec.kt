@@ -2,6 +2,7 @@ package com.binarymonks.jj.core.specs.render
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.PolygonSprite
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.JJ
@@ -35,21 +36,25 @@ class PolygonRenderNodeSpec : SpatialRenderNodeSpec() {
     var vertices: Array<Vector2> = Array()
 
     override fun makeNode(paramsStack: ParamStack): RenderNode {
+        var sprite: PolygonSprite? = null
         if (PolygonRenderNode.haveBuilt(this)) {
-            return PolygonRenderNode.rebuild(this, paramsStack.scaleX, paramsStack.scaleY)
+            sprite = PolygonRenderNode.getSprite(this)
         } else {
-        val vertCopy: Array<Vector2> = Array()
-        vertices.forEach { vertCopy.add(it.copy()) }
-        return PolygonRenderNode.buildNew(
-                this,
-                vertCopy,
-                new(Vector2::class).set(offsetX, offsetY),
-                rotationD,
-                paramsStack.scaleX,
-                paramsStack.scaleY
-        )
-        recycleItems(vertCopy)
+            val vertCopy: Array<Vector2> = Array()
+            vertices.forEach { vertCopy.add(it.copy()) }
+            sprite = PolygonRenderNode.polygonSprite(vertices)
+            recycleItems(vertCopy)
         }
+        return PolygonRenderNode(
+                priority,
+                color.copy(),
+                checkNotNull(sprite),
+                paramsStack.scaleX,
+                paramsStack.scaleY,
+                offsetX,
+                offsetY,
+                paramsStack.rotationD
+        )
     }
 
     override fun getAssets(): Array<AssetReference> {
