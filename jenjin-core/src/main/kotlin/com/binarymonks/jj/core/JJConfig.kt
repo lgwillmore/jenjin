@@ -15,5 +15,5 @@ class GameViewConfig {
 
 class B2DConfig{
     var debug = false
-    var gravigy = Vector2(0f,-9f)
+    var gravity = Vector2(0f,-9f)
 }

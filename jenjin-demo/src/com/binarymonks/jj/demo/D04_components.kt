@@ -7,6 +7,7 @@ import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.pools.new
+import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.*
@@ -122,8 +123,8 @@ class BackForwardMovement : Component() {
     var metersPerSecond: PropOverride<Float> = PropOverride(0f)
 
     //These are our private fields for the running state
-    private var startLocation: Vector2 = new(Vector2::class)
-    private var velocity: Vector2 = new(Vector2::class)
+    private var startLocation: Vector2 = vec2()
+    private var velocity: Vector2 = vec2()
 
     //For our platform we want to know where we start in the world so we can control movement
     // relative to that

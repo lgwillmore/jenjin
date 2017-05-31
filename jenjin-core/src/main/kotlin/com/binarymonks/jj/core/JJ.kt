@@ -21,6 +21,7 @@ import com.binarymonks.jj.core.time.ClockControls
  */
 object JJ {
     lateinit var scenes: ScenesAPI
+    lateinit var assets: AssetsAPI
     lateinit var layers: LayersAPI
     lateinit var pools: PoolsAPI
     lateinit var clock: ClockAPI
@@ -47,5 +48,6 @@ object JJ {
         pools = B.pools
         clock = B.clock
         physics = B.physicsWorld
+        assets = B.assets
     }
 }

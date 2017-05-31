@@ -1,5 +1,6 @@
 package com.binarymonks.jj.core.specs.physics
 
+import com.badlogic.gdx.graphics.Color
 import com.binarymonks.jj.core.specs.Rectangle
 import com.binarymonks.jj.core.specs.ShapeSpec
 

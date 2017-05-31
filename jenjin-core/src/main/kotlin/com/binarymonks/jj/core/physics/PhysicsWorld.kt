@@ -6,7 +6,7 @@ import com.binarymonks.jj.core.api.PhysicsAPI
 
 class PhysicsWorld : PhysicsAPI {
 
-    var b2dworld: World = World(JJ.B.config.b2dConfig.gravigy, true)
+    var b2dworld: World = World(JJ.B.config.b2dConfig.gravity, true)
     var velocityIterations = 10
     var positionIterations = 20
     override var collisionGroups = CollisionGroups()

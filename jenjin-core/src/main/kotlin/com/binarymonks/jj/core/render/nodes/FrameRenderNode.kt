@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Transform
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.pools.new
+import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.properties.PropOverride
 
 class FrameRenderNode(
@@ -26,13 +27,13 @@ class FrameRenderNode(
     override fun render(camera: OrthographicCamera) {
         var relativeRotationD = myParent().physicsRoot.rotationR() * MathUtils.radiansToDegrees + rotationD;
 
-        var frame : TextureRegion = provider.getFrame(relativeRotationD)
+        var frame: TextureRegion = provider.getFrame(relativeRotationD)
         if (frame != null) {
             frame
             JJ.B.renderWorld.switchToBatch()
             JJ.B.renderWorld.switchBatchColorTo(color.get())
-            val transform : Transform = myParent().physicsRoot.transform
-            val position = new(Vector2::class).set(offsetX, offsetY)
+            val transform: Transform = myParent().physicsRoot.transform
+            val position = vec2().set(offsetX, offsetY)
             transform.mul(position)
             JJ.B.renderWorld.polyBatch.draw(frame, position.x - (width / 2f), position.y - (height / 2f), width / 2f, height / 2f, width, height, scaleX, scaleY, relativeRotationD)
             JJ.B.renderWorld.switchBatchColorBack()

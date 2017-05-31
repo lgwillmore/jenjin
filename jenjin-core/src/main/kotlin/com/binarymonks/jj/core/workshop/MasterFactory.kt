@@ -11,8 +11,10 @@ import com.binarymonks.jj.core.audio.SoundParams
 import com.binarymonks.jj.core.extensions.copy
 import com.binarymonks.jj.core.physics.PhysicsNode
 import com.binarymonks.jj.core.physics.PhysicsRoot
+import com.binarymonks.jj.core.pools.mat3
 import com.binarymonks.jj.core.pools.new
 import com.binarymonks.jj.core.pools.recycle
+import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.render.RenderRoot
 import com.binarymonks.jj.core.render.nodes.RenderNode
 import com.binarymonks.jj.core.specs.*
@@ -66,7 +68,7 @@ class MasterFactory {
     }
 
     private fun addBehaviour(thing: Thing, thingSpec: ThingSpec) {
-        for(component in thingSpec.components){
+        for (component in thingSpec.components) {
             thing.addComponent(component.clone())
         }
     }
@@ -89,7 +91,7 @@ class MasterFactory {
     private fun buildPhysicsRoot(physicsSpec: PhysicsSpec, paramsStack: ParamStack): PhysicsRoot {
         val def = BodyDef()
 
-        var worldPosition = new(Vector2::class).mul(paramsStack.transformMatrix)
+        var worldPosition = vec2().mul(paramsStack.transformMatrix)
 
         def.position.set(worldPosition.x, worldPosition.y)
         def.angle = paramsStack.rotationD * MathUtils.degreesToRadians
@@ -123,7 +125,7 @@ class MasterFactory {
     }
 
     private fun buildFixture(physicsRoot: PhysicsRoot, fixtureSpec: FixtureSpec, body: Body, params: ParamStack) {
-        val shape = buildShape(fixtureSpec, params.scaleX, params.scaleY, fixtureSpec.offsetX,fixtureSpec.offsetY)
+        val shape = buildShape(fixtureSpec, params.scaleX, params.scaleY, fixtureSpec.offsetX, fixtureSpec.offsetY)
         val fDef = FixtureDef()
         fDef.shape = shape
         fDef.density = fixtureSpec.density
@@ -139,7 +141,7 @@ class MasterFactory {
         shape!!.dispose()
     }
 
-    private fun buildShape(nodeSpec: FixtureSpec, scaleX: Float, scaleY: Float, offsetX:Float =0f,offsetY:Float=0f): Shape? {
+    private fun buildShape(nodeSpec: FixtureSpec, scaleX: Float, scaleY: Float, offsetX: Float = 0f, offsetY: Float = 0f): Shape? {
         if (nodeSpec.shape is Rectangle) {
             val polygonRectangle = nodeSpec.shape as Rectangle
             val boxshape = PolygonShape()
@@ -149,12 +151,12 @@ class MasterFactory {
             val circle = nodeSpec.shape as Circle
             val circleShape = CircleShape()
             circleShape.radius = circle.radius * scaleX
-            circleShape.position = new(Vector2::class).set(nodeSpec.offsetX, nodeSpec.offsetY)
+            circleShape.position = vec2().set(nodeSpec.offsetX, nodeSpec.offsetY)
             return circleShape
         } else if (nodeSpec.shape is Polygon) {
-            val trans = new(Matrix3::class)
-            trans.scale(scaleX,scaleY)
-            trans.translate(offsetX,offsetY)
+            val trans = mat3()
+            trans.scale(scaleX, scaleY)
+            trans.translate(offsetX, offsetY)
             trans.rotate(nodeSpec.rotationD)
             val polygonSpec = nodeSpec.shape as Polygon
             val polygonShape = PolygonShape()
@@ -166,9 +168,9 @@ class MasterFactory {
             recycle(trans)
             return polygonShape
         } else if (nodeSpec.shape is Chain) {
-            val trans = new(Matrix3::class)
-            trans.scale(scaleX,scaleY)
-            trans.translate(offsetX,offsetY)
+            val trans = mat3()
+            trans.scale(scaleX, scaleY)
+            trans.translate(offsetX, offsetY)
             trans.rotate(nodeSpec.rotationD)
             val chainSpec = nodeSpec.shape as Chain
             val chainShape = ChainShape()
@@ -212,7 +214,7 @@ class ParamStack : Array<InstanceParams>() {
     var y = 0f
     var scaleX = 1f
     var scaleY = 1f
-    var transformMatrix: Matrix3 = new(Matrix3::class)
+    var transformMatrix: Matrix3 = mat3()
 
     override fun add(params: InstanceParams) {
         super.add(params)

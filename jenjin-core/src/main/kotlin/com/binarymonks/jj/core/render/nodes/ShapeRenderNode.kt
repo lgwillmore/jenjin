@@ -2,12 +2,11 @@ package com.binarymonks.jj.core.render.nodes
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.math.Matrix3
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Transform
 import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.JJ
-import com.binarymonks.jj.core.pools.new
+import com.binarymonks.jj.core.pools.mat3
 import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.pools.recycleItems
 import com.binarymonks.jj.core.pools.vec2
@@ -39,7 +38,7 @@ class CircleRenderNode(
         var segments: Int = 360
 ) : ShapeRenderNode(priority, color, fill) {
 
-    private var positionCache: Vector2 = new(Vector2::class)
+    private var positionCache: Vector2 = vec2()
 
     override fun drawShape(camera: OrthographicCamera) {
         val transform: Transform = myParent().physicsRoot.transform
@@ -68,9 +67,9 @@ class LineChainRenderNode(
 
     override fun drawShape(camera: OrthographicCamera) {
         val transform: Transform = myParent().physicsRoot.transform
-        val localTransform = new(Matrix3::class)
-        localTransform.scale(scaleX,scaleY)
-        localTransform.translate(offsetX,offsetY)
+        val localTransform = mat3()
+        localTransform.scale(scaleX, scaleY)
+        localTransform.translate(offsetX, offsetY)
         localTransform.rotate(rotationD)
         clearCache()
         vertices.forEach {

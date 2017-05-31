@@ -3,6 +3,7 @@ package com.binarymonks.jj.core.specs
 import com.badlogic.gdx.math.Matrix3
 import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.pools.PoolManager
+import com.binarymonks.jj.core.pools.mat3
 import com.binarymonks.jj.core.pools.new
 
 
@@ -27,10 +28,10 @@ class InstanceParams internal constructor() {
      * This must be a name that is globally unique if set. It is used for retrieving
      */
     var uniqueInstanceName: String? = null
-    private var transformMatrix: Matrix3 = new(Matrix3::class)
+    private var transformMatrix: Matrix3 = mat3()
 
-    fun prop(name: String, value: Any? = null){
-        properties.put(name,value)
+    fun prop(name: String, value: Any? = null) {
+        properties.put(name, value)
     }
 
     fun getTransformMatrix(): Matrix3 {
