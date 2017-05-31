@@ -48,6 +48,7 @@ class RenderWorld {
         if (!shapeRenderer.isDrawing) {
             polyBatch.end()
             shapeRenderer.begin(if (fill) ShapeRenderer.ShapeType.Filled else ShapeRenderer.ShapeType.Line)
+            currentShapeFill=fill
         } else if (fill != currentShapeFill) {
             currentShapeFill = fill
             shapeRenderer.end()
@@ -62,12 +63,12 @@ class RenderWorld {
         }
     }
 
-    fun switchBatchColorTo(color: Color){
+    fun switchBatchColorTo(color: Color) {
         batchStoredColor = polyBatch.color
         polyBatch.color = color
     }
 
-    fun switchBatchColorBack(){
+    fun switchBatchColorBack() {
         polyBatch.color = batchStoredColor
     }
 

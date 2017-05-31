@@ -82,9 +82,9 @@ class D04_components : Game(MyConfig04.jjConfig) {
                 }
                 //Add our component to our thing and bind fields to properties
                 component(BackForwardMovement()) {
-                    direction.setPropOverride("direction")
-                    movementRange.setPropOverride("movementRange")
-                    metersPerSecond.setPropOverride("metersPerSecond")
+                    direction.setOverride("direction")
+                    movementRange.setOverride("movementRange")
+                    metersPerSecond.setOverride("metersPerSecond")
                 }
             }
         }
@@ -101,9 +101,9 @@ class D04_components : Game(MyConfig04.jjConfig) {
                 }
                 //Add our component to our thing and bind fields to properties
                 component(BackForwardMovement()) {
-                    direction.setPropOverride("direction")
-                    movementRange.setPropOverride("movementRange")
-                    metersPerSecond.setPropOverride("metersPerSecond")
+                    direction.setOverride("direction")
+                    movementRange.setOverride("movementRange")
+                    metersPerSecond.setOverride("metersPerSecond")
                 }
             }
         }

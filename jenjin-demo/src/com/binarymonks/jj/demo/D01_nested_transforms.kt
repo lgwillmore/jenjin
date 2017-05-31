@@ -6,11 +6,11 @@ import com.binarymonks.jj.core.Game
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.pools.vec2
-import com.binarymonks.jj.core.specs.SceneSpec
-import com.binarymonks.jj.core.specs.builders.*
 import com.binarymonks.jj.core.specs.Circle
 import com.binarymonks.jj.core.specs.Polygon
 import com.binarymonks.jj.core.specs.Rectangle
+import com.binarymonks.jj.core.specs.SceneSpec
+import com.binarymonks.jj.core.specs.builders.*
 
 /**
  * A SceneNode's transforms (translation, rotation, scale) operate in the space of the parent.
@@ -53,7 +53,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                 }
                 render {
                     circleRender(4f) {
-                        color.setToValue(Color.PURPLE)
+                        color.set(Color.PURPLE)
                     }
                 }
             }
@@ -67,7 +67,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                     }
                     render {
                         circleRender(4f) {
-                            color.setToValue(Color.PURPLE)
+                            color.set(Color.PURPLE)
                         }
                     }
                 }
@@ -81,7 +81,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                         }
                         render {
                             circleRender(4f) {
-                                color.setToValue(Color.PURPLE)
+                                color.set(Color.PURPLE)
                             }
                         }
                     }
@@ -95,7 +95,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                             }
                             render {
                                 circleRender(4f) {
-                                    color.setToValue(Color.PURPLE)
+                                    color.set(Color.PURPLE)
                                 }
                             }
                         }
@@ -112,7 +112,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                     }
                     render {
                         circleRender(4f) {
-                            color.setToValue(Color.PURPLE)
+                            color.set(Color.PURPLE)
                         }
                     }
                 }
@@ -126,7 +126,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                         }
                         render {
                             circleRender(4f) {
-                                color.setToValue(Color.PURPLE)
+                                color.set(Color.PURPLE)
                             }
                         }
                     }
@@ -140,7 +140,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                             }
                             render {
                                 circleRender(4f) {
-                                    color.setToValue(Color.PURPLE)
+                                    color.set(Color.PURPLE)
                                 }
                             }
                         }
@@ -226,7 +226,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                 }
                 render {
                     polygonRender(polygonTriangle.vertices) {
-                        color.setToValue(Color.CYAN)
+                        color.set(Color.CYAN)
                     }
                 }
             }
@@ -240,7 +240,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                     }
                     render {
                         polygonRender(polygonTriangle.vertices) {
-                            color.setToValue(Color.CYAN)
+                            color.set(Color.CYAN)
                         }
                     }
                 }
@@ -254,7 +254,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                         }
                         render {
                             polygonRender(polygonTriangle.vertices) {
-                                color.setToValue(Color.CYAN)
+                                color.set(Color.CYAN)
                             }
                         }
                     }
@@ -268,7 +268,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                             }
                             render {
                                 polygonRender(polygonTriangle.vertices) {
-                                    color.setToValue(Color.CYAN)
+                                    color.set(Color.CYAN)
                                 }
                             }
                         }
@@ -290,7 +290,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                     }
                     render {
                         polygonRender(poly.vertices) {
-                            color.setToValue(Color.RED)
+                            color.set(Color.RED)
                         }
                     }
                 }
@@ -307,7 +307,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                     render {
                         polygonRender(poly.vertices) {
                             rotationD = 30f
-                            color.setToValue(Color.RED)
+                            color.set(Color.RED)
                         }
                     }
                 }
@@ -326,7 +326,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                 }
                 render {
                     polygonRender(poly.vertices) {
-                        color.setToValue(Color.RED)
+                        color.set(Color.RED)
                     }
                 }
             }
@@ -344,7 +344,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                         polygonRender(poly2.vertices) {
                             offsetX = 10f
                             rotationD = 30f
-                            color.setToValue(Color.RED)
+                            color.set(Color.RED)
                         }
                     }
                 }
@@ -352,6 +352,27 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
         }
     }
 }
+
+val poly = Polygon(
+        vec2(-2f, 0f),
+        vec2(-1.5f, 1.5f),
+        vec2(0f, 2f),
+        vec2(1.5f, 1.5f),
+        vec2(2f, 0f),
+        vec2(1.5f, -1.5f),
+        vec2(0f, -2f),
+        vec2(-1.5f, -1.5f)
+)
+val poly2 = Polygon(
+        vec2(-4f, 0f),
+        vec2(-3f, 3f),
+        vec2(0f, 4f),
+        vec2(3f, 3f),
+        vec2(4f, 0f),
+        vec2(3f, -3f),
+        vec2(0f, -4f),
+        vec2(-3f, -3f)
+)
 
 object MyConfig01 {
     var jjConfig: JJConfig = JJConfig()

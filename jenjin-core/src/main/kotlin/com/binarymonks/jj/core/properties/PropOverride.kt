@@ -4,8 +4,8 @@ package com.binarymonks.jj.core.properties
 /**
  * Used to indicate fields that can be set by value or by looking up a property of the runtime parent.
  *
- * If [setPropOverride] is used, this will take precedence  if the property exists. If not the Value will be used
- * as a fallback. If [setToValue] is called it will cancel the property override, and the value will take precedence.
+ * If [setOverride] is used, this will take precedence  if the property exists. If not the Value will be used
+ * as a fallback. If [set] is called it will cancel the property override, and the value will take precedence.
  */
 class PropOverride<T>(value: T) {
 
@@ -20,7 +20,7 @@ class PropOverride<T>(value: T) {
     /**
      * Set to an explicit value - do not delegate to a property
      */
-    fun setToValue(value: T) {
+    fun set(value: T) {
         this.value = value
         this.propOverrideKey = null
     }
@@ -30,7 +30,7 @@ class PropOverride<T>(value: T) {
      *
      * Will default to the value set/initialised if no property for the key is found.
      */
-    fun setPropOverride(propertyKey: String) {
+    fun setOverride(propertyKey: String) {
         this.propOverrideKey = propertyKey
     }
 

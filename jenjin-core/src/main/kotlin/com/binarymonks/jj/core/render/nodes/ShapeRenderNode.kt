@@ -2,11 +2,15 @@ package com.binarymonks.jj.core.render.nodes
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.math.Matrix3
 import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.box2d.Transform
+import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.pools.new
+import com.binarymonks.jj.core.pools.recycle
+import com.binarymonks.jj.core.pools.recycleItems
+import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.properties.PropOverride
 
 
@@ -36,17 +40,56 @@ class CircleRenderNode(
 ) : ShapeRenderNode(priority, color, fill) {
 
     private var positionCache: Vector2 = new(Vector2::class)
-    private var position3Cache: Vector3 = new(Vector3::class)
 
     override fun drawShape(camera: OrthographicCamera) {
         val transform: Transform = myParent().physicsRoot.transform
         positionCache.set(offsetX, offsetY)
         transform.mul(positionCache)
-        position3Cache.set(positionCache.x, positionCache.y, 0f)
-        JJ.B.renderWorld.shapeRenderer.circle(position3Cache.x, position3Cache.y, radius, segments)
+        JJ.B.renderWorld.shapeRenderer.circle(positionCache.x, positionCache.y, radius, segments)
+    }
+
+    override fun dispose() {
+    }
+}
+
+class LineChainRenderNode(
+        priority: Int,
+        color: PropOverride<Color>,
+        fill: Boolean = false,
+        internal var scaleX: Float = 1f,
+        internal var scaleY: Float = 1f,
+        internal var offsetX: Float = 0f,
+        internal var offsetY: Float = 0f,
+        internal var rotationD: Float = 0f,
+        val vertices: Array<Vector2>
+) : ShapeRenderNode(priority, color, fill) {
+
+    private var vertCache: Array<Vector2> = Array()
+
+    override fun drawShape(camera: OrthographicCamera) {
+        val transform: Transform = myParent().physicsRoot.transform
+        val localTransform = new(Matrix3::class)
+        localTransform.scale(scaleX,scaleY)
+        localTransform.translate(offsetX,offsetY)
+        localTransform.rotate(rotationD)
+        clearCache()
+        vertices.forEach {
+            val transformed = vec2().set(it)
+            transform.mul(transformed)
+            transformed.mul(localTransform)
+            vertCache.add(transformed)
+        }
+        for (i in 1..vertCache.size - 1) {
+            JJ.B.renderWorld.shapeRenderer.line(vertCache.get(i - 1), vertCache.get(i))
+        }
+        recycle(localTransform)
     }
 
     override fun dispose() {
     }
 
+    private fun clearCache() {
+        recycleItems(vertCache)
+        vertCache.clear()
+    }
 }

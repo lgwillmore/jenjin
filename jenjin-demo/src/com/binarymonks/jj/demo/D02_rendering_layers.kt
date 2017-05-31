@@ -47,14 +47,14 @@ class D02_rendering_layers : Game(MyConfig02.jjConfig) {
                 }
                 render {
                     imageTexture("textures/layers/0_0.png") {
-                        color.setToValue(Color.CORAL)
+                        color.set(Color.CORAL)
                         layer = 0
                         priority = 0
                         width = 35f
                         height = 35f
                     }
                     imageTexture("textures/layers/0_1.png") {
-                        color.setToValue(Color.ORANGE)
+                        color.set(Color.ORANGE)
                         layer = 0
                         priority = 1
                         offsetX = 2.5f
@@ -63,7 +63,7 @@ class D02_rendering_layers : Game(MyConfig02.jjConfig) {
                         height = 30f
                     }
                     imageTexture("textures/layers/2_0.png") {
-                        color.setToValue(Color.BLUE)
+                        color.set(Color.BLUE)
                         layer = 2
                         priority = 0
                         offsetX = 10f
@@ -72,7 +72,7 @@ class D02_rendering_layers : Game(MyConfig02.jjConfig) {
                         height = 15f
                     }
                     imageTexture("textures/layers/2_1.png") {
-                        color.setToValue(Color.CYAN)
+                        color.set(Color.CYAN)
                         layer = 2
                         priority = 1
                         offsetX = 12.5f
@@ -93,14 +93,14 @@ class D02_rendering_layers : Game(MyConfig02.jjConfig) {
                 }
                 render {
                     imageTexture("textures/layers/1_0.png") {
-                        color.setToValue(Color.GREEN)
+                        color.set(Color.GREEN)
                         layer = 1
                         priority = 0
                         width = 25f
                         height = 25f
                     }
                     imageTexture("textures/layers/1_1.png") {
-                        color.setToValue(Color.YELLOW)
+                        color.set(Color.YELLOW)
                         layer = 1
                         priority = 1
                         offsetX = 5f

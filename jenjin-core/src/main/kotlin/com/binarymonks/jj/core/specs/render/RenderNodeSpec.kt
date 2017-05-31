@@ -8,8 +8,6 @@ import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.assets.AssetReference
 import com.binarymonks.jj.core.extensions.copy
-import com.binarymonks.jj.core.pools.new
-import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.pools.recycleItems
 import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.render.nodes.*
@@ -51,8 +49,8 @@ class PolygonRenderNodeSpec : SpatialRenderNodeSpec() {
                 checkNotNull(sprite),
                 paramsStack.scaleX,
                 paramsStack.scaleY,
-                offsetX*paramsStack.scaleX,
-                offsetY*paramsStack.scaleY,
+                offsetX * paramsStack.scaleX,
+                offsetY * paramsStack.scaleY,
                 rotationD
         )
     }
@@ -60,6 +58,32 @@ class PolygonRenderNodeSpec : SpatialRenderNodeSpec() {
     override fun getAssets(): Array<AssetReference> {
         return Array()
     }
+}
+
+class LineChainRenderNodeSpec : SpatialRenderNodeSpec() {
+    var vertices: Array<Vector2> = Array()
+    var fill: Boolean = false
+
+    override fun makeNode(paramsStack: ParamStack): RenderNode {
+        val vertCopy: Array<Vector2> = Array()
+        vertices.forEach { vertCopy.add(it.copy()) }
+        return LineChainRenderNode(
+                priority,
+                color.copy(),
+                fill,
+                paramsStack.scaleX,
+                paramsStack.scaleY,
+                offsetX,
+                offsetY,
+                rotationD,
+                vertCopy
+        )
+    }
+
+    override fun getAssets(): Array<AssetReference> {
+        return Array()
+    }
+
 }
 
 class CircleRenderNodeSpec : SpatialRenderNodeSpec() {

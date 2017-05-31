@@ -166,13 +166,18 @@ class MasterFactory {
             recycle(trans)
             return polygonShape
         } else if (nodeSpec.shape is Chain) {
+            val trans = new(Matrix3::class)
+            trans.scale(scaleX,scaleY)
+            trans.translate(offsetX,offsetY)
+            trans.rotate(nodeSpec.rotationD)
             val chainSpec = nodeSpec.shape as Chain
             val chainShape = ChainShape()
             val vertices = arrayOfNulls<Vector2>(chainSpec.vertices.size)
             for (i in 0..chainSpec.vertices.size - 1) {
-                vertices[i] = chainSpec.vertices.get(i).add(nodeSpec.offsetX, nodeSpec.offsetY)
+                vertices[i] = chainSpec.vertices.get(i).copy().mul(trans)
             }
             chainShape.createChain(vertices)
+            recycle(trans)
             return chainShape
         }
         return null

@@ -6,33 +6,11 @@ import com.binarymonks.jj.core.Game
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.pools.vec2
+import com.binarymonks.jj.core.specs.Chain
 import com.binarymonks.jj.core.specs.Circle
 import com.binarymonks.jj.core.specs.Polygon
-import com.binarymonks.jj.core.specs.Rectangle
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.*
-
-
-val poly = Polygon(
-        vec2(-2f, 0f),
-        vec2(-1.5f, 1.5f),
-        vec2(0f, 2f),
-        vec2(1.5f, 1.5f),
-        vec2(2f, 0f),
-        vec2(1.5f, -1.5f),
-        vec2(0f, -2f),
-        vec2(-1.5f, -1.5f)
-)
-val poly2 = Polygon(
-        vec2(-4f, 0f),
-        vec2(-3f, 3f),
-        vec2(0f, 4f),
-        vec2(3f, 3f),
-        vec2(4f, 0f),
-        vec2(3f, -3f),
-        vec2(0f, -4f),
-        vec2(-3f, -3f)
-)
 
 
 class D05_rendering : Game(MyConfig05.jjConfig) {
@@ -40,7 +18,6 @@ class D05_rendering : Game(MyConfig05.jjConfig) {
         JJ.scenes.addSceneSpec("shapes", shapes())
 
         val initialScene = scene {
-            nodeRef(params { y = -5f; scaleX = 0.5f; scaleY = 0.5f }) { "shapes" }
             nodeRef { "shapes" }
         }
 
@@ -57,7 +34,7 @@ class D05_rendering : Game(MyConfig05.jjConfig) {
                             vec2(0f, 2f),
                             vec2(0f, 0f)
                     ) {
-                        color.setToValue(Color.GREEN)
+                        color.set(Color.GREEN)
                     }
                 }
             }
@@ -76,6 +53,14 @@ class D05_rendering : Game(MyConfig05.jjConfig) {
                 vec2(0f, -2f),
                 vec2(-1.5f, -1.5f)
         )
+        val zigzag = Chain(
+                vec2(-2f, 0f),
+                vec2(-1f, 1f),
+                vec2(0f, 0f),
+                vec2(1f, 1f),
+                vec2(2f, 0f)
+        )
+
         return scene {
             // Polygon
             node {
@@ -90,24 +75,7 @@ class D05_rendering : Game(MyConfig05.jjConfig) {
                     render {
                         polygonRender(poly.vertices) {
                             offsetX = 4f
-                            color.setToValue(Color.RED)
-                        }
-                    }
-                }
-                node(params { x = 4f; scaleX = 0.7f; scaleY = 0.7f }) {
-                    thing {
-                        physics {
-                            bodyType = BodyDef.BodyType.StaticBody
-                            fixture {
-                                offsetX = 4f
-                                shape = poly
-                            }
-                        }
-                        render {
-                            polygonRender(poly.vertices) {
-                                offsetX = 4f
-                                color.setToValue(Color.RED)
-                            }
+                            color.set(Color.RED)
                         }
                     }
                 }
@@ -124,25 +92,28 @@ class D05_rendering : Game(MyConfig05.jjConfig) {
                     }
                     render {
                         circleRender(2f) {
-                            color.setToValue(Color.GREEN)
+                            color.set(Color.GREEN)
                             offsetX = -4f
                         }
                     }
                 }
-                node(params { x = -4f; scaleX = 0.7f; scaleY = 0.7f }) {
-                    thing {
-                        physics {
-                            bodyType = BodyDef.BodyType.StaticBody
-                            fixture {
-                                offsetX = -4f
-                                shape = Circle(2f)
-                            }
+            }
+            //LineChain
+            node {
+                thing {
+                    physics {
+                        bodyType = BodyDef.BodyType.StaticBody
+                        fixture {
+                            shape = zigzag
+                            offsetY = -4f
+                            rotationD = 90f
                         }
-                        render {
-                            circleRender(2f) {
-                                color.setToValue(Color.GREEN)
-                                offsetX = -4f
-                            }
+                    }
+                    render {
+                        lineChainRender(zigzag.vertices) {
+                            color.set(Color.BLUE)
+                            offsetY = -4f
+                            rotationD = 90f
                         }
                     }
                 }
