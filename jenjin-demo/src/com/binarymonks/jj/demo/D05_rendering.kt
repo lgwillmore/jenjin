@@ -2,15 +2,37 @@ package com.binarymonks.jj.demo
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.physics.box2d.BodyDef
-import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.Game
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.specs.Circle
 import com.binarymonks.jj.core.specs.Polygon
+import com.binarymonks.jj.core.specs.Rectangle
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.*
+
+
+val poly = Polygon(
+        vec2(-2f, 0f),
+        vec2(-1.5f, 1.5f),
+        vec2(0f, 2f),
+        vec2(1.5f, 1.5f),
+        vec2(2f, 0f),
+        vec2(1.5f, -1.5f),
+        vec2(0f, -2f),
+        vec2(-1.5f, -1.5f)
+)
+val poly2 = Polygon(
+        vec2(-4f, 0f),
+        vec2(-3f, 3f),
+        vec2(0f, 4f),
+        vec2(3f, 3f),
+        vec2(4f, 0f),
+        vec2(3f, -3f),
+        vec2(0f, -4f),
+        vec2(-3f, -3f)
+)
 
 
 class D05_rendering : Game(MyConfig05.jjConfig) {

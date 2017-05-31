@@ -22,6 +22,8 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
         JJ.scenes.addSceneSpec("nestedCircles", nestedCircles())
         JJ.scenes.addSceneSpec("nestedRectangles", nestedRectangles())
         JJ.scenes.addSceneSpec("nestedPolygons", nestedPolygons())
+        JJ.scenes.addSceneSpec("nestedFixtureTransforms", nested())
+        JJ.scenes.addSceneSpec("flatFixtureTransforms", flat())
         JJ.scenes.loadAssetsNow()
 
         val initialSceneSpec = scene {
@@ -31,6 +33,8 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
             nodeRef(params { x = -18f; y = 6f; scaleX = 0.5f; scaleY = 0.5f }) { "nestedRectangles" }
             nodeRef(params { x = 10f; y = -15f }) { "nestedPolygons" }
             nodeRef(params { x = 20f; y = -15f; scaleX = 0.5f; scaleY = 0.5f }) { "nestedPolygons" }
+            nodeRef(params{ x = -12f; y = -8f}){"nestedFixtureTransforms"}
+            nodeRef(params{ x = -12f; y = -15f}){"flatFixtureTransforms"}
         }
 
         JJ.scenes.instantiate(initialSceneSpec)
@@ -267,6 +271,80 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                                     color.setToValue(Color.CYAN)
                                 }
                             }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun flat(): SceneSpec {
+        return scene{
+            node{
+                thing {
+                    physics{
+                        bodyType=BodyDef.BodyType.StaticBody
+                        fixture {
+                            shape=poly
+                        }
+                    }
+                    render {
+                        polygonRender(poly.vertices) {
+                            color.setToValue(Color.RED)
+                        }
+                    }
+                }
+            }
+            node(params { x = 5f }){
+                thing {
+                    physics{
+                        bodyType=BodyDef.BodyType.StaticBody
+                        fixture{
+                            rotationD=30f
+                            shape=poly
+                        }
+                    }
+                    render {
+                        polygonRender(poly.vertices) {
+                            rotationD = 30f
+                            color.setToValue(Color.RED)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun nested(): SceneSpec{
+        return scene{
+            thing{
+                physics {
+                    bodyType=BodyDef.BodyType.StaticBody
+                    fixture {
+                        shape=poly
+                    }
+                }
+                render {
+                    polygonRender(poly.vertices) {
+                        color.setToValue(Color.RED)
+                    }
+                }
+            }
+            node(params { scaleX=0.5f; scaleY = 0.5f }){
+                thing {
+                    physics{
+                        bodyType=BodyDef.BodyType.StaticBody
+                        fixture{
+                            offsetX = 10f
+                            rotationD = 30f
+                            shape= poly2
+                        }
+                    }
+                    render {
+                        polygonRender(poly2.vertices) {
+                            offsetX = 10f
+                            rotationD = 30f
+                            color.setToValue(Color.RED)
                         }
                     }
                 }

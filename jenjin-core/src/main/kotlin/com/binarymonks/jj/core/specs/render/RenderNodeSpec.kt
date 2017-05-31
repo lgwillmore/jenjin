@@ -51,9 +51,9 @@ class PolygonRenderNodeSpec : SpatialRenderNodeSpec() {
                 checkNotNull(sprite),
                 paramsStack.scaleX,
                 paramsStack.scaleY,
-                offsetX,
-                offsetY,
-                paramsStack.rotationD
+                offsetX*paramsStack.scaleX,
+                offsetY*paramsStack.scaleY,
+                rotationD
         )
     }
 

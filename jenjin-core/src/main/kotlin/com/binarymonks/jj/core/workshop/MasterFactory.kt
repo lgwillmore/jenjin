@@ -12,6 +12,7 @@ import com.binarymonks.jj.core.extensions.copy
 import com.binarymonks.jj.core.physics.PhysicsNode
 import com.binarymonks.jj.core.physics.PhysicsRoot
 import com.binarymonks.jj.core.pools.new
+import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.render.RenderRoot
 import com.binarymonks.jj.core.render.nodes.RenderNode
 import com.binarymonks.jj.core.specs.*
@@ -151,13 +152,18 @@ class MasterFactory {
             circleShape.position = new(Vector2::class).set(nodeSpec.offsetX, nodeSpec.offsetY)
             return circleShape
         } else if (nodeSpec.shape is Polygon) {
+            val trans = new(Matrix3::class)
+            trans.scale(scaleX,scaleY)
+            trans.translate(offsetX,offsetY)
+            trans.rotate(nodeSpec.rotationD)
             val polygonSpec = nodeSpec.shape as Polygon
             val polygonShape = PolygonShape()
             val vertices = arrayOfNulls<Vector2>(polygonSpec.vertices.size)
             for (i in 0..polygonSpec.vertices.size - 1) {
-                vertices[i] = polygonSpec.vertices.get(i).copy().scl(scaleX, scaleY).add(offsetX,offsetY)
+                vertices[i] = polygonSpec.vertices.get(i).copy().mul(trans)
             }
             polygonShape.set(vertices)
+            recycle(trans)
             return polygonShape
         } else if (nodeSpec.shape is Chain) {
             val chainSpec = nodeSpec.shape as Chain
