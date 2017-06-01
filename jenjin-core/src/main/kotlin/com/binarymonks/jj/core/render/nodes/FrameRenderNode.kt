@@ -5,16 +5,16 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.MathUtils
-import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Transform
 import com.binarymonks.jj.core.JJ
-import com.binarymonks.jj.core.pools.new
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.properties.PropOverride
+import com.binarymonks.jj.core.specs.render.GraphID
 
 class FrameRenderNode(
         priority: Int,
         color: PropOverride<Color>,
+        graphID: GraphID,
         internal var provider: FrameProvider,
         internal var offsetX: Float,
         internal var offsetY: Float,
@@ -22,7 +22,7 @@ class FrameRenderNode(
         internal var width: Float,
         internal var height: Float,
         internal var scaleX: Float,
-        internal var scaleY: Float) : RenderNode(priority, color) {
+        internal var scaleY: Float) : RenderNode(priority, color, graphID) {
 
     override fun render(camera: OrthographicCamera) {
         var relativeRotationD = myParent().physicsRoot.rotationR() * MathUtils.radiansToDegrees + rotationD;
