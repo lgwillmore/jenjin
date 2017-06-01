@@ -9,4 +9,10 @@ fun PhysicsSpec.fixture(init: FixtureSpec.() -> Unit): FixtureSpec {
     return fixtureSpec
 }
 
+fun PhysicsSpec.pointLight(init: PointLightSpec.()->Unit){
+    val pl = PointLightSpec()
+    pl.init()
+    this.lights.add(pl)
+}
+
 

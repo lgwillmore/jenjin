@@ -2,6 +2,7 @@ package com.binarymonks.jj.core.specs.builders
 
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
+import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.specs.render.*
 
 
@@ -34,6 +35,16 @@ fun RenderSpec.lineChainRender(vertices: Array<Vector2>, init: LineChainRenderNo
 fun RenderSpec.lineChainRender(vararg vertices: Vector2, init: LineChainRenderNodeSpec.() -> Unit) {
     val shapeSpec: LineChainRenderNodeSpec = LineChainRenderNodeSpec()
     vertices.forEach { shapeSpec.vertices.add(it) }
+    shapeSpec.init()
+    this.renderNodes.add(shapeSpec)
+}
+
+fun RenderSpec.rectangleRender(width: Float, height: Float, init: PolygonRenderNodeSpec.()-> Unit){
+    val shapeSpec: PolygonRenderNodeSpec = PolygonRenderNodeSpec()
+    shapeSpec.vertices.add(vec2(-width/2, height/2))
+    shapeSpec.vertices.add(vec2(width/2, height/2))
+    shapeSpec.vertices.add(vec2(width/2, -height/2))
+    shapeSpec.vertices.add(vec2(-width/2, -height/2))
     shapeSpec.init()
     this.renderNodes.add(shapeSpec)
 }

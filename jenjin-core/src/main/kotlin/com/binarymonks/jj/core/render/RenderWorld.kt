@@ -8,9 +8,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.EarClippingTriangulator
 import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.JJ
+import com.binarymonks.jj.core.api.RenderAPI
 import com.binarymonks.jj.core.things.Thing
 
-class RenderWorld {
+class RenderWorld : RenderAPI {
     internal var renderIDCounter = 0
     var shapeRenderer = ShapeRenderer()
     var polyBatch = PolygonSpriteBatch()
@@ -23,7 +24,7 @@ class RenderWorld {
 
     init {
         rayHandler.setBlurNum(3)
-        rayHandler.setAmbientLight(0.0f, 0.0f, 0.0f, 1f)
+        rayHandler.setAmbientLight(0.0f, 0.0f, 0.0f, 1.0f)
     }
 
     fun addThing(thing: Thing) {
@@ -40,7 +41,7 @@ class RenderWorld {
 //        lightSourceRenderGraph.remove(removal.path, removal.id, removal.renderRoot.lightSourceThingLayers)
     }
 
-    fun setAmbientLight(r: Float, g: Float, b: Float, a: Float) {
+    override fun setAmbientLight(r: Float, g: Float, b: Float, a: Float) {
         rayHandler.setAmbientLight(r, g, b, a)
     }
 
@@ -48,7 +49,7 @@ class RenderWorld {
         if (!shapeRenderer.isDrawing) {
             polyBatch.end()
             shapeRenderer.begin(if (fill) ShapeRenderer.ShapeType.Filled else ShapeRenderer.ShapeType.Line)
-            currentShapeFill=fill
+            currentShapeFill = fill
         } else if (fill != currentShapeFill) {
             currentShapeFill = fill
             shapeRenderer.end()

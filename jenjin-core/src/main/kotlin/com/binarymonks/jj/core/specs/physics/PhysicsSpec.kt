@@ -16,6 +16,7 @@ class PhysicsSpec {
     var beginCollisions: Array<CollisionHandler> = Array()
     var finalBeginCollisions: Array<CollisionHandler> = Array()
     var endCollisions: Array<CollisionHandler> = Array()
+    var lights: Array<LightSpec> = Array()
 
     internal var fixtures: Array<FixtureSpec> = Array()
 

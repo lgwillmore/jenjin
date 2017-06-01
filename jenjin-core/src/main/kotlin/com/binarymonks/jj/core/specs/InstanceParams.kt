@@ -5,9 +5,11 @@ import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.pools.PoolManager
 import com.binarymonks.jj.core.pools.mat3
 import com.binarymonks.jj.core.pools.new
+import com.binarymonks.jj.core.properties.HasProps
 
 
-class InstanceParams internal constructor() {
+class InstanceParams internal constructor() : HasProps {
+
     companion object Factory {
         fun new(): InstanceParams {
             return new(InstanceParams::class)
@@ -40,6 +42,14 @@ class InstanceParams internal constructor() {
         transformMatrix.scale(scaleX, scaleY)
         transformMatrix.rotate(rotationD)
         return transformMatrix
+    }
+
+    override fun hasProp(key: String): Boolean {
+        return properties.containsKey(key)
+    }
+
+    override fun getProp(key: String): Any? {
+        return properties[key]
     }
 
 }

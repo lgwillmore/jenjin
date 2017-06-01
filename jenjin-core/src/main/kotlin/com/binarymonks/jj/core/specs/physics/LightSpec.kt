@@ -5,7 +5,8 @@ import com.binarymonks.jj.core.properties.PropOverride
 
 
 abstract class LightSpec {
-    var rays: Int = 40
+    var name: String? = null
+    var rays: Int = 100
     var color: PropOverride<Color> = PropOverride(Color(0.3f, 0.3f, 0.3f, 1f))
     var reach: Float = 2f
     var collisionGroup :CollisionGroupSpec = CollisionGroupSpecExplicit()

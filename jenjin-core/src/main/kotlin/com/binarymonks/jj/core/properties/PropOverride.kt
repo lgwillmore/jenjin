@@ -44,6 +44,14 @@ class PropOverride<T>(value: T) {
         return value
     }
 
+    /**
+     * Get the actual value with a specific set of properties
+     */
+    fun get(hasProps: HasProps): T{
+        this.hasProps=hasProps
+        return get()
+    }
+
     fun copy(): PropOverride<T> {
         val clone = PropOverride(value)
         clone.propOverrideKey = propOverrideKey

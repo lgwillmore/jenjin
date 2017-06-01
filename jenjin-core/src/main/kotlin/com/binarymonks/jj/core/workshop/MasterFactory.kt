@@ -1,5 +1,7 @@
 package com.binarymonks.jj.core.workshop
 
+import box2dLight.Light
+import box2dLight.PointLight
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Matrix3
 import com.badlogic.gdx.math.Vector2
@@ -120,8 +122,31 @@ class MasterFactory {
             buildFixture(physicsRoot, fixtureSpec, body, paramsStack)
         }
 
+        for (lightSpec in physicsSpec.lights) {
+            val light = buildLight(lightSpec, paramsStack.peek())
+            light.attachToBody(body)
+            if (lightSpec.name != null) {
+                physicsRoot.lights.add(checkNotNull(lightSpec.name), light)
+            } else {
+                physicsRoot.lights.add(light)
+            }
+        }
+
         return physicsRoot
 
+    }
+
+    private fun buildLight(lightSpec: LightSpec, instanceParams: InstanceParams): Light {
+        when (lightSpec) {
+            is PointLightSpec -> return buildPointLight(lightSpec, instanceParams)
+            else -> throw Exception("Don't know that light")
+        }
+    }
+
+    private fun buildPointLight(pointSpec: PointLightSpec, instanceParams: InstanceParams): Light {
+        return PointLight(
+                JJ.B.renderWorld.rayHandler,
+                pointSpec.rays, pointSpec.color.copy().get(instanceParams), pointSpec.reach, pointSpec.offsetX, pointSpec.offsetY)
     }
 
     private fun buildFixture(physicsRoot: PhysicsRoot, fixtureSpec: FixtureSpec, body: Body, params: ParamStack) {

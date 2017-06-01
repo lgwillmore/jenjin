@@ -26,6 +26,7 @@ object JJ {
     lateinit var pools: PoolsAPI
     lateinit var clock: ClockAPI
     lateinit var physics: PhysicsAPI
+    lateinit var render: RenderAPI
 
     lateinit var B: Backend
 
@@ -49,5 +50,6 @@ object JJ {
         clock = B.clock
         physics = B.physicsWorld
         assets = B.assets
+        render = B.renderWorld
     }
 }

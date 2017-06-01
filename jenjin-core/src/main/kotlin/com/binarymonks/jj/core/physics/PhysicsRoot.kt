@@ -1,9 +1,11 @@
 package com.binarymonks.jj.core.physics
 
+import box2dLight.Light
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.Transform
 import com.binarymonks.jj.core.things.Thing
+import com.binarymonks.jj.core.utils.NamedArray
 
 class PhysicsRoot(val b2DBody: Body) {
     var parent: Thing? = null
@@ -12,8 +14,8 @@ class PhysicsRoot(val b2DBody: Body) {
             b2DBody.userData=value
             collisionResolver.parent=value
         }
-
     var collisionResolver: CollisionResolver = CollisionResolver()
+    var lights : NamedArray<Light> = NamedArray()
 
     fun position(): Vector2 {
         return b2DBody.position
