@@ -20,19 +20,21 @@ import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.specs.InstanceParams
+import com.binarymonks.jj.core.specs.render.GraphID
 import com.binarymonks.jj.core.specs.render.PolygonRenderNodeSpec
 import com.binarymonks.jj.core.specs.render.RenderNodeSpec
 
 class PolygonRenderNode constructor(
         priority: Int,
         color: PropOverride<Color>,
+        graphID: GraphID,
         internal var poly: PolygonSprite,
         internal var scaleX: Float = 1f,
         internal var scaleY: Float = 1f,
         internal var offsetX: Float = 0f,
         internal var offsetY: Float = 0f,
         internal var rotationD: Float = 0f
-) : RenderNode(priority, color) {
+) : RenderNode(priority, color, graphID) {
 
     override fun render(camera: OrthographicCamera) {
         JJ.B.renderWorld.switchToBatch()

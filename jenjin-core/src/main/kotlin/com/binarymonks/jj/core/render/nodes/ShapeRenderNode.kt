@@ -11,13 +11,15 @@ import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.pools.recycleItems
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.properties.PropOverride
+import com.binarymonks.jj.core.specs.render.GraphID
 
 
 abstract class ShapeRenderNode(
         priority: Int,
         color: PropOverride<Color>,
+        graphID: GraphID,
         var fill: Boolean = true
-) : RenderNode(priority, color) {
+) : RenderNode(priority, color, graphID) {
 
     override fun render(camera: OrthographicCamera) {
         JJ.B.renderWorld.switchToShapes(fill)
@@ -31,12 +33,13 @@ abstract class ShapeRenderNode(
 class CircleRenderNode(
         priority: Int,
         color: PropOverride<Color>,
+        graphID: GraphID,
         fill: Boolean = true,
         val offsetX: Float,
         val offsetY: Float,
         val radius: Float,
         var segments: Int = 360
-) : ShapeRenderNode(priority, color, fill) {
+) : ShapeRenderNode(priority, color, graphID, fill) {
 
     private var positionCache: Vector2 = vec2()
 
@@ -54,6 +57,7 @@ class CircleRenderNode(
 class LineChainRenderNode(
         priority: Int,
         color: PropOverride<Color>,
+        graphID: GraphID,
         fill: Boolean = false,
         internal var scaleX: Float = 1f,
         internal var scaleY: Float = 1f,
@@ -61,7 +65,7 @@ class LineChainRenderNode(
         internal var offsetY: Float = 0f,
         internal var rotationD: Float = 0f,
         val vertices: Array<Vector2>
-) : ShapeRenderNode(priority, color, fill) {
+) : ShapeRenderNode(priority, color, graphID, fill) {
 
     private var vertCache: Array<Vector2> = Array()
 

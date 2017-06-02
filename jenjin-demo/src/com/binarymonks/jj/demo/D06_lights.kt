@@ -8,12 +8,11 @@ import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.specs.Rectangle
 import com.binarymonks.jj.core.specs.builders.*
-
+import com.binarymonks.jj.core.specs.render.LightGraph
 
 class D06_lights : Game(MyConfig06.jjConfig) {
 
     override fun gameOn() {
-
 
         JJ.assets.loadNow("textures/circuit_background.png", Texture::class)
 
@@ -42,7 +41,15 @@ class D06_lights : Game(MyConfig06.jjConfig) {
                     physics {
                         fixture { shape = Rectangle(1.5f, 1.5f) }
                         pointLight {
-                            reach = 30f
+                            reach = 20f
+                            color.set(Color.LIME)
+                        }
+                    }
+                    render{
+                        rectangleRender(1.5f,1.5f){
+                            color.set(Color.WHITE)
+                            graphID = LightGraph()
+                            color.set(Color.LIME)
                         }
                     }
                 }
@@ -55,7 +62,7 @@ object MyConfig06 {
     var jjConfig: JJConfig = JJConfig()
 
     init {
-        jjConfig.b2dConfig.debug = true
+        jjConfig.b2dConfig.debug = false
         jjConfig.b2dConfig.gravity = Vector2()
 
         jjConfig.gameViewConfig.worldBoxWidth = 20f

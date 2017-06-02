@@ -2,17 +2,13 @@ package com.binarymonks.jj.core.render
 
 import box2dLight.RayHandler
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.g2d.PolygonSprite
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-import com.badlogic.gdx.math.EarClippingTriangulator
-import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.api.RenderAPI
 import com.binarymonks.jj.core.things.Thing
 
 class RenderWorld : RenderAPI {
-    internal var renderIDCounter = 0
     var shapeRenderer = ShapeRenderer()
     var polyBatch = PolygonSpriteBatch()
     var rayHandler: RayHandler = RayHandler(JJ.B.physicsWorld.b2dworld)
@@ -29,16 +25,12 @@ class RenderWorld : RenderAPI {
 
     fun addThing(thing: Thing) {
         defaultRenderGraph.add(thing.renderRoot.specID, thing.id, thing.renderRoot.defaultRenderLayers)
-//        lightSourceRenderGraph.add(thing.path, thing.id, thing.renderRoot.lightSourceThingLayers)
-    }
-
-    fun nextRenderID(): Int {
-        return renderIDCounter++
+        lightSourceRenderGraph.add(thing.renderRoot.specID, thing.id, thing.renderRoot.lightRenderLayers)
     }
 
     fun removeThing(removal: Thing) {
         defaultRenderGraph.remove(removal.renderRoot.specID, removal.id, removal.renderRoot.defaultRenderLayers)
-//        lightSourceRenderGraph.remove(removal.path, removal.id, removal.renderRoot.lightSourceThingLayers)
+        lightSourceRenderGraph.remove(removal.renderRoot.specID, removal.id, removal.renderRoot.lightRenderLayers)
     }
 
     override fun setAmbientLight(r: Float, g: Float, b: Float, a: Float) {
@@ -79,10 +71,5 @@ class RenderWorld : RenderAPI {
         } else {
             shapeRenderer.end()
         }
-    }
-
-    companion object {
-        val DEFAULT_RENDER_GRAPH = "DEFAULT_RENDERGRAPH"
-        val LIGHTSOURCE_RENDER_GRAPH = "LIGHTSOURCE_RENDERGRAPH"
     }
 }
