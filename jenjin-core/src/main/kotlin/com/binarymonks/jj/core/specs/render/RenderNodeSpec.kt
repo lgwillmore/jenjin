@@ -95,8 +95,8 @@ class CircleRenderNodeSpec : SpatialRenderNodeSpec() {
                 this.priority,
                 this.color.copy(),
                 fill = fill,
-                offsetX = offsetX,
-                offsetY = offsetY,
+                offsetX = offsetX*paramsStack.scaleX,
+                offsetY = offsetY*paramsStack.scaleY,
                 radius = radius * paramsStack.scaleX
         )
     }

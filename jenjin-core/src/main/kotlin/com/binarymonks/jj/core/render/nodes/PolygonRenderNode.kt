@@ -14,8 +14,10 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.JJ
+import com.binarymonks.jj.core.pools.mat3
 import com.binarymonks.jj.core.pools.new
 import com.binarymonks.jj.core.pools.recycle
+import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.specs.InstanceParams
 import com.binarymonks.jj.core.specs.render.PolygonRenderNodeSpec
@@ -34,13 +36,17 @@ class PolygonRenderNode constructor(
 
     override fun render(camera: OrthographicCamera) {
         JJ.B.renderWorld.switchToBatch()
-        val parentPos = myParent().physicsRoot.position()
+        val parentRotation = (myParent().physicsRoot.rotationR() * MathUtils.radDeg)
+        val parentTransform = myParent().physicsRoot.transform
+        val myPosition = vec2(offsetX, offsetY)
+        parentTransform.mul(myPosition)
         poly.color = color.get()
         poly.setOrigin(0f, 0f)
+        poly.setPosition(myPosition.x, myPosition.y)
+        poly.rotation = parentRotation + rotationD
         poly.setScale(scaleX, scaleY)
-        poly.rotation = (parent!!.physicsRoot.rotationR() * MathUtils.radDeg)+rotationD
-        poly.setPosition(parentPos.x+offsetX, parentPos.y+offsetY)
         poly.draw(JJ.B.renderWorld.polyBatch)
+        recycle(myPosition)
     }
 
     override fun dispose() {}

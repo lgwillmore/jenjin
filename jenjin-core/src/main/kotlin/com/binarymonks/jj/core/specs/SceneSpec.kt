@@ -1,8 +1,10 @@
 package com.binarymonks.jj.core.specs
 
 import com.badlogic.gdx.physics.box2d.JointDef
+import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.JJ
+import com.binarymonks.jj.core.specs.physics.JointSpec
 
 interface SceneSpecRef {
     val params: InstanceParams
@@ -28,6 +30,7 @@ open class SceneSpec {
     internal var nodeCounter = 0
     var thingSpec: ThingSpec? = null
     var nodes: ObjectMap<String, SceneSpecRef> = ObjectMap()
+    var joints: Array<JointSpec> = Array()
 
 
     /**
@@ -56,19 +59,6 @@ open class SceneSpec {
         } else {
             instanceParams.name
         }
-    }
-
-    /**
-     * Add a joint between 2 nodes
-     *
-     *  - The nodes must have their [ThingSpecI] set to a real [ThingSpec]
-     *  - The nodes [InstanceParams.name] must be set to something unique to the children of this scene.
-     *
-     *  @param thingAName The [InstanceParams.name] of node A
-     *  @param thingBName The [InstanceParams.name] of node B
-     */
-    fun joint(thingAName: String, thingBname: String, jointDef: JointDef) {
-
     }
 
 }

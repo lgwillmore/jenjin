@@ -176,7 +176,7 @@ class MasterFactory {
             val circle = nodeSpec.shape as Circle
             val circleShape = CircleShape()
             circleShape.radius = circle.radius * scaleX
-            circleShape.position = vec2().set(nodeSpec.offsetX, nodeSpec.offsetY)
+            circleShape.position = vec2().set(nodeSpec.offsetX*scaleX, nodeSpec.offsetY*scaleY)
             return circleShape
         } else if (nodeSpec.shape is Polygon) {
             val trans = mat3()
