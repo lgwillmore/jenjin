@@ -2,9 +2,11 @@ package com.binarymonks.jj.demo
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.physics.box2d.BodyDef
 import com.binarymonks.jj.core.Game
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
+import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.specs.Circle
 import com.binarymonks.jj.core.specs.Rectangle
 import com.binarymonks.jj.core.specs.SceneSpec
@@ -19,13 +21,15 @@ class D07_b2d_composite : Game(MyConfig07.jjConfig) {
         JJ.scenes.addSceneSpec("swingHammer", swingHammer())
 
         JJ.scenes.instantiate(scene {
-            nodeRef(params { x = 0f; y = 7f; rotationD = -90f;scaleX = 0.5f; scaleY = 0.5f }) { "swingHammer" }
+//            nodeRef(params { x = 0f; y = 7f; rotationD = -90f;scaleX = 0.5f; scaleY = 0.5f }) { "swingHammer" }
+            nodeRef() { "swingHammer" }
         })
 
     }
 
     private fun swingHammer(): SceneSpec {
         return scene {
+            node(params { "hammerAnchor" }) { thing { physics { bodyType = BodyDef.BodyType.StaticBody } } }
             node(params { name = "hammer"; y = -1.5f }) {
                 thing {
                     physics {
@@ -42,7 +46,7 @@ class D07_b2d_composite : Game(MyConfig07.jjConfig) {
                     }
                 }
             }
-            joint()
+            revJoint("hammer", "hammerAnchor", vec2()){}
         }
     }
 }
@@ -52,7 +56,7 @@ object MyConfig07 {
 
     init {
         jjConfig.b2dConfig.debug = true
-        jjConfig.b2dConfig.gravity = Vector2()
+//        jjConfig.b2dConfig.gravity = Vector2()
 
         jjConfig.gameViewConfig.worldBoxWidth = 20f
         jjConfig.gameViewConfig.cameraPosX = 0f

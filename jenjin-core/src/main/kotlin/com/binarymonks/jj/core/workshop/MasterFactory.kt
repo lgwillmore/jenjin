@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Matrix3
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.*
 import com.badlogic.gdx.utils.Array
+import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.audio.SoundEffects
 import com.binarymonks.jj.core.audio.SoundParams
@@ -42,11 +43,13 @@ class MasterFactory {
 
         val myThing = createThing(scene.thingSpec, paramsStack)
 
+        val things = ObjectMap<String, Thing>()
         for (entry in scene.nodes) {
             val nodeScene = entry.value.resolve()
             val nodeParams = entry.value.params
             paramsStack.add(nodeParams)
-            createSceneHelper(nodeScene, paramsStack)
+            val nodeThing = createSceneHelper(nodeScene, paramsStack)
+            things.put(entry.key, nodeThing)
             paramsStack.pop()
         }
         return myThing
@@ -176,7 +179,7 @@ class MasterFactory {
             val circle = nodeSpec.shape as Circle
             val circleShape = CircleShape()
             circleShape.radius = circle.radius * scaleX
-            circleShape.position = vec2().set(nodeSpec.offsetX*scaleX, nodeSpec.offsetY*scaleY)
+            circleShape.position = vec2().set(nodeSpec.offsetX * scaleX, nodeSpec.offsetY * scaleY)
             return circleShape
         } else if (nodeSpec.shape is Polygon) {
             val trans = mat3()

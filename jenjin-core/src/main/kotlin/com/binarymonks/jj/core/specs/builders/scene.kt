@@ -1,8 +1,10 @@
 package com.binarymonks.jj.core.specs.builders
 
+import com.badlogic.gdx.math.Vector2
 import com.binarymonks.jj.core.specs.InstanceParams
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.ThingSpec
+import com.binarymonks.jj.core.specs.physics.RevoluteJointSpec
 
 /**
  * This provides builders for [com.binarymonks.jj.core.api.specs.SceneSpec]s
@@ -42,5 +44,11 @@ fun SceneSpec.thing(init: ThingSpec.() -> Unit): ThingSpec {
     thing.init()
     this.thingSpec = thing
     return thing
+}
+
+fun SceneSpec.revJoint(nameA: String, nameB: String, anchor: Vector2, init: RevoluteJointSpec.() -> Unit) {
+    val revJoint = RevoluteJointSpec(nameA, nameB, anchor)
+    revJoint.init()
+    this.joints.add(revJoint)
 }
 
