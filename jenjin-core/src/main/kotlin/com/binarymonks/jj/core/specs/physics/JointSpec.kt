@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.JointDef
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef
+import com.badlogic.gdx.physics.box2d.joints.WeldJointDef
 import com.binarymonks.jj.core.extensions.copy
 
 /**
@@ -44,4 +45,22 @@ class RevoluteJointSpec(
         return revJoint
     }
 
+}
+
+class WeldJointSpec(
+        nameA: String,
+        nameB: String,
+        val anchor: Vector2
+) : JointSpec(nameA, nameB) {
+
+    var frequencyHz = 0f
+    var dampingRatio = 0f
+
+    override fun toJointDef(bodyA: Body, bodyB: Body, transform: Matrix3): JointDef {
+        val weldJoint = WeldJointDef()
+        weldJoint.initialize(bodyA, bodyB, anchor.copy().mul(transform))
+        weldJoint.frequencyHz = frequencyHz
+        weldJoint.dampingRatio = dampingRatio
+        return weldJoint
+    }
 }

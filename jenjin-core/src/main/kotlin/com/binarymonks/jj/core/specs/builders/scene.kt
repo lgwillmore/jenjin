@@ -5,6 +5,7 @@ import com.binarymonks.jj.core.specs.InstanceParams
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.ThingSpec
 import com.binarymonks.jj.core.specs.physics.RevoluteJointSpec
+import com.binarymonks.jj.core.specs.physics.WeldJointSpec
 
 /**
  * This provides builders for [com.binarymonks.jj.core.api.specs.SceneSpec]s
@@ -48,6 +49,12 @@ fun SceneSpec.thing(init: ThingSpec.() -> Unit): ThingSpec {
 
 fun SceneSpec.revJoint(nameA: String, nameB: String, anchor: Vector2, init: RevoluteJointSpec.() -> Unit) {
     val revJoint = RevoluteJointSpec(nameA, nameB, anchor)
+    revJoint.init()
+    this.joints.add(revJoint)
+}
+
+fun SceneSpec.weldJoint(nameA: String, nameB: String, anchor: Vector2, init: WeldJointSpec.() -> Unit) {
+    val revJoint = WeldJointSpec(nameA, nameB, anchor)
     revJoint.init()
     this.joints.add(revJoint)
 }
