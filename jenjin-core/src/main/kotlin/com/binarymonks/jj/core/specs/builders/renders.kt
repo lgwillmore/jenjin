@@ -19,6 +19,7 @@ fun RenderSpec.polygonRender(vertices: Array<Vector2>, init: PolygonRenderNodeSp
     shapeSpec.init()
     this.renderNodes.add(shapeSpec)
 }
+
 fun RenderSpec.polygonRender(vararg vertices: Vector2, init: PolygonRenderNodeSpec.() -> Unit) {
     val shapeSpec: PolygonRenderNodeSpec = PolygonRenderNodeSpec()
     vertices.forEach { shapeSpec.vertices.add(it) }
@@ -32,6 +33,7 @@ fun RenderSpec.lineChainRender(vertices: Array<Vector2>, init: LineChainRenderNo
     shapeSpec.init()
     this.renderNodes.add(shapeSpec)
 }
+
 fun RenderSpec.lineChainRender(vararg vertices: Vector2, init: LineChainRenderNodeSpec.() -> Unit) {
     val shapeSpec: LineChainRenderNodeSpec = LineChainRenderNodeSpec()
     vertices.forEach { shapeSpec.vertices.add(it) }
@@ -39,12 +41,12 @@ fun RenderSpec.lineChainRender(vararg vertices: Vector2, init: LineChainRenderNo
     this.renderNodes.add(shapeSpec)
 }
 
-fun RenderSpec.rectangleRender(width: Float, height: Float, init: PolygonRenderNodeSpec.()-> Unit){
+fun RenderSpec.rectangleRender(width: Float, height: Float, init: PolygonRenderNodeSpec.() -> Unit) {
     val shapeSpec: PolygonRenderNodeSpec = PolygonRenderNodeSpec()
-    shapeSpec.vertices.add(vec2(-width/2, height/2))
-    shapeSpec.vertices.add(vec2(width/2, height/2))
-    shapeSpec.vertices.add(vec2(width/2, -height/2))
-    shapeSpec.vertices.add(vec2(-width/2, -height/2))
+    shapeSpec.vertices.add(vec2(-width / 2, height / 2))
+    shapeSpec.vertices.add(vec2(width / 2, height / 2))
+    shapeSpec.vertices.add(vec2(width / 2, -height / 2))
+    shapeSpec.vertices.add(vec2(-width / 2, -height / 2))
     shapeSpec.init()
     this.renderNodes.add(shapeSpec)
 }
@@ -52,7 +54,7 @@ fun RenderSpec.rectangleRender(width: Float, height: Float, init: PolygonRenderN
 
 fun RenderSpec.circleRender(radius: Float, init: CircleRenderNodeSpec.() -> Unit) {
     val circleRender = CircleRenderNodeSpec()
-    circleRender.radius=radius
+    circleRender.radius = radius
     circleRender.init()
     this.renderNodes.add(circleRender)
 }

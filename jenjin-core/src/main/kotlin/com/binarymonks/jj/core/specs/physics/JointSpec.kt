@@ -1,9 +1,11 @@
 package com.binarymonks.jj.core.specs.physics
 
+import com.badlogic.gdx.math.Matrix3
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.JointDef
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef
+import com.binarymonks.jj.core.extensions.copy
 
 /**
  * Like a [com.badlogic.gdx.physics.box2d.JointDef] but with names of Things in a scene rather than bodies.
@@ -14,7 +16,7 @@ abstract class JointSpec(
 ) {
     val collideConnected: Boolean = false
 
-    abstract fun toJointDef(bodyA: Body, bodyB: Body): JointDef
+    abstract fun toJointDef(bodyA: Body, bodyB: Body, transform: Matrix3): JointDef
 }
 
 class RevoluteJointSpec(
@@ -30,9 +32,9 @@ class RevoluteJointSpec(
     var motorSpeed = 0f
     var maxMotorTorque = 0f
 
-    override fun toJointDef(bodyA: Body, bodyB: Body): JointDef {
+    override fun toJointDef(bodyA: Body, bodyB: Body, transform: Matrix3): JointDef {
         val revJoint = RevoluteJointDef()
-        revJoint.initialize(bodyA, bodyB, anchor)
+        revJoint.initialize(bodyA, bodyB, anchor.copy().mul(transform))
         revJoint.enableLimit = enableLimit
         revJoint.lowerAngle = lowerAngle
         revJoint.upperAngle = upperAngle

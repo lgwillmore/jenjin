@@ -52,6 +52,14 @@ class MasterFactory {
             things.put(entry.key, nodeThing)
             paramsStack.pop()
         }
+        for (jointSpec in scene.joints) {
+            val jointDef = jointSpec.toJointDef(
+                    things[jointSpec.nameA].physicsRoot.b2DBody,
+                    things[jointSpec.nameB].physicsRoot.b2DBody,
+                    paramsStack.transformMatrix
+            )
+            JJ.B.physicsWorld.b2dworld.createJoint(jointDef)
+        }
         return myThing
     }
 
