@@ -8,10 +8,14 @@ import com.binarymonks.jj.core.specs.physics.PhysicsSpec
 import com.binarymonks.jj.core.specs.render.RenderSpec
 
 
-class ThingSpec {
+class ThingSpec() {
     val id = JJ.B.nextID()
     var physics: PhysicsSpec = PhysicsSpec()
     var render: RenderSpec = RenderSpec()
-    var sounds : Array<SoundParams> = Array()
+    var sounds: Array<SoundParams> = Array()
     var components: Array<Component> = Array()
+
+    constructor(build: ThingSpec.() -> Unit) : this() {
+        this.build()
+    }
 }

@@ -1,15 +1,20 @@
 package com.binarymonks.jj.core.components
 
+import com.binarymonks.jj.core.construct
+import com.binarymonks.jj.core.copy
+import com.binarymonks.jj.core.copyProperty
 import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.things.Thing
 import kotlin.reflect.KClass
+import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KTypeProjection
+import kotlin.reflect.KVisibility
 import kotlin.reflect.full.createType
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
 
-private val propDelegateType = PropOverride::class.createType(listOf(KTypeProjection(null,null)))
+private val propDelegateType = PropOverride::class.createType(listOf(KTypeProjection(null, null)))
 
 abstract class Component {
 
@@ -17,9 +22,9 @@ abstract class Component {
         set(value) {
             field = value
             this::class.declaredMemberProperties.forEach {
-                if(it.returnType.isSubtypeOf(propDelegateType)){
+                if (it.returnType.isSubtypeOf(propDelegateType)) {
                     val b = it.name
-                    val pd = this.javaClass.kotlin.memberProperties.first {it.name==b}.get(this) as PropOverride<*>
+                    val pd = this.javaClass.kotlin.memberProperties.first { it.name == b }.get(this) as PropOverride<*>
                     pd.hasProps = value
                 }
             }
@@ -31,8 +36,16 @@ abstract class Component {
 
     /**
      * This will be used to create a new instances of your component.
+     *
+     * Public fields of the component will be copied to the new instance.
+     *
+     * If it is not a primitive the reference will be shared by the clone unless it is [com.binarymonks.jj.core.Copyable], then copy will be called.
+     *
+     * If this is not sufficient then override this method.
      */
-    abstract fun clone(): Component
+    open fun clone(): Component {
+        return copy(this)
+    }
 
     /**
      * Components are stored and retrieved by their type. It makes no sense to have more than
@@ -53,9 +66,11 @@ abstract class Component {
     }
 
     /**
-     * This will be called on every game loop. Do your work here.
+     * This will be called on every game loop. Override this for ongoing tasks
      */
-    abstract fun update()
+    open fun update() {
+
+    }
 
     /**
      * This will be called when the [Thing] is removed from the game world to be pooled/disposed.

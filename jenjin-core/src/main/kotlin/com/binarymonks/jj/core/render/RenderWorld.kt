@@ -8,7 +8,7 @@ import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.api.RenderAPI
 import com.binarymonks.jj.core.things.Thing
 
-class RenderWorld : RenderAPI {
+open class RenderWorld : RenderAPI {
     var shapeRenderer = ShapeRenderer()
     var polyBatch = PolygonSpriteBatch()
     var rayHandler: RayHandler = RayHandler(JJ.B.physicsWorld.b2dworld)

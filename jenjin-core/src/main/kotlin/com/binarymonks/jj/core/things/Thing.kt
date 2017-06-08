@@ -14,24 +14,27 @@ class Thing(
         val physicsRoot: PhysicsRoot,
         val renderRoot: RenderRoot,
         val soundEffects: SoundEffects,
-        val properties:ObjectMap<String,Any>
+        val properties: ObjectMap<String, Any>,
+        val pooled: Boolean = false
 ) : HasProps {
 
 
     var id = JJ.B.nextID()
-    private var componentMaster = ComponentMaster()
+    internal var componentMaster = ComponentMaster()
+    private var isDestroyed: Boolean = false
 
     init {
         physicsRoot.parent = this
         renderRoot.parent = this
     }
 
-    fun hasProperty(propertyKey: String): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     fun update() {
         componentMaster.update()
+    }
+
+    fun destroy() {
+        isDestroyed = true
+        JJ.B.thingWorld.remove(this)
     }
 
     fun addComponent(component: Component) {

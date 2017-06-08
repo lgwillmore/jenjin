@@ -5,6 +5,16 @@ import com.binarymonks.jj.core.api.ClockAPI
 
 class ClockControls : ClockAPI {
 
+    val scheduler: Scheduler = Scheduler(this::timeFloat)
+
+    override fun schedule(function: () -> Unit, delaySeconds: Float, repeat: Int): Int {
+        return scheduler.schedule(function, delaySeconds, repeat)
+    }
+
+    override fun cancel(id: Int) {
+        scheduler.cancel(id)
+    }
+
     override val delta: Double
         get() = DELTA
 
@@ -14,9 +24,13 @@ class ClockControls : ClockAPI {
     override val time: Double
         get() = TIME
 
+    override val timeFloat: Float
+        get() = TIME.toFloat()
+
     fun update() {
         timeFunction.update(Gdx.graphics.deltaTime)
         TIME += DELTA
+        scheduler.update()
     }
 
     fun setTimeFunction(function: TimeFunction) {

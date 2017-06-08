@@ -78,7 +78,7 @@ class D04_components : Game(MyConfig04.jjConfig) {
                     // Kinematic is suited for direct movement of physics objects
                     bodyType = BodyDef.BodyType.KinematicBody
                     fixture {
-                        shape= Circle(0.5f)
+                        shape = Circle(0.5f)
                     }
                 }
                 //Add our component to our thing and bind fields to properties
@@ -122,7 +122,7 @@ class BackForwardMovement : Component() {
     var movementRange: PropOverride<Float> = PropOverride(0f)
     var metersPerSecond: PropOverride<Float> = PropOverride(0f)
 
-    //These are our private fields for the running state
+    //These are our private fields for the running state.
     private var startLocation: Vector2 = vec2()
     private var velocity: Vector2 = vec2()
 
@@ -143,15 +143,6 @@ class BackForwardMovement : Component() {
             velocity.scl(-1f)
             myThing().physicsRoot.b2DBody.linearVelocity = velocity
         }
-    }
-
-    //We clone our config fields
-    override fun clone(): Component {
-        val duplicate = BackForwardMovement()
-        duplicate.direction.copyFrom(direction)
-        duplicate.movementRange.copyFrom(movementRange)
-        duplicate.metersPerSecond.copyFrom(metersPerSecond)
-        return duplicate
     }
 }
 

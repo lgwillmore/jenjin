@@ -27,7 +27,8 @@ class Scenes : ScenesAPI {
     }
 
     override fun instantiate(path: String, instanceParams: InstanceParams): UnitBond {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+        masterFactory.createScene(path, instanceParams)
+        return UnitBond()
     }
 
     override fun addSceneSpec(path: String, scene: SceneSpec) {

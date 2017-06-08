@@ -1,5 +1,7 @@
 package com.binarymonks.jj.core.properties
 
+import com.binarymonks.jj.core.Copyable
+
 
 /**
  * Used to indicate fields that can be set by value or by looking up a property of the runtime parent.
@@ -7,7 +9,7 @@ package com.binarymonks.jj.core.properties
  * If [setOverride] is used, this will take precedence  if the property exists. If not the Value will be used
  * as a fallback. If [set] is called it will cancel the property override, and the value will take precedence.
  */
-class PropOverride<T>(value: T) {
+class PropOverride<T>(value: T) : Copyable<PropOverride<T>> {
 
     private var value: T = value
         private set
@@ -47,12 +49,12 @@ class PropOverride<T>(value: T) {
     /**
      * Get the actual value with a specific set of properties
      */
-    fun get(hasProps: HasProps): T{
-        this.hasProps=hasProps
+    fun get(hasProps: HasProps): T {
+        this.hasProps = hasProps
         return get()
     }
 
-    fun copy(): PropOverride<T> {
+    override fun copy(): PropOverride<T> {
         val clone = PropOverride(value)
         clone.propOverrideKey = propOverrideKey
         return clone
@@ -61,6 +63,22 @@ class PropOverride<T>(value: T) {
     fun copyFrom(original: PropOverride<T>) {
         this.propOverrideKey = original.propOverrideKey
         this.value = original.value
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is PropOverride<*>) return false
+
+        if (value != other.value) return false
+        if (propOverrideKey != other.propOverrideKey) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = value?.hashCode() ?: 0
+        result = 31 * result + (propOverrideKey?.hashCode() ?: 0)
+        return result
     }
 
 

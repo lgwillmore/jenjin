@@ -21,6 +21,7 @@ import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.render.RenderRoot
 import com.binarymonks.jj.core.render.nodes.RenderNode
 import com.binarymonks.jj.core.specs.*
+import com.binarymonks.jj.core.specs.builders.physics
 import com.binarymonks.jj.core.specs.physics.*
 import com.binarymonks.jj.core.specs.render.RenderSpec
 import com.binarymonks.jj.core.things.Thing
@@ -28,25 +29,36 @@ import com.binarymonks.jj.core.things.Thing
 class MasterFactory {
 
     private var paramsStackCache: Array<ParamStack> = Array()
+    private var hollowSceneThingSpec: ThingSpec
 
-    fun createScene(scene: SceneSpec, params: InstanceParams): Thing? {
+    init {
+        hollowSceneThingSpec = ThingSpec {
+            physics { bodyType = BodyDef.BodyType.StaticBody }
+        }
+    }
+
+    fun createScene(scenePath: String, params: InstanceParams): Thing {
+        return createScene(JJ.B.scenes.getScene(scenePath), params)
+    }
+
+    fun createScene(scene: SceneSpec, params: InstanceParams): Thing {
         var paramsStack = paramsStack()
         paramsStack.add(params)
-        var myThing: Thing? = createSceneHelper(scene, paramsStack)
+        var myThing: Thing = createSceneHelper(scene, paramsStack)
         returnParamsStack(paramsStack)
         return myThing
     }
 
     private fun createSceneHelper(
             scene: SceneSpec,
-            paramsStack: ParamStack): Thing? {
+            paramsStack: ParamStack): Thing {
 
         val myThing = createThing(scene.thingSpec, paramsStack)
 
         val things = ObjectMap<String, Thing>()
         for (entry in scene.nodes) {
-            val nodeScene = entry.value.resolve()
-            val nodeParams = entry.value.params
+            val nodeScene = checkNotNull(entry.value.sceneRef).resolve()
+            val nodeParams = entry.value.instanceParams
             paramsStack.add(nodeParams)
             val nodeThing = createSceneHelper(nodeScene, paramsStack)
             things.put(entry.key, nodeThing)
@@ -63,16 +75,16 @@ class MasterFactory {
         return myThing
     }
 
-    private fun createThing(thingSpec: ThingSpec?, paramsStack: ParamStack): Thing? {
-        if (thingSpec == null) return null
+    private fun createThing(thingSpec: ThingSpec?, paramsStack: ParamStack): Thing {
+        val thingSpecActual: ThingSpec = thingSpec ?: hollowSceneThingSpec
         val thing = Thing(
                 paramsStack.peek().uniqueInstanceName,
-                physicsRoot = buildPhysicsRoot(thingSpec.physics, paramsStack),
-                renderRoot = buildRenderRoot(thingSpec.render, paramsStack),
-                soundEffects = buildSoundEffects(thingSpec.sounds),
+                physicsRoot = buildPhysicsRoot(thingSpecActual.physics, paramsStack),
+                renderRoot = buildRenderRoot(thingSpecActual.render, paramsStack),
+                soundEffects = buildSoundEffects(thingSpecActual.sounds),
                 properties = paramsStack.peek().properties.copy()
         )
-        addBehaviour(thing, thingSpec)
+        addBehaviour(thing, thingSpecActual)
 
         JJ.B.renderWorld.addThing(thing)
         JJ.B.thingWorld.add(thing)

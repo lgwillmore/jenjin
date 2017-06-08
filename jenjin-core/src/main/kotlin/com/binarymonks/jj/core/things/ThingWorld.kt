@@ -56,7 +56,7 @@ class ThingWorld {
             namedThings.remove(removal.uniqueName)
         }
         JJ.B.renderWorld.removeThing(removal)
-        //ThingTools.destroy(removal)
+        removal.executeDestruction()
     }
 
     fun remove(thing: Thing) {

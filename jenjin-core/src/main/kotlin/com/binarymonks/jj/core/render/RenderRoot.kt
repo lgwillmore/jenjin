@@ -47,4 +47,17 @@ class RenderRoot(var specID: Int) {
         }
     }
 
+    internal fun destroy(pooled: Boolean) {
+        destroyGraph(defaultRenderLayers)
+        destroyGraph(lightRenderLayers)
+    }
+
+    private fun destroyGraph(graphLayers: ObjectMap<Int, RenderLayer>) {
+        graphLayers.forEach {
+            it.value.renderNodes.forEach {
+                it.dispose()
+            }
+        }
+    }
+
 }
