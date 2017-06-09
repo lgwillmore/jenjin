@@ -2,6 +2,7 @@ package com.binarymonks.jj.core
 
 import com.binarymonks.jj.core.api.*
 import com.binarymonks.jj.core.assets.Assets
+import com.binarymonks.jj.core.async.Tasks
 import com.binarymonks.jj.core.audio.Audio
 import com.binarymonks.jj.core.layers.GameRenderingLayer
 import com.binarymonks.jj.core.layers.LayerStack
@@ -27,6 +28,7 @@ object JJ {
     lateinit var clock: ClockAPI
     lateinit var physics: PhysicsAPI
     lateinit var render: RenderAPI
+    lateinit var tasks: TasksAPI
 
     lateinit var B: Backend
 
@@ -43,6 +45,7 @@ object JJ {
         B.assets = Assets()
         B.audio = Audio()
         B.layers.addLayerTop(GameRenderingLayer(config.gameViewConfig))
+        B.tasks = Tasks()
 
         scenes = B.scenes
         layers = B.layers
@@ -51,5 +54,6 @@ object JJ {
         physics = B.physicsWorld
         assets = B.assets
         render = B.renderWorld
+        tasks = B.tasks
     }
 }

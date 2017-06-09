@@ -1,8 +1,10 @@
 package com.binarymonks.jj.core.components
 
 import com.binarymonks.jj.core.properties.PropOverride
+import com.binarymonks.jj.core.things.Thing
 import org.junit.Assert
 import org.junit.Test
+import org.mockito.Mockito
 
 
 class ComponentTest {
@@ -13,9 +15,11 @@ class ComponentTest {
         val original = PrimitiveFields("name1", 2)
         original.copyable.set("blue")
         original.hiddenName = "altered"
+        original.parent = Mockito.mock(Thing::class.java)
 
         val copy: PrimitiveFields = original.clone() as PrimitiveFields
 
+        Assert.assertNull(copy.parent)
         Assert.assertNotSame(original, copy)
         Assert.assertEquals(original.name, copy.name)
         Assert.assertEquals(original.number, copy.number)

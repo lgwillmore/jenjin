@@ -1,6 +1,7 @@
 package com.binarymonks.jj.core
 
 import com.binarymonks.jj.core.assets.Assets
+import com.binarymonks.jj.core.async.Tasks
 import com.binarymonks.jj.core.audio.Audio
 import com.binarymonks.jj.core.layers.LayerStack
 import com.binarymonks.jj.core.physics.PhysicsWorld
@@ -13,7 +14,7 @@ import com.binarymonks.jj.core.time.ClockControls
 /**
  * The Backend of the [JJ] api. Gives access to full interfaces.
  */
-class Backend{
+class Backend {
     lateinit var config: JJConfig
     lateinit var clock: ClockControls
     lateinit var scenes: Scenes
@@ -24,10 +25,11 @@ class Backend{
     lateinit var pools: Pools
     lateinit var assets: Assets
     lateinit var audio: Audio
+    lateinit var tasks: Tasks
 
     private var idCounter = 0
 
-    fun nextID():Int{
+    fun nextID(): Int {
         return idCounter++
     }
 

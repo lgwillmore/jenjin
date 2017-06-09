@@ -20,7 +20,9 @@ class Scheduler(val timeFunction: () -> Float) {
             }
         }
         removals.forEach {
-            recycle(scheduledFunctions.remove(it))
+            if (scheduledFunctions.containsKey(it)) {
+                recycle(scheduledFunctions.remove(it))
+            }
         }
         removals.clear()
     }
@@ -31,15 +33,16 @@ class Scheduler(val timeFunction: () -> Float) {
             repeat: Int = 1
     ): Int {
         idCounter++
+
         scheduledFunctions.put(
                 idCounter,
-                new(FunctionTracker::class).set(function, delaySeconds, timeFunction.invoke(), repeat)
+                new(FunctionTracker::class).set(function, delaySeconds, timeFunction.invoke(), repeat, idCounter)
         )
         return idCounter
     }
 
     fun cancel(id: Int) {
-        if (scheduledFunctions.containsKey(id)) {
+        if (scheduledFunctions.containsKey(id) && scheduledFunctions.get(id).isFinished()) {
             recycle(scheduledFunctions.remove(id))
         }
     }
@@ -54,6 +57,8 @@ class FunctionTracker : Poolable {
     private var delay = 0f
     private var repeat = 1
     private var callCount = 0
+    private var scheduleID = -1
+    private var finished=false
 
 
     fun call(time: Float): Boolean {
@@ -66,7 +71,10 @@ class FunctionTracker : Poolable {
             return false
         }
         when (callCount) {
-            repeat -> return true
+            repeat -> {
+                finished=true
+                return true
+            }
             else -> return false
         }
     }
@@ -78,14 +86,20 @@ class FunctionTracker : Poolable {
         scheduledAt = 0f
         repeat = 1
         callCount = 0
+        finished=false
     }
 
-    fun set(function: () -> Unit, delay: Float, time: Float, repeat: Int): FunctionTracker {
+    fun set(function: () -> Unit, delay: Float, time: Float, repeat: Int, scheduleID: Int): FunctionTracker {
         this.function = function
         this.delay = delay
         this.scheduledAt = time
         this.repeat = repeat
+        this.scheduleID = scheduleID
         return this
+    }
+
+    fun isFinished(): Boolean {
+        return finished
     }
 
 }

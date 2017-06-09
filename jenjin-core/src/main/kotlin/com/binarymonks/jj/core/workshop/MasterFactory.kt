@@ -29,13 +29,10 @@ import com.binarymonks.jj.core.things.Thing
 class MasterFactory {
 
     private var paramsStackCache: Array<ParamStack> = Array()
-    private var hollowSceneThingSpec: ThingSpec
-
-    init {
-        hollowSceneThingSpec = ThingSpec {
-            physics { bodyType = BodyDef.BodyType.StaticBody }
-        }
+    private var hollowSceneThingSpec: ThingSpec = ThingSpec {
+        physics { bodyType = BodyDef.BodyType.StaticBody }
     }
+    internal var thingPool: ThingPool = ThingPool()
 
     fun createScene(scenePath: String, params: InstanceParams): Thing {
         return createScene(JJ.B.scenes.getScene(scenePath), params)
@@ -62,6 +59,7 @@ class MasterFactory {
             paramsStack.add(nodeParams)
             val nodeThing = createSceneHelper(nodeScene, paramsStack)
             things.put(entry.key, nodeThing)
+            myThing.addChild(nodeThing)
             paramsStack.pop()
         }
         for (jointSpec in scene.joints) {
@@ -77,12 +75,20 @@ class MasterFactory {
 
     private fun createThing(thingSpec: ThingSpec?, paramsStack: ParamStack): Thing {
         val thingSpecActual: ThingSpec = thingSpec ?: hollowSceneThingSpec
+        if (thingSpecActual.isPooled) {
+            val thing: Thing? = thingPool.get(paramsStack.scaleX, paramsStack.scaleY, thingSpecActual.id)
+            if (thing != null) {
+                thing.resetFromPool(paramsStack.x, paramsStack.y, paramsStack.rotationD)
+                return thing
+            }
+        }
         val thing = Thing(
                 paramsStack.peek().uniqueInstanceName,
                 physicsRoot = buildPhysicsRoot(thingSpecActual.physics, paramsStack),
                 renderRoot = buildRenderRoot(thingSpecActual.render, paramsStack),
                 soundEffects = buildSoundEffects(thingSpecActual.sounds),
-                properties = paramsStack.peek().properties.copy()
+                properties = paramsStack.peek().properties.copy(),
+                pooled = thingSpecActual.isPooled
         )
         addBehaviour(thing, thingSpecActual)
 

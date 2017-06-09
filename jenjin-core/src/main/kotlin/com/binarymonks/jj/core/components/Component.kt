@@ -1,14 +1,10 @@
 package com.binarymonks.jj.core.components
 
-import com.binarymonks.jj.core.construct
 import com.binarymonks.jj.core.copy
-import com.binarymonks.jj.core.copyProperty
 import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.things.Thing
 import kotlin.reflect.KClass
-import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KTypeProjection
-import kotlin.reflect.KVisibility
 import kotlin.reflect.full.createType
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.isSubtypeOf

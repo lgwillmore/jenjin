@@ -4,7 +4,7 @@ import com.binarymonks.jj.core.JJ
 
 
 class SelfDestruct(
-        val delaySeconds: Float = 1f
+        var delaySeconds: Float = 1f
 ) : Component() {
 
     internal var scheduleID = -1

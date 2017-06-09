@@ -6,6 +6,7 @@ import com.binarymonks.jj.core.Game
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.components.Emitter
+import com.binarymonks.jj.core.components.SelfDestruct
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.specs.Circle
 import com.binarymonks.jj.core.specs.Rectangle
@@ -13,6 +14,9 @@ import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.*
 import com.binarymonks.jj.core.specs.sceneRef
 
+
+val spawnDelay = 0.001f
+val destroyDelay = 1f
 
 class D08_pooling_and_destroying : Game(MyConfig08.jjConfig) {
     override fun gameOn() {
@@ -25,7 +29,7 @@ class D08_pooling_and_destroying : Game(MyConfig08.jjConfig) {
             //generator
             node(params { y = -3f;x = 3f }) {
                 thing {
-                    component(Emitter()) { sceneSpecRef = sceneRef("nestedCompositeScene"); delaySeconds = 1f }
+                    component(Emitter()) { sceneSpecRef = sceneRef("nestedCompositeScene"); delaySeconds = spawnDelay }
                     render {
                         circleRender(0.5f) { color.set(Color.YELLOW) }
                     }
@@ -34,7 +38,7 @@ class D08_pooling_and_destroying : Game(MyConfig08.jjConfig) {
             //scaled generator
             node(params { y = 3f;x = -3f }) {
                 thing {
-                    component(Emitter()) { sceneSpecRef = sceneRef("nestedCompositeScene"); delaySeconds = 1f; scaleX = 0.5f; scaleY = 0.5f }
+                    component(Emitter()) { sceneSpecRef = sceneRef("nestedCompositeScene"); delaySeconds = spawnDelay; scaleX = 0.5f; scaleY = 0.5f }
                     render {
                         circleRender(0.5f) { color.set(Color.PURPLE) }
                     }
@@ -59,6 +63,11 @@ class D08_pooling_and_destroying : Game(MyConfig08.jjConfig) {
 
     private fun nestedCompositeScene(): SceneSpec {
         return scene {
+            thing {
+                component(SelfDestruct()) {
+                    delaySeconds = destroyDelay
+                }
+            }
             node(params { name = "rectangle" }) {
                 thing {
                     physics {

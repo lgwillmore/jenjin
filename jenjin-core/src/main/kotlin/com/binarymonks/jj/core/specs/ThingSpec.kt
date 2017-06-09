@@ -14,8 +14,10 @@ class ThingSpec() {
     var render: RenderSpec = RenderSpec()
     var sounds: Array<SoundParams> = Array()
     var components: Array<Component> = Array()
+    internal var isPooled: Boolean = true
 
     constructor(build: ThingSpec.() -> Unit) : this() {
         this.build()
     }
+
 }
