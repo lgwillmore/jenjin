@@ -7,10 +7,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.api.RenderAPI
 import com.binarymonks.jj.core.things.Thing
+import com.esotericsoftware.spine.SkeletonRenderer
 
 open class RenderWorld : RenderAPI {
     var shapeRenderer = ShapeRenderer()
     var polyBatch = PolygonSpriteBatch()
+    var skeletonRenderer = SkeletonRenderer<PolygonSpriteBatch>()
     var rayHandler: RayHandler = RayHandler(JJ.B.physicsWorld.b2dworld)
     var defaultRenderGraph = RenderGraph()
     var lightSourceRenderGraph = RenderGraph()

@@ -3,8 +3,9 @@ package com.binarymonks.jj.core
 import com.badlogic.gdx.math.Vector2
 
 class JJConfig {
-    var gameViewConfig = GameViewConfig()
-    var b2dConfig = B2DConfig()
+    var gameView = GameViewConfig()
+    var b2d = B2DConfig()
+    var spine = SpineConfig()
 }
 
 class GameViewConfig {
@@ -13,7 +14,11 @@ class GameViewConfig {
     var cameraPosY: Float = 0f
 }
 
-class B2DConfig{
+class B2DConfig {
     var debug = false
-    var gravity = Vector2(0f,-9f)
+    var gravity = Vector2(0f, -9f)
+}
+
+class SpineConfig {
+    var render = true
 }

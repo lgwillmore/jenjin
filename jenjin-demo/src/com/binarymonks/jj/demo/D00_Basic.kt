@@ -86,11 +86,11 @@ class D00_Basic: Game(MyConfig00.jjConfig) {
 object MyConfig00 {
     var jjConfig: JJConfig = JJConfig()
     init {
-        jjConfig.b2dConfig.debug = true
+        jjConfig.b2d.debug = true
 
-        jjConfig.gameViewConfig.worldBoxWidth = 30f
-        jjConfig.gameViewConfig.cameraPosX = 0f
-        jjConfig.gameViewConfig.cameraPosY = 10f
+        jjConfig.gameView.worldBoxWidth = 30f
+        jjConfig.gameView.cameraPosX = 0f
+        jjConfig.gameView.cameraPosY = 10f
     }
 }
 

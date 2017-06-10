@@ -9,7 +9,6 @@ class ThingPool {
 
     private var thingByXandYandID: ObjectMap<String, Array<Thing>> = ObjectMap()
 
-
     fun get(scaleX: Float, scaleY: Float, thingSpecID: Int): Thing? {
         val key = key(scaleX, scaleY, thingSpecID)
         if (thingByXandYandID.containsKey(key))

@@ -8,7 +8,6 @@ import com.badlogic.gdx.utils.ObjectMap
 import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.GameViewConfig
 import com.binarymonks.jj.core.JJ
-import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.pools.new
 import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.render.RenderGraph
@@ -43,7 +42,7 @@ class GameRenderingLayer(
         renderGraph(JJ.B.renderWorld.defaultRenderGraph)
         renderLights()
         renderGraph(JJ.B.renderWorld.lightSourceRenderGraph)
-        if (JJ.B.config.b2dConfig.debug) {
+        if (JJ.B.config.b2d.debug) {
             drenderer.render(JJ.B.physicsWorld.b2dworld, JJ.B.renderWorld.polyBatch.getProjectionMatrix())
         }
     }

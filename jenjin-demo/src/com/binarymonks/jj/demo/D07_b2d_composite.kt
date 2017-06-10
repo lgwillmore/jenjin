@@ -141,11 +141,11 @@ object MyConfig07 {
     var jjConfig: JJConfig = JJConfig()
 
     init {
-        jjConfig.b2dConfig.debug = false
-//        jjConfig.b2dConfig.gravity = Vector2()
+        jjConfig.b2d.debug = false
+//        jjConfig.b2d.gravity = Vector2()
 
-        jjConfig.gameViewConfig.worldBoxWidth = 20f
-        jjConfig.gameViewConfig.cameraPosX = 0f
-        jjConfig.gameViewConfig.cameraPosY = 0f
+        jjConfig.gameView.worldBoxWidth = 20f
+        jjConfig.gameView.cameraPosX = 0f
+        jjConfig.gameView.cameraPosY = 0f
     }
 }

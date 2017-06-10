@@ -6,7 +6,6 @@ import com.binarymonks.jj.core.Game
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.components.Component
-import com.binarymonks.jj.core.pools.new
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.specs.SceneSpec
@@ -151,10 +150,10 @@ object MyConfig04 {
     var jjConfig: JJConfig = JJConfig()
 
     init {
-        jjConfig.b2dConfig.debug = true
+        jjConfig.b2d.debug = true
 
-        jjConfig.gameViewConfig.worldBoxWidth = 30f
-        jjConfig.gameViewConfig.cameraPosX = 0f
-        jjConfig.gameViewConfig.cameraPosY = 15f
+        jjConfig.gameView.worldBoxWidth = 30f
+        jjConfig.gameView.cameraPosX = 0f
+        jjConfig.gameView.cameraPosY = 15f
     }
 }

@@ -5,7 +5,7 @@ import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.api.PhysicsAPI
 
 open class PhysicsWorld(
-        val b2dworld: World = World(JJ.B.config.b2dConfig.gravity, true)
+        val b2dworld: World = World(JJ.B.config.b2d.gravity, true)
 ) : PhysicsAPI {
 
 
