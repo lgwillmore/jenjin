@@ -1,6 +1,7 @@
-package com.binarymonks.jj.core.components
+package com.binarymonks.jj.core.components.misc
 
 import com.binarymonks.jj.core.JJ
+import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.specs.InstanceParams
 import com.binarymonks.jj.core.specs.SceneSpecRef

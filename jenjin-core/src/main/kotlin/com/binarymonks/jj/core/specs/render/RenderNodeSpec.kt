@@ -20,6 +20,7 @@ abstract class RenderNodeSpec {
     var priority: Int = 0
     var color: PropOverride<Color> = PropOverride(Color.WHITE)
     var graphID: GraphID = DefaultGraph()
+    var name:String? = null
     abstract fun getAssets(): Array<AssetReference>
     abstract fun makeNode(paramsStack: ParamStack): RenderNode
 }

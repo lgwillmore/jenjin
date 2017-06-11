@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.assets.AssetReference
+import com.binarymonks.jj.core.components.spine.SPINE_RENDER_NAME
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.render.nodes.RenderNode
 import com.binarymonks.jj.core.render.nodes.SpineRenderNode
@@ -20,10 +21,22 @@ internal class SpineRenderNodeSpec(
         var dataPath: String? = null,
         var originX: Float = 0f,
         var originY: Float = 0f,
-        var scale: Float = 1f,
-        var startingAnimation: String? = null
+        var scale: Float = 1f
 ) : RenderNodeSpec() {
 
+    /**
+     * A builder constructor
+     */
+    constructor(
+            atlasPath: String? = null,
+            dataPath: String? = null,
+            originX: Float = 0f,
+            originY: Float = 0f,
+            scale: Float = 1f,
+            build: SpineRenderNodeSpec.() -> Unit
+    ) : this(atlasPath, dataPath, originX, originY, scale) {
+        this.build()
+    }
 
     override fun getAssets(): Array<AssetReference> {
         return Array.with(AssetReference(TextureAtlas::class, checkNotNull(atlasPath)))
@@ -36,7 +49,7 @@ internal class SpineRenderNodeSpec(
         val atlasLoader = AtlasAttachmentLoader(atlas)
         val json = SkeletonJson(atlasLoader)
         val actualScale = scale * paramsStack.scaleX
-        json.scale=actualScale
+        json.scale = actualScale
         val skeletonData = json.readSkeletonData(Gdx.files.internal(dataPath))
         val positionOffset = vec2()
         positionOffset.set(originX, originY).scl(scale * paramsStack.scaleX)
@@ -46,13 +59,11 @@ internal class SpineRenderNodeSpec(
                 priority,
                 color,
                 graphID,
+                SPINE_RENDER_NAME,
                 skeleton,
                 skeletonData,
                 positionOffset
         )
-        if (startingAnimation != null) {
-            spineNode.triggerAnimation(startingAnimation!!)
-        }
         return spineNode
     }
 

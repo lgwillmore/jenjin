@@ -15,10 +15,11 @@ class SpineRenderNode(
         priority: Int,
         color: PropOverride<Color>,
         graphID: GraphID,
+        name: String? = null,
         internal var skeleton: Skeleton,
         internal var skeletonData: SkeletonData,
         internal var positionOffset: Vector2
-) : RenderNode(priority, color, graphID) {
+) : RenderNode(priority, color, graphID, name) {
 
     internal var currentAnimation: String? = null
     internal var animationTimeElapsed: Float = 0.toFloat()

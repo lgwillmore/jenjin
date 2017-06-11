@@ -1,19 +1,19 @@
-package com.binarymonks.jj.core.components
+package com.binarymonks.jj.core.components.misc
 
 import com.binarymonks.jj.core.JJ
 
 
 class SelfDestruct(
         var delaySeconds: Float = 1f
-) : Component() {
+) : com.binarymonks.jj.core.components.Component() {
 
     internal var scheduleID = -1
     override fun onAddToWorld() {
-        scheduleID = JJ.clock.schedule(this::destroy, delaySeconds)
+        scheduleID = com.binarymonks.jj.core.JJ.clock.schedule(this::destroy, delaySeconds)
     }
 
     override fun onRemoveFromWorld() {
-        JJ.clock.cancel(scheduleID)
+        com.binarymonks.jj.core.JJ.clock.cancel(scheduleID)
     }
 
     fun destroy() {

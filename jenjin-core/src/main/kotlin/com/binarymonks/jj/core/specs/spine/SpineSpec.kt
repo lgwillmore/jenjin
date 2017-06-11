@@ -1,11 +1,9 @@
 package com.binarymonks.jj.core.specs.spine
 
 import com.badlogic.gdx.physics.box2d.BodyDef
+import com.binarymonks.jj.core.components.spine.SpineComponent
 import com.binarymonks.jj.core.specs.SceneSpec
-import com.binarymonks.jj.core.specs.builders.physics
-import com.binarymonks.jj.core.specs.builders.render
-import com.binarymonks.jj.core.specs.builders.scene
-import com.binarymonks.jj.core.specs.builders.thing
+import com.binarymonks.jj.core.specs.builders.*
 
 
 class SpineSpec() {
@@ -37,10 +35,12 @@ class SpineSpec() {
                                     dataPath,
                                     originX,
                                     originY,
-                                    scale,
-                                    startingAnimation
+                                    scale
                             )
                     )
+                }
+                component(SpineComponent()) {
+                    startingAnimation = this@SpineSpec.startingAnimation
                 }
             }
         }

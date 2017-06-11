@@ -6,7 +6,6 @@ import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.nodeRef
-import com.binarymonks.jj.core.specs.builders.params
 import com.binarymonks.jj.core.specs.builders.scene
 import com.binarymonks.jj.core.specs.spine.SpineSpec
 

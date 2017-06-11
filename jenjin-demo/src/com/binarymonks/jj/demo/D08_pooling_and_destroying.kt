@@ -5,8 +5,8 @@ import com.badlogic.gdx.math.Vector2
 import com.binarymonks.jj.core.Game
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
-import com.binarymonks.jj.core.components.Emitter
-import com.binarymonks.jj.core.components.SelfDestruct
+import com.binarymonks.jj.core.components.misc.Emitter
+import com.binarymonks.jj.core.components.misc.SelfDestruct
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.specs.Circle
 import com.binarymonks.jj.core.specs.Rectangle

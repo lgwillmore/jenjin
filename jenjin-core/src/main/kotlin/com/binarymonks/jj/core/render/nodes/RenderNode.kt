@@ -10,7 +10,8 @@ import com.binarymonks.jj.core.things.Thing
 abstract class RenderNode(
         var priority: Int = 0,
         var color: PropOverride<Color>,
-        var graphID: GraphID
+        var graphID: GraphID,
+        var name: String? = null
 ) {
     var parent: Thing? = null
 

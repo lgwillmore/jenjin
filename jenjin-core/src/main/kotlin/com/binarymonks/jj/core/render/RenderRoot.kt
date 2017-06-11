@@ -8,14 +8,15 @@ import com.binarymonks.jj.core.things.Thing
 
 
 class RenderRoot(var specID: Int) {
-    var parent: Thing? = null
+    internal var parent: Thing? = null
         set(value) {
             field = value
             setGraphParent(defaultRenderLayers, value)
             setGraphParent(lightRenderLayers, value)
         }
-    var defaultRenderLayers: ObjectMap<Int, RenderLayer> = ObjectMap()
-    var lightRenderLayers: ObjectMap<Int, RenderLayer> = ObjectMap()
+    internal var defaultRenderLayers: ObjectMap<Int, RenderLayer> = ObjectMap()
+    internal var lightRenderLayers: ObjectMap<Int, RenderLayer> = ObjectMap()
+    internal var namedNodes: ObjectMap<String, RenderNode> = ObjectMap()
 
     fun addNode(layer: Int, node: RenderNode) {
         if (layer < 0) {
@@ -24,9 +25,12 @@ class RenderRoot(var specID: Int) {
         when (node.graphID) {
             is DefaultGraph -> addToGraph(defaultRenderLayers, layer, node)
             is LightGraph -> addToGraph(lightRenderLayers, layer, node)
+            else -> throw Exception("unknown graph id")
         }
+    }
 
-
+    fun getNode(name: String): RenderNode? {
+        return namedNodes.get(name)
     }
 
     private fun addToGraph(graphLayers: ObjectMap<Int, RenderLayer>, layer: Int, node: RenderNode) {
@@ -34,6 +38,9 @@ class RenderRoot(var specID: Int) {
             graphLayers.put(layer, RenderLayer())
         }
         graphLayers.get(layer).add(node)
+        if (node.name != null) {
+            namedNodes.put(node.name, node)
+        }
         if (parent != null) {
             node.parent = parent
         }
