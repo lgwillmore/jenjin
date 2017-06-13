@@ -1,8 +1,6 @@
-package com.binarymonks.jj.core.specs.spine
+package com.binarymonks.jj.core.spine.specs
 
 import com.badlogic.gdx.physics.box2d.BodyDef
-import com.binarymonks.jj.core.components.spine.SpineComponent
-import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.*
 
 
@@ -17,13 +15,13 @@ class SpineSpec() {
     var spineSkeleton: SpineSkeletonSpec? = null
 
 
-    constructor(build: SpineSpec.() -> Unit) : this() {
+    constructor(build: com.binarymonks.jj.core.spine.specs.SpineSpec.() -> Unit) : this() {
         this.build()
     }
 
 
-    fun toSceneSpec(): SceneSpec {
-        return scene {
+    fun toSceneSpec(): com.binarymonks.jj.core.specs.SceneSpec {
+        return com.binarymonks.jj.core.specs.builders.scene {
             thing {
                 physics {
                     bodyType = BodyDef.BodyType.KinematicBody
@@ -39,7 +37,7 @@ class SpineSpec() {
                             )
                     )
                 }
-                component(SpineComponent()) {
+                component(com.binarymonks.jj.core.spine.components.SpineComponent()) {
                     startingAnimation = this@SpineSpec.startingAnimation
                 }
             }

@@ -1,4 +1,4 @@
-package com.binarymonks.jj.core.render.nodes
+package com.binarymonks.jj.core.spine.render
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.properties.PropOverride
+import com.binarymonks.jj.core.render.nodes.RenderNode
 import com.binarymonks.jj.core.specs.render.GraphID
 import com.esotericsoftware.spine.Event
 import com.esotericsoftware.spine.Skeleton

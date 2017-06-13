@@ -1,7 +1,5 @@
 package com.binarymonks.jj.core.components.misc
 
-import com.binarymonks.jj.core.JJ
-
 
 class SelfDestruct(
         var delaySeconds: Float = 1f
@@ -17,6 +15,6 @@ class SelfDestruct(
     }
 
     fun destroy() {
-        myThing().destroy()
+        thing().destroy()
     }
 }

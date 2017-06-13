@@ -29,7 +29,7 @@ class Emitter(
 
     fun emit() {
         val params = InstanceParams.new()
-        val myPosition = myThing().physicsRoot.position()
+        val myPosition = thing().physicsRoot.position()
         params.x = myPosition.x + offsetX
         params.y = myPosition.y + offsetY
         params.scaleX = scaleX

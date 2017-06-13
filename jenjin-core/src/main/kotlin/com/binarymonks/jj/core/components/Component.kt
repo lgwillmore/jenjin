@@ -26,7 +26,7 @@ abstract class Component {
             }
         }
 
-    fun myThing(): Thing {
+    fun thing(): Thing {
         return checkNotNull(parent)
     }
 

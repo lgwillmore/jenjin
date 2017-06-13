@@ -10,6 +10,7 @@ internal var sceneIDCounter = 0
 
 open class SceneSpec {
     var id = sceneIDCounter++
+    var name: String? = null
     internal var nodeCounter = 0
     var thingSpec: ThingSpec? = null
     var nodes: ObjectMap<String, SceneNode> = ObjectMap()

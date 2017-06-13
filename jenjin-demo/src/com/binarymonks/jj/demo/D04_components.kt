@@ -128,19 +128,19 @@ class BackForwardMovement : Component() {
     //For our platform we want to know where we start in the world so we can control movement
     // relative to that
     override fun onAddToWorld() {
-        startLocation.set(myThing().physicsRoot.position())
+        startLocation.set(thing().physicsRoot.position())
         when (direction.get()) {
             Direction.VERTICAL -> velocity.set(0f, metersPerSecond.get())
             Direction.HORIZONTAL -> velocity.set(metersPerSecond.get(), 0F)
         }
-        myThing().physicsRoot.b2DBody.linearVelocity = velocity
+        thing().physicsRoot.b2DBody.linearVelocity = velocity
     }
 
     override fun update() {
-        val distanceFromStart = myThing().physicsRoot.position().sub(startLocation).len()
+        val distanceFromStart = thing().physicsRoot.position().sub(startLocation).len()
         if (distanceFromStart > movementRange.get()) {
             velocity.scl(-1f)
-            myThing().physicsRoot.b2DBody.linearVelocity = velocity
+            thing().physicsRoot.b2DBody.linearVelocity = velocity
         }
     }
 }

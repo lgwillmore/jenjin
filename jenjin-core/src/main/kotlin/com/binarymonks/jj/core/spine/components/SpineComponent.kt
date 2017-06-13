@@ -1,7 +1,7 @@
-package com.binarymonks.jj.core.components.spine
+package com.binarymonks.jj.core.spine.components
 
 import com.binarymonks.jj.core.components.Component
-import com.binarymonks.jj.core.render.nodes.SpineRenderNode
+import com.binarymonks.jj.core.spine.render.SpineRenderNode
 
 
 val SPINE_RENDER_NAME = "SPINE_RENDER_NODE"
@@ -13,7 +13,7 @@ class SpineComponent : Component() {
 
 
     override fun onAddToWorld() {
-        spineRenderNode = myThing().renderRoot.getNode(SPINE_RENDER_NAME) as SpineRenderNode?
+        spineRenderNode = thing().renderRoot.getNode(SPINE_RENDER_NAME) as SpineRenderNode?
         if (startingAnimation != null) {
             myRender().triggerAnimation(startingAnimation!!)
         }

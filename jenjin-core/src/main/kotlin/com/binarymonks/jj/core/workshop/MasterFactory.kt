@@ -22,7 +22,10 @@ import com.binarymonks.jj.core.render.RenderRoot
 import com.binarymonks.jj.core.render.nodes.RenderNode
 import com.binarymonks.jj.core.specs.*
 import com.binarymonks.jj.core.specs.builders.physics
-import com.binarymonks.jj.core.specs.physics.*
+import com.binarymonks.jj.core.specs.physics.FixtureSpec
+import com.binarymonks.jj.core.specs.physics.LightSpec
+import com.binarymonks.jj.core.specs.physics.PhysicsSpec
+import com.binarymonks.jj.core.specs.physics.PointLightSpec
 import com.binarymonks.jj.core.specs.render.RenderSpec
 import com.binarymonks.jj.core.things.Thing
 
@@ -79,10 +82,13 @@ class MasterFactory {
             val thing: Thing? = thingPool.get(paramsStack.scaleX, paramsStack.scaleY, thingSpecActual.id)
             if (thing != null) {
                 thing.resetFromPool(paramsStack.x, paramsStack.y, paramsStack.rotationD)
+                thing.uniqueName = paramsStack.peek().uniqueInstanceName
+                thing.name = paramsStack.peek().name
                 return thing
             }
         }
         val thing = Thing(
+                paramsStack.peek().name,
                 paramsStack.peek().uniqueInstanceName,
                 physicsRoot = buildPhysicsRoot(thingSpecActual.physics, paramsStack),
                 renderRoot = buildRenderRoot(thingSpecActual.render, paramsStack),

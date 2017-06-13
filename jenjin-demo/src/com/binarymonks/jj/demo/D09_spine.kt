@@ -7,7 +7,7 @@ import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.nodeRef
 import com.binarymonks.jj.core.specs.builders.scene
-import com.binarymonks.jj.core.specs.spine.SpineSpec
+import com.binarymonks.jj.core.spine.specs.SpineSpec
 
 
 class D09_spine : Game(MyConfig09.jjConfig) {
