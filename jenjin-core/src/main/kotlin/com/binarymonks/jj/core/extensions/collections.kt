@@ -12,9 +12,18 @@ fun <K, V> ObjectMap<K, V>.copy(): ObjectMap<K, V> {
     return clone
 }
 
+
 fun <T> Array<T>.addVar(vararg add: T): Array<T> {
     add.forEach { this.add(it) }
     return this
+}
+
+fun <T> Array<T>.copy(): Array<T>{
+    val array = Array<T>()
+    this.forEach {
+        array.add(it)
+    }
+    return array
 }
 
 

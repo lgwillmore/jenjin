@@ -20,12 +20,12 @@ class D07_b2d_composite : Game(MyConfig07.jjConfig) {
 
         JJ.scenes.addSceneSpec("swingHammer", swingHammer())
         JJ.scenes.addSceneSpec("spinner", spinner())
-        JJ.scenes.addSceneSpec("floor", floor())
+        JJ.scenes.addSceneSpec("terrain", floor())
 
         JJ.scenes.instantiate(scene {
             nodeRef(params { x = 8f; y = 7f; rotationD = -90f;scaleX = 0.5f; scaleY = 0.5f }) { "swingHammer" }
             nodeRef(params { x = 8f; y = 4f; scaleX = 0.5f; scaleY = 0.5f }) { "spinner" }
-            nodeRef { "floor" }
+            nodeRef { "terrain" }
             node(params { x = 7.5f; y = 2.5f }) {
                 thing {
                     physics {

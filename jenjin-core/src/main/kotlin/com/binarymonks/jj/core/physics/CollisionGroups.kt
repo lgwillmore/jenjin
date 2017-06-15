@@ -63,12 +63,13 @@ class GroupBuilder {
         val builtGroups: Array<CollisionGroup> = Array()
         val categoryLookup: ObjectMap<String, Short> = ObjectMap()
         for (i in 0..groups.size - 1) {
-            categoryLookup.put(groups.get(i).name, ((i + 1) + Math.pow(2.toDouble(), i.toDouble())).toShort())
+            val cat:Short = Math.pow(2.toDouble(), i.toDouble()).toShort()
+            categoryLookup.put(groups.get(i).name, cat)
         }
         for (i in 0..groups.size - 1) {
             val group = groups.get(i)
             val category: Short = categoryLookup[group.name]
-            var mask: Short = 0x0000
+            var mask: Short = 0
             for (colliderName in group.colliderGroupNames) {
                 mask = mask or categoryLookup[colliderName]
             }

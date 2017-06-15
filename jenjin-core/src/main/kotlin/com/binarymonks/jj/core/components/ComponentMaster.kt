@@ -5,9 +5,9 @@ import kotlin.reflect.KClass
 
 class ComponentMaster {
 
-    private var trackedComponents = ObjectMap<KClass<Component>, Component>()
-    private var addTrackedComponent = ObjectMap<KClass<Component>, Component>()
-    private var removeTrackedComponents = ObjectMap<KClass<Component>, Component>()
+    private var trackedComponents = ObjectMap<KClass<*>, Component>()
+    private var addTrackedComponent = ObjectMap<KClass<*>, Component>()
+    private var removeTrackedComponents = ObjectMap<KClass<*>, Component>()
 
     fun update() {
         clean()
@@ -56,7 +56,7 @@ class ComponentMaster {
         addTrackedComponent.put(component.type(), component)
     }
 
-    fun <T : Component> getComponent(type: KClass<Component>): T? {
+    fun <T : Component> getComponent(type: KClass<T>): T? {
         if (trackedComponents.containsKey(type)) {
             return trackedComponents.get(type) as T
         }

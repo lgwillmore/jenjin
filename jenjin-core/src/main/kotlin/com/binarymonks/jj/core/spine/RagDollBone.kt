@@ -14,9 +14,9 @@ class RagDollBone : Bone {
     internal var ragDoll = false
     internal var spinePart: SpineBoneComponent? = null
 
-    constructor(data: BoneData, skeleton: Skeleton, parent: Bone) : super(data, skeleton, parent) {}
+    constructor(data: BoneData, skeleton: Skeleton, parent: Bone?) : super(data, skeleton, parent)
 
-    constructor(bone: Bone, skeleton: Skeleton, parent: Bone) : super(bone, skeleton, parent) {}
+    constructor(bone: Bone, skeleton: Skeleton, parent: Bone?) : super(bone, skeleton, parent)
 
     override fun getWorldX(): Float {
         if (ragDoll) {

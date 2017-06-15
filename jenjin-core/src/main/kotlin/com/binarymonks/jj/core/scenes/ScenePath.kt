@@ -20,6 +20,14 @@ class ScenePath() : Poolable{
         return this
     }
 
+    fun child(childName:String){
+        path.add(childName)
+    }
+
+    fun up(){
+        path.add(UP)
+    }
+
     fun from(thing: Thing): Thing {
         return from(thing, 0)
     }

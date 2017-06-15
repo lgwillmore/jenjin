@@ -47,8 +47,14 @@ fun SceneSpec.thing(init: ThingSpec.() -> Unit): ThingSpec {
     return thing
 }
 
-fun SceneSpec.revJoint(nameA: String, nameB: String, anchor: Vector2, init: RevoluteJointSpec.() -> Unit) {
+fun SceneSpec.revJoint(nameA: String?, nameB: String, anchor: Vector2, init: RevoluteJointSpec.() -> Unit) {
     val revJoint = RevoluteJointSpec(nameA, nameB, anchor)
+    revJoint.init()
+    this.joints.add(revJoint)
+}
+
+fun SceneSpec.revJoint(nameA: String?, nameB: String, localAnchorA: Vector2, localAnchorB: Vector2,init: RevoluteJointSpec.() -> Unit) {
+    val revJoint = RevoluteJointSpec(nameA, nameB, localAnchorA,localAnchorB)
     revJoint.init()
     this.joints.add(revJoint)
 }

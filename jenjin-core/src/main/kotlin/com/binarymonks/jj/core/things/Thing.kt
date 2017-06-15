@@ -10,6 +10,7 @@ import com.binarymonks.jj.core.properties.HasProps
 import com.binarymonks.jj.core.render.RenderRoot
 import com.binarymonks.jj.core.scenes.ScenePath
 import com.binarymonks.jj.core.utils.NamedArray
+import kotlin.reflect.KClass
 
 open class Thing(
         var name: String?,
@@ -55,6 +56,10 @@ open class Thing(
     fun addComponent(component: Component) {
         component.parent = this
         componentMaster.addComponent(component)
+    }
+
+    fun <T: Component> getComponent(type: KClass<T>): T?{
+        return componentMaster.getComponent(type)
     }
 
     override fun hasProp(key: String): Boolean {

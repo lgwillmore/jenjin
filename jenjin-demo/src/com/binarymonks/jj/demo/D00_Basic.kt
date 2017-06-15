@@ -24,7 +24,7 @@ class D00_Basic: Game(MyConfig00.jjConfig) {
 
         JJ.scenes.addSceneSpec("square", square())
         JJ.scenes.addSceneSpec("circle", circle())
-        JJ.scenes.addSceneSpec("floor", floor())
+        JJ.scenes.addSceneSpec("terrain", floor())
 
         val initialSceneSpec = scene {
             nodeRef(params { x = -8f; y = 8f }) { "circle" }
@@ -47,7 +47,7 @@ class D00_Basic: Game(MyConfig00.jjConfig) {
                     }
                 }
             }
-            nodeRef(params { x = 0f; y = 0f; scaleX = 20f }) { "floor" }
+            nodeRef(params { x = 0f; y = 0f; scaleX = 20f }) { "terrain" }
         }
 
         JJ.scenes.instantiate(initialSceneSpec)

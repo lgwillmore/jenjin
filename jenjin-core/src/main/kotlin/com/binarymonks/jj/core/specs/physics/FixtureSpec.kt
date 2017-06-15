@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color
 import com.binarymonks.jj.core.specs.Rectangle
 import com.binarymonks.jj.core.specs.ShapeSpec
 
-class FixtureSpec {
+class FixtureSpec() {
     var density = 0.5f
     var friction = 0.1f
     var restitution = 0f
@@ -13,8 +13,11 @@ class FixtureSpec {
     var offsetY = 0f
     var isSensor = false
     var collisionGroup: CollisionGroupSpec = CollisionGroupSpecExplicit()
-        private set
     var shape: ShapeSpec = Rectangle()
+
+    constructor(build:FixtureSpec.()->Unit):this(){
+        this.build()
+    }
 
     /**
      * Puts the fixture in a collision group by name.

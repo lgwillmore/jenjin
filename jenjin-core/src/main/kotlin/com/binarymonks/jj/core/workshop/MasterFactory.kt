@@ -66,8 +66,9 @@ class MasterFactory {
             paramsStack.pop()
         }
         for (jointSpec in scene.joints) {
+            val bodyA: Body = if (jointSpec.nameA == null) myThing.physicsRoot.b2DBody else things[jointSpec.nameA, myThing].physicsRoot.b2DBody
             val jointDef = jointSpec.toJointDef(
-                    things[jointSpec.nameA].physicsRoot.b2DBody,
+                    bodyA,
                     things[jointSpec.nameB].physicsRoot.b2DBody,
                     paramsStack.transformMatrix
             )

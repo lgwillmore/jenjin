@@ -2,15 +2,13 @@ package com.binarymonks.jj.core.spine.specs
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
-import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.assets.AssetReference
-import com.binarymonks.jj.core.spine.components.SPINE_RENDER_NAME
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.render.nodes.RenderNode
-import com.binarymonks.jj.core.spine.render.SpineRenderNode
-import com.binarymonks.jj.core.specs.render.RenderNodeSpec
 import com.binarymonks.jj.core.spine.RagDollBone
+import com.binarymonks.jj.core.spine.components.SPINE_RENDER_NAME
+import com.binarymonks.jj.core.spine.render.SpineRenderNode
 import com.binarymonks.jj.core.workshop.ParamStack
 import com.esotericsoftware.spine.Bone
 import com.esotericsoftware.spine.BoneData
@@ -45,20 +43,18 @@ internal class SpineRenderNodeSpec(
         return com.badlogic.gdx.utils.Array.with(com.binarymonks.jj.core.assets.AssetReference(com.badlogic.gdx.graphics.g2d.TextureAtlas::class, checkNotNull(atlasPath)))
     }
 
-    override fun makeNode(paramsStack: com.binarymonks.jj.core.workshop.ParamStack): com.binarymonks.jj.core.render.nodes.RenderNode {
-        val atlas = com.binarymonks.jj.core.JJ.assets.getAsset(checkNotNull(atlasPath), com.badlogic.gdx.graphics.g2d.TextureAtlas::class)
-
-
-        val atlasLoader = com.esotericsoftware.spine.attachments.AtlasAttachmentLoader(atlas)
-        val json = com.esotericsoftware.spine.SkeletonJson(atlasLoader)
+    override fun makeNode(paramsStack: ParamStack): RenderNode {
+        val atlas = JJ.assets.getAsset(checkNotNull(atlasPath), TextureAtlas::class)
+        val atlasLoader = AtlasAttachmentLoader(atlas)
+        val json = SkeletonJson(atlasLoader)
         val actualScale = scale * paramsStack.scaleX
         json.scale = actualScale
-        val skeletonData = json.readSkeletonData(com.badlogic.gdx.Gdx.files.internal(dataPath))
-        val positionOffset = com.binarymonks.jj.core.pools.vec2()
+        val skeletonData = json.readSkeletonData(Gdx.files.internal(dataPath))
+        val skeleton = Skeleton(skeletonData, this::getRagDollBone)
+        val positionOffset = vec2()
         positionOffset.set(originX, originY).scl(scale * paramsStack.scaleX)
-        val skeleton = com.esotericsoftware.spine.Skeleton(skeletonData)
 
-        val spineNode = com.binarymonks.jj.core.spine.render.SpineRenderNode(
+        val spineNode = SpineRenderNode(
                 priority,
                 color,
                 graphID,
@@ -70,7 +66,8 @@ internal class SpineRenderNodeSpec(
         return spineNode
     }
 
-    internal fun getRagDollBone(boneData: com.esotericsoftware.spine.BoneData, skeleton: com.esotericsoftware.spine.Skeleton, parent: com.esotericsoftware.spine.Bone): RagDollBone {
+
+    internal fun getRagDollBone(boneData: BoneData, skeleton: Skeleton, parent: Bone?): RagDollBone {
         return RagDollBone(boneData, skeleton, parent)
     }
 

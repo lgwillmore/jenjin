@@ -29,7 +29,7 @@ class D03_collisions : Game(MyConfig03.jjConfig) {
     public override fun gameOn() {
 
         JJ.scenes.addSceneSpec("ball", ball())
-        JJ.scenes.addSceneSpec("floor", floor())
+        JJ.scenes.addSceneSpec("terrain", floor())
 
         JJ.scenes.loadAssetsNow()
 
@@ -40,14 +40,14 @@ class D03_collisions : Game(MyConfig03.jjConfig) {
         }
 
         val initialSceneSpec = scene {
-            //Set up some balls and a floor on 'layer1' collision group
+            //Set up some balls and a terrain on 'layer1' collision group
             nodeRef(params { x = -8f; y = 8f; prop("collisionGroup", "layer1") }) { "ball" }
             nodeRef(params { x = -2f; y = 9f; scaleX = 2f; scaleY = 2f;prop("collisionGroup", "layer1") }) { "ball" }
-            nodeRef(params { x = 0f; y = 0f; scaleX = 20f;prop("collisionGroup", "layer1") }) { "floor" }
-            //Set up some balls and a floor on 'layer2' collision group
+            nodeRef(params { x = 0f; y = 0f; scaleX = 20f;prop("collisionGroup", "layer1") }) { "terrain" }
+            //Set up some balls and a terrain on 'layer2' collision group
             nodeRef(params { x = 2f; y = 10f;prop("collisionGroup", "layer2") }) { "ball" }
             nodeRef(params { x = +8f; y = 11f; scaleX = 2f; scaleY = 2f;prop("collisionGroup", "layer2") }) { "ball" }
-            nodeRef(params { x = 0f; y = -10f; scaleX = 20f;prop("collisionGroup", "layer2") }) { "floor" }
+            nodeRef(params { x = 0f; y = -10f; scaleX = 20f;prop("collisionGroup", "layer2") }) { "terrain" }
         }
 
         JJ.scenes.instantiate(initialSceneSpec)
