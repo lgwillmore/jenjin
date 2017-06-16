@@ -97,7 +97,7 @@ class SpineSpec() {
                     bone.children.forEach {
                         val a = path.copy()
                         a.add(it.data.name)
-                        val childName = buildBoneRecurse(it, mass, a, this@scene)
+                        val childName = buildBoneRecurse(it, mass * spineSkeleton!!.massFalloff, a, this@scene)
                         revJoint(null, childName, vec2(it.x, it.y), vec2()) {
                             enableLimit = false
                             collideConnected = true
@@ -110,6 +110,9 @@ class SpineSpec() {
     }
 
     private fun buildFixture(bone: Bone, mass: Float): FixtureSpec {
+        if (spineSkeleton!!.boneFixtureOverrides.containsKey(bone.data.name)) {
+            return spineSkeleton!!.boneFixtureOverrides[bone.data.name]
+        }
         val boneLength = bone.data.length
         if (boneLength > 0) {
             return FixtureSpec {

@@ -47,6 +47,11 @@ class D10_spine_physics : Game(MyConfig10.jjConfig) {
             originY = 247f
             spineSkeleton = SpineSkeletonSpec {
                 collisionGroup = CollisionGroupSpecName("character")
+                overrideFixtureFor("head") {
+                    shape = Circle(0.4f)
+                    offsetX = 0.4f
+                    collsionGroup("character")
+                }
             }
         }.toSceneSpec()
     }
@@ -59,10 +64,10 @@ class D10_spine_physics : Game(MyConfig10.jjConfig) {
             node(params { name = "hammer" }) {
                 thing {
                     physics {
-                        fixture { shape = Rectangle(0.5f, 3f); offsetY = -1.5f;collsionGroup("hammer") }
-                        fixture { shape = Rectangle(2f, 2f); offsetY = -4f;collsionGroup("hammer") }
-                        fixture { shape = Circle(1f); offsetY = -4f; offsetX = -1f;collsionGroup("hammer") }
-                        fixture { shape = Circle(1f); offsetY = -4f; offsetX = 1f;collsionGroup("hammer") }
+                        fixture { shape = Rectangle(0.5f, 3f); offsetY = -1.5f; collsionGroup("hammer") }
+                        fixture { shape = Rectangle(2f, 2f); offsetY = -4f; collsionGroup("hammer") }
+                        fixture { shape = Circle(1f); offsetY = -4f; offsetX = -1f; collsionGroup("hammer") }
+                        fixture { shape = Circle(1f); offsetY = -4f; offsetX = 1f; collsionGroup("hammer") }
                     }
                     render {
                         rectangleRender(0.5f, 3f) { color.set(Color.BROWN); offsetY = -1.5f }
