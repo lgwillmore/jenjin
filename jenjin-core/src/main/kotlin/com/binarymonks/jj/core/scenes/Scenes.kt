@@ -9,6 +9,7 @@ import com.binarymonks.jj.core.assets.AssetReference
 import com.binarymonks.jj.core.async.UnitBond
 import com.binarymonks.jj.core.specs.InstanceParams
 import com.binarymonks.jj.core.specs.SceneSpec
+import com.binarymonks.jj.core.specs.SceneSpecRef
 import com.binarymonks.jj.core.specs.ThingSpec
 import com.binarymonks.jj.core.workshop.MasterFactory
 
@@ -17,7 +18,7 @@ class Scenes : ScenesAPI {
 
     val masterFactory = MasterFactory()
     //Temporary in memory scene specs
-    val sceneSpecs: ObjectMap<String, SceneSpec> = ObjectMap()
+    val sceneSpecs: ObjectMap<String, SceneSpecRef> = ObjectMap()
 
     private var dirty = false
 
@@ -31,13 +32,13 @@ class Scenes : ScenesAPI {
         return UnitBond()
     }
 
-    override fun addSceneSpec(path: String, scene: SceneSpec) {
+    override fun addSceneSpec(path: String, scene: SceneSpecRef) {
         sceneSpecs.put(path, scene)
         dirty = true
     }
 
     fun getScene(path: String): SceneSpec {
-        return sceneSpecs.get(path)
+        return sceneSpecs.get(path).resolve()
     }
 
     override fun loadAssetsNow() {

@@ -3,6 +3,7 @@ package com.binarymonks.jj.core.api
 import com.binarymonks.jj.core.async.UnitBond
 import com.binarymonks.jj.core.specs.InstanceParams
 import com.binarymonks.jj.core.specs.SceneSpec
+import com.binarymonks.jj.core.specs.SceneSpecRef
 
 
 interface ScenesAPI {
@@ -24,7 +25,10 @@ interface ScenesAPI {
     fun instantiate(path: String, instanceParams: InstanceParams = InstanceParams.new()): UnitBond
 
 
-    fun addSceneSpec(path: String, scene: SceneSpec)
+    /**
+     * Add a named [SceneSpecRef].
+     */
+    fun addSceneSpec(path: String, scene: SceneSpecRef)
 
 
     /**
