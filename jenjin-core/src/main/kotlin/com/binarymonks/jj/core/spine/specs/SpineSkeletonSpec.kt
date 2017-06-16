@@ -11,6 +11,8 @@ class SpineSkeletonSpec() {
     var collisionGroup: CollisionGroupSpec = CollisionGroupSpecExplicit()
     var coreMass: Float = 0.5f
     var massFalloff = 0.8f
+    var jointLowerLimitD = -30f
+    var jointUpperLimitD = 90f
     val boneFixtureOverrides: ObjectMap<String, FixtureSpec> = ObjectMap()
 
     constructor(build: SpineSkeletonSpec.() -> Unit) : this() {
@@ -23,9 +25,3 @@ class SpineSkeletonSpec() {
         boneFixtureOverrides.put(boneName, fixture)
     }
 }
-
-
-// overrideFixtureFor(bone){}
-// appendFixtureTo(bone){}
-// appendBeginCollisionTo(bone, Collision){}
-// appendComponentTo(bone, Component){}

@@ -3,13 +3,16 @@ package com.binarymonks.jj.core.spine.specs
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.binarymonks.jj.core.JJ
+import com.binarymonks.jj.core.assets.AssetReference
 import com.binarymonks.jj.core.extensions.copy
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.specs.Circle
 import com.binarymonks.jj.core.specs.Rectangle
 import com.binarymonks.jj.core.specs.SceneSpec
+import com.binarymonks.jj.core.specs.SceneSpecRef
 import com.binarymonks.jj.core.specs.builders.*
 import com.binarymonks.jj.core.specs.physics.FixtureSpec
 import com.binarymonks.jj.core.spine.collisions.TriggerRagDollCollision
@@ -20,7 +23,7 @@ import com.esotericsoftware.spine.SkeletonJson
 import com.esotericsoftware.spine.attachments.AtlasAttachmentLoader
 
 
-class SpineSpec() {
+class SpineSpec() : SceneSpecRef {
 
     var atlasPath: String? = null
     var dataPath: String? = null
@@ -35,8 +38,7 @@ class SpineSpec() {
         this.build()
     }
 
-
-    fun toSceneSpec(): com.binarymonks.jj.core.specs.SceneSpec {
+    override fun resolve(): SceneSpec {
         val scene = scene {
             thing {
                 physics {
@@ -59,8 +61,6 @@ class SpineSpec() {
             }
         }
         if (spineSkeleton != null) {
-            //FIXME This is duplicated suckiness - also in the render node
-            JJ.assets.loadNow(checkNotNull(atlasPath), TextureAtlas::class)
             val atlas = JJ.assets.getAsset(checkNotNull(atlasPath), TextureAtlas::class)
             val atlasLoader = AtlasAttachmentLoader(atlas)
             val json = SkeletonJson(atlasLoader)
@@ -71,6 +71,12 @@ class SpineSpec() {
             buildPhysicsSkeleton(scene, skeleton)
         }
         return scene
+    }
+
+    override fun getAssets(): Array<AssetReference> {
+        val assets: Array<AssetReference> = Array()
+        assets.add(AssetReference(TextureAtlas::class, checkNotNull(atlasPath)))
+        return assets
     }
 
     private fun buildPhysicsSkeleton(scene: SceneSpec, skeleton: Skeleton) {
@@ -99,8 +105,10 @@ class SpineSpec() {
                         a.add(it.data.name)
                         val childName = buildBoneRecurse(it, mass * spineSkeleton!!.massFalloff, a, this@scene)
                         revJoint(null, childName, vec2(it.x, it.y), vec2()) {
-                            enableLimit = false
-                            collideConnected = true
+                            enableLimit = true
+                            lowerAngle = spineSkeleton!!.jointLowerLimitD * MathUtils.degRad
+                            upperAngle = spineSkeleton!!.jointUpperLimitD * MathUtils.degRad
+                            collideConnected = false
                         }
                     }
                 },

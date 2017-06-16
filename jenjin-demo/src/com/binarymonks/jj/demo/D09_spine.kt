@@ -5,6 +5,7 @@ import com.binarymonks.jj.core.Game
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.specs.SceneSpec
+import com.binarymonks.jj.core.specs.SceneSpecRef
 import com.binarymonks.jj.core.specs.builders.nodeRef
 import com.binarymonks.jj.core.specs.builders.scene
 import com.binarymonks.jj.core.spine.specs.SpineSpec
@@ -20,14 +21,14 @@ class D09_spine : Game(MyConfig09.jjConfig) {
         })
     }
 
-    fun spineBoy(): SceneSpec {
+    fun spineBoy(): SceneSpecRef {
         return SpineSpec {
             atlasPath = "spine/spineboy/spineboy-pma.atlas"
             dataPath = "spine/spineboy/spineboy.json"
             startingAnimation = "walk"
             scale = 1f / 247f
             originY = 247f
-        }.toSceneSpec()
+        }
     }
 }
 

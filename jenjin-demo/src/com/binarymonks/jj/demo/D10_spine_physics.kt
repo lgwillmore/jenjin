@@ -9,6 +9,7 @@ import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.specs.Circle
 import com.binarymonks.jj.core.specs.Rectangle
 import com.binarymonks.jj.core.specs.SceneSpec
+import com.binarymonks.jj.core.specs.SceneSpecRef
 import com.binarymonks.jj.core.specs.builders.*
 import com.binarymonks.jj.core.specs.physics.CollisionGroupSpecName
 import com.binarymonks.jj.core.spine.specs.SpineSkeletonSpec
@@ -34,11 +35,10 @@ class D10_spine_physics : Game(MyConfig10.jjConfig) {
             nodeRef(params { x = 8f; y = 4f; rotationD = 90f }) { "hammer" }
             nodeRef(params { y = -2f; scaleX = 15f }) { "terrain" }
             nodeRef(params { x = -7f; y = 1f; scaleY = 6f }) { "terrain" }
-
         })
     }
 
-    fun spineBoy(): SceneSpec {
+    fun spineBoy(): SceneSpecRef {
         return SpineSpec {
             atlasPath = "spine/spineboy/spineboy-pma.atlas"
             dataPath = "spine/spineboy/spineboy.json"
@@ -53,7 +53,7 @@ class D10_spine_physics : Game(MyConfig10.jjConfig) {
                     collsionGroup("character")
                 }
             }
-        }.toSceneSpec()
+        }
     }
 
     private fun swingHammer(): SceneSpec {
