@@ -51,25 +51,8 @@ class Scenes : ScenesAPI {
     private fun getAllAssets(): Array<AssetReference> {
         val assets: Array<AssetReference> = Array()
         for (entry in sceneSpecs) {
-            if (entry.value.thingSpec != null) {
-                addRenderAssets(assets, entry.value.thingSpec!!)
-                addSoundAssets(assets, entry.value.thingSpec!!)
-            }
+            assets.addAll(entry.value.getAssets())
         }
         return assets
-    }
-
-    private fun addSoundAssets(assets: Array<AssetReference>, thingSpec: ThingSpec) {
-        for (soundParams in thingSpec.sounds) {
-            for (path in soundParams.soundPaths) {
-                assets.add(AssetReference(Sound::class, path))
-            }
-        }
-    }
-
-    private fun addRenderAssets(assets: Array<AssetReference>, thingSpec: ThingSpec) {
-        for (node in thingSpec.render.renderNodes) {
-            assets.addAll(node.getAssets())
-        }
     }
 }

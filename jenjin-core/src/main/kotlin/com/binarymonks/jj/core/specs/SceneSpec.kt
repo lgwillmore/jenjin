@@ -1,14 +1,17 @@
 package com.binarymonks.jj.core.specs
 
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.Copyable
 import com.binarymonks.jj.core.JJ
+import com.binarymonks.jj.core.assets.AssetReference
 import com.binarymonks.jj.core.specs.physics.JointSpec
 
 internal var sceneIDCounter = 0
 
-open class SceneSpec {
+open class SceneSpec : SceneSpecRef {
+
     var id = sceneIDCounter++
     var name: String? = null
     internal var nodeCounter = 0
@@ -24,7 +27,7 @@ open class SceneSpec {
      * @param instanceParams The instance specific parameters
      */
     fun addNode(scene: SceneSpec, instanceParams: InstanceParams = InstanceParams.new()) {
-        nodes.put(getName(instanceParams), SceneNode(SceneSpecRefProxy(scene), instanceParams))
+        nodes.put(getName(instanceParams), SceneNode(scene, instanceParams))
     }
 
     /**
@@ -45,6 +48,27 @@ open class SceneSpec {
         }
     }
 
+    override fun resolve(): SceneSpec {
+        return this
+    }
+
+    override fun getAssets(): Array<AssetReference> {
+        val assets: Array<AssetReference> = Array()
+        //TODO: Make thing specs not nullable - they always have one. In fact, things must become scenes
+        if (thingSpec != null) {
+            for (node in thingSpec!!.render.renderNodes) {
+                assets.addAll(node.getAssets())
+            }
+            thingSpec!!.sounds.forEach {
+                it.soundPaths.forEach {
+                    assets.add(AssetReference(Sound::class, it))
+                }
+            }
+        }
+        nodes.forEach { assets.addAll(it.value.sceneRef!!.getAssets()) }
+        return assets
+    }
+
 }
 
 class SceneNode(
@@ -52,34 +76,22 @@ class SceneNode(
         val instanceParams: InstanceParams = InstanceParams.new()
 )
 
-interface SceneSpecRef : Copyable<SceneSpecRef> {
+interface SceneSpecRef {
     fun resolve(): SceneSpec
+    fun getAssets(): Array<AssetReference>
 }
 
 fun sceneRef(path: String): SceneSpecRef {
     return SceneSpecRefPath(path)
 }
 
-fun sceneRef(scene: SceneSpec): SceneSpecRef {
-    return SceneSpecRefProxy(scene)
-}
-
 class SceneSpecRefPath(val path: String) : SceneSpecRef {
-    override fun copy(): SceneSpecRef {
-        return SceneSpecRefPath(path)
+
+    override fun getAssets(): Array<AssetReference> {
+        return JJ.B.scenes.getScene(path).getAssets()
     }
 
     override fun resolve(): SceneSpec {
         return JJ.B.scenes.getScene(path)
-    }
-}
-
-class SceneSpecRefProxy(val sceneSpec: SceneSpec) : SceneSpecRef {
-    override fun copy(): SceneSpecRef {
-        return SceneSpecRefProxy(sceneSpec)
-    }
-
-    override fun resolve(): SceneSpec {
-        return sceneSpec
     }
 }
