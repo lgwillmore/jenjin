@@ -27,12 +27,11 @@ class D07_b2d_composite : Game(MyConfig07.jjConfig) {
             nodeRef(params { x = 8f; y = 4f; scaleX = 0.5f; scaleY = 0.5f }) { "spinner" }
             nodeRef { "terrain" }
             node(params { x = 7.5f; y = 2.5f }) {
-                thing {
-                    physics {
-                        fixture { shape = Circle(0.5f) }
-                    }
-                    render { circleRender(0.5f) { color.set(Color.PURPLE) } }
+                physics {
+                    bodyType=BodyDef.BodyType.DynamicBody
+                    fixture { shape = Circle(0.5f) }
                 }
+                render { circleRender(0.5f) { color.set(Color.PURPLE) } }
             }
         })
 
@@ -53,17 +52,15 @@ class D07_b2d_composite : Game(MyConfig07.jjConfig) {
                 vec2(10f, 2f)
         )
         return scene {
-            thing {
-                physics {
-                    bodyType = BodyDef.BodyType.StaticBody
-                    fixture {
-                        shape = floor
-                    }
+            physics {
+                bodyType = BodyDef.BodyType.StaticBody
+                fixture {
+                    shape = floor
                 }
-                render {
-                    lineChainRender(floor.vertices) {
-                        color.set(Color.GREEN)
-                    }
+            }
+            render {
+                lineChainRender(floor.vertices) {
+                    color.set(Color.GREEN)
                 }
             }
         }
@@ -73,35 +70,31 @@ class D07_b2d_composite : Game(MyConfig07.jjConfig) {
         //Some forced weld joints, but they work
         return scene {
             node(params { name = "anchor" }) {
-                thing {
-                    physics { bodyType = BodyDef.BodyType.StaticBody }
-                    render { circleRender(0.25f) { color.set(Color.GREEN); layer = 1 } }
-                }
+                physics { bodyType = BodyDef.BodyType.StaticBody }
+                render { circleRender(0.25f) { color.set(Color.GREEN); layer = 1 } }
             }
             node(params { name = "arm" }) {
-                thing {
-                    physics { fixture { shape = Rectangle(0.5f, 4f) } }
-                    render { rectangleRender(0.5f, 4f) { color.set(Color.BROWN) } }
-                }
+                physics {
+                    bodyType=BodyDef.BodyType.DynamicBody
+                    fixture { shape = Rectangle(0.5f, 4f) } }
+                render { rectangleRender(0.5f, 4f) { color.set(Color.BROWN) } }
             }
             node(params { name = "topBall"; y = 2f }) {
-                thing {
-                    physics {
-                        fixture { shape = Circle(1f) }
-                    }
-                    render {
-                        circleRender(1f) { color.set(Color.GRAY) }
-                    }
+                physics {
+                    bodyType=BodyDef.BodyType.DynamicBody
+                    fixture { shape = Circle(1f) }
+                }
+                render {
+                    circleRender(1f) { color.set(Color.GRAY) }
                 }
             }
             node(params { name = "bottomBall"; y = -2f }) {
-                thing {
-                    physics {
-                        fixture { shape = Circle(1f) }
-                    }
-                    render {
-                        circleRender(1f) { color.set(Color.GRAY) }
-                    }
+                physics {
+                    bodyType=BodyDef.BodyType.DynamicBody
+                    fixture { shape = Circle(1f) }
+                }
+                render {
+                    circleRender(1f) { color.set(Color.GRAY) }
                 }
             }
             revJoint("anchor", "arm", vec2()) {}
@@ -113,23 +106,22 @@ class D07_b2d_composite : Game(MyConfig07.jjConfig) {
     private fun swingHammer(): SceneSpec {
         return scene {
             node(params { name = "hammerAnchor" }) {
-                thing { physics { bodyType = BodyDef.BodyType.StaticBody } }
+                physics { bodyType = BodyDef.BodyType.StaticBody }
             }
             node(params { name = "hammer" }) {
-                thing {
-                    physics {
-                        fixture { shape = Rectangle(0.5f, 3f); offsetY = -1.5f }
-                        fixture { shape = Rectangle(2f, 2f); offsetY = -4f }
-                        fixture { shape = Circle(1f); offsetY = -4f; offsetX = -1f }
-                        fixture { shape = Circle(1f); offsetY = -4f; offsetX = 1f }
-                    }
-                    render {
-                        rectangleRender(0.5f, 3f) { color.set(Color.BROWN); offsetY = -1.5f }
-                        rectangleRender(2f, 2f) { color.set(Color.GRAY); offsetY = -4f }
-                        circleRender(1f) { color.set(Color.GRAY); offsetY = -4f; offsetX = -1f }
-                        circleRender(1f) { color.set(Color.GRAY); offsetY = -4f; offsetX = 1f }
-                        circleRender(0.25f) { color.set(Color.GREEN); }
-                    }
+                physics {
+                    bodyType=BodyDef.BodyType.DynamicBody
+                    fixture { shape = Rectangle(0.5f, 3f); offsetY = -1.5f }
+                    fixture { shape = Rectangle(2f, 2f); offsetY = -4f }
+                    fixture { shape = Circle(1f); offsetY = -4f; offsetX = -1f }
+                    fixture { shape = Circle(1f); offsetY = -4f; offsetX = 1f }
+                }
+                render {
+                    rectangleRender(0.5f, 3f) { color.set(Color.BROWN); offsetY = -1.5f }
+                    rectangleRender(2f, 2f) { color.set(Color.GRAY); offsetY = -4f }
+                    circleRender(1f) { color.set(Color.GRAY); offsetY = -4f; offsetX = -1f }
+                    circleRender(1f) { color.set(Color.GRAY); offsetY = -4f; offsetX = 1f }
+                    circleRender(0.25f) { color.set(Color.GREEN); }
                 }
             }
             revJoint("hammer", "hammerAnchor", vec2()) {}

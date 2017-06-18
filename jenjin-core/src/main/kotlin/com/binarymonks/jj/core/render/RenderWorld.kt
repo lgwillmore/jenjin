@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.api.RenderAPI
-import com.binarymonks.jj.core.things.Thing
+import com.binarymonks.jj.core.scenes.Scene
 import com.esotericsoftware.spine.SkeletonRenderer
 
 open class RenderWorld : RenderAPI {
@@ -25,12 +25,12 @@ open class RenderWorld : RenderAPI {
         rayHandler.setAmbientLight(0.0f, 0.0f, 0.0f, 1.0f)
     }
 
-    fun addThing(thing: Thing) {
-        defaultRenderGraph.add(thing.renderRoot.specID, thing.id, thing.renderRoot.defaultRenderLayers)
-        lightSourceRenderGraph.add(thing.renderRoot.specID, thing.id, thing.renderRoot.lightRenderLayers)
+    fun addThing(scene: Scene) {
+        defaultRenderGraph.add(scene.renderRoot.specID, scene.id, scene.renderRoot.defaultRenderLayers)
+        lightSourceRenderGraph.add(scene.renderRoot.specID, scene.id, scene.renderRoot.lightRenderLayers)
     }
 
-    fun removeThing(removal: Thing) {
+    fun removeThing(removal: Scene) {
         defaultRenderGraph.remove(removal.renderRoot.specID, removal.id, removal.renderRoot.defaultRenderLayers)
         lightSourceRenderGraph.remove(removal.renderRoot.specID, removal.id, removal.renderRoot.lightRenderLayers)
     }

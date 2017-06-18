@@ -20,37 +20,29 @@ class D06_lights : Game(MyConfig06.jjConfig) {
 
         JJ.scenes.instantiate(scene {
             node {
-                thing {
-                    render { imageTexture("textures/circuit_background.png") { width = 20f; height = 40f } }
-                }
+                render { imageTexture("textures/circuit_background.png") { width = 20f; height = 40f } }
             }
             node(params { x = -5f; y = 5f }) {
-                thing {
-                    physics { fixture { shape = Rectangle(2.5f, 2.5f) } }
-                    render { rectangleRender(2.5f, 2.5f) { color.set(Color.BLUE) } }
-                }
+                physics { fixture { shape = Rectangle(2.5f, 2.5f) } }
+                render { rectangleRender(2.5f, 2.5f) { color.set(Color.BLUE) } }
             }
             node(params { x = 5f; y = -5f }) {
-                thing {
-                    physics { fixture { shape = Rectangle(2.5f, 2.5f) } }
-                    render { rectangleRender(2.5f, 2.5f) { color.set(Color.BLUE) } }
-                }
+                physics { fixture { shape = Rectangle(2.5f, 2.5f) } }
+                render { rectangleRender(2.5f, 2.5f) { color.set(Color.BLUE) } }
             }
             node {
-                thing {
-                    physics {
-                        fixture { shape = Rectangle(1.5f, 1.5f) }
-                        pointLight {
-                            reach = 20f
-                            color.set(Color.LIME)
-                        }
+                physics {
+                    fixture { shape = Rectangle(1.5f, 1.5f) }
+                    pointLight {
+                        reach = 20f
+                        color.set(Color.LIME)
                     }
-                    render{
-                        rectangleRender(1.5f,1.5f){
-                            color.set(Color.WHITE)
-                            graphID = LightGraph()
-                            color.set(Color.LIME)
-                        }
+                }
+                render {
+                    rectangleRender(1.5f, 1.5f) {
+                        color.set(Color.WHITE)
+                        graphID = LightGraph()
+                        color.set(Color.LIME)
                     }
                 }
             }

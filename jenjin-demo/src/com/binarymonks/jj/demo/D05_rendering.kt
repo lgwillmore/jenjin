@@ -26,16 +26,14 @@ class D05_rendering : Game(MyConfig05.jjConfig) {
 
     private fun line(): SceneSpec {
         return scene {
-            thing {
-                render {
-                    polygonRender(
-                            vec2(0f, 0f),
-                            vec2(0f, 2f),
-                            vec2(0f, 2f),
-                            vec2(0f, 0f)
-                    ) {
-                        color.set(Color.GREEN)
-                    }
+            render {
+                polygonRender(
+                        vec2(0f, 0f),
+                        vec2(0f, 2f),
+                        vec2(0f, 2f),
+                        vec2(0f, 0f)
+                ) {
+                    color.set(Color.GREEN)
                 }
             }
         }
@@ -64,57 +62,51 @@ class D05_rendering : Game(MyConfig05.jjConfig) {
         return scene {
             // Polygon
             node {
-                thing {
-                    physics {
-                        bodyType = BodyDef.BodyType.StaticBody
-                        fixture {
-                            offsetX = 4f
-                            shape = poly
-                        }
+                physics {
+                    bodyType = BodyDef.BodyType.StaticBody
+                    fixture {
+                        offsetX = 4f
+                        shape = poly
                     }
-                    render {
-                        polygonRender(poly.vertices) {
-                            offsetX = 4f
-                            color.set(Color.RED)
-                        }
+                }
+                render {
+                    polygonRender(poly.vertices) {
+                        offsetX = 4f
+                        color.set(Color.RED)
                     }
                 }
             }
             // Circle
             node {
-                thing {
-                    physics {
-                        bodyType = BodyDef.BodyType.StaticBody
-                        fixture {
-                            offsetX = -4f
-                            shape = Circle(2f)
-                        }
+                physics {
+                    bodyType = BodyDef.BodyType.StaticBody
+                    fixture {
+                        offsetX = -4f
+                        shape = Circle(2f)
                     }
-                    render {
-                        circleRender(2f) {
-                            color.set(Color.GREEN)
-                            offsetX = -4f
-                        }
+                }
+                render {
+                    circleRender(2f) {
+                        color.set(Color.GREEN)
+                        offsetX = -4f
                     }
                 }
             }
             //LineChain
             node {
-                thing {
-                    physics {
-                        bodyType = BodyDef.BodyType.StaticBody
-                        fixture {
-                            shape = zigzag
-                            offsetY = -4f
-                            rotationD = 90f
-                        }
+                physics {
+                    bodyType = BodyDef.BodyType.StaticBody
+                    fixture {
+                        shape = zigzag
+                        offsetY = -4f
+                        rotationD = 90f
                     }
-                    render {
-                        lineChainRender(zigzag.vertices) {
-                            color.set(Color.BLUE)
-                            offsetY = -4f
-                            rotationD = 90f
-                        }
+                }
+                render {
+                    lineChainRender(zigzag.vertices) {
+                        color.set(Color.BLUE)
+                        offsetY = -4f
+                        rotationD = 90f
                     }
                 }
             }

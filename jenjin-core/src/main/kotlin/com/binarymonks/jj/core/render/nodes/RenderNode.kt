@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.specs.render.GraphID
-import com.binarymonks.jj.core.things.Thing
+import com.binarymonks.jj.core.scenes.Scene
 
 
 abstract class RenderNode(
@@ -13,9 +13,9 @@ abstract class RenderNode(
         var graphID: GraphID,
         var name: String? = null
 ) {
-    var parent: Thing? = null
+    var parent: Scene? = null
 
-    fun myParent(): Thing {
+    fun myParent(): Scene {
         if (parent == null) {
             throw Exception("parent has not been set")
         }

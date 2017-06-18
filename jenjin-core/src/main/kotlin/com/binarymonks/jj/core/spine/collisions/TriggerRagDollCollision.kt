@@ -9,11 +9,11 @@ import com.binarymonks.jj.core.pools.Poolable
 import com.binarymonks.jj.core.pools.new
 import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.spine.components.SpineBoneComponent
-import com.binarymonks.jj.core.things.Thing
+import com.binarymonks.jj.core.scenes.Scene
 
 class TriggerRagDollCollision : CollisionHandler() {
 
-    override fun collision(me: Thing, myFixture: Fixture, other: Thing, otherFixture: Fixture, contact: Contact) {
+    override fun collision(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact) {
         val boneComponent: SpineBoneComponent = checkNotNull(me.getComponent(SpineBoneComponent::class))
         JJ.tasks.addPostPhysicsTask(new(DelayedTriggerRagDoll::class).set(boneComponent, other))
     }
@@ -24,9 +24,9 @@ class TriggerRagDollCollision : CollisionHandler() {
 
     class DelayedTriggerRagDoll : OneTimeTask(), Poolable {
         internal var spineBone: SpineBoneComponent? = null
-        internal var other: Thing? = null
+        internal var other: Scene? = null
 
-        operator fun set(spineBoneComponent: SpineBoneComponent, other: Thing): DelayedTriggerRagDoll {
+        operator fun set(spineBoneComponent: SpineBoneComponent, other: Scene): DelayedTriggerRagDoll {
             this.spineBone = spineBoneComponent
             this.other = other
             return this

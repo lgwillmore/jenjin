@@ -2,6 +2,7 @@ package com.binarymonks.jj.demo
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.physics.box2d.BodyDef
 import com.binarymonks.jj.core.Game
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
@@ -28,20 +29,16 @@ class D08_pooling_and_destroying : Game(MyConfig08.jjConfig) {
         JJ.scenes.instantiate(scene {
             //generator
             node(params { y = -3f;x = 3f }) {
-                thing {
-                    component(Emitter()) { sceneSpecRef = sceneRef("nestedCompositeScene"); delaySeconds = spawnDelay }
-                    render {
-                        circleRender(0.5f) { color.set(Color.YELLOW) }
-                    }
+                component(Emitter()) { sceneSpecRef = sceneRef("nestedCompositeScene"); delaySeconds = spawnDelay }
+                render {
+                    circleRender(0.5f) { color.set(Color.YELLOW) }
                 }
             }
             //scaled generator
             node(params { y = 3f;x = -3f }) {
-                thing {
-                    component(Emitter()) { sceneSpecRef = sceneRef("nestedCompositeScene"); delaySeconds = spawnDelay; scaleX = 0.5f; scaleY = 0.5f }
-                    render {
-                        circleRender(0.5f) { color.set(Color.PURPLE) }
-                    }
+                component(Emitter()) { sceneSpecRef = sceneRef("nestedCompositeScene"); delaySeconds = spawnDelay; scaleX = 0.5f; scaleY = 0.5f }
+                render {
+                    circleRender(0.5f) { color.set(Color.PURPLE) }
                 }
             }
         })
@@ -50,32 +47,28 @@ class D08_pooling_and_destroying : Game(MyConfig08.jjConfig) {
 
     private fun circle(): SceneSpec {
         return scene {
-            thing {
-                physics {
-                    fixture { shape = Circle(1f) }
-                }
-                render {
-                    circleRender(1f) { color.set(Color.GREEN) }
-                }
+            physics {
+                bodyType=BodyDef.BodyType.DynamicBody
+                fixture { shape = Circle(1f) }
+            }
+            render {
+                circleRender(1f) { color.set(Color.GREEN) }
             }
         }
     }
 
     private fun nestedCompositeScene(): SceneSpec {
         return scene {
-            thing {
-                component(SelfDestruct()) {
-                    delaySeconds = destroyDelay
-                }
+            component(SelfDestruct()) {
+                delaySeconds = destroyDelay
             }
             node(params { name = "rectangle" }) {
-                thing {
-                    physics {
-                        fixture { shape = Rectangle(1f, 1f) }
-                    }
-                    render {
-                        rectangleRender(1f, 1f) { color.set(Color.BLUE) }
-                    }
+                physics {
+                    bodyType= BodyDef.BodyType.DynamicBody
+                    fixture { shape = Rectangle(1f, 1f) }
+                }
+                render {
+                    rectangleRender(1f, 1f) { color.set(Color.BLUE) }
                 }
             }
             nodeRef(params { name = "circle"; y = 1f }) { "circle" }

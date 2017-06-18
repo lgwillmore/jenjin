@@ -59,23 +59,21 @@ class D10_spine_physics : Game(MyConfig10.jjConfig) {
     private fun swingHammer(): SceneSpec {
         return scene {
             node(params { name = "hammerAnchor" }) {
-                thing { physics { bodyType = BodyDef.BodyType.StaticBody } }
+                physics { bodyType = BodyDef.BodyType.StaticBody }
             }
             node(params { name = "hammer" }) {
-                thing {
-                    physics {
-                        fixture { shape = Rectangle(0.5f, 3f); offsetY = -1.5f; collsionGroup("hammer") }
-                        fixture { shape = Rectangle(2f, 2f); offsetY = -4f; collsionGroup("hammer") }
-                        fixture { shape = Circle(1f); offsetY = -4f; offsetX = -1f; collsionGroup("hammer") }
-                        fixture { shape = Circle(1f); offsetY = -4f; offsetX = 1f; collsionGroup("hammer") }
-                    }
-                    render {
-                        rectangleRender(0.5f, 3f) { color.set(Color.BROWN); offsetY = -1.5f }
-                        rectangleRender(2f, 2f) { color.set(Color.GRAY); offsetY = -4f }
-                        circleRender(1f) { color.set(Color.GRAY); offsetY = -4f; offsetX = -1f }
-                        circleRender(1f) { color.set(Color.GRAY); offsetY = -4f; offsetX = 1f }
-                        circleRender(0.25f) { color.set(Color.GREEN); }
-                    }
+                physics {
+                    fixture { shape = Rectangle(0.5f, 3f); offsetY = -1.5f; collsionGroup("hammer") }
+                    fixture { shape = Rectangle(2f, 2f); offsetY = -4f; collsionGroup("hammer") }
+                    fixture { shape = Circle(1f); offsetY = -4f; offsetX = -1f; collsionGroup("hammer") }
+                    fixture { shape = Circle(1f); offsetY = -4f; offsetX = 1f; collsionGroup("hammer") }
+                }
+                render {
+                    rectangleRender(0.5f, 3f) { color.set(Color.BROWN); offsetY = -1.5f }
+                    rectangleRender(2f, 2f) { color.set(Color.GRAY); offsetY = -4f }
+                    circleRender(1f) { color.set(Color.GRAY); offsetY = -4f; offsetX = -1f }
+                    circleRender(1f) { color.set(Color.GRAY); offsetY = -4f; offsetX = 1f }
+                    circleRender(0.25f) { color.set(Color.GREEN); }
                 }
             }
             revJoint("hammer", "hammerAnchor", vec2()) {}
@@ -84,17 +82,15 @@ class D10_spine_physics : Game(MyConfig10.jjConfig) {
 
     fun terrain(): SceneSpec {
         return scene {
-            thing {
-                physics {
-                    bodyType = BodyDef.BodyType.StaticBody
-                    fixture {
-                        shape = Rectangle(1f, 1f)
-                        collsionGroup("terrain")
-                    }
+            physics {
+                bodyType = BodyDef.BodyType.StaticBody
+                fixture {
+                    shape = Rectangle(1f, 1f)
+                    collsionGroup("terrain")
                 }
-                render {
-                    rectangleRender(1f, 1f) { color.set(Color.GREEN) }
-                }
+            }
+            render {
+                rectangleRender(1f, 1f) { color.set(Color.GREEN) }
             }
         }
     }

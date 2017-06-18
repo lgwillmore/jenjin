@@ -1,33 +1,21 @@
-package com.binarymonks.jj.core.things
+package com.binarymonks.jj.core.scenes
 
-import com.badlogic.gdx.utils.ObjectMap
-import com.binarymonks.jj.core.JJ
-import com.binarymonks.jj.core.audio.SoundEffects
-import com.binarymonks.jj.core.components.Component
-import com.binarymonks.jj.core.components.ComponentMaster
-import com.binarymonks.jj.core.physics.PhysicsRoot
-import com.binarymonks.jj.core.properties.HasProps
-import com.binarymonks.jj.core.render.RenderRoot
-import com.binarymonks.jj.core.scenes.ScenePath
-import com.binarymonks.jj.core.utils.NamedArray
-import kotlin.reflect.KClass
-
-open class Thing(
+open class Scene(
         var name: String?,
         var uniqueName: String?,
-        val physicsRoot: PhysicsRoot,
-        val renderRoot: RenderRoot,
-        val soundEffects: SoundEffects,
-        val properties: ObjectMap<String, Any>,
+        val physicsRoot: com.binarymonks.jj.core.physics.PhysicsRoot,
+        val renderRoot: com.binarymonks.jj.core.render.RenderRoot,
+        val soundEffects: com.binarymonks.jj.core.audio.SoundEffects,
+        val properties: com.badlogic.gdx.utils.ObjectMap<String, Any>,
         val pooled: Boolean = false
-) : HasProps {
+) : com.binarymonks.jj.core.properties.HasProps {
 
 
-    var id = JJ.B.nextID()
-    internal var componentMaster = ComponentMaster()
+    var id = com.binarymonks.jj.core.JJ.B.nextID()
+    internal var componentMaster = com.binarymonks.jj.core.components.ComponentMaster()
     private var isDestroyed: Boolean = false
-    private var children: NamedArray<Thing> = NamedArray()
-    private var parent: Thing? = null
+    private var children: com.binarymonks.jj.core.utils.NamedArray<Scene> = com.binarymonks.jj.core.utils.NamedArray()
+    private var parent: com.binarymonks.jj.core.scenes.Scene? = null
 
     init {
         physicsRoot.parent = this
@@ -43,7 +31,7 @@ open class Thing(
         }
         if (!isDestroyed) {
             isDestroyed = true
-            JJ.B.thingWorld.remove(this)
+            com.binarymonks.jj.core.JJ.B.sceneWorld.remove(this)
             children.forEach {
                 it.destroy()
             }
@@ -53,12 +41,12 @@ open class Thing(
         }
     }
 
-    fun addComponent(component: Component) {
+    fun addComponent(component: com.binarymonks.jj.core.components.Component) {
         component.parent = this
         componentMaster.addComponent(component)
     }
 
-    fun <T: Component> getComponent(type: KClass<T>): T?{
+    fun <T: com.binarymonks.jj.core.components.Component> getComponent(type: kotlin.reflect.KClass<T>): T?{
         return componentMaster.getComponent(type)
     }
 
@@ -70,28 +58,28 @@ open class Thing(
         return properties.get(key)
     }
 
-    fun addChild(nodeThing: Thing) {
-        if (nodeThing.name != null) {
-            children.add(nodeThing.name!!, nodeThing)
+    fun addChild(nodeScene: com.binarymonks.jj.core.scenes.Scene) {
+        if (nodeScene.name != null) {
+            children.add(nodeScene.name!!, nodeScene)
         } else {
-            children.add(nodeThing)
+            children.add(nodeScene)
         }
-        nodeThing.parent = this
+        nodeScene.parent = this
     }
 
-    fun getChild(name: String): Thing? {
+    fun getChild(name: String): com.binarymonks.jj.core.scenes.Scene? {
         return children.get(name)
     }
 
-    fun getChild(index: Int): Thing {
+    fun getChild(index: Int): com.binarymonks.jj.core.scenes.Scene {
         return children[index]
     }
 
-    fun parent(): Thing {
+    fun parent(): com.binarymonks.jj.core.scenes.Scene {
         return checkNotNull(parent)
     }
 
-    fun getNode(path: ScenePath): Thing{
+    fun getNode(path: com.binarymonks.jj.core.scenes.ScenePath): com.binarymonks.jj.core.scenes.Scene {
         return path.from(this)
     }
 
@@ -108,7 +96,7 @@ open class Thing(
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is Thing) return false
+        if (other !is com.binarymonks.jj.core.scenes.Scene) return false
 
         if (name != other.name) return false
         if (uniqueName != other.uniqueName) return false
@@ -122,7 +110,7 @@ open class Thing(
     }
 
     override fun toString(): String {
-        return "Thing(name=$name, uniqueName=$uniqueName, id=$id)"
+        return "Scene(name=$name, uniqueName=$uniqueName, id=$id)"
     }
 
 

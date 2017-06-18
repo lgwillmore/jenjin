@@ -6,7 +6,6 @@ import com.binarymonks.jj.core.audio.SoundEffects
 import com.binarymonks.jj.core.mockoutGDXinJJ
 import com.binarymonks.jj.core.physics.PhysicsRoot
 import com.binarymonks.jj.core.render.RenderRoot
-import com.binarymonks.jj.core.things.Thing
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -15,12 +14,12 @@ import org.mockito.Mockito
 
 class ScenePathTest {
 
-    lateinit var grandParent: Thing
-    lateinit var parent: Thing
-    lateinit var uncle: Thing
-    lateinit var me: Thing
-    lateinit var cousin: Thing
-    lateinit var child: Thing
+    lateinit var grandParent: Scene
+    lateinit var parent: Scene
+    lateinit var uncle: Scene
+    lateinit var me: Scene
+    lateinit var cousin: Scene
+    lateinit var child: Scene
 
 
     @Before
@@ -67,8 +66,8 @@ class ScenePathTest {
 
 
 
-    fun thing(name: String): Thing {
-        return Thing(
+    fun thing(name: String): Scene {
+        return Scene(
                 name,
                 null,
                 PhysicsRoot(Mockito.mock(Body::class.java)),

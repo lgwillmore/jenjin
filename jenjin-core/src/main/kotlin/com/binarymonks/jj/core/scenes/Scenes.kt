@@ -1,6 +1,5 @@
 package com.binarymonks.jj.core.scenes
 
-import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.JJ
@@ -10,7 +9,6 @@ import com.binarymonks.jj.core.async.UnitBond
 import com.binarymonks.jj.core.specs.InstanceParams
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.SceneSpecRef
-import com.binarymonks.jj.core.specs.ThingSpec
 import com.binarymonks.jj.core.workshop.MasterFactory
 
 

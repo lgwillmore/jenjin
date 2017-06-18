@@ -1,7 +1,7 @@
 package com.binarymonks.jj.core.components
 
 import com.binarymonks.jj.core.properties.PropOverride
-import com.binarymonks.jj.core.things.Thing
+import com.binarymonks.jj.core.scenes.Scene
 import org.junit.Assert
 import org.junit.Test
 import org.mockito.Mockito
@@ -15,7 +15,7 @@ class ComponentTest {
         val original = PrimitiveFields("name1", 2)
         original.copyable.set("blue")
         original.hiddenName = "altered"
-        original.parent = Mockito.mock(Thing::class.java)
+        original.parent = Mockito.mock(Scene::class.java)
 
         val copy: PrimitiveFields = original.clone() as PrimitiveFields
 

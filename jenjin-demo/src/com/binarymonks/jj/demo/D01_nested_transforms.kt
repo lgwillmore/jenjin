@@ -33,8 +33,8 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
             nodeRef(params { x = -18f; y = 6f; scaleX = 0.5f; scaleY = 0.5f }) { "nestedRectangles" }
             nodeRef(params { x = 10f; y = -15f }) { "nestedPolygons" }
             nodeRef(params { x = 20f; y = -15f; scaleX = 0.5f; scaleY = 0.5f }) { "nestedPolygons" }
-            nodeRef(params{ x = -12f; y = -8f}){"nestedFixtureTransforms"}
-            nodeRef(params{ x = -12f; y = -15f}){"flatFixtureTransforms"}
+            nodeRef(params { x = -12f; y = -8f }) { "nestedFixtureTransforms" }
+            nodeRef(params { x = -12f; y = -15f }) { "flatFixtureTransforms" }
         }
 
         JJ.scenes.instantiate(initialSceneSpec)
@@ -44,7 +44,18 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
         val nestedParams = params { x = 4.1f; y = 4.1f; scaleX = 0.5f; scaleY = 0.5f; rotationD = 45f }
         val nestedParams2 = params { x = -4.1f; y = 4.1f; scaleX = 0.5f; scaleY = 0.5f; rotationD = -45f }
         return scene {
-            thing {
+            physics {
+                bodyType = BodyDef.BodyType.StaticBody
+                fixture {
+                    shape = Circle(4f)
+                }
+            }
+            render {
+                circleRender(4f) {
+                    color.set(Color.PURPLE)
+                }
+            }
+            node(nestedParams) {
                 physics {
                     bodyType = BodyDef.BodyType.StaticBody
                     fixture {
@@ -56,9 +67,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                         color.set(Color.PURPLE)
                     }
                 }
-            }
-            node(nestedParams) {
-                thing {
+                node(nestedParams) {
                     physics {
                         bodyType = BodyDef.BodyType.StaticBody
                         fixture {
@@ -70,9 +79,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                             color.set(Color.PURPLE)
                         }
                     }
-                }
-                node(nestedParams) {
-                    thing {
+                    node(nestedParams) {
                         physics {
                             bodyType = BodyDef.BodyType.StaticBody
                             fixture {
@@ -82,28 +89,24 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                         render {
                             circleRender(4f) {
                                 color.set(Color.PURPLE)
-                            }
-                        }
-                    }
-                    node(nestedParams) {
-                        thing {
-                            physics {
-                                bodyType = BodyDef.BodyType.StaticBody
-                                fixture {
-                                    shape = Circle(4f)
-                                }
-                            }
-                            render {
-                                circleRender(4f) {
-                                    color.set(Color.PURPLE)
-                                }
                             }
                         }
                     }
                 }
             }
             node(nestedParams2) {
-                thing {
+                physics {
+                    bodyType = BodyDef.BodyType.StaticBody
+                    fixture {
+                        shape = Circle(4f)
+                    }
+                }
+                render {
+                    circleRender(4f) {
+                        color.set(Color.PURPLE)
+                    }
+                }
+                node(nestedParams2) {
                     physics {
                         bodyType = BodyDef.BodyType.StaticBody
                         fixture {
@@ -115,9 +118,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                             color.set(Color.PURPLE)
                         }
                     }
-                }
-                node(nestedParams2) {
-                    thing {
+                    node(nestedParams2) {
                         physics {
                             bodyType = BodyDef.BodyType.StaticBody
                             fixture {
@@ -127,21 +128,6 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                         render {
                             circleRender(4f) {
                                 color.set(Color.PURPLE)
-                            }
-                        }
-                    }
-                    node(nestedParams2) {
-                        thing {
-                            physics {
-                                bodyType = BodyDef.BodyType.StaticBody
-                                fixture {
-                                    shape = Circle(4f)
-                                }
-                            }
-                            render {
-                                circleRender(4f) {
-                                    color.set(Color.PURPLE)
-                                }
                             }
                         }
                     }
@@ -156,7 +142,16 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
         val imageheight = 8f
         val rectangle = Rectangle(imageWidth, imageheight)
         return scene {
-            thing {
+            physics {
+                bodyType = BodyDef.BodyType.StaticBody
+                fixture {
+                    shape = rectangle
+                }
+                render {
+                    imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
+                }
+            }
+            node(nestedParams) {
                 physics {
                     bodyType = BodyDef.BodyType.StaticBody
                     fixture {
@@ -166,9 +161,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                         imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
                     }
                 }
-            }
-            node(nestedParams) {
-                thing {
+                node(nestedParams) {
                     physics {
                         bodyType = BodyDef.BodyType.StaticBody
                         fixture {
@@ -178,9 +171,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                             imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
                         }
                     }
-                }
-                node(nestedParams) {
-                    thing {
+                    node(nestedParams) {
                         physics {
                             bodyType = BodyDef.BodyType.StaticBody
                             fixture {
@@ -188,19 +179,6 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                             }
                             render {
                                 imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
-                            }
-                        }
-                    }
-                    node(nestedParams) {
-                        thing {
-                            physics {
-                                bodyType = BodyDef.BodyType.StaticBody
-                                fixture {
-                                    shape = rectangle
-                                }
-                                render {
-                                    imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
-                                }
                             }
                         }
                     }
@@ -217,7 +195,18 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                 vec2(4f, 0f)
         )
         return scene {
-            thing {
+            physics {
+                bodyType = BodyDef.BodyType.StaticBody
+                fixture {
+                    shape = polygonTriangle
+                }
+            }
+            render {
+                polygonRender(polygonTriangle.vertices) {
+                    color.set(Color.CYAN)
+                }
+            }
+            node(nestedParams) {
                 physics {
                     bodyType = BodyDef.BodyType.StaticBody
                     fixture {
@@ -229,9 +218,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                         color.set(Color.CYAN)
                     }
                 }
-            }
-            node(nestedParams) {
-                thing {
+                node(nestedParams) {
                     physics {
                         bodyType = BodyDef.BodyType.StaticBody
                         fixture {
@@ -243,9 +230,7 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                             color.set(Color.CYAN)
                         }
                     }
-                }
-                node(nestedParams) {
-                    thing {
+                    node(nestedParams) {
                         physics {
                             bodyType = BodyDef.BodyType.StaticBody
                             fixture {
@@ -258,70 +243,18 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                             }
                         }
                     }
-                    node(nestedParams) {
-                        thing {
-                            physics {
-                                bodyType = BodyDef.BodyType.StaticBody
-                                fixture {
-                                    shape = polygonTriangle
-                                }
-                            }
-                            render {
-                                polygonRender(polygonTriangle.vertices) {
-                                    color.set(Color.CYAN)
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }
     }
 
     private fun flat(): SceneSpec {
-        return scene{
-            node{
-                thing {
-                    physics{
-                        bodyType=BodyDef.BodyType.StaticBody
-                        fixture {
-                            shape=poly
-                        }
-                    }
-                    render {
-                        polygonRender(poly.vertices) {
-                            color.set(Color.RED)
-                        }
-                    }
-                }
-            }
-            node(params { x = 5f }){
-                thing {
-                    physics{
-                        bodyType=BodyDef.BodyType.StaticBody
-                        fixture{
-                            rotationD=30f
-                            shape=poly
-                        }
-                    }
-                    render {
-                        polygonRender(poly.vertices) {
-                            rotationD = 30f
-                            color.set(Color.RED)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private fun nested(): SceneSpec{
-        return scene{
-            thing{
+        return scene {
+            node {
                 physics {
-                    bodyType=BodyDef.BodyType.StaticBody
+                    bodyType = BodyDef.BodyType.StaticBody
                     fixture {
-                        shape=poly
+                        shape = poly
                     }
                 }
                 render {
@@ -330,22 +263,51 @@ class D01_nested_transforms : Game(MyConfig01.jjConfig) {
                     }
                 }
             }
-            node(params { scaleX=0.5f; scaleY = 0.5f }){
-                thing {
-                    physics{
-                        bodyType=BodyDef.BodyType.StaticBody
-                        fixture{
-                            offsetX = 10f
-                            rotationD = 30f
-                            shape= poly2
-                        }
+            node(params { x = 5f }) {
+                physics {
+                    bodyType = BodyDef.BodyType.StaticBody
+                    fixture {
+                        rotationD = 30f
+                        shape = poly
                     }
-                    render {
-                        polygonRender(poly2.vertices) {
-                            offsetX = 10f
-                            rotationD = 30f
-                            color.set(Color.RED)
-                        }
+                }
+                render {
+                    polygonRender(poly.vertices) {
+                        rotationD = 30f
+                        color.set(Color.RED)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun nested(): SceneSpec {
+        return scene {
+            physics {
+                bodyType = BodyDef.BodyType.StaticBody
+                fixture {
+                    shape = poly
+                }
+            }
+            render {
+                polygonRender(poly.vertices) {
+                    color.set(Color.RED)
+                }
+            }
+            node(params { scaleX = 0.5f; scaleY = 0.5f }) {
+                physics {
+                    bodyType = BodyDef.BodyType.StaticBody
+                    fixture {
+                        offsetX = 10f
+                        rotationD = 30f
+                        shape = poly2
+                    }
+                }
+                render {
+                    polygonRender(poly2.vertices) {
+                        offsetX = 10f
+                        rotationD = 30f
+                        color.set(Color.RED)
                     }
                 }
             }

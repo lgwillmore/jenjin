@@ -6,7 +6,11 @@ import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.Copyable
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.assets.AssetReference
+import com.binarymonks.jj.core.audio.SoundParams
+import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.specs.physics.JointSpec
+import com.binarymonks.jj.core.specs.physics.PhysicsSpec
+import com.binarymonks.jj.core.specs.render.RenderSpec
 
 internal var sceneIDCounter = 0
 
@@ -15,7 +19,11 @@ open class SceneSpec : SceneSpecRef {
     var id = sceneIDCounter++
     var name: String? = null
     internal var nodeCounter = 0
-    var thingSpec: ThingSpec? = null
+    var physics: PhysicsSpec = PhysicsSpec()
+    var render: RenderSpec = RenderSpec()
+    var sounds: Array<SoundParams> = Array()
+    var components: Array<Component> = Array()
+    internal var isPooled: Boolean = true
     var nodes: ObjectMap<String, SceneNode> = ObjectMap()
     var joints: Array<JointSpec> = Array()
 
@@ -55,14 +63,12 @@ open class SceneSpec : SceneSpecRef {
     override fun getAssets(): Array<AssetReference> {
         val assets: Array<AssetReference> = Array()
         //TODO: Make thing specs not nullable - they always have one. In fact, things must become scenes
-        if (thingSpec != null) {
-            for (node in thingSpec!!.render.renderNodes) {
-                assets.addAll(node.getAssets())
-            }
-            thingSpec!!.sounds.forEach {
-                it.soundPaths.forEach {
-                    assets.add(AssetReference(Sound::class, it))
-                }
+        for (node in render.renderNodes) {
+            assets.addAll(node.getAssets())
+        }
+        sounds.forEach {
+            it.soundPaths.forEach {
+                assets.add(AssetReference(Sound::class, it))
             }
         }
         nodes.forEach { assets.addAll(it.value.sceneRef!!.getAssets()) }

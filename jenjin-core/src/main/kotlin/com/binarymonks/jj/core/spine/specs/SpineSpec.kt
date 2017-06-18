@@ -40,24 +40,22 @@ class SpineSpec() : SceneSpecRef {
 
     override fun resolve(): SceneSpec {
         val scene = scene {
-            thing {
-                physics {
-                    bodyType = BodyDef.BodyType.KinematicBody
-                }
-                render {
-                    renderNodes.add(
-                            SpineRenderNodeSpec(
-                                    atlasPath,
-                                    dataPath,
-                                    originX,
-                                    originY,
-                                    scale
-                            )
-                    )
-                }
-                component(com.binarymonks.jj.core.spine.components.SpineComponent()) {
-                    startingAnimation = this@SpineSpec.startingAnimation
-                }
+            physics {
+                bodyType = BodyDef.BodyType.KinematicBody
+            }
+            render {
+                renderNodes.add(
+                        SpineRenderNodeSpec(
+                                atlasPath,
+                                dataPath,
+                                originX,
+                                originY,
+                                scale
+                        )
+                )
+            }
+            component(com.binarymonks.jj.core.spine.components.SpineComponent()) {
+                startingAnimation = this@SpineSpec.startingAnimation
             }
         }
         if (spineSkeleton != null) {
@@ -89,16 +87,14 @@ class SpineSpec() : SceneSpecRef {
     private fun buildBoneRecurse(bone: Bone, mass: Float, path: Array<String>, parentScene: SceneSpec): String {
         parentScene.addNode(
                 scene {
-                    thing {
-                        physics {
-                            bodyType = BodyDef.BodyType.DynamicBody
-                            val fixture = buildFixture(bone, mass)
-                            addFixture(fixture)
-                            beginCollision(TriggerRagDollCollision())
-                        }
-                        component(SpineBoneComponent()) {
-                            bonePath = path
-                        }
+                    physics {
+                        bodyType = BodyDef.BodyType.DynamicBody
+                        val fixture = buildFixture(bone, mass)
+                        addFixture(fixture)
+                        beginCollision(TriggerRagDollCollision())
+                    }
+                    component(SpineBoneComponent()) {
+                        bonePath = path
                     }
                     bone.children.forEach {
                         val a = path.copy()

@@ -20,53 +20,49 @@ import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.render.RenderRoot
 import com.binarymonks.jj.core.render.nodes.RenderNode
+import com.binarymonks.jj.core.scenes.Scene
 import com.binarymonks.jj.core.specs.*
-import com.binarymonks.jj.core.specs.builders.physics
 import com.binarymonks.jj.core.specs.physics.FixtureSpec
 import com.binarymonks.jj.core.specs.physics.LightSpec
 import com.binarymonks.jj.core.specs.physics.PhysicsSpec
 import com.binarymonks.jj.core.specs.physics.PointLightSpec
 import com.binarymonks.jj.core.specs.render.RenderSpec
-import com.binarymonks.jj.core.things.Thing
 
 class MasterFactory {
 
     private var paramsStackCache: Array<ParamStack> = Array()
-    private var hollowSceneThingSpec: ThingSpec = ThingSpec {
-        physics { bodyType = BodyDef.BodyType.StaticBody }
-    }
-    internal var thingPool: ThingPool = ThingPool()
+    internal var scenePool: ScenePool = ScenePool()
 
-    fun createScene(scenePath: String, params: InstanceParams): Thing {
+    fun createScene(scenePath: String, params: InstanceParams): Scene {
         return createScene(JJ.B.scenes.getScene(scenePath), params)
     }
 
-    fun createScene(scene: SceneSpec, params: InstanceParams): Thing {
+    fun createScene(scene: SceneSpec, params: InstanceParams): Scene {
         var paramsStack = paramsStack()
         paramsStack.add(params)
-        var myThing: Thing = createSceneHelper(scene, paramsStack)
+        var myScene: Scene = createSceneHelper(scene, paramsStack)
         returnParamsStack(paramsStack)
-        return myThing
+        return myScene
     }
 
     private fun createSceneHelper(
             scene: SceneSpec,
-            paramsStack: ParamStack): Thing {
+            paramsStack: ParamStack): Scene {
 
-        val myThing = createThing(scene.thingSpec, paramsStack)
+        val myScene = createSceneCore(scene, paramsStack)
 
-        val things = ObjectMap<String, Thing>()
+        val things = ObjectMap<String, Scene>()
         for (entry in scene.nodes) {
             val nodeScene = checkNotNull(entry.value.sceneRef).resolve()
             val nodeParams = entry.value.instanceParams
             paramsStack.add(nodeParams)
             val nodeThing = createSceneHelper(nodeScene, paramsStack)
             things.put(entry.key, nodeThing)
-            myThing.addChild(nodeThing)
+            myScene.addChild(nodeThing)
             paramsStack.pop()
         }
         for (jointSpec in scene.joints) {
-            val bodyA: Body = if (jointSpec.nameA == null) myThing.physicsRoot.b2DBody else things[jointSpec.nameA, myThing].physicsRoot.b2DBody
+            val bodyA: Body = if (jointSpec.nameA == null) myScene.physicsRoot.b2DBody else things[jointSpec.nameA, myScene].physicsRoot.b2DBody
             val jointDef = jointSpec.toJointDef(
                     bodyA,
                     things[jointSpec.nameB].physicsRoot.b2DBody,
@@ -74,40 +70,39 @@ class MasterFactory {
             )
             JJ.B.physicsWorld.b2dworld.createJoint(jointDef)
         }
-        return myThing
+        return myScene
     }
 
-    private fun createThing(thingSpec: ThingSpec?, paramsStack: ParamStack): Thing {
-        val thingSpecActual: ThingSpec = thingSpec ?: hollowSceneThingSpec
-        if (thingSpecActual.isPooled) {
-            val thing: Thing? = thingPool.get(paramsStack.scaleX, paramsStack.scaleY, thingSpecActual.id)
-            if (thing != null) {
-                thing.resetFromPool(paramsStack.x, paramsStack.y, paramsStack.rotationD)
-                thing.uniqueName = paramsStack.peek().uniqueInstanceName
-                thing.name = paramsStack.peek().name
-                return thing
+    private fun createSceneCore(sceneSpec: SceneSpec, paramsStack: ParamStack): Scene {
+        if (sceneSpec.isPooled) {
+            val scene: Scene? = scenePool.get(paramsStack.scaleX, paramsStack.scaleY, sceneSpec.id)
+            if (scene != null) {
+                scene.resetFromPool(paramsStack.x, paramsStack.y, paramsStack.rotationD)
+                scene.uniqueName = paramsStack.peek().uniqueInstanceName
+                scene.name = paramsStack.peek().name
+                return scene
             }
         }
-        val thing = Thing(
+        val thing = Scene(
                 paramsStack.peek().name,
                 paramsStack.peek().uniqueInstanceName,
-                physicsRoot = buildPhysicsRoot(thingSpecActual.physics, paramsStack),
-                renderRoot = buildRenderRoot(thingSpecActual.render, paramsStack),
-                soundEffects = buildSoundEffects(thingSpecActual.sounds),
+                physicsRoot = buildPhysicsRoot(sceneSpec.physics, paramsStack),
+                renderRoot = buildRenderRoot(sceneSpec.render, paramsStack),
+                soundEffects = buildSoundEffects(sceneSpec.sounds),
                 properties = paramsStack.peek().properties.copy(),
-                pooled = thingSpecActual.isPooled
+                pooled = sceneSpec.isPooled
         )
-        addBehaviour(thing, thingSpecActual)
+        addBehaviour(thing, sceneSpec)
 
         JJ.B.renderWorld.addThing(thing)
-        JJ.B.thingWorld.add(thing)
+        JJ.B.sceneWorld.add(thing)
 
         return thing
     }
 
-    private fun addBehaviour(thing: Thing, thingSpec: ThingSpec) {
-        for (component in thingSpec.components) {
-            thing.addComponent(component.clone())
+    private fun addBehaviour(scene: Scene, sceneSpec: SceneSpec) {
+        for (component in sceneSpec.components) {
+            scene.addComponent(component.clone())
         }
     }
 

@@ -6,7 +6,7 @@ import com.binarymonks.jj.core.physics.CollisionHandler
 
 
 class PhysicsSpec {
-    var bodyType = BodyDef.BodyType.DynamicBody
+    var bodyType = BodyDef.BodyType.StaticBody
     var linearDamping = 0f
     var angularDamping = 0f
     var gravityScale = 1f

@@ -72,39 +72,35 @@ class D04_components : Game(MyConfig04.jjConfig) {
 
     private fun orb(): SceneSpec {
         return scene {
-            thing {
-                physics {
-                    // Kinematic is suited for direct movement of physics objects
-                    bodyType = BodyDef.BodyType.KinematicBody
-                    fixture {
-                        shape = Circle(0.5f)
-                    }
+            physics {
+                // Kinematic is suited for direct movement of physics objects
+                bodyType = BodyDef.BodyType.KinematicBody
+                fixture {
+                    shape = Circle(0.5f)
                 }
-                //Add our component to our thing and bind fields to properties
-                component(BackForwardMovement()) {
-                    direction.setOverride("direction")
-                    movementRange.setOverride("movementRange")
-                    metersPerSecond.setOverride("metersPerSecond")
-                }
+            }
+            //Add our component to our thing and bind fields to properties
+            component(BackForwardMovement()) {
+                direction.setOverride("direction")
+                movementRange.setOverride("movementRange")
+                metersPerSecond.setOverride("metersPerSecond")
             }
         }
     }
 
     private fun platform(): SceneSpec {
         return scene {
-            thing {
-                physics {
-                    // Kinematic is suited for direct movement of physics objects
-                    bodyType = BodyDef.BodyType.KinematicBody
-                    fixture {
-                    }
+            physics {
+                // Kinematic is suited for direct movement of physics objects
+                bodyType = BodyDef.BodyType.KinematicBody
+                fixture {
                 }
-                //Add our component to our thing and bind fields to properties
-                component(BackForwardMovement()) {
-                    direction.setOverride("direction")
-                    movementRange.setOverride("movementRange")
-                    metersPerSecond.setOverride("metersPerSecond")
-                }
+            }
+            //Add our component to our thing and bind fields to properties
+            component(BackForwardMovement()) {
+                direction.setOverride("direction")
+                movementRange.setOverride("movementRange")
+                metersPerSecond.setOverride("metersPerSecond")
             }
         }
     }
@@ -112,7 +108,7 @@ class D04_components : Game(MyConfig04.jjConfig) {
 
 enum class Direction {HORIZONTAL, VERTICAL }
 
-//A reusable and configurable component that can be attache to any Thing
+//A reusable and configurable component that can be attache to any Scene
 class BackForwardMovement : Component() {
 
     //We want our component to have the option of delegating its values to properties.

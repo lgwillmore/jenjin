@@ -35,7 +35,7 @@ class RenderGraph {
     }
 
     /**
-     * We render the RenderLayer of each Thing in batches by their ThingSpec id.
+     * We render the RenderLayer of each Scene in batches by their ThingSpec id.
      * This will maximise the advantages of SpriteBatch.
      */
     inner class GraphLayer {

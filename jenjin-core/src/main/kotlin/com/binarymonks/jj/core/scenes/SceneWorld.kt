@@ -1,36 +1,36 @@
-package com.binarymonks.jj.core.things
+package com.binarymonks.jj.core.scenes
 
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.JJ
 
-class ThingWorld {
+class SceneWorld {
 
-    internal var things = ObjectMap<Int, Thing>(200)
-    internal var queuedForAddThings = ObjectMap<Int, Thing>(100)
-    internal var namedThings = ObjectMap<String, Thing>(10)
-    internal var removals = Array<Thing>()
+    internal var things = ObjectMap<Int, Scene>(200)
+    internal var queuedForAddThings = ObjectMap<Int, Scene>(100)
+    internal var namedThings = ObjectMap<String, Scene>(10)
+    internal var removals = Array<Scene>()
     internal var inUpdate = false
 
-    fun add(thing: Thing) {
+    fun add(scene: Scene) {
         if (inUpdate) {
-            queuedForAddThings.put(thing.id, thing)
+            queuedForAddThings.put(scene.id, scene)
         } else {
-            reallyAdd(thing)
+            reallyAdd(scene)
         }
     }
 
-    private fun reallyAdd(thing: Thing) {
-        things.put(thing.id, thing)
-        if (thing.uniqueName != null) {
-            if (namedThings.containsKey(thing.uniqueName)) {
-                throw Exception("Unique named Thing ${thing.uniqueName} already exists.")
+    private fun reallyAdd(scene: Scene) {
+        things.put(scene.id, scene)
+        if (scene.uniqueName != null) {
+            if (namedThings.containsKey(scene.uniqueName)) {
+                throw Exception("Unique named Scene ${scene.uniqueName} already exists.")
             }
-            namedThings.put(thing.uniqueName, thing)
+            namedThings.put(scene.uniqueName, scene)
         }
     }
 
-    fun getThingByUniqueName(uniqueName: String): Thing {
+    fun getThingByUniqueName(uniqueName: String): Scene {
         return namedThings.get(uniqueName)
     }
 
@@ -50,7 +50,7 @@ class ThingWorld {
         inUpdate = false
     }
 
-    private fun reallyRemove(removal: Thing) {
+    private fun reallyRemove(removal: Scene) {
         things.remove(removal.id)
         if (removal.uniqueName != null) {
             namedThings.remove(removal.uniqueName)
@@ -59,11 +59,11 @@ class ThingWorld {
         removal.executeDestruction()
     }
 
-    fun remove(thing: Thing) {
+    fun remove(scene: Scene) {
         if (inUpdate) {
-            removals.add(thing)
+            removals.add(scene)
         } else {
-            reallyRemove(thing)
+            reallyRemove(scene)
         }
     }
 }

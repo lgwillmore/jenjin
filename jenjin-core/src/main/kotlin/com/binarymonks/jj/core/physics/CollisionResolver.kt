@@ -3,31 +3,31 @@ package com.binarymonks.jj.core.physics
 import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.Fixture
 import com.badlogic.gdx.utils.Array
-import com.binarymonks.jj.core.things.Thing
+import com.binarymonks.jj.core.scenes.Scene
 
 class CollisionResolver {
 
-    var parent: Thing? = null
+    var parent: Scene? = null
     var begins = Array<CollisionHandler>()
     var finalBegins = Array<CollisionHandler>()
     var ends = Array<CollisionHandler>()
     var collisionCount = 0
         protected set
 
-    fun beginContact(otherObject: Thing, otherFixture: Fixture, contact: Contact, myFixture: Fixture) {
+    fun beginContact(otherObject: Scene, otherFixture: Fixture, contact: Contact, myFixture: Fixture) {
         collisionCount++
         for (function in begins) {
             function.performCollision(checkNotNull(parent), myFixture, otherObject, otherFixture, contact)
         }
     }
 
-    fun finalBeginContact(otherObject: Thing, otherFixture: Fixture, contact: Contact, myFixture: Fixture) {
+    fun finalBeginContact(otherObject: Scene, otherFixture: Fixture, contact: Contact, myFixture: Fixture) {
         for (function in finalBegins) {
             function.performCollision(checkNotNull(parent), myFixture, otherObject, otherFixture, contact)
         }
     }
 
-    fun endContact(otherObject: Thing, otherFixture: Fixture, contact: Contact, myFixture: Fixture) {
+    fun endContact(otherObject: Scene, otherFixture: Fixture, contact: Contact, myFixture: Fixture) {
         for (function in ends) {
             function.performCollision(checkNotNull(parent), myFixture, otherObject, otherFixture, contact)
         }

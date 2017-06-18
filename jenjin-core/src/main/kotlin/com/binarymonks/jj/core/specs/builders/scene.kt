@@ -1,11 +1,14 @@
 package com.binarymonks.jj.core.specs.builders
 
 import com.badlogic.gdx.math.Vector2
+import com.binarymonks.jj.core.audio.SoundParams
+import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.specs.InstanceParams
 import com.binarymonks.jj.core.specs.SceneSpec
-import com.binarymonks.jj.core.specs.ThingSpec
+import com.binarymonks.jj.core.specs.physics.PhysicsSpec
 import com.binarymonks.jj.core.specs.physics.RevoluteJointSpec
 import com.binarymonks.jj.core.specs.physics.WeldJointSpec
+import com.binarymonks.jj.core.specs.render.RenderSpec
 
 /**
  * This provides builders for [com.binarymonks.jj.core.api.specs.SceneSpec]s
@@ -40,11 +43,27 @@ fun SceneSpec.nodeRef(instanceParams: InstanceParams = InstanceParams.new(), pat
     this.addNode(pathProvider.invoke(), instanceParams)
 }
 
-fun SceneSpec.thing(init: ThingSpec.() -> Unit): ThingSpec {
-    val thing = ThingSpec()
-    thing.init()
-    this.thingSpec = thing
-    return thing
+fun SceneSpec.physics(init: PhysicsSpec.() -> Unit): PhysicsSpec {
+    this.physics.init()
+    return this.physics
+}
+
+fun SceneSpec.render(init: RenderSpec.() -> Unit) {
+    this.render.init()
+}
+
+fun SceneSpec.sound(name: String, path: String, init: SoundParams.() -> Unit): SoundParams {
+    val soundParams = SoundParams(name)
+    soundParams.soundPaths.add(path)
+    soundParams.init()
+    this.sounds.add(soundParams)
+    return soundParams
+}
+
+fun <T : Component> SceneSpec.component(component: T, init: T.() -> Unit): T {
+    component.init()
+    this.components.add(component)
+    return component
 }
 
 fun SceneSpec.revJoint(nameA: String?, nameB: String, anchor: Vector2, init: RevoluteJointSpec.() -> Unit) {

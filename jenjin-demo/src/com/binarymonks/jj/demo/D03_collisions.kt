@@ -55,32 +55,29 @@ class D03_collisions : Game(MyConfig03.jjConfig) {
 
     private fun ball(): SceneSpec {
         return scene {
-            thing {
-                sound("bounce", "sounds/pong.mp3") {
-                    volume = 0.6f
+            sound("bounce", "sounds/pong.mp3") {
+                volume = 0.6f
+            }
+            physics {
+                fixture {
+                    bodyType=BodyDef.BodyType.DynamicBody
+                    shape = Circle()
+                    restitution = 0.7f
+                    // We bind the collision group to a property key
+                    collisionGroupProperty("collisionGroup")
                 }
-                physics {
-                    fixture {
-                        shape = Circle()
-                        restitution = 0.7f
-                        // We bind the collision group to a property key
-                        collisionGroupProperty("collisionGroup")
-                    }
-                    beginCollision(SoundCollision(soundName = "bounce"))
-                }
+                beginCollision(SoundCollision(soundName = "bounce"))
             }
         }
     }
 
     private fun floor(): SceneSpec {
         return scene {
-            thing {
-                physics {
-                    bodyType = BodyDef.BodyType.StaticBody
-                    fixture {
-                        // We bind the collision group to a property key
-                        collisionGroupProperty("collisionGroup")
-                    }
+            physics {
+                bodyType = BodyDef.BodyType.StaticBody
+                fixture {
+                    // We bind the collision group to a property key
+                    collisionGroupProperty("collisionGroup")
                 }
             }
         }

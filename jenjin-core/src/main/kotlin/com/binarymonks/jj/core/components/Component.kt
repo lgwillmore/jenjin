@@ -2,7 +2,7 @@ package com.binarymonks.jj.core.components
 
 import com.binarymonks.jj.core.copy
 import com.binarymonks.jj.core.properties.PropOverride
-import com.binarymonks.jj.core.things.Thing
+import com.binarymonks.jj.core.scenes.Scene
 import kotlin.reflect.KClass
 import kotlin.reflect.KTypeProjection
 import kotlin.reflect.full.createType
@@ -14,7 +14,7 @@ private val propDelegateType = PropOverride::class.createType(listOf(KTypeProjec
 
 abstract class Component {
 
-    internal var parent: Thing? = null
+    internal var parent: Scene? = null
         set(value) {
             field = value
             this::class.declaredMemberProperties.forEach {
@@ -26,7 +26,7 @@ abstract class Component {
             }
         }
 
-    fun thing(): Thing {
+    fun thing(): Scene {
         return checkNotNull(parent)
     }
 
@@ -45,7 +45,7 @@ abstract class Component {
 
     /**
      * Components are stored and retrieved by their type. It makes no sense to have more than
-     * one component of the same type operating on a given [Thing]
+     * one component of the same type operating on a given [Scene]
      *
      * But you may have several implementations of a type. This lets you specify the key type (or top level interface) that
      * will be used to store and retrieve your [Component] if you need to.
@@ -56,7 +56,7 @@ abstract class Component {
 
     /**
      * This will be called when a new instance or a de-pooled instance is added to the game world as part of its
-     * [Thing] - if your component is not stateless, and your [Thing] is pooled you should re-initialise that state.
+     * [Scene] - if your component is not stateless, and your [Scene] is pooled you should re-initialise that state.
      */
     open fun onAddToWorld() {
     }
@@ -69,7 +69,7 @@ abstract class Component {
     }
 
     /**
-     * This will be called when the [Thing] is removed from the game world to be pooled/disposed.
+     * This will be called when the [Scene] is removed from the game world to be pooled/disposed.
      *
      * It will also be called if your [Component] identifies itself as being [Component.isDone]
      *
@@ -79,8 +79,8 @@ abstract class Component {
     }
 
     /**
-     * You can also build short lived components which can be applied to a [Thing] and then identify themselves as
-     * done when they have completed their task. They will then be removed from the [Thing]
+     * You can also build short lived components which can be applied to a [Scene] and then identify themselves as
+     * done when they have completed their task. They will then be removed from the [Scene]
      */
     open fun isDone(): Boolean {
         return false

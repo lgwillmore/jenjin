@@ -11,7 +11,7 @@ import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.async.OneTimeTask
 import com.binarymonks.jj.core.pools.Poolable
 import com.binarymonks.jj.core.pools.new
-import com.binarymonks.jj.core.things.Thing
+import com.binarymonks.jj.core.scenes.Scene
 import com.binarymonks.jj.core.utils.NamedArray
 
 private val COLLISION_MASK_CACHE = "collision_mask_cache"
@@ -21,7 +21,7 @@ private val physicsPoolLocation = Vector2(10000f, 10000f)
 private val NONE: Short = 0x0000
 
 class PhysicsRoot(val b2DBody: Body) {
-    var parent: Thing? = null
+    var parent: Scene? = null
         set(value) {
             field = value
             b2DBody.userData = value

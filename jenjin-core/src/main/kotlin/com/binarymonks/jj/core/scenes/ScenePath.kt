@@ -2,7 +2,6 @@ package com.binarymonks.jj.core.scenes
 
 import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.pools.Poolable
-import com.binarymonks.jj.core.things.Thing
 
 val UP: String = ".."
 
@@ -28,20 +27,20 @@ class ScenePath() : Poolable{
         path.add(UP)
     }
 
-    fun from(thing: Thing): Thing {
-        return from(thing, 0)
+    fun from(scene: Scene): Scene {
+        return from(scene, 0)
     }
 
-    private fun from(thing: Thing?, offset: Int): Thing {
-        if (thing == null) {
+    private fun from(scene: Scene?, offset: Int): Scene {
+        if (scene == null) {
             throw Exception("Invalid Path")
         }
         if (offset == path.size) {
-            return thing
+            return scene
         }
         when (path[offset]) {
-            UP -> return from(thing.parent(), offset + 1)
-            else -> return from(thing.getChild(path[offset]), offset + 1)
+            UP -> return from(scene.parent(), offset + 1)
+            else -> return from(scene.getChild(path[offset]), offset + 1)
         }
     }
 

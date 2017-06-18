@@ -1,5 +1,7 @@
 package com.binarymonks.jj.core.physics
 
+import com.binarymonks.jj.core.scenes.Scene
+
 class JJContactListener : com.badlogic.gdx.physics.box2d.ContactListener {
 
     /**
@@ -26,7 +28,7 @@ class JJContactListener : com.badlogic.gdx.physics.box2d.ContactListener {
         return checkNotNull((fixture.userData as com.binarymonks.jj.core.physics.PhysicsNode).physicsRoot).collisionResolver
     }
 
-    private fun getThing(fixture: com.badlogic.gdx.physics.box2d.Fixture): com.binarymonks.jj.core.things.Thing {
+    private fun getThing(fixture: com.badlogic.gdx.physics.box2d.Fixture): Scene {
         val node = fixture.userData as com.binarymonks.jj.core.physics.PhysicsNode
         return checkNotNull(node.physicsRoot.parent)
     }

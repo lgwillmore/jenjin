@@ -9,7 +9,7 @@ import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.scenes.ScenePath
 import com.binarymonks.jj.core.spine.RagDollBone
 import com.binarymonks.jj.core.spine.render.SpineRenderNode
-import com.binarymonks.jj.core.things.Thing
+import com.binarymonks.jj.core.scenes.Scene
 import com.esotericsoftware.spine.Bone
 
 class SpineBoneComponent : Component() {
@@ -43,7 +43,7 @@ class SpineBoneComponent : Component() {
         throw Exception("Could not find bone ${bonePath[offset]}")
     }
 
-    private fun getRootNode(): Thing {
+    private fun getRootNode(): Scene {
         val scenePath: ScenePath = new(ScenePath::class)
         for(i in 0..bonePath.size-1){
             scenePath.up()

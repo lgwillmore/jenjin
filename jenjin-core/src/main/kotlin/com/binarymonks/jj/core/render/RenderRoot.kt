@@ -4,11 +4,11 @@ import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.render.nodes.RenderNode
 import com.binarymonks.jj.core.specs.render.DefaultGraph
 import com.binarymonks.jj.core.specs.render.LightGraph
-import com.binarymonks.jj.core.things.Thing
+import com.binarymonks.jj.core.scenes.Scene
 
 
 class RenderRoot(var specID: Int) {
-    internal var parent: Thing? = null
+    internal var parent: Scene? = null
         set(value) {
             field = value
             setGraphParent(defaultRenderLayers, value)
@@ -46,7 +46,7 @@ class RenderRoot(var specID: Int) {
         }
     }
 
-    private fun setGraphParent(graphLayers: ObjectMap<Int, RenderLayer>, parent: Thing?) {
+    private fun setGraphParent(graphLayers: ObjectMap<Int, RenderLayer>, parent: Scene?) {
         graphLayers.forEach {
             it.value.renderNodes.forEach {
                 it.parent = parent

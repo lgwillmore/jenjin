@@ -18,7 +18,7 @@ import com.binarymonks.jj.core.specs.Polygon
  *
  * Box2D provides the physics, so being familiar with it is obviously very useful. There are loads of online resources.
  */
-class D00_Basic: Game(MyConfig00.jjConfig) {
+class D00_Basic : Game(MyConfig00.jjConfig) {
 
     public override fun gameOn() {
 
@@ -34,16 +34,14 @@ class D00_Basic: Game(MyConfig00.jjConfig) {
             nodeRef(params { x = -6f; y = 5f; rotationD = 45f }) { "square" }
             nodeRef(params { x = +6f; y = 5f; rotationD = 45f }) { "square" }
             node(params { x = 0f; y = 6f }) {
-                thing {
-                    physics {
-                        bodyType = BodyDef.BodyType.StaticBody
-                        fixture {
-                            shape = Polygon(
-                                    vec2(0f, 4f),
-                                    vec2(-2f, 0f),
-                                    vec2(2f, 0f)
-                            )
-                        }
+                physics {
+                    bodyType = BodyDef.BodyType.StaticBody
+                    fixture {
+                        shape = Polygon(
+                                vec2(0f, 4f),
+                                vec2(-2f, 0f),
+                                vec2(2f, 0f)
+                        )
                     }
                 }
             }
@@ -54,17 +52,21 @@ class D00_Basic: Game(MyConfig00.jjConfig) {
     }
 
     private fun square(): SceneSpec {
-        return scene { thing { physics { fixture { } } } }
+        return scene {
+            physics {
+                bodyType = BodyDef.BodyType.DynamicBody
+                fixture { }
+            }
+        }
     }
 
     private fun circle(): SceneSpec {
         return scene {
-            thing {
-                physics {
-                    fixture {
-                        shape = Circle()
-                        restitution = 0.7f
-                    }
+            physics {
+                bodyType = BodyDef.BodyType.DynamicBody
+                fixture {
+                    shape = Circle()
+                    restitution = 0.7f
                 }
             }
         }
@@ -72,11 +74,9 @@ class D00_Basic: Game(MyConfig00.jjConfig) {
 
     private fun floor(): SceneSpec {
         return scene {
-            thing {
-                physics {
-                    bodyType = BodyDef.BodyType.StaticBody
-                    fixture {
-                    }
+            physics {
+                bodyType = BodyDef.BodyType.StaticBody
+                fixture {
                 }
             }
         }
@@ -85,6 +85,7 @@ class D00_Basic: Game(MyConfig00.jjConfig) {
 
 object MyConfig00 {
     var jjConfig: JJConfig = JJConfig()
+
     init {
         jjConfig.b2d.debug = true
 
