@@ -7,7 +7,7 @@ buildscript {
 publishing {
     publications {
         maven(MavenPublication) {
-//            artifactId 'com.binarymonks.jj.core'
+            artifactId 'com.binarymonks.jj.jenjin-core'
 
             from components.java
         }

@@ -31,8 +31,8 @@ class D10_spine_physics : Game(MyConfig10.jjConfig) {
         JJ.scenes.loadAssetsNow()
 
         JJ.scenes.instantiate(scene {
-            nodeRef(params { x = 5f; y = -0.25f }) { "spineBoy" }
-            nodeRef(params { x = 8f; y = 4f; rotationD = 90f }) { "hammer" }
+            nodeRef(params { x = 4f; y = -0.25f }) { "spineBoy" }
+            nodeRef(params { x = 7f; y = 4f; rotationD = 90f }) { "hammer" }
             nodeRef(params { y = -2f; scaleX = 15f }) { "terrain" }
             nodeRef(params { x = -7f; y = 1f; scaleY = 6f }) { "terrain" }
         })
