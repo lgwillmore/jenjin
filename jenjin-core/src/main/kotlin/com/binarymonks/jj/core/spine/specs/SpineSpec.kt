@@ -89,9 +89,12 @@ class SpineSpec() : SceneSpecRef {
                 scene {
                     physics {
                         bodyType = BodyDef.BodyType.DynamicBody
+                        gravityScale = 0f
                         val fixture = buildFixture(bone, mass)
                         addFixture(fixture)
-                        beginCollision(TriggerRagDollCollision())
+                        spineSkeleton!!.beginCollisions.forEach { beginCollision(it) }
+                        spineSkeleton!!.finalBeginCollisions.forEach { finalBeginCollision(it) }
+                        spineSkeleton!!.endCollisions.forEach { endCollision(it) }
                     }
                     component(SpineBoneComponent()) {
                         bonePath = path
@@ -123,6 +126,8 @@ class SpineSpec() : SceneSpecRef {
                 shape = Rectangle(boneLength, spineSkeleton!!.boneWidth)
                 offsetX = boneLength / 2
                 density = mass
+                restitution = spineSkeleton!!.restitution
+                friction = spineSkeleton!!.friction
                 collisionGroup = spineSkeleton!!.collisionGroup
             }
         }

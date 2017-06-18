@@ -1,17 +1,16 @@
-package com.binarymonks.jj.demo
+package com.binarymonks.jj.demo.demos
 
 import com.badlogic.gdx.math.Vector2
-import com.binarymonks.jj.core.Game
+import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
-import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.SceneSpecRef
 import com.binarymonks.jj.core.specs.builders.nodeRef
 import com.binarymonks.jj.core.specs.builders.scene
 import com.binarymonks.jj.core.spine.specs.SpineSpec
 
 
-class D09_spine : Game(MyConfig09.jjConfig) {
+class D09_spine : JJGame(MyConfig09.jjConfig) {
     override fun gameOn() {
         JJ.scenes.addSceneSpec("spineBoy", spineBoy())
         JJ.scenes.loadAssetsNow()

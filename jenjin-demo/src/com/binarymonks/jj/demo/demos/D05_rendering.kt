@@ -1,19 +1,18 @@
-package com.binarymonks.jj.demo
+package com.binarymonks.jj.demo.demos
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.physics.box2d.BodyDef
-import com.binarymonks.jj.core.Game
+import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.specs.Chain
 import com.binarymonks.jj.core.specs.Circle
-import com.binarymonks.jj.core.specs.Polygon
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.*
 
 
-class D05_rendering : Game(MyConfig05.jjConfig) {
+class D05_rendering : JJGame(MyConfig05.jjConfig) {
     override fun gameOn() {
         JJ.scenes.addSceneSpec("shapes", shapes())
 
@@ -41,7 +40,7 @@ class D05_rendering : Game(MyConfig05.jjConfig) {
 
     //We can draw shapes - with the same dimensions as our fixtures
     private fun shapes(): SceneSpec {
-        val poly = Polygon(
+        val poly = com.binarymonks.jj.core.specs.Polygon(
                 vec2(-2f, 0f),
                 vec2(-1.5f, 1.5f),
                 vec2(0f, 2f),
@@ -118,10 +117,10 @@ object MyConfig05 {
     var jjConfig: JJConfig = JJConfig()
 
     init {
-        jjConfig.b2d.debug = true
+        MyConfig05.jjConfig.b2d.debug = true
 
-        jjConfig.gameView.worldBoxWidth = 30f
-        jjConfig.gameView.cameraPosX = 0f
-        jjConfig.gameView.cameraPosY = 0f
+        MyConfig05.jjConfig.gameView.worldBoxWidth = 30f
+        MyConfig05.jjConfig.gameView.cameraPosX = 0f
+        MyConfig05.jjConfig.gameView.cameraPosY = 0f
     }
 }

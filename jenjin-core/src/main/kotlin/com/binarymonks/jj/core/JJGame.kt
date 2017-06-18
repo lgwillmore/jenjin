@@ -4,14 +4,14 @@ import com.badlogic.gdx.ApplicationListener
 import com.binarymonks.jj.core.specs.SceneSpec
 
 /**
- * A Game
+ * A JJGame
  *
  * You must extend this and only ever create one of them. It is the entry point to Jenjin and it initializes
  * a bunch of global state - which must only be done once.
  *
  * @property jjConfig Configuration for your game.
  */
-abstract class Game (val jjConfig: JJConfig = JJConfig()) : ApplicationListener{
+abstract class JJGame(val jjConfig: JJConfig = JJConfig()) : ApplicationListener{
 
     override fun create() {
         JJ.initialise(this.jjConfig)

@@ -34,16 +34,11 @@ class TriggerRagDollCollision : CollisionHandler() {
 
         override fun doOnce() {
             spineBone!!.triggerRagDoll()
-            val otherBody = other!!.physicsRoot.b2DBody
-            val otherVelocity = otherBody.getLinearVelocity()
-            val mass = otherBody.getMass()
-            val momentum = otherVelocity.len() * mass
-            otherVelocity.nor().scl(momentum)
             val myBody = spineBone!!.thing().physicsRoot.b2DBody
+            myBody.gravityScale = 1f
             for (fixture in myBody.getFixtureList()) {
                 fixture.setSensor(false)
             }
-            myBody.applyForceToCenter(otherVelocity, true)
             recycle(this)
         }
 

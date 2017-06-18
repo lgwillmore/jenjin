@@ -1,8 +1,8 @@
-package com.binarymonks.jj.demo
+package com.binarymonks.jj.demo.demos
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.physics.box2d.BodyDef
-import com.binarymonks.jj.core.Game
+import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.pools.vec2
@@ -16,7 +16,7 @@ import com.binarymonks.jj.core.specs.builders.*
  * A SceneNode's transforms (translation, rotation, scale) operate in the space of the parent.
  * All the way up to the global b2d world space.
  */
-class D01_nested_transforms : Game(MyConfig01.jjConfig) {
+class D01_nested_transforms : JJGame(MyConfig01.jjConfig) {
 
     public override fun gameOn() {
         JJ.scenes.addSceneSpec("nestedCircles", nestedCircles())
@@ -340,10 +340,10 @@ object MyConfig01 {
     var jjConfig: JJConfig = JJConfig()
 
     init {
-        jjConfig.b2d.debug = true
+        MyConfig01.jjConfig.b2d.debug = true
 
-        jjConfig.gameView.worldBoxWidth = 50f
-        jjConfig.gameView.cameraPosX = 0f
-        jjConfig.gameView.cameraPosY = 0f
+        MyConfig01.jjConfig.gameView.worldBoxWidth = 50f
+        MyConfig01.jjConfig.gameView.cameraPosX = 0f
+        MyConfig01.jjConfig.gameView.cameraPosY = 0f
     }
 }

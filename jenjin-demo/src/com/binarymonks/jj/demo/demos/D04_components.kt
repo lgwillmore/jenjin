@@ -1,16 +1,14 @@
-package com.binarymonks.jj.demo
+package com.binarymonks.jj.demo.demos
 
-import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
-import com.binarymonks.jj.core.Game
+import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.components.Component
-import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.properties.PropOverride
+import com.binarymonks.jj.core.specs.Circle
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.*
-import com.binarymonks.jj.core.specs.Circle
 
 /**
  * Building [com.binarymonks.jj.core.components.Component]s is what lets you build the behaviour of your game. Along with
@@ -23,7 +21,7 @@ import com.binarymonks.jj.core.specs.Circle
  *
  * We build it in a way which makes it configurable and reusable across different objects.
  */
-class D04_components : Game(MyConfig04.jjConfig) {
+class D04_components : JJGame(MyConfig04.jjConfig) {
 
     public override fun gameOn() {
 
@@ -118,16 +116,16 @@ class BackForwardMovement : Component() {
     var metersPerSecond: PropOverride<Float> = PropOverride(0f)
 
     //These are our private fields for the running state.
-    private var startLocation: Vector2 = vec2()
-    private var velocity: Vector2 = vec2()
+    private var startLocation: com.badlogic.gdx.math.Vector2 = com.binarymonks.jj.core.pools.vec2()
+    private var velocity: com.badlogic.gdx.math.Vector2 = com.binarymonks.jj.core.pools.vec2()
 
     //For our platform we want to know where we start in the world so we can control movement
     // relative to that
     override fun onAddToWorld() {
         startLocation.set(thing().physicsRoot.position())
         when (direction.get()) {
-            Direction.VERTICAL -> velocity.set(0f, metersPerSecond.get())
-            Direction.HORIZONTAL -> velocity.set(metersPerSecond.get(), 0F)
+            com.binarymonks.jj.demo.demos.Direction.VERTICAL -> velocity.set(0f, metersPerSecond.get())
+            com.binarymonks.jj.demo.demos.Direction.HORIZONTAL -> velocity.set(metersPerSecond.get(), 0F)
         }
         thing().physicsRoot.b2DBody.linearVelocity = velocity
     }
@@ -146,10 +144,10 @@ object MyConfig04 {
     var jjConfig: JJConfig = JJConfig()
 
     init {
-        jjConfig.b2d.debug = true
+        MyConfig04.jjConfig.b2d.debug = true
 
-        jjConfig.gameView.worldBoxWidth = 30f
-        jjConfig.gameView.cameraPosX = 0f
-        jjConfig.gameView.cameraPosY = 15f
+        MyConfig04.jjConfig.gameView.worldBoxWidth = 30f
+        MyConfig04.jjConfig.gameView.cameraPosX = 0f
+        MyConfig04.jjConfig.gameView.cameraPosY = 15f
     }
 }

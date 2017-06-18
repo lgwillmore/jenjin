@@ -12,6 +12,7 @@ open class PhysicsWorld(
     var velocityIterations = 10
     var positionIterations = 20
     override var collisionGroups = CollisionGroups()
+    override var materials = Materials()
     var isUpdating = false
         internal set
 
@@ -25,19 +26,6 @@ open class PhysicsWorld(
         if (frameDelta > 0) {
             b2dworld.step(JJ.clock.deltaFloat, velocityIterations, positionIterations)
         }
-//        for (function in postPhysicsFunctions) {
-//            function.call()
-//        }
-//        postPhysicsFunctions.clear3()
         isUpdating = false
     }
-
-//    fun setCollisionGroups(collisionGroups: CollisionGroups) {
-//        this.collisionGroups = collisionGroups
-//    }
-//
-//    fun addPostPhysicsFunction(function: Function) {
-//        postPhysicsFunctions.add(function)
-//    }
-
 }

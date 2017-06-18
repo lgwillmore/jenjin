@@ -1,6 +1,6 @@
 package com.binarymonks.jj.core.specs.physics
 
-import com.badlogic.gdx.graphics.Color
+import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.specs.Rectangle
 import com.binarymonks.jj.core.specs.ShapeSpec
 
@@ -14,6 +14,11 @@ class FixtureSpec() {
     var isSensor = false
     var collisionGroup: CollisionGroupSpec = CollisionGroupSpecExplicit()
     var shape: ShapeSpec = Rectangle()
+
+    /**
+     * Set to use [com.binarymonks.jj.core.JJ.physics.materials]
+     */
+    var material: PropOverride<String> = PropOverride("")
 
     constructor(build:FixtureSpec.()->Unit):this(){
         this.build()
@@ -42,4 +47,6 @@ class FixtureSpec() {
     fun collisionGroupProperty(propertyName: String) {
         this.collisionGroup = CollisionGroupSpecProperty(propertyName)
     }
+
+
 }

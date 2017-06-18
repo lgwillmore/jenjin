@@ -184,15 +184,16 @@ class MasterFactory {
         val shape = buildShape(fixtureSpec, params.scaleX, params.scaleY, fixtureSpec.offsetX, fixtureSpec.offsetY)
         val fDef = FixtureDef()
         fDef.shape = shape
-        fDef.density = fixtureSpec.density
-        fDef.friction = fixtureSpec.friction
-        fDef.restitution = fixtureSpec.restitution
+        val material = JJ.physics.materials.getMaterial(fixtureSpec.material.get(params.peek()))
+        fDef.density = material?.density ?: fixtureSpec.density
+        fDef.friction = material?.friction ?: fixtureSpec.friction
+        fDef.restitution = material?.restitution ?: fixtureSpec.restitution
         fDef.isSensor = fixtureSpec.isSensor
         val cd = fixtureSpec.collisionGroup.toCollisionData(checkNotNull(params.peek()).properties)
         fDef.filter.categoryBits = cd.category
         fDef.filter.maskBits = cd.mask
         val fixture = body.createFixture(fDef)
-        val physicsNode = PhysicsNode(fixture, physicsRoot)
+        val physicsNode = PhysicsNode(fixture, physicsRoot, material?.name)
         fixture.userData = physicsNode
         shape!!.dispose()
     }

@@ -1,8 +1,8 @@
-package com.binarymonks.jj.demo
+package com.binarymonks.jj.demo.demos
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.physics.box2d.BodyDef
-import com.binarymonks.jj.core.Game
+import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.pools.vec2
@@ -12,11 +12,11 @@ import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.SceneSpecRef
 import com.binarymonks.jj.core.specs.builders.*
 import com.binarymonks.jj.core.specs.physics.CollisionGroupSpecName
+import com.binarymonks.jj.core.spine.collisions.TriggerRagDollCollision
 import com.binarymonks.jj.core.spine.specs.SpineSkeletonSpec
-import com.binarymonks.jj.core.spine.specs.SpineSpec
 
 
-class D10_spine_physics : Game(MyConfig10.jjConfig) {
+class D10_spine_physics : JJGame(MyConfig10.jjConfig) {
 
     override fun gameOn() {
         JJ.physics.collisionGroups.buildGroups {
@@ -31,15 +31,14 @@ class D10_spine_physics : Game(MyConfig10.jjConfig) {
         JJ.scenes.loadAssetsNow()
 
         JJ.scenes.instantiate(scene {
-            nodeRef(params { x = 4f; y = -0.25f }) { "spineBoy" }
+            nodeRef(params { x = 4f; y = -0.4f }) { "spineBoy" }
             nodeRef(params { x = 7f; y = 4f; rotationD = 90f }) { "hammer" }
-            nodeRef(params { y = -2f; scaleX = 15f }) { "terrain" }
-            nodeRef(params { x = -7f; y = 1f; scaleY = 6f }) { "terrain" }
+            nodeRef(params { y = -2f; scaleX = 13f; name = "floor" }) { "terrain" }
         })
     }
 
     fun spineBoy(): SceneSpecRef {
-        return SpineSpec {
+        return com.binarymonks.jj.core.spine.specs.SpineSpec {
             atlasPath = "spine/spineboy/spineboy-pma.atlas"
             dataPath = "spine/spineboy/spineboy.json"
             startingAnimation = "walk"
@@ -50,8 +49,11 @@ class D10_spine_physics : Game(MyConfig10.jjConfig) {
                 overrideFixtureFor("head") {
                     shape = Circle(0.4f)
                     offsetX = 0.4f
+                    friction=0.4f
+                    restitution=0.1f
                     collsionGroup("character")
                 }
+                beginCollision(TriggerRagDollCollision())
             }
         }
     }
@@ -63,6 +65,7 @@ class D10_spine_physics : Game(MyConfig10.jjConfig) {
             }
             node(params { name = "hammer" }) {
                 physics {
+                    bodyType = BodyDef.BodyType.DynamicBody
                     fixture { shape = Rectangle(0.5f, 3f); offsetY = -1.5f; collsionGroup("hammer") }
                     fixture { shape = Rectangle(2f, 2f); offsetY = -4f; collsionGroup("hammer") }
                     fixture { shape = Circle(1f); offsetY = -4f; offsetX = -1f; collsionGroup("hammer") }
@@ -86,6 +89,7 @@ class D10_spine_physics : Game(MyConfig10.jjConfig) {
                 bodyType = BodyDef.BodyType.StaticBody
                 fixture {
                     shape = Rectangle(1f, 1f)
+                    friction=0.5f
                     collsionGroup("terrain")
                 }
             }
@@ -103,9 +107,9 @@ object MyConfig10 {
     init {
 //        jjConfig.b2d.debug = true
 
-        jjConfig.gameView.worldBoxWidth = 15f
-        jjConfig.gameView.cameraPosX = 0f
-        jjConfig.gameView.cameraPosY = 0f
+        MyConfig10.jjConfig.gameView.worldBoxWidth = 15f
+        MyConfig10.jjConfig.gameView.cameraPosX = 0f
+        MyConfig10.jjConfig.gameView.cameraPosY = 0f
     }
 }
 

@@ -1,8 +1,8 @@
-package com.binarymonks.jj.demo
+package com.binarymonks.jj.demo.demos
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.physics.box2d.BodyDef
-import com.binarymonks.jj.core.Game
+import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.pools.vec2
@@ -13,7 +13,7 @@ import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.*
 
 
-class D07_b2d_composite : Game(MyConfig07.jjConfig) {
+class D07_b2d_composite : JJGame(MyConfig07.jjConfig) {
 
 
     override fun gameOn() {
@@ -28,7 +28,7 @@ class D07_b2d_composite : Game(MyConfig07.jjConfig) {
             nodeRef { "terrain" }
             node(params { x = 7.5f; y = 2.5f }) {
                 physics {
-                    bodyType=BodyDef.BodyType.DynamicBody
+                    bodyType = BodyDef.BodyType.DynamicBody
                     fixture { shape = Circle(0.5f) }
                 }
                 render { circleRender(0.5f) { color.set(Color.PURPLE) } }
@@ -75,13 +75,14 @@ class D07_b2d_composite : Game(MyConfig07.jjConfig) {
             }
             node(params { name = "arm" }) {
                 physics {
-                    bodyType=BodyDef.BodyType.DynamicBody
-                    fixture { shape = Rectangle(0.5f, 4f) } }
+                    bodyType = BodyDef.BodyType.DynamicBody
+                    fixture { shape = Rectangle(0.5f, 4f) }
+                }
                 render { rectangleRender(0.5f, 4f) { color.set(Color.BROWN) } }
             }
             node(params { name = "topBall"; y = 2f }) {
                 physics {
-                    bodyType=BodyDef.BodyType.DynamicBody
+                    bodyType = BodyDef.BodyType.DynamicBody
                     fixture { shape = Circle(1f) }
                 }
                 render {
@@ -90,7 +91,7 @@ class D07_b2d_composite : Game(MyConfig07.jjConfig) {
             }
             node(params { name = "bottomBall"; y = -2f }) {
                 physics {
-                    bodyType=BodyDef.BodyType.DynamicBody
+                    bodyType = BodyDef.BodyType.DynamicBody
                     fixture { shape = Circle(1f) }
                 }
                 render {
@@ -110,7 +111,7 @@ class D07_b2d_composite : Game(MyConfig07.jjConfig) {
             }
             node(params { name = "hammer" }) {
                 physics {
-                    bodyType=BodyDef.BodyType.DynamicBody
+                    bodyType = BodyDef.BodyType.DynamicBody
                     fixture { shape = Rectangle(0.5f, 3f); offsetY = -1.5f }
                     fixture { shape = Rectangle(2f, 2f); offsetY = -4f }
                     fixture { shape = Circle(1f); offsetY = -4f; offsetX = -1f }
@@ -133,11 +134,11 @@ object MyConfig07 {
     var jjConfig: JJConfig = JJConfig()
 
     init {
-        jjConfig.b2d.debug = false
+        MyConfig07.jjConfig.b2d.debug = false
 //        jjConfig.b2d.gravity = Vector2()
 
-        jjConfig.gameView.worldBoxWidth = 20f
-        jjConfig.gameView.cameraPosX = 0f
-        jjConfig.gameView.cameraPosY = 0f
+        MyConfig07.jjConfig.gameView.worldBoxWidth = 20f
+        MyConfig07.jjConfig.gameView.cameraPosX = 0f
+        MyConfig07.jjConfig.gameView.cameraPosY = 0f
     }
 }

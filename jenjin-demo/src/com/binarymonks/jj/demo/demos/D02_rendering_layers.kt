@@ -1,8 +1,8 @@
-package com.binarymonks.jj.demo
+package com.binarymonks.jj.demo.demos
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.physics.box2d.BodyDef
-import com.binarymonks.jj.core.Game
+import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.specs.SceneSpec
@@ -23,7 +23,7 @@ import com.binarymonks.jj.core.specs.builders.*
  *
  * In this example - there are only 3 world layers, but there are also several internal object layers.
  */
-class D02_rendering_layers : Game(MyConfig02.jjConfig) {
+class D02_rendering_layers : JJGame(MyConfig02.jjConfig) {
 
     public override fun gameOn() {
 
@@ -115,10 +115,10 @@ object MyConfig02 {
     var jjConfig: JJConfig = JJConfig()
 
     init {
-        jjConfig.b2d.debug = true
+        MyConfig02.jjConfig.b2d.debug = true
 
-        jjConfig.gameView.worldBoxWidth = 50f
-        jjConfig.gameView.cameraPosX = 0f
-        jjConfig.gameView.cameraPosY = 0f
+        MyConfig02.jjConfig.gameView.worldBoxWidth = 50f
+        MyConfig02.jjConfig.gameView.cameraPosX = 0f
+        MyConfig02.jjConfig.gameView.cameraPosY = 0f
     }
 }
