@@ -13,7 +13,8 @@ open class Scene(
 
     var id = com.binarymonks.jj.core.JJ.B.nextID()
     internal var componentMaster = com.binarymonks.jj.core.components.ComponentMaster()
-    private var isDestroyed: Boolean = false
+    var isDestroyed: Boolean = false
+        private set
     private var children: com.binarymonks.jj.core.utils.NamedArray<Scene> = com.binarymonks.jj.core.utils.NamedArray()
     private var parent: com.binarymonks.jj.core.scenes.Scene? = null
 
@@ -27,8 +28,6 @@ open class Scene(
     }
 
     fun destroy() {
-        if (parent == null) {
-        }
         if (!isDestroyed) {
             isDestroyed = true
             com.binarymonks.jj.core.JJ.B.sceneWorld.remove(this)
@@ -42,7 +41,7 @@ open class Scene(
     }
 
     fun addComponent(component: com.binarymonks.jj.core.components.Component) {
-        component.parent = this
+        component.scene = this
         componentMaster.addComponent(component)
     }
 

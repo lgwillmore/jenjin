@@ -2,8 +2,8 @@ package com.binarymonks.jj.core.render
 
 import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.render.nodes.RenderNode
-import com.binarymonks.jj.core.specs.render.DefaultGraph
-import com.binarymonks.jj.core.specs.render.LightGraph
+import com.binarymonks.jj.core.specs.render.DefaultRenderGraph
+import com.binarymonks.jj.core.specs.render.LightRenderGraph
 import com.binarymonks.jj.core.scenes.Scene
 
 
@@ -22,9 +22,9 @@ class RenderRoot(var specID: Int) {
         if (layer < 0) {
             throw Exception("You cannot have a layer less than 0")
         }
-        when (node.graphID) {
-            is DefaultGraph -> addToGraph(defaultRenderLayers, layer, node)
-            is LightGraph -> addToGraph(lightRenderLayers, layer, node)
+        when (node.renderGraphType) {
+            is DefaultRenderGraph -> addToGraph(defaultRenderLayers, layer, node)
+            is LightRenderGraph -> addToGraph(lightRenderLayers, layer, node)
             else -> throw Exception("unknown graph id")
         }
     }

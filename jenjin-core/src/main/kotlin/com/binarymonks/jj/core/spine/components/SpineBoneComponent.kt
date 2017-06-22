@@ -48,7 +48,7 @@ class SpineBoneComponent : Component() {
         for(i in 0..bonePath.size-1){
             scenePath.up()
         }
-        val root = thing().getNode(scenePath)
+        val root = me().getNode(scenePath)
         recycle(scenePath)
         return root
     }
@@ -62,7 +62,7 @@ class SpineBoneComponent : Component() {
             val x = bone!!.worldX
             val y = bone!!.worldY
             val rotation = bone!!.worldRotationX
-            thing().physicsRoot.b2DBody.setTransform(x, y, rotation * MathUtils.degRad)
+            me().physicsRoot.b2DBody.setTransform(x, y, rotation * MathUtils.degRad)
         }
     }
 
@@ -70,7 +70,7 @@ class SpineBoneComponent : Component() {
         if (!ragDoll) {
             ragDoll = true
             bone!!.triggerRagDoll()
-            parent!!.physicsRoot.b2DBody.type = BodyDef.BodyType.DynamicBody
+            scene!!.physicsRoot.b2DBody.type = BodyDef.BodyType.DynamicBody
             spineParent!!.triggerRagDoll()
         }
     }
@@ -84,7 +84,7 @@ class SpineBoneComponent : Component() {
         if (ragDoll) {
             ragDoll = false
             bone!!.reverseRagDoll()
-            thing().physicsRoot.b2DBody.type = BodyDef.BodyType.StaticBody
+            me().physicsRoot.b2DBody.type = BodyDef.BodyType.StaticBody
             spineParent!!.reverseRagDoll()
         }
     }

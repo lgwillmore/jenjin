@@ -60,10 +60,13 @@ fun SceneSpec.sound(name: String, path: String, init: SoundParams.() -> Unit): S
     return soundParams
 }
 
-fun <T : Component> SceneSpec.component(component: T, init: T.() -> Unit): T {
+fun <T : Component> SceneSpec.component(component: T, init: T.() -> Unit) {
     component.init()
     this.components.add(component)
-    return component
+}
+
+fun <T : Component> SceneSpec.component(component: T) {
+    this.components.add(component)
 }
 
 fun SceneSpec.revJoint(nameA: String?, nameB: String, anchor: Vector2, init: RevoluteJointSpec.() -> Unit) {
@@ -72,8 +75,8 @@ fun SceneSpec.revJoint(nameA: String?, nameB: String, anchor: Vector2, init: Rev
     this.joints.add(revJoint)
 }
 
-fun SceneSpec.revJoint(nameA: String?, nameB: String, localAnchorA: Vector2, localAnchorB: Vector2,init: RevoluteJointSpec.() -> Unit) {
-    val revJoint = RevoluteJointSpec(nameA, nameB, localAnchorA,localAnchorB)
+fun SceneSpec.revJoint(nameA: String?, nameB: String, localAnchorA: Vector2, localAnchorB: Vector2, init: RevoluteJointSpec.() -> Unit) {
+    val revJoint = RevoluteJointSpec(nameA, nameB, localAnchorA, localAnchorB)
     revJoint.init()
     this.joints.add(revJoint)
 }

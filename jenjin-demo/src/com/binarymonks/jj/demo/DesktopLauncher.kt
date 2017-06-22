@@ -2,9 +2,7 @@ package com.binarymonks.jj.demo
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
-import com.binarymonks.jj.demo.demos.D00_Basic
-import com.binarymonks.jj.demo.demos.D07_b2d_composite
-import com.binarymonks.jj.demo.demos.D10_spine_physics
+import com.binarymonks.jj.demo.demos.D06_lights_and_touch
 
 object DesktopLauncher {
     @JvmStatic fun main(arg: Array<String>) {
@@ -13,6 +11,6 @@ object DesktopLauncher {
         lwjglConfig.width = 1000
 
         //Swap out the various demo Games here
-        LwjglApplication(D10_spine_physics(), lwjglConfig)
+        LwjglApplication(D06_lights_and_touch(), lwjglConfig)
     }
 }

@@ -20,7 +20,7 @@ class RagDollBone : Bone {
 
     override fun getWorldX(): Float {
         if (ragDoll) {
-            return spinePart!!.thing().physicsRoot.position().x
+            return spinePart!!.me().physicsRoot.position().x
 
         }
         return super.getWorldX()
@@ -28,35 +28,35 @@ class RagDollBone : Bone {
 
     override fun getWorldY(): Float {
         if (ragDoll) {
-            return spinePart!!.thing().physicsRoot.position().y
+            return spinePart!!.me().physicsRoot.position().y
         }
         return super.getWorldY()
     }
 
     override fun getA(): Float {
         if (ragDoll) {
-            return cosDeg(spinePart!!.thing().physicsRoot.rotationR() * MathUtils.radDeg)
+            return cosDeg(spinePart!!.me().physicsRoot.rotationR() * MathUtils.radDeg)
         }
         return super.getA()
     }
 
     override fun getB(): Float {
         if (ragDoll) {
-            return cosDeg(spinePart!!.thing().physicsRoot.rotationR() * MathUtils.radDeg + 90)
+            return cosDeg(spinePart!!.me().physicsRoot.rotationR() * MathUtils.radDeg + 90)
         }
         return super.getB()
     }
 
     override fun getC(): Float {
         if (ragDoll) {
-            return sinDeg(spinePart!!.thing().physicsRoot.rotationR() * MathUtils.radDeg)
+            return sinDeg(spinePart!!.me().physicsRoot.rotationR() * MathUtils.radDeg)
         }
         return super.getC()
     }
 
     override fun getD(): Float {
         if (ragDoll) {
-            return sinDeg(spinePart!!.thing().physicsRoot.rotationR() * MathUtils.radDeg + 90)
+            return sinDeg(spinePart!!.me().physicsRoot.rotationR() * MathUtils.radDeg + 90)
         }
         return super.getD()
     }

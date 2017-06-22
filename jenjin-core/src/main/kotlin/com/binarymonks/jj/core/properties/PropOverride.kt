@@ -4,7 +4,7 @@ import com.binarymonks.jj.core.Copyable
 
 
 /**
- * Used to indicate fields that can be set by value or by looking up a property of the runtime parent.
+ * Used to indicate fields that can be set by value or by looking up a property of the runtime scene.
  *
  * If [setOverride] is used, this will take precedence  if the property exists. If not the Value will be used
  * as a fallback. If [set] is called it will cancel the property override, and the value will take precedence.

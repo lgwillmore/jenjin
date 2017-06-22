@@ -34,7 +34,7 @@ class TriggerRagDollCollision : CollisionHandler() {
 
         override fun doOnce() {
             spineBone!!.triggerRagDoll()
-            val myBody = spineBone!!.thing().physicsRoot.b2DBody
+            val myBody = spineBone!!.me().physicsRoot.b2DBody
             myBody.gravityScale = 1f
             for (fixture in myBody.getFixtureList()) {
                 fixture.setSensor(false)

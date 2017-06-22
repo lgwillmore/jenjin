@@ -10,17 +10,10 @@ import com.binarymonks.jj.core.specs.physics.FixtureSpec
 
 class SpineSkeletonSpec() {
     var boneWidth: Float = 0.1f
-    var collisionGroup: CollisionGroupSpec = CollisionGroupSpecExplicit()
     var coreMass: Float = 0.5f
     var massFalloff = 0.8f
-    var restitution = 0.2f
-    var friction= 0.2f
-    var jointLowerLimitD = -30f
-    var jointUpperLimitD = 90f
+    var all = All()
     val boneFixtureOverrides: ObjectMap<String, FixtureSpec> = ObjectMap()
-    var beginCollisions: Array<CollisionHandler> = Array()
-    var finalBeginCollisions: Array<CollisionHandler> = Array()
-    var endCollisions: Array<CollisionHandler> = Array()
 
     constructor(build: SpineSkeletonSpec.() -> Unit) : this() {
         this.build()
@@ -31,7 +24,17 @@ class SpineSkeletonSpec() {
         fixture.build()
         boneFixtureOverrides.put(boneName, fixture)
     }
+}
 
+class All{
+    var collisionGroup: CollisionGroupSpec = CollisionGroupSpecExplicit()
+    var restitution = 0.2f
+    var friction= 0.2f
+    var jointLowerLimitD = -30f
+    var jointUpperLimitD = 90f
+    var beginCollisions: Array<CollisionHandler> = Array()
+    var finalBeginCollisions: Array<CollisionHandler> = Array()
+    var endCollisions: Array<CollisionHandler> = Array()
     /**
      * Adds another begin [CollisionHandler].
      * You can add as many as you want.

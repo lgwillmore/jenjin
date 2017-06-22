@@ -15,6 +15,6 @@ class SelfDestruct(
     }
 
     fun destroy() {
-        thing().destroy()
+        me().destroy()
     }
 }

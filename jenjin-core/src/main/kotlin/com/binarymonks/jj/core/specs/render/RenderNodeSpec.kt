@@ -19,7 +19,7 @@ abstract class RenderNodeSpec {
     var layer: Int = 0
     var priority: Int = 0
     var color: PropOverride<Color> = PropOverride(Color.WHITE)
-    var graphID: GraphID = DefaultGraph()
+    var renderGraphType: RenderGraphType = RenderGraphType.DEFAULT
     var name:String? = null
     abstract fun getAssets(): Array<AssetReference>
     abstract fun makeNode(paramsStack: ParamStack): RenderNode
@@ -48,7 +48,7 @@ class PolygonRenderNodeSpec : SpatialRenderNodeSpec() {
         return PolygonRenderNode(
                 priority,
                 color.copy(),
-                graphID,
+                renderGraphType,
                 checkNotNull(sprite),
                 paramsStack.scaleX,
                 paramsStack.scaleY,
@@ -73,7 +73,7 @@ class LineChainRenderNodeSpec : SpatialRenderNodeSpec() {
         return LineChainRenderNode(
                 priority,
                 color.copy(),
-                graphID,
+                renderGraphType,
                 fill,
                 paramsStack.scaleX,
                 paramsStack.scaleY,
@@ -98,7 +98,7 @@ class CircleRenderNodeSpec : SpatialRenderNodeSpec() {
         return CircleRenderNode(
                 this.priority,
                 this.color.copy(),
-                graphID,
+                renderGraphType,
                 fill = fill,
                 offsetX = offsetX*paramsStack.scaleX,
                 offsetY = offsetY*paramsStack.scaleY,
@@ -142,7 +142,7 @@ class TextureNodeSpec : ImageNodeSpec<KClass<Texture>>() {
         return FrameRenderNode(
                 priority = priority,
                 color = color.copy(),
-                graphID = graphID,
+                renderGraphType = renderGraphType,
                 provider = frameProvider,
                 offsetX = offsetX,
                 offsetY = offsetY,

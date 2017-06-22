@@ -1,10 +1,10 @@
 package com.binarymonks.jj.core.spine.specs
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.BodyDef
+import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.assets.AssetReference
 import com.binarymonks.jj.core.extensions.copy
@@ -15,7 +15,6 @@ import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.SceneSpecRef
 import com.binarymonks.jj.core.specs.builders.*
 import com.binarymonks.jj.core.specs.physics.FixtureSpec
-import com.binarymonks.jj.core.spine.collisions.TriggerRagDollCollision
 import com.binarymonks.jj.core.spine.components.SpineBoneComponent
 import com.esotericsoftware.spine.Bone
 import com.esotericsoftware.spine.Skeleton
@@ -92,9 +91,9 @@ class SpineSpec() : SceneSpecRef {
                         gravityScale = 0f
                         val fixture = buildFixture(bone, mass)
                         addFixture(fixture)
-                        spineSkeleton!!.beginCollisions.forEach { beginCollision(it) }
-                        spineSkeleton!!.finalBeginCollisions.forEach { finalBeginCollision(it) }
-                        spineSkeleton!!.endCollisions.forEach { endCollision(it) }
+                        spineSkeleton!!.all.beginCollisions.forEach { beginCollision(it) }
+                        spineSkeleton!!.all.finalBeginCollisions.forEach { finalBeginCollision(it) }
+                        spineSkeleton!!.all.endCollisions.forEach { endCollision(it) }
                     }
                     component(SpineBoneComponent()) {
                         bonePath = path
@@ -105,8 +104,8 @@ class SpineSpec() : SceneSpecRef {
                         val childName = buildBoneRecurse(it, mass * spineSkeleton!!.massFalloff, a, this@scene)
                         revJoint(null, childName, vec2(it.x, it.y), vec2()) {
                             enableLimit = true
-                            lowerAngle = spineSkeleton!!.jointLowerLimitD * MathUtils.degRad
-                            upperAngle = spineSkeleton!!.jointUpperLimitD * MathUtils.degRad
+                            lowerAngle = spineSkeleton!!.all.jointLowerLimitD * MathUtils.degRad
+                            upperAngle = spineSkeleton!!.all.jointUpperLimitD * MathUtils.degRad
                             collideConnected = false
                         }
                     }
@@ -126,15 +125,15 @@ class SpineSpec() : SceneSpecRef {
                 shape = Rectangle(boneLength, spineSkeleton!!.boneWidth)
                 offsetX = boneLength / 2
                 density = mass
-                restitution = spineSkeleton!!.restitution
-                friction = spineSkeleton!!.friction
-                collisionGroup = spineSkeleton!!.collisionGroup
+                restitution = spineSkeleton!!.all.restitution
+                friction = spineSkeleton!!.all.friction
+                collisionGroup = spineSkeleton!!.all.collisionGroup
             }
         }
         return FixtureSpec {
             shape = Circle(spineSkeleton!!.boneWidth)
             density = mass
-            collisionGroup = spineSkeleton!!.collisionGroup
+            collisionGroup = spineSkeleton!!.all.collisionGroup
         }
     }
 }

@@ -62,7 +62,7 @@ open class SceneSpec : SceneSpecRef {
 
     override fun getAssets(): Array<AssetReference> {
         val assets: Array<AssetReference> = Array()
-        //TODO: Make thing specs not nullable - they always have one. In fact, things must become scenes
+        //TODO: Make me specs not nullable - they always have one. In fact, things must become scenes
         for (node in render.renderNodes) {
             assets.addAll(node.getAssets())
         }

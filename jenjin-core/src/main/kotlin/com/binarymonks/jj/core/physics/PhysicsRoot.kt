@@ -27,6 +27,7 @@ class PhysicsRoot(val b2DBody: Body) {
             b2DBody.userData = value
             collisionResolver.parent = value
         }
+
     var collisionResolver: CollisionResolver = CollisionResolver()
     var lights: NamedArray<Light> = NamedArray()
 

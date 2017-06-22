@@ -21,7 +21,7 @@ class SpineComponent : Component() {
 
 
     override fun onAddToWorld() {
-        spineRenderNode = thing().renderRoot.getNode(SPINE_RENDER_NAME) as SpineRenderNode?
+        spineRenderNode = me().renderRoot.getNode(SPINE_RENDER_NAME) as SpineRenderNode?
         if (startingAnimation != null) {
             myRender().triggerAnimation(startingAnimation!!)
         }

@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.ObjectMap
 import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.GameViewConfig
 import com.binarymonks.jj.core.JJ
+import com.binarymonks.jj.core.input.TouchManager
 import com.binarymonks.jj.core.pools.new
 import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.render.RenderGraph
@@ -23,11 +24,13 @@ class GameRenderingLayer(
     var camera: OrthographicCamera = OrthographicCamera()
 
     internal var drenderer = Box2DDebugRenderer()
+    internal var touchManager = TouchManager(camera)
 
     init {
         // Constructs a new OrthographicCamera, using the given viewport width and height
         // Height is multiplied by aspect ratio.
         setView(worldBoxWidth, posX, posY)
+        inputMultiplexer.addProcessor(touchManager)
     }
 
     constructor(viewConfig: GameViewConfig) : this(
@@ -39,6 +42,7 @@ class GameRenderingLayer(
     override fun update() {
         camera.update()
         updateScreenToWorldScale()
+        touchManager.update()
         renderGraph(JJ.B.renderWorld.defaultRenderGraph)
         renderLights()
         renderGraph(JJ.B.renderWorld.lightSourceRenderGraph)

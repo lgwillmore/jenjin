@@ -14,6 +14,7 @@ import com.binarymonks.jj.core.specs.builders.*
 import com.binarymonks.jj.core.specs.physics.CollisionGroupSpecName
 import com.binarymonks.jj.core.spine.collisions.TriggerRagDollCollision
 import com.binarymonks.jj.core.spine.specs.SpineSkeletonSpec
+import com.binarymonks.jj.core.spine.specs.SpineSpec
 
 
 class D10_spine_physics : JJGame(MyConfig10.jjConfig) {
@@ -38,14 +39,15 @@ class D10_spine_physics : JJGame(MyConfig10.jjConfig) {
     }
 
     fun spineBoy(): SceneSpecRef {
-        return com.binarymonks.jj.core.spine.specs.SpineSpec {
+        return SpineSpec {
             atlasPath = "spine/spineboy/spineboy-pma.atlas"
             dataPath = "spine/spineboy/spineboy.json"
             startingAnimation = "walk"
             scale = 1f / 247f
             originY = 247f
             spineSkeleton = SpineSkeletonSpec {
-                collisionGroup = CollisionGroupSpecName("character")
+                all.collisionGroup = CollisionGroupSpecName("character")
+                all.beginCollision(TriggerRagDollCollision())
                 overrideFixtureFor("head") {
                     shape = Circle(0.4f)
                     offsetX = 0.4f
@@ -53,7 +55,6 @@ class D10_spine_physics : JJGame(MyConfig10.jjConfig) {
                     restitution=0.1f
                     collsionGroup("character")
                 }
-                beginCollision(TriggerRagDollCollision())
             }
         }
     }

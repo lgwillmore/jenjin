@@ -15,11 +15,11 @@ class ComponentTest {
         val original = PrimitiveFields("name1", 2)
         original.copyable.set("blue")
         original.hiddenName = "altered"
-        original.parent = Mockito.mock(Scene::class.java)
+        original.scene = Mockito.mock(Scene::class.java)
 
         val copy: PrimitiveFields = original.clone() as PrimitiveFields
 
-        Assert.assertNull(copy.parent)
+        Assert.assertNull(copy.scene)
         Assert.assertNotSame(original, copy)
         Assert.assertEquals(original.name, copy.name)
         Assert.assertEquals(original.number, copy.number)

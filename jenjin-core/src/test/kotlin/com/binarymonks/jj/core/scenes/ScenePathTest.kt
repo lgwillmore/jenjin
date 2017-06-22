@@ -26,7 +26,7 @@ class ScenePathTest {
     fun setup() {
         mockoutGDXinJJ()
         grandParent = thing("grandparent")
-        parent = thing("parent")
+        parent = thing("scene")
         uncle = thing("uncle")
         me = thing("me")
         cousin = thing("cousin")

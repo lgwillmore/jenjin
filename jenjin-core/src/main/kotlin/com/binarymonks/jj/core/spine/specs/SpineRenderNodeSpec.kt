@@ -57,7 +57,7 @@ internal class SpineRenderNodeSpec(
         val spineNode = SpineRenderNode(
                 priority,
                 color,
-                graphID,
+                renderGraphType,
                 SPINE_RENDER_NAME,
                 skeleton,
                 skeletonData,

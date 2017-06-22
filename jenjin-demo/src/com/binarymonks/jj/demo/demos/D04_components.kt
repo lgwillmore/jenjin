@@ -77,7 +77,7 @@ class D04_components : JJGame(MyConfig04.jjConfig) {
                     shape = Circle(0.5f)
                 }
             }
-            //Add our component to our thing and bind fields to properties
+            //Add our component to our me and bind fields to properties
             component(BackForwardMovement()) {
                 direction.setOverride("direction")
                 movementRange.setOverride("movementRange")
@@ -94,7 +94,7 @@ class D04_components : JJGame(MyConfig04.jjConfig) {
                 fixture {
                 }
             }
-            //Add our component to our thing and bind fields to properties
+            //Add our component to our me and bind fields to properties
             component(BackForwardMovement()) {
                 direction.setOverride("direction")
                 movementRange.setOverride("movementRange")
@@ -122,19 +122,19 @@ class BackForwardMovement : Component() {
     //For our platform we want to know where we start in the world so we can control movement
     // relative to that
     override fun onAddToWorld() {
-        startLocation.set(thing().physicsRoot.position())
+        startLocation.set(me().physicsRoot.position())
         when (direction.get()) {
             com.binarymonks.jj.demo.demos.Direction.VERTICAL -> velocity.set(0f, metersPerSecond.get())
             com.binarymonks.jj.demo.demos.Direction.HORIZONTAL -> velocity.set(metersPerSecond.get(), 0F)
         }
-        thing().physicsRoot.b2DBody.linearVelocity = velocity
+        me().physicsRoot.b2DBody.linearVelocity = velocity
     }
 
     override fun update() {
-        val distanceFromStart = thing().physicsRoot.position().sub(startLocation).len()
+        val distanceFromStart = me().physicsRoot.position().sub(startLocation).len()
         if (distanceFromStart > movementRange.get()) {
             velocity.scl(-1f)
-            thing().physicsRoot.b2DBody.linearVelocity = velocity
+            me().physicsRoot.b2DBody.linearVelocity = velocity
         }
     }
 }

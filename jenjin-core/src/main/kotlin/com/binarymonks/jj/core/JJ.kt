@@ -44,7 +44,8 @@ object JJ {
         B.pools = Pools()
         B.assets = Assets()
         B.audio = Audio()
-        B.layers.addLayerTop(GameRenderingLayer(config.gameView))
+        B.defaultGameRenderingLayer = GameRenderingLayer(config.gameView)
+        B.layers.addLayerTop(B.defaultGameRenderingLayer)
         B.tasks = Tasks()
 
         scenes = B.scenes
