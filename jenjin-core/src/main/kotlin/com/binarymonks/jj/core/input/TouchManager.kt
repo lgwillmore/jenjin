@@ -33,7 +33,7 @@ class TouchManager(internal var camera: OrthographicCamera) : InputProcessor {
 
     override fun touchDown(x: Int, y: Int, pointer: Int, button: Int): Boolean {
         unproject(x, y)
-        checkForDragableThings(button)
+        checkForTouchHandler(button)
         if (touchedScene != null) {
             touchTracker.put(pointer, new(Touch::class).set(touchedScene!!, touchOffset))
             touchedScene = null
@@ -55,7 +55,7 @@ class TouchManager(internal var camera: OrthographicCamera) : InputProcessor {
 
     fun update() {
         for (touch in touchTracker) {
-            if (touch.value.touchedThing!!.isDestroyed) {
+            if (touch.value.touchedScene!!.isDestroyed) {
                 touchRemovals.add(touch.key)
                 continue
             }
@@ -86,12 +86,12 @@ class TouchManager(internal var camera: OrthographicCamera) : InputProcessor {
         testPoint2.set(testPoint.x, testPoint.y)
     }
 
-    private fun checkForDragableThings(button: Int) {
+    private fun checkForTouchHandler(button: Int) {
         JJ.B.physicsWorld.b2dworld.QueryAABB(this::reportFixture, testPoint.x - 0.3f, testPoint.y - 0.3f, testPoint.x + 0.3f, testPoint.y + 0.3f)
-        selectDragable(button)
+        selectTouchHandler(button)
     }
 
-    private fun selectDragable(button: Int) {
+    private fun selectTouchHandler(button: Int) {
         for (fixture in possibleBodies) {
             val node = fixture.userData as PhysicsNode
             if (node != null) {
@@ -101,11 +101,12 @@ class TouchManager(internal var camera: OrthographicCamera) : InputProcessor {
                     if (t != null) {
                         touchedScene = parent
                         val touchLocation = new(Vector2::class).set(testPoint.x, testPoint.y)
-                        t!!.onTouchDown(testPoint.x, testPoint.y, button)
+                        val touchHandled = t!!.onTouchDown(testPoint.x, testPoint.y, button)
                         recycle(touchLocation)
+                        if (!touchHandled) continue
                         val hitBody = fixture.body
                         val bodyPosition = new(Vector2::class).set(hitBody.position)
-                        if (t!!.trackTouch) {
+                        if (t!!.relativeToTouch) {
                             touchOffset.set(bodyPosition.sub(testPoint.x, testPoint.y))
                         } else {
                             touchOffset.set(0f, 0f)
@@ -138,12 +139,12 @@ class TouchManager(internal var camera: OrthographicCamera) : InputProcessor {
     }
 
     class Touch : Poolable {
-        internal var touchedThing: Scene? = null
+        internal var touchedScene: Scene? = null
         internal var testPointCache = new(Vector2::class)
         internal var touchOffset = new(Vector2::class)
 
         operator fun set(touchedThing: Scene, offset: Vector2): Touch {
-            this.touchedThing = touchedThing
+            this.touchedScene = touchedThing
             this.touchOffset.set(offset)
             return this
         }
@@ -152,19 +153,19 @@ class TouchManager(internal var camera: OrthographicCamera) : InputProcessor {
         override fun reset() {
             testPointCache.set(0f, 0f)
             touchOffset.set(0f, 0f)
-            touchedThing = null
+            touchedScene = null
         }
 
         fun move(newTouchLocation: Vector2, button: Int) {
             testPointCache.set(newTouchLocation)
             val newPosition = new(Vector2::class).set(newTouchLocation).add(touchOffset)
-            touchedThing!!.getComponent(TouchHandler::class)!!.onTouchMove(newPosition.x, newPosition.y, button)
+            touchedScene!!.getComponent(TouchHandler::class)!!.onTouchMove(newPosition.x, newPosition.y, button)
             recycle(newPosition)
         }
 
         fun touchUp(upWorld: Vector2, button: Int) {
             upWorld.add(touchOffset)
-            touchedThing!!.getComponent(TouchHandler::class)!!.onTouchUp(upWorld.x, upWorld.y, button)
+            touchedScene!!.getComponent(TouchHandler::class)!!.onTouchUp(upWorld.x, upWorld.y, button)
         }
     }
 

@@ -4,16 +4,10 @@ import com.binarymonks.jj.core.components.Component
 import kotlin.reflect.KClass
 
 
+/**
+ * Extend this to add touch handling to your [com.binarymonks.jj.core.scenes.Scene]
+ */
 abstract class TouchHandler : Component() {
-
-    /**
-     * If true - the scene Scene will be tracked with the touch.
-     * So drag [onTouchMove] and [onTouchUp] will be called
-     * unless something interrupts the tracking.
-     *
-     * If false - the follow on events will not be triggered.
-     */
-    var trackTouch = true
 
     /**
      * If true - the touch coordinates will be passed with the offset of the touch
@@ -21,11 +15,12 @@ abstract class TouchHandler : Component() {
      * position relative to the local body coordinates of the touch
      */
     var relativeToTouch = true
-    
 
     /**
      * Return true if the touch event is handled and should not be propagated further,
      * false otherwise.
+     *
+     * If false [onTouchMove] and [onTouchUp] will not be called.
      */
     abstract fun onTouchDown(touchX: Float, touchY: Float, button: Int): Boolean
 
