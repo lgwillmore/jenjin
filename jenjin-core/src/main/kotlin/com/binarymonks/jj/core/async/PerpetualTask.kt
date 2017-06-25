@@ -4,6 +4,8 @@ abstract class PerpetualTask : Task {
 
     override fun tearDown() {}
 
-    override val isDone: Boolean
-        get() = false
+    override fun isDone(): Boolean {
+        return false
+    }
+
 }

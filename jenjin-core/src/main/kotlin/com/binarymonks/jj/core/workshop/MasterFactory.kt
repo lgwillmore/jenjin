@@ -33,10 +33,6 @@ class MasterFactory {
     private var paramsStackCache: Array<ParamStack> = Array()
     internal var scenePool: ScenePool = ScenePool()
 
-    fun createScene(scenePath: String, params: InstanceParams): Scene {
-        return createScene(JJ.B.scenes.getScene(scenePath), params)
-    }
-
     fun createScene(scene: SceneSpec, params: InstanceParams): Scene {
         var paramsStack = paramsStack()
         paramsStack.add(params)

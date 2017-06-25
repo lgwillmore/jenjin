@@ -2,13 +2,14 @@ package com.binarymonks.jj.core.specs
 
 import com.badlogic.gdx.math.Matrix3
 import com.badlogic.gdx.utils.ObjectMap
+import com.binarymonks.jj.core.copy
 import com.binarymonks.jj.core.pools.PoolManager
 import com.binarymonks.jj.core.pools.mat3
 import com.binarymonks.jj.core.pools.new
 import com.binarymonks.jj.core.properties.HasProps
 
 
-class InstanceParams internal constructor() : HasProps {
+class InstanceParams: HasProps {
 
     companion object Factory {
         fun new(): InstanceParams {
@@ -50,6 +51,10 @@ class InstanceParams internal constructor() : HasProps {
 
     override fun getProp(key: String): Any? {
         return properties[key]
+    }
+
+    fun clone(): InstanceParams {
+        return copy(this)
     }
 
 }

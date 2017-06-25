@@ -1,17 +1,21 @@
 package com.binarymonks.jj.core.physics
 
+import com.badlogic.gdx.utils.Array
+import com.badlogic.gdx.physics.box2d.Contact
+import com.badlogic.gdx.physics.box2d.Fixture
+import com.binarymonks.jj.core.copy
 import com.binarymonks.jj.core.scenes.Scene
 
 abstract class CollisionHandler {
 
-    protected var ignoreProperties = com.badlogic.gdx.utils.Array<String>()
-    protected var matchProperties = com.badlogic.gdx.utils.Array<String>()
+    protected var ignoreProperties: Array<String> = Array()
+    protected var matchProperties: Array<String> = Array()
     private var enabled = true
 
-    fun performCollision(me: Scene, myFixture: com.badlogic.gdx.physics.box2d.Fixture,
-                         other: Scene, otherFixture: com.badlogic.gdx.physics.box2d.Fixture, contact: com.badlogic.gdx.physics.box2d.Contact) {
+    fun performCollision(me: Scene, myFixture: Fixture,
+                         other: Scene, otherFixture: Fixture, contact: Contact) {
         if (enabled) {
-            val gameData = otherFixture.userData as com.binarymonks.jj.core.physics.PhysicsNode
+            val gameData = otherFixture.userData as PhysicsNode
             for (ignore in ignoreProperties) {
                 if (gameData.hasProperty(ignore)) {
                     return
@@ -30,13 +34,10 @@ abstract class CollisionHandler {
         }
     }
 
-    abstract fun collision(me: Scene, myFixture: com.badlogic.gdx.physics.box2d.Fixture, other: Scene, otherFixture: com.badlogic.gdx.physics.box2d.Fixture, contact: com.badlogic.gdx.physics.box2d.Contact)
+    abstract fun collision(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact)
 
-    abstract fun clone(): com.binarymonks.jj.core.physics.CollisionHandler
-
-    fun copyProperties(copyFrom: com.binarymonks.jj.core.physics.CollisionHandler) {
-        this.matchProperties.addAll(copyFrom.matchProperties)
-        this.ignoreProperties.addAll(copyFrom.ignoreProperties)
+    open fun clone(): CollisionHandler{
+        return copy(this)
     }
 
     fun disable() {

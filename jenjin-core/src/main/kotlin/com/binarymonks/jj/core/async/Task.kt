@@ -8,6 +8,6 @@ interface Task {
 
     fun tearDown()
 
-    val isDone: Boolean
+    fun isDone(): Boolean
 
 }

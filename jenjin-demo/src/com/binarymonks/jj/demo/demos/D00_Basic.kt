@@ -5,6 +5,7 @@ import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.pools.vec2
+import com.binarymonks.jj.core.scenes.Scene
 import com.binarymonks.jj.core.specs.Circle
 import com.binarymonks.jj.core.specs.Polygon
 import com.binarymonks.jj.core.specs.SceneSpec
@@ -74,7 +75,11 @@ class D00_Basic : JJGame(MyConfig00.jjConfig) {
                         prop("material", "glass")
                     }) { "terrain" }
                 }
-        )
+        ).then(this::sceneCreated)
+    }
+
+    fun sceneCreated(scene: Scene){
+        println("Created the scene")
     }
 
     private fun square(): SceneSpec {

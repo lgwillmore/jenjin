@@ -8,4 +8,6 @@ interface TasksAPI {
 
     fun addPostPhysicsTask(task: Task)
 
+    fun addPrePhysicsTask(task: Task)
+
 }

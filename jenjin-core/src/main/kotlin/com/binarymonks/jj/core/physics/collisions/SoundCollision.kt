@@ -18,11 +18,11 @@ class SoundCollision(
         me.soundEffects.triggerSound(checkNotNull(soundName), mode)
     }
 
-    override fun clone(): CollisionHandler {
-        val copy = SoundCollision()
-        copy.soundName = soundName
-        copy.mode = mode
-        copy.copyProperties(this)
-        return copy
-    }
+//    override fun clone(): CollisionHandler {
+//        val copy = SoundCollision()
+//        copy.soundName = soundName
+//        copy.mode = mode
+//        copy.copyProperties(this)
+//        return copy
+//    }
 }

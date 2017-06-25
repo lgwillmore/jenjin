@@ -3,7 +3,6 @@ package com.binarymonks.jj.core.async
 abstract class OneTimeTask : Task {
 
     override fun getReady() {
-
     }
 
     override fun doWork() {
@@ -14,8 +13,9 @@ abstract class OneTimeTask : Task {
         doOnce()
     }
 
-    protected abstract fun doOnce()
+    abstract fun doOnce()
 
-    override val isDone: Boolean
-        get() = true
+    override fun isDone(): Boolean{
+        return true
+    }
 }

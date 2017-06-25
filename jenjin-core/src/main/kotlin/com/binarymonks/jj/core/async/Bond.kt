@@ -1,8 +1,16 @@
 package com.binarymonks.jj.core.async
 
+import com.binarymonks.jj.core.pools.Poolable
 
-class UnitBond {
-    private var callback: () -> Unit = { Unit }
+
+class UnitBond : Poolable {
+    override fun reset() {
+        callback = noCallback
+    }
+
+    private val noCallback: () -> Unit = { Unit }
+
+    private var callback: () -> Unit = noCallback
 
     fun then(callback: () -> Unit) {
         this.callback = callback
@@ -14,9 +22,15 @@ class UnitBond {
 }
 
 
-class Bond<RESULT> {
+class Bond<RESULT> : Poolable {
 
-    private var callback: (RESULT) -> Unit = { result: RESULT -> Unit }
+    private val noCallback: (RESULT) -> Unit = { result: RESULT -> Unit }
+
+    override fun reset() {
+        callback = noCallback
+    }
+
+    private var callback: (RESULT) -> Unit = noCallback
 
     fun then(callback: (RESULT) -> Unit) {
         this.callback = callback

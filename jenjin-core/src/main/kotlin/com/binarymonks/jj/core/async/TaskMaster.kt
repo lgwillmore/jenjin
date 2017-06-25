@@ -12,7 +12,7 @@ class TaskMaster {
     fun update() {
         clean()
         for (task in tasks) {
-            if (task.isDone) {
+            if (task.isDone()) {
                 removeTasks.add(task)
             } else {
                 task.doWork()

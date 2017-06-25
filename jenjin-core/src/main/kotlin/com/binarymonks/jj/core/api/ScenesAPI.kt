@@ -1,6 +1,8 @@
 package com.binarymonks.jj.core.api
 
+import com.binarymonks.jj.core.async.Bond
 import com.binarymonks.jj.core.async.UnitBond
+import com.binarymonks.jj.core.scenes.Scene
 import com.binarymonks.jj.core.specs.InstanceParams
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.SceneSpecRef
@@ -13,7 +15,7 @@ interface ScenesAPI {
      * @param scene The scene to instantiate
      * @param instanceParams The instance specific parameters
      */
-    fun instantiate(scene: SceneSpec, instanceParams: InstanceParams = InstanceParams.new()): UnitBond
+    fun instantiate(scene: SceneSpec, instanceParams: InstanceParams = InstanceParams.new()): Bond<Scene>
 
 
     /**
@@ -22,7 +24,7 @@ interface ScenesAPI {
      * @param path The path to the [SceneSpec]. These can be added with [addSceneSpec]
      * @param instanceParams The instance specific parameters
      */
-    fun instantiate(path: String, instanceParams: InstanceParams = InstanceParams.new()): UnitBond
+    fun instantiate(path: String, instanceParams: InstanceParams = InstanceParams.new()): Bond<Scene>
 
 
     /**

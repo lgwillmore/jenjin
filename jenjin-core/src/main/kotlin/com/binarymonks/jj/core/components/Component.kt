@@ -35,7 +35,7 @@ abstract class Component {
      *
      * Public fields of the component will be copied to the new instance.
      *
-     * If it is not a primitive the reference will be shared by the clone unless it is [com.binarymonks.jj.core.Copyable], then copy will be called.
+     * If it is not a primitive the reference will be shared by the clone unless it is [com.binarymonks.jj.core.Copyable], then clone will be called.
      *
      * If this is not sufficient then override this method.
      */
