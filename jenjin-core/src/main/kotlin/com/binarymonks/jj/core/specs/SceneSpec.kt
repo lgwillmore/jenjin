@@ -29,12 +29,12 @@ open class SceneSpec : SceneSpecRef {
 
 
     /**
-     * Add a addNode [SceneSpec] instance
+     * Add a addNode [SceneSpecRef] instance
      *
      * @param scene The scene to instantiate
      * @param instanceParams The instance specific parameters
      */
-    fun addNode(scene: SceneSpec, instanceParams: InstanceParams = InstanceParams.new()) {
+    fun addNode(scene: SceneSpecRef, instanceParams: InstanceParams = InstanceParams.new()) {
         nodes.put(getName(instanceParams), SceneNode(scene, instanceParams))
     }
 

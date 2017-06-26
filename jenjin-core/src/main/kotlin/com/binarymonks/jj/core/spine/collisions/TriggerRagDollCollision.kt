@@ -13,9 +13,10 @@ import com.binarymonks.jj.core.scenes.Scene
 
 class TriggerRagDollCollision : CollisionHandler() {
 
-    override fun collision(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact) {
+    override fun collision(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact): Boolean {
         val boneComponent: SpineBoneComponent = checkNotNull(me.getComponent(SpineBoneComponent::class))
         JJ.tasks.addPostPhysicsTask(new(DelayedTriggerRagDoll::class).set(boneComponent, other))
+        return false
     }
 
     override fun clone(): CollisionHandler {

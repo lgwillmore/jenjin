@@ -3,6 +3,7 @@ package com.binarymonks.jj.core.specs.builders
 import com.badlogic.gdx.math.Vector2
 import com.binarymonks.jj.core.audio.SoundParams
 import com.binarymonks.jj.core.components.Component
+import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.specs.InstanceParams
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.physics.PhysicsSpec
@@ -69,9 +70,14 @@ fun <T : Component> SceneSpec.component(component: T) {
     this.components.add(component)
 }
 
-fun SceneSpec.revJoint(nameA: String?, nameB: String, anchor: Vector2, init: RevoluteJointSpec.() -> Unit) {
+fun SceneSpec.revJoint(nameA: String?, nameB: String, anchor: Vector2 = Vector2(), init: RevoluteJointSpec.() -> Unit) {
     val revJoint = RevoluteJointSpec(nameA, nameB, anchor)
     revJoint.init()
+    this.joints.add(revJoint)
+}
+
+fun SceneSpec.revJoint(nameA: String?, nameB: String, anchor: Vector2 = Vector2()) {
+    val revJoint = RevoluteJointSpec(nameA, nameB, anchor)
     this.joints.add(revJoint)
 }
 

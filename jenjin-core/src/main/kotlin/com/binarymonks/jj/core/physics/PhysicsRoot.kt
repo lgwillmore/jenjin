@@ -25,7 +25,7 @@ class PhysicsRoot(val b2DBody: Body) {
         set(value) {
             field = value
             b2DBody.userData = value
-            collisionResolver.parent = value
+            collisionResolver.me = value
         }
 
     var collisionResolver: CollisionResolver = CollisionResolver()

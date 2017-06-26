@@ -1,5 +1,7 @@
 package com.binarymonks.jj.core.specs.physics
 
+import com.badlogic.gdx.utils.Array
+import com.binarymonks.jj.core.physics.CollisionHandler
 import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.specs.Rectangle
 import com.binarymonks.jj.core.specs.ShapeSpec
@@ -14,13 +16,16 @@ class FixtureSpec() {
     var isSensor = false
     var collisionGroup: CollisionGroupSpec = CollisionGroupSpecExplicit()
     var shape: ShapeSpec = Rectangle()
+    var beginCollisions: Array<CollisionHandler> = Array()
+    var finalBeginCollisions: Array<CollisionHandler> = Array()
+    var endCollisions: Array<CollisionHandler> = Array()
 
     /**
      * Set to use [com.binarymonks.jj.core.JJ.physics.materials]
      */
     var material: PropOverride<String> = PropOverride("")
 
-    constructor(build:FixtureSpec.()->Unit):this(){
+    constructor(build: FixtureSpec.() -> Unit) : this() {
         this.build()
     }
 
@@ -46,6 +51,40 @@ class FixtureSpec() {
      */
     fun collisionGroupProperty(propertyName: String) {
         this.collisionGroup = CollisionGroupSpecProperty(propertyName)
+    }
+
+    /**
+     * Adds another begin [CollisionHandler].
+     * You can add as many as you want.
+     *
+     * Called when a collision begins
+     */
+    fun beginCollision(handler: CollisionHandler) {
+        beginCollisions.add(handler)
+    }
+
+    /**
+     * Adds another final begin [CollisionHandler].
+     * You can add as many as you want.
+     *
+     * Called when a collision begins, but after the other objects begin collisions have been called.
+     *
+     * This is useful if this collision is going to destroy the other object for example.
+     *
+     * Called before/after the other objects final begin collisions.
+     */
+    fun finalBeginCollision(handler: CollisionHandler) {
+        finalBeginCollisions.add(handler)
+    }
+
+    /**
+     * Adds another end [CollisionHandler].
+     * You can add as many as you want.
+     *
+     * Called when a collision ends
+     */
+    fun endCollision(handler: CollisionHandler) {
+        endCollisions.add(handler)
     }
 
 

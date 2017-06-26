@@ -1,6 +1,7 @@
 package com.binarymonks.jj.core.specs
 
 import com.badlogic.gdx.math.Matrix3
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.copy
 import com.binarymonks.jj.core.pools.PoolManager
@@ -9,7 +10,7 @@ import com.binarymonks.jj.core.pools.new
 import com.binarymonks.jj.core.properties.HasProps
 
 
-class InstanceParams: HasProps {
+class InstanceParams : HasProps {
 
     companion object Factory {
         fun new(): InstanceParams {
@@ -24,7 +25,7 @@ class InstanceParams: HasProps {
     var rotationD: Float = 0f
     var properties: ObjectMap<String, Any> = ObjectMap()
     /**
-     * This must be a name that is unique to its parent SceneSpec child nodes if set
+     * This must be a name that is unique to its me SceneSpec child nodes if set
      */
     var name: String? = null
     /**
@@ -32,6 +33,16 @@ class InstanceParams: HasProps {
      */
     var uniqueInstanceName: String? = null
     private var transformMatrix: Matrix3 = mat3()
+
+    fun setPosition(x: Float, y: Float) {
+        this.x = x
+        this.y = y
+    }
+
+    fun setPosition(vector: Vector2) {
+        this.x = vector.x
+        this.y = vector.y
+    }
 
     fun prop(name: String, value: Any? = null) {
         properties.put(name, value)

@@ -7,7 +7,8 @@ import com.binarymonks.jj.core.scenes.Scene
 
 class CollisionResolver {
 
-    var parent: Scene? = null
+    var me: Scene? = null
+    var parent: CollisionResolver? = null
     var begins = Array<CollisionHandler>()
     var finalBegins = Array<CollisionHandler>()
     var ends = Array<CollisionHandler>()
@@ -16,20 +17,41 @@ class CollisionResolver {
 
     fun beginContact(otherObject: Scene, otherFixture: Fixture, contact: Contact, myFixture: Fixture) {
         collisionCount++
+        var propogate = true
         for (function in begins) {
-            function.performCollision(checkNotNull(parent), myFixture, otherObject, otherFixture, contact)
+            if (function.performCollision(checkNotNull(me), myFixture, otherObject, otherFixture, contact)) {
+                propogate = false
+                break
+            }
+        }
+        if (propogate && parent != null) {
+            parent!!.beginContact(otherObject, otherFixture, contact, myFixture)
         }
     }
 
     fun finalBeginContact(otherObject: Scene, otherFixture: Fixture, contact: Contact, myFixture: Fixture) {
+        var propogate = true
         for (function in finalBegins) {
-            function.performCollision(checkNotNull(parent), myFixture, otherObject, otherFixture, contact)
+            if (function.performCollision(checkNotNull(me), myFixture, otherObject, otherFixture, contact)) {
+                propogate = false
+                break
+            }
+        }
+        if (propogate && parent != null) {
+            parent!!.finalBeginContact(otherObject, otherFixture, contact, myFixture)
         }
     }
 
     fun endContact(otherObject: Scene, otherFixture: Fixture, contact: Contact, myFixture: Fixture) {
+        var propogate = true
         for (function in ends) {
-            function.performCollision(checkNotNull(parent), myFixture, otherObject, otherFixture, contact)
+            if (function.performCollision(checkNotNull(me), myFixture, otherObject, otherFixture, contact)) {
+                propogate = false
+                break
+            }
+        }
+        if (propogate && parent != null) {
+            parent!!.endContact(otherObject, otherFixture, contact, myFixture)
         }
     }
 

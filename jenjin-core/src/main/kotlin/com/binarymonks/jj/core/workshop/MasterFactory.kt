@@ -190,6 +190,15 @@ class MasterFactory {
         fDef.filter.maskBits = cd.mask
         val fixture = body.createFixture(fDef)
         val physicsNode = PhysicsNode(fixture, physicsRoot, material?.name)
+        for (ibegin in fixtureSpec.beginCollisions) {
+            physicsNode.collisionResolver.addInitialBegin(ibegin.clone())
+        }
+        for (fbegin in fixtureSpec.finalBeginCollisions) {
+            physicsNode.collisionResolver.addFinalBegin(fbegin.clone())
+        }
+        for (end in fixtureSpec.endCollisions) {
+            physicsNode.collisionResolver.addInitialBegin(end.clone())
+        }
         fixture.userData = physicsNode
         shape!!.dispose()
     }

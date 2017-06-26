@@ -14,15 +14,8 @@ class SoundCollision(
         var mode: SoundMode = SoundMode.NORMAL
 ) : CollisionHandler() {
 
-    override fun collision(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact) {
+    override fun collision(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact): Boolean {
         me.soundEffects.triggerSound(checkNotNull(soundName), mode)
+        return false
     }
-
-//    override fun clone(): CollisionHandler {
-//        val copy = SoundCollision()
-//        copy.soundName = soundName
-//        copy.mode = mode
-//        copy.copyProperties(this)
-//        return copy
-//    }
 }

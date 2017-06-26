@@ -26,6 +26,7 @@ class ComponentTest {
         Assert.assertNotEquals(original.hiddenName, copy.hiddenName)
         Assert.assertNotSame(original.copyable, copy.copyable)
         Assert.assertEquals(original.copyable, copy.copyable)
+        Assert.assertEquals(original.readableButNotCopyable, copy.readableButNotCopyable)
     }
 }
 
@@ -34,7 +35,11 @@ class PrimitiveFields(
         var name: String? = null,
         var number: Int = 0,
         var copyable: PropOverride<String> = PropOverride("nothing")
+
 ) : Component() {
+    var readableButNotCopyable: String = "Original"
+        private set
     internal var hiddenName: String = "hidden"
+    val fixed = "Cannot change"
 }
 

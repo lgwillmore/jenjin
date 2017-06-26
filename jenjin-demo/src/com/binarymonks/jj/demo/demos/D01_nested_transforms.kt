@@ -13,7 +13,7 @@ import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.*
 
 /**
- * A SceneNode's transforms (translation, rotation, scale) operate in the space of the parent.
+ * A SceneNode's transforms (translation, rotation, scale) operate in the space of the me.
  * All the way up to the global b2d world space.
  */
 class D01_nested_transforms : JJGame(MyConfig01.jjConfig) {
