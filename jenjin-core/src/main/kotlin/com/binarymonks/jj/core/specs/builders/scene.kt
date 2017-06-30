@@ -53,10 +53,16 @@ fun SceneSpec.render(init: RenderSpec.() -> Unit) {
     this.render.init()
 }
 
-fun SceneSpec.sound(name: String, path: String, init: SoundParams.() -> Unit): SoundParams {
+fun SceneSpec.sound(name: String, path: String, init: SoundParams.() -> Unit) {
     val soundParams = SoundParams(name)
     soundParams.soundPaths.add(path)
     soundParams.init()
+    this.sounds.add(soundParams)
+}
+
+fun SceneSpec.sound(name: String, path: String): SoundParams {
+    val soundParams = SoundParams(name)
+    soundParams.soundPaths.add(path)
     this.sounds.add(soundParams)
     return soundParams
 }
