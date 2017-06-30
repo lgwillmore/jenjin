@@ -9,8 +9,8 @@ import java.lang.Exception
 class NamedArrayTest {
 
     val name = "item1"
-    val item = ArbitraryThing("me1")
-    var testObj: NamedArray<ArbitraryThing> = NamedArray()
+    val item = ArbitraryScene("me1")
+    var testObj: NamedArray<ArbitraryScene> = NamedArray()
 
     @Before
     fun setUp() {
@@ -57,4 +57,4 @@ class NamedArrayTest {
 
 }
 
-data class ArbitraryThing(val value: String)
+data class ArbitraryScene(val value: String)

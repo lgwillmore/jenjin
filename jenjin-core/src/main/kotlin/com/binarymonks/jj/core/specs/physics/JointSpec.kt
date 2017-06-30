@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.joints.WeldJointDef
 import com.binarymonks.jj.core.extensions.copy
 
 /**
- * Like a [com.badlogic.gdx.physics.box2d.JointDef] but with names of Things in a scene rather than bodies.
+ * Like a [com.badlogic.gdx.physics.box2d.JointDef] but with names of Scenes in a scene rather than bodies.
  *
  * @param nameA instance name of Body A. Leave null to use scene Body.
  * @param nameB instance name of Body B.

@@ -25,12 +25,12 @@ class ScenePathTest {
     @Before
     fun setup() {
         mockoutGDXinJJ()
-        grandParent = thing("grandparent")
-        parent = thing("scene")
-        uncle = thing("uncle")
-        me = thing("me")
-        cousin = thing("cousin")
-        child = thing("child1")
+        grandParent = scene("grandparent")
+        parent = scene("scene")
+        uncle = scene("uncle")
+        me = scene("me")
+        cousin = scene("cousin")
+        child = scene("child1")
 
         grandParent.addChild(uncle)
         grandParent.addChild(parent)
@@ -66,7 +66,7 @@ class ScenePathTest {
 
 
 
-    fun thing(name: String): Scene {
+    fun scene(name: String): Scene {
         return Scene(
                 name,
                 null,

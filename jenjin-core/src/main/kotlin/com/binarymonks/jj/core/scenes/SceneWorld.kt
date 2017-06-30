@@ -6,32 +6,32 @@ import com.binarymonks.jj.core.JJ
 
 class SceneWorld {
 
-    internal var things = ObjectMap<Int, Scene>(200)
-    internal var queuedForAddThings = ObjectMap<Int, Scene>(100)
-    internal var namedThings = ObjectMap<String, Scene>(10)
+    internal var scenes = ObjectMap<Int, Scene>(200)
+    internal var queuedForAddScenes = ObjectMap<Int, Scene>(100)
+    internal var namedScenes = ObjectMap<String, Scene>(10)
     internal var removals = Array<Scene>()
     internal var inUpdate = false
 
     fun add(scene: Scene) {
         if (inUpdate) {
-            queuedForAddThings.put(scene.id, scene)
+            queuedForAddScenes.put(scene.id, scene)
         } else {
             reallyAdd(scene)
         }
     }
 
     private fun reallyAdd(scene: Scene) {
-        things.put(scene.id, scene)
+        scenes.put(scene.id, scene)
         if (scene.uniqueName != null) {
-            if (namedThings.containsKey(scene.uniqueName)) {
+            if (namedScenes.containsKey(scene.uniqueName)) {
                 throw Exception("Unique named Scene ${scene.uniqueName} already exists.")
             }
-            namedThings.put(scene.uniqueName, scene)
+            namedScenes.put(scene.uniqueName, scene)
         }
     }
 
-    fun getThingByUniqueName(uniqueName: String): Scene {
-        return namedThings.get(uniqueName)
+    fun getSceneByUniqueName(uniqueName: String): Scene {
+        return namedScenes.get(uniqueName)
     }
 
     fun update() {
@@ -39,23 +39,23 @@ class SceneWorld {
             reallyRemove(removal)
         }
         removals.clear()
-        for (thingEntry in queuedForAddThings) {
-            reallyAdd(thingEntry.value)
+        for (sceneEntry in queuedForAddScenes) {
+            reallyAdd(sceneEntry.value)
         }
-        queuedForAddThings.clear()
+        queuedForAddScenes.clear()
         inUpdate = true
-        for (thingEntry in things) {
-            thingEntry.value.update()
+        for (sceneEntry in scenes) {
+            sceneEntry.value.update()
         }
         inUpdate = false
     }
 
     private fun reallyRemove(removal: Scene) {
-        things.remove(removal.id)
+        scenes.remove(removal.id)
         if (removal.uniqueName != null) {
-            namedThings.remove(removal.uniqueName)
+            namedScenes.remove(removal.uniqueName)
         }
-        JJ.B.renderWorld.removeThing(removal)
+        JJ.B.renderWorld.removeScene(removal)
         removal.executeDestruction()
     }
 

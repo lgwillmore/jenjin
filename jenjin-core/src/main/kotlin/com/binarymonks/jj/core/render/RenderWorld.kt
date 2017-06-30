@@ -25,12 +25,12 @@ open class RenderWorld : RenderAPI {
         rayHandler.setAmbientLight(0.0f, 0.0f, 0.0f, 1.0f)
     }
 
-    fun addThing(scene: Scene) {
+    fun addScene(scene: Scene) {
         defaultRenderGraph.add(scene.renderRoot.specID, scene.id, scene.renderRoot.defaultRenderLayers)
         lightSourceRenderGraph.add(scene.renderRoot.specID, scene.id, scene.renderRoot.lightRenderLayers)
     }
 
-    fun removeThing(removal: Scene) {
+    fun removeScene(removal: Scene) {
         defaultRenderGraph.remove(removal.renderRoot.specID, removal.id, removal.renderRoot.defaultRenderLayers)
         lightSourceRenderGraph.remove(removal.renderRoot.specID, removal.id, removal.renderRoot.lightRenderLayers)
     }

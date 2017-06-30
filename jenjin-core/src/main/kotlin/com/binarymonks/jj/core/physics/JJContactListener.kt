@@ -12,19 +12,19 @@ class JJContactListener : ContactListener {
      */
     override fun beginContact(contact: Contact) {
         val fixtureA = contact.fixtureA
-        val thingA = getScene(fixtureA)
+        val sceneA = getScene(fixtureA)
         val resolverA = getResolver(fixtureA)
 
         val fixtureB = contact.fixtureB
-        val thingB = getScene(fixtureB)
+        val sceneB = getScene(fixtureB)
         val resolverB = getResolver(fixtureB)
 
-        resolverA.beginContact(thingB, fixtureB, contact, fixtureA)
-        resolverB.beginContact(thingA, fixtureA, contact, fixtureB)
+        resolverA.beginContact(sceneB, fixtureB, contact, fixtureA)
+        resolverB.beginContact(sceneA, fixtureA, contact, fixtureB)
 
 
-        resolverA.finalBeginContact(thingB, fixtureB, contact, fixtureA)
-        resolverB.finalBeginContact(thingA, fixtureA, contact, fixtureB)
+        resolverA.finalBeginContact(sceneB, fixtureB, contact, fixtureA)
+        resolverB.finalBeginContact(sceneA, fixtureA, contact, fixtureB)
     }
 
     private fun getResolver(fixture: Fixture): CollisionResolver {

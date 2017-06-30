@@ -9,3 +9,8 @@ fun Vector2.copy(): Vector2 {
     return vec2().set(this)
 }
 
+fun Vector2.hasSameDirection(other: Vector2, allowDegrees: Float): Boolean {
+    val angleBetween = angle(other)
+    return Math.abs(angleBetween) < allowDegrees
+}
+

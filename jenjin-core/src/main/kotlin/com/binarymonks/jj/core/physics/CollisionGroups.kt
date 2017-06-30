@@ -59,7 +59,7 @@ class GroupBuilder {
         return group
     }
 
-    internal fun build(): Array<CollisionGroup> {
+    fun build(): Array<CollisionGroup> {
         val builtGroups: Array<CollisionGroup> = Array()
         val categoryLookup: ObjectMap<String, Short> = ObjectMap()
         for (i in 0..groups.size - 1) {

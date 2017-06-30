@@ -10,13 +10,13 @@ import com.binarymonks.jj.core.specs.builders.*
 
 /**
  * [com.binarymonks.jj.core.specs.render.RenderNodeSpec.layer] Controls the layers that a Render node appears in relation to the layers
- * of other [com.binarymonks.jj.core.things.Thing] layers.
+ * of other [com.binarymonks.jj.core.scenes.Scene] layers.
  *
  * [com.binarymonks.jj.core.specs.render.RenderNodeSpec.priority] Controls the render order
- * of the [com.binarymonks.jj.core.things.Thing] nodes as they appear in a Layer.
+ * of the [com.binarymonks.jj.core.scenes.Scene] nodes as they appear in a Layer.
  *
- * This lets you add arbitrary internal layers to a [com.binarymonks.jj.core.things.Thing] to build the composite render you want. At the same clock
- * it lets [com.binarymonks.jj.core.things.Thing]s in the world with interleaving layers render as you would expect them to when they overlap.
+ * This lets you add arbitrary internal layers to a [com.binarymonks.jj.core.scenes.Scene] to build the composite render you want. At the same time
+ * it lets [com.binarymonks.jj.core.scenes.Scene]s in the world with interleaving layers render as you would expect them to when they overlap.
  *
  * If 1 of your objects suddenly needs more layer complexity
  * - this does not spill out into having to make your world have more layer complexity and having to shuffle everything around.

@@ -31,9 +31,9 @@ abstract class JJGame(val jjConfig: JJConfig = JJConfig()) : ApplicationListener
         JJ.B.tasks.preloopTasks.update()
         JJ.B.sceneWorld.update()
         JJ.B.tasks.prePhysicsTasks.update()
-        JJ.B.layers.update()
         JJ.B.physicsWorld.update()
         JJ.B.tasks.postPhysicsTasks.update()
+        JJ.B.layers.update()
     }
 
     override fun resume() {

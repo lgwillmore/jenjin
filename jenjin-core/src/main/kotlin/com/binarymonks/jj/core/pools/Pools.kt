@@ -60,7 +60,7 @@ fun recycleItems(collectionOfObjects: Iterable<*>) {
 /**
  * A place to manage your pools and pooled objects.
  *
- * If your thing is [Poolable] then you can just get new ones and recycle old ones here.
+ * If your scene is [Poolable] then you can just get new ones and recycle old ones here.
  * If not - A [PoolManager] must be registered.
  *
  * Once you have that you can use [new], [recycle] and [recycleItems] to deal with your pooled objects
@@ -81,7 +81,7 @@ class Pools : PoolsAPI{
      * Get something from the pool or make a new one.
      *
      *
-     * If your thing is [Poolable] then all is done for you.
+     * If your scene is [Poolable] then all is done for you.
      * If not - A [PoolManager] must be registered.
      *
      *
@@ -108,7 +108,7 @@ class Pools : PoolsAPI{
      * Get something from the pool or make a new one.
      *
      *
-     * If your thing is [Poolable] then all is done for you.
+     * If your scene is [Poolable] then all is done for you.
      * If not - A [PoolManager] must be registered.
      *
      *
@@ -184,9 +184,9 @@ class Pools : PoolsAPI{
         pools.get(clazzToClear.java).clear()
     }
 
-    override fun <P, T : PoolManager<P>> registerManager(poolManager: T, thingToPoolClass: Class<P>) {
-        if (!pools.containsKey(thingToPoolClass)) {
-            pools.put(thingToPoolClass, Pool(poolManager))
+    override fun <P, T : PoolManager<P>> registerManager(poolManager: T, sceneToPoolClass: Class<P>) {
+        if (!pools.containsKey(sceneToPoolClass)) {
+            pools.put(sceneToPoolClass, Pool(poolManager))
         }
     }
 

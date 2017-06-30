@@ -143,8 +143,8 @@ class TouchManager(internal var camera: OrthographicCamera) : InputProcessor {
         internal var testPointCache = new(Vector2::class)
         internal var touchOffset = new(Vector2::class)
 
-        operator fun set(touchedThing: Scene, offset: Vector2): Touch {
-            this.touchedScene = touchedThing
+        operator fun set(touchedScene: Scene, offset: Vector2): Touch {
+            this.touchedScene = touchedScene
             this.touchOffset.set(offset)
             return this
         }

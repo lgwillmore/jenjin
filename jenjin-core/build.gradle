@@ -5,12 +5,21 @@ buildscript {
     }
 }
 
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+
 publishing {
     publications {
         maven(MavenPublication) {
             artifactId 'jenjin-core'
 
             from components.java
+
+            artifact sourceJar {
+                classifier "sources"
+            }
+
         }
     }
 }

@@ -14,7 +14,7 @@ interface PoolsAPI {
     /**
      * Register [PoolManager]s for objects that are not [com.binarymonks.jj.core.pools.Poolable]
      */
-    fun <P, T : PoolManager<P>> registerManager(poolManager: T, thingToPoolClass: Class<P>)
+    fun <P, T : PoolManager<P>> registerManager(poolManager: T, sceneToPoolClass: Class<P>)
 
     /**
      * Use this if you want to dump the pooled objects.

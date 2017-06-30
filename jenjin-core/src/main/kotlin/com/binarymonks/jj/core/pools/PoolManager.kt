@@ -7,11 +7,11 @@ package com.binarymonks.jj.core.pools
 </POOLED_THING> */
 interface PoolManager<POOLED_THING> {
     /**
-     * Called to reset each thing as it enters the pool
+     * Called to reset each scene as it enters the pool
 
-     * @param pooledThing
+     * @param pooledScene
      */
-    fun reset(pooledThing: POOLED_THING)
+    fun reset(pooledScene: POOLED_THING)
 
     /**
      * Called when there are none in the pool
@@ -23,7 +23,7 @@ interface PoolManager<POOLED_THING> {
     /**
      * Called when the pool is being dumped. Clean up any assets or other entangling references.
 
-     * @param pooledThing
+     * @param pooledScene
      */
-    fun dispose(pooledThing: POOLED_THING)
+    fun dispose(pooledScene: POOLED_THING)
 }

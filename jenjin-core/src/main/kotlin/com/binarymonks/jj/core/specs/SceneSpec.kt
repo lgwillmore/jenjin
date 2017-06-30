@@ -23,6 +23,7 @@ open class SceneSpec : SceneSpecRef {
     var render: RenderSpec = RenderSpec()
     var sounds: Array<SoundParams> = Array()
     var components: Array<Component> = Array()
+    var properties: ObjectMap<String, Any> = ObjectMap()
     internal var isPooled: Boolean = true
     var nodes: ObjectMap<String, SceneNode> = ObjectMap()
     var joints: Array<JointSpec> = Array()
@@ -56,13 +57,16 @@ open class SceneSpec : SceneSpecRef {
         }
     }
 
+    fun prop(key: String, value: Any? = null) {
+        properties.put(key, value)
+    }
+
     override fun resolve(): SceneSpec {
         return this
     }
 
     override fun getAssets(): Array<AssetReference> {
         val assets: Array<AssetReference> = Array()
-        //TODO: Make me specs not nullable - they always have one. In fact, things must become scenes
         for (node in render.renderNodes) {
             assets.addAll(node.getAssets())
         }

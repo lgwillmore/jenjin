@@ -1,22 +1,34 @@
 package com.binarymonks.jj.core.scenes
 
+import com.badlogic.gdx.utils.ObjectMap
+import com.binarymonks.jj.core.JJ
+import com.binarymonks.jj.core.audio.SoundEffects
+import com.binarymonks.jj.core.components.Component
+import com.binarymonks.jj.core.components.ComponentMaster
+import com.binarymonks.jj.core.physics.PhysicsRoot
+import com.binarymonks.jj.core.properties.HasProps
+import com.binarymonks.jj.core.render.RenderRoot
+import com.binarymonks.jj.core.utils.NamedArray
+import kotlin.reflect.KClass
+
 open class Scene(
         var name: String?,
+        var specName: String?,
         var uniqueName: String?,
-        val physicsRoot: com.binarymonks.jj.core.physics.PhysicsRoot,
-        val renderRoot: com.binarymonks.jj.core.render.RenderRoot,
-        val soundEffects: com.binarymonks.jj.core.audio.SoundEffects,
-        val properties: com.badlogic.gdx.utils.ObjectMap<String, Any>,
+        val physicsRoot: PhysicsRoot,
+        val renderRoot: RenderRoot,
+        val soundEffects: SoundEffects,
+        val properties: ObjectMap<String, Any>,
         val pooled: Boolean = false
-) : com.binarymonks.jj.core.properties.HasProps {
+) : HasProps {
 
 
-    var id = com.binarymonks.jj.core.JJ.B.nextID()
-    internal var componentMaster = com.binarymonks.jj.core.components.ComponentMaster()
+    var id = JJ.B.nextID()
+    internal var componentMaster = ComponentMaster()
     var isDestroyed: Boolean = false
         private set
-    private var children: com.binarymonks.jj.core.utils.NamedArray<Scene> = com.binarymonks.jj.core.utils.NamedArray()
-    private var parent: com.binarymonks.jj.core.scenes.Scene? = null
+    private var children: NamedArray<Scene> = NamedArray()
+    private var parent: Scene? = null
 
     init {
         physicsRoot.parent = this
@@ -40,12 +52,12 @@ open class Scene(
         }
     }
 
-    fun addComponent(component: com.binarymonks.jj.core.components.Component) {
+    fun addComponent(component: Component) {
         component.scene = this
         componentMaster.addComponent(component)
     }
 
-    fun <T: com.binarymonks.jj.core.components.Component> getComponent(type: kotlin.reflect.KClass<T>): T?{
+    fun <T : Component> getComponent(type: KClass<T>): T? {
         return componentMaster.getComponent(type)
     }
 
@@ -57,7 +69,7 @@ open class Scene(
         return properties.get(key)
     }
 
-    fun addChild(nodeScene: com.binarymonks.jj.core.scenes.Scene) {
+    fun addChild(nodeScene: Scene) {
         if (nodeScene.name != null) {
             children.add(nodeScene.name!!, nodeScene)
         } else {
@@ -66,19 +78,19 @@ open class Scene(
         nodeScene.parent = this
     }
 
-    fun getChild(name: String): com.binarymonks.jj.core.scenes.Scene? {
+    fun getChild(name: String): Scene? {
         return children.get(name)
     }
 
-    fun getChild(index: Int): com.binarymonks.jj.core.scenes.Scene {
+    fun getChild(index: Int): Scene {
         return children[index]
     }
 
-    fun parent(): com.binarymonks.jj.core.scenes.Scene {
+    fun parent(): Scene {
         return checkNotNull(parent)
     }
 
-    fun getNode(path: com.binarymonks.jj.core.scenes.ScenePath): com.binarymonks.jj.core.scenes.Scene {
+    fun getNode(path: ScenePath): Scene {
         return path.from(this)
     }
 
@@ -95,7 +107,7 @@ open class Scene(
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is com.binarymonks.jj.core.scenes.Scene) return false
+        if (other !is Scene) return false
 
         if (name != other.name) return false
         if (uniqueName != other.uniqueName) return false

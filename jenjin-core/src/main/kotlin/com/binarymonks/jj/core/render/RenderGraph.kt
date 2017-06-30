@@ -12,22 +12,22 @@ class RenderGraph {
 
 
     /**
-     * Add a [com.binarymonks.jj.core.things.Thing]s render nodes to the graph
+     * Add a [com.binarymonks.jj.core.scenes.Scene]s render nodes to the graph
      *
      * @param specID The [com.binarymonks.jj.core.render.RenderRoot.specID]
-     * @param thingID the [com.binarymonks.jj.core.things.Thing.id]
+     * @param sceneID the [com.binarymonks.jj.core.scenes.Scene.id]
      */
-    fun add(specID: Int, thingID: Int, thingLayers: ObjectMap<Int, RenderLayer>) {
-        for (layer in thingLayers) {
+    fun add(specID: Int, sceneID: Int, sceneLayers: ObjectMap<Int, RenderLayer>) {
+        for (layer in sceneLayers) {
             if (!graphLayers.containsKey(layer.key)) {
                 graphLayers.put(layer.key, GraphLayer())
             }
-            graphLayers.get(layer.key).add(specID, thingID, layer.value)
+            graphLayers.get(layer.key).add(specID, sceneID, layer.value)
         }
     }
 
-    fun remove(specID: Int, id: Int, thingLayers: ObjectMap<Int, RenderLayer>) {
-        for (layer in thingLayers) {
+    fun remove(specID: Int, id: Int, sceneLayers: ObjectMap<Int, RenderLayer>) {
+        for (layer in sceneLayers) {
             if (graphLayers.containsKey(layer.key)) {
                 graphLayers.get(layer.key).remove(specID, id)
             }
@@ -35,22 +35,22 @@ class RenderGraph {
     }
 
     /**
-     * We render the RenderLayer of each Scene in batches by their ThingSpec id.
+     * We render the RenderLayer of each Scene in batches by their SceneSpec id.
      * This will maximise the advantages of SpriteBatch.
      */
     inner class GraphLayer {
-        var thingLayersByThingPathAndID = ObjectMap<Int, ObjectMap<Int, RenderLayer>>()
+        var sceneLayersByScenePathAndID = ObjectMap<Int, ObjectMap<Int, RenderLayer>>()
 
-        fun add(specID: Int, thingID: Int, thingLayer: RenderLayer) {
-            if (!thingLayersByThingPathAndID.containsKey(specID)) {
-                thingLayersByThingPathAndID.put(specID, ObjectMap())
+        fun add(specID: Int, sceneID: Int, sceneLayer: RenderLayer) {
+            if (!sceneLayersByScenePathAndID.containsKey(specID)) {
+                sceneLayersByScenePathAndID.put(specID, ObjectMap())
             }
-            thingLayersByThingPathAndID.get(specID).put(thingID, thingLayer)
+            sceneLayersByScenePathAndID.get(specID).put(sceneID, sceneLayer)
         }
 
         fun remove(specID: Int, id: Int) {
-            if (thingLayersByThingPathAndID.containsKey(specID)) {
-                thingLayersByThingPathAndID.get(specID).remove(id)
+            if (sceneLayersByScenePathAndID.containsKey(specID)) {
+                sceneLayersByScenePathAndID.get(specID).remove(id)
             }
         }
     }

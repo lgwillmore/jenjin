@@ -12,6 +12,7 @@ import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.audio.SoundEffects
 import com.binarymonks.jj.core.audio.SoundParams
 import com.binarymonks.jj.core.extensions.copy
+import com.binarymonks.jj.core.extensions.merge
 import com.binarymonks.jj.core.physics.PhysicsNode
 import com.binarymonks.jj.core.physics.PhysicsRoot
 import com.binarymonks.jj.core.pools.mat3
@@ -47,21 +48,21 @@ class MasterFactory {
 
         val myScene = createSceneCore(scene, paramsStack)
 
-        val things = ObjectMap<String, Scene>()
+        val scenes = ObjectMap<String, Scene>()
         for (entry in scene.nodes) {
-            val nodeScene = checkNotNull(entry.value.sceneRef).resolve()
+            val nodeSceneRef = checkNotNull(entry.value.sceneRef).resolve()
             val nodeParams = entry.value.instanceParams
             paramsStack.add(nodeParams)
-            val nodeThing = createSceneHelper(nodeScene, paramsStack)
-            things.put(entry.key, nodeThing)
-            myScene.addChild(nodeThing)
+            val nodeScene = createSceneHelper(nodeSceneRef, paramsStack)
+            scenes.put(entry.key, nodeScene)
+            myScene.addChild(nodeScene)
             paramsStack.pop()
         }
         for (jointSpec in scene.joints) {
-            val bodyA: Body = if (jointSpec.nameA == null) myScene.physicsRoot.b2DBody else things[jointSpec.nameA, myScene].physicsRoot.b2DBody
+            val bodyA: Body = if (jointSpec.nameA == null) myScene.physicsRoot.b2DBody else scenes[jointSpec.nameA, myScene].physicsRoot.b2DBody
             val jointDef = jointSpec.toJointDef(
                     bodyA,
-                    things[jointSpec.nameB].physicsRoot.b2DBody,
+                    scenes[jointSpec.nameB].physicsRoot.b2DBody,
                     paramsStack.transformMatrix
             )
             JJ.B.physicsWorld.b2dworld.createJoint(jointDef)
@@ -76,24 +77,27 @@ class MasterFactory {
                 scene.resetFromPool(paramsStack.x, paramsStack.y, paramsStack.rotationD)
                 scene.uniqueName = paramsStack.peek().uniqueInstanceName
                 scene.name = paramsStack.peek().name
+                scene.properties.clear()
+                scene.properties.merge(sceneSpec.properties).merge(paramsStack.peek().properties)
                 return scene
             }
         }
-        val thing = Scene(
-                paramsStack.peek().name,
-                paramsStack.peek().uniqueInstanceName,
+        val scene = Scene(
+                name = paramsStack.peek().name,
+                specName= sceneSpec.name,
+                uniqueName = paramsStack.peek().uniqueInstanceName,
                 physicsRoot = buildPhysicsRoot(sceneSpec.physics, paramsStack),
                 renderRoot = buildRenderRoot(sceneSpec.render, paramsStack),
                 soundEffects = buildSoundEffects(sceneSpec.sounds),
-                properties = paramsStack.peek().properties.copy(),
+                properties = sceneSpec.properties.copy().merge(paramsStack.peek().properties),
                 pooled = sceneSpec.isPooled
         )
-        addBehaviour(thing, sceneSpec)
+        addBehaviour(scene, sceneSpec)
 
-        JJ.B.renderWorld.addThing(thing)
-        JJ.B.sceneWorld.add(thing)
+        JJ.B.renderWorld.addScene(scene)
+        JJ.B.sceneWorld.add(scene)
 
-        return thing
+        return scene
     }
 
     private fun addBehaviour(scene: Scene, sceneSpec: SceneSpec) {
@@ -189,7 +193,7 @@ class MasterFactory {
         fDef.filter.categoryBits = cd.category
         fDef.filter.maskBits = cd.mask
         val fixture = body.createFixture(fDef)
-        val physicsNode = PhysicsNode(fixture, physicsRoot, material?.name)
+        val physicsNode = PhysicsNode(fixtureSpec.name , fixture, physicsRoot, material?.name)
         for (ibegin in fixtureSpec.beginCollisions) {
             physicsNode.collisionResolver.addInitialBegin(ibegin.clone())
         }

@@ -85,18 +85,18 @@ class GameRenderingLayer(
     }
 
     private fun updateLayer(layer: RenderGraph.GraphLayer) {
-        for (componentsByThing in layer.thingLayersByThingPathAndID) {
-            updateThingLayers(componentsByThing.value)
+        for (componentsByScene in layer.sceneLayersByScenePathAndID) {
+            updateSceneLayers(componentsByScene.value)
         }
     }
 
-    private fun updateThingLayers(thingLayers: ObjectMap<Int, RenderLayer>) {
-        for (thingLayer in thingLayers) {
-            updateThingNodes(thingLayer.value.renderNodes)
+    private fun updateSceneLayers(sceneLayers: ObjectMap<Int, RenderLayer>) {
+        for (sceneLayer in sceneLayers) {
+            updateSceneNodes(sceneLayer.value.renderNodes)
         }
     }
 
-    private fun updateThingNodes(renderNodes: Array<RenderNode>) {
+    private fun updateSceneNodes(renderNodes: Array<RenderNode>) {
         for (node in renderNodes) {
             node.render(camera)
         }

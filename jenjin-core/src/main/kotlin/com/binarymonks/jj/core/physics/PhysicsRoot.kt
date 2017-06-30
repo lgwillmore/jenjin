@@ -26,8 +26,9 @@ class PhysicsRoot(val b2DBody: Body) {
             field = value
             b2DBody.userData = value
             collisionResolver.me = value
+            nodes.forEach { it.collisionResolver.me = value }
         }
-
+    var nodes: NamedArray<PhysicsNode> = NamedArray()
     var collisionResolver: CollisionResolver = CollisionResolver()
     var lights: NamedArray<Light> = NamedArray()
 
@@ -60,6 +61,11 @@ class PhysicsRoot(val b2DBody: Body) {
         return false
     }
 
+    fun getProperty(propertyKey: String): Any? {
+        if (parent != null) return parent!!.getProp(propertyKey)
+        return null
+    }
+
     internal fun destroy(pooled: Boolean) {
         if (!pooled) {
             JJ.B.physicsWorld.b2dworld.destroyBody(b2DBody)
@@ -71,9 +77,9 @@ class PhysicsRoot(val b2DBody: Body) {
     internal fun neutralise() {
         if (!JJ.B.physicsWorld.isUpdating) {
             for (fixture in b2DBody.fixtureList) {
-                val thingNode = fixture.userData as PhysicsNode
-                thingNode.properties.put(COLLISION_CAT_CACHE, fixture.filterData.categoryBits)
-                thingNode.properties.put(COLLISION_MASK_CACHE, fixture.filterData.maskBits)
+                val sceneNode = fixture.userData as PhysicsNode
+                sceneNode.properties.put(COLLISION_CAT_CACHE, fixture.filterData.categoryBits)
+                sceneNode.properties.put(COLLISION_MASK_CACHE, fixture.filterData.maskBits)
                 val filterData = fixture.filterData
                 filterData.categoryBits = NONE
                 filterData.maskBits = NONE
@@ -119,6 +125,14 @@ class PhysicsRoot(val b2DBody: Body) {
         for (light in lights) {
             light.isActive = true
         }
+    }
+
+    fun addNode(physicsNode: PhysicsNode) {
+        nodes.add(physicsNode)
+    }
+
+    fun getNode(name:String): PhysicsNode? {
+        return nodes.get(name)
     }
 
 }
