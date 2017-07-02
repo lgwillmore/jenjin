@@ -67,6 +67,18 @@ class Scenes : ScenesAPI {
 }
 
 class CreateSceneFunction : OneTimeTask(), Poolable {
+
+
+    internal var sceneSpec: SceneSpec? = null
+    internal var instanceParams: InstanceParams? = null
+    internal var bond: Bond<Scene>? = null
+
+    operator fun set(sceneSpec: SceneSpec, instanceParams: InstanceParams, bond: Bond<Scene>) {
+        this.sceneSpec = sceneSpec
+        this.instanceParams = instanceParams.clone()
+        this.bond = bond
+    }
+
     override fun doOnce() {
         val scene = JJ.B.scenes.masterFactory.createScene(sceneSpec!!, instanceParams!!)
         bond!!.succeed(scene)
@@ -78,15 +90,5 @@ class CreateSceneFunction : OneTimeTask(), Poolable {
         sceneSpec = null
         instanceParams = null
         bond = null
-    }
-
-    internal var sceneSpec: SceneSpec? = null
-    internal var instanceParams: InstanceParams? = null
-    internal var bond: Bond<Scene>? = null
-
-    operator fun set(sceneSpec: SceneSpec, instanceParams: InstanceParams, bond: Bond<Scene>) {
-        this.sceneSpec = sceneSpec
-        this.instanceParams = instanceParams.clone()
-        this.bond = bond
     }
 }

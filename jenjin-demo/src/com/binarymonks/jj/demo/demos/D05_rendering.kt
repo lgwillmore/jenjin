@@ -8,6 +8,7 @@ import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.specs.Chain
 import com.binarymonks.jj.core.specs.Circle
+import com.binarymonks.jj.core.specs.Polygon
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.*
 
@@ -40,7 +41,8 @@ class D05_rendering : JJGame(MyConfig05.jjConfig) {
 
     //We can draw shapes - with the same dimensions as our fixtures
     private fun shapes(): SceneSpec {
-        val poly = com.binarymonks.jj.core.specs.Polygon(
+
+        val poly = Polygon(
                 vec2(-2f, 0f),
                 vec2(-1.5f, 1.5f),
                 vec2(0f, 2f),
@@ -59,6 +61,7 @@ class D05_rendering : JJGame(MyConfig05.jjConfig) {
         )
 
         return scene {
+
             // Polygon
             node {
                 physics {
@@ -71,7 +74,7 @@ class D05_rendering : JJGame(MyConfig05.jjConfig) {
                 render {
                     polygonRender(poly.vertices) {
                         offsetX = 4f
-                        color.set(Color.RED)
+                        color.set(Color.PINK)
                     }
                 }
             }
@@ -86,7 +89,7 @@ class D05_rendering : JJGame(MyConfig05.jjConfig) {
                 }
                 render {
                     circleRender(2f) {
-                        color.set(Color.GREEN)
+                        color.set(Color.YELLOW)
                         offsetX = -4f
                     }
                 }

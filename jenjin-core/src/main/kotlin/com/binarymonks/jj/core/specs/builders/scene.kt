@@ -7,6 +7,7 @@ import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.specs.InstanceParams
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.physics.PhysicsSpec
+import com.binarymonks.jj.core.specs.physics.PrismaticJointSpec
 import com.binarymonks.jj.core.specs.physics.RevoluteJointSpec
 import com.binarymonks.jj.core.specs.physics.WeldJointSpec
 import com.binarymonks.jj.core.specs.render.RenderSpec
@@ -91,6 +92,12 @@ fun SceneSpec.revJoint(nameA: String?, nameB: String, localAnchorA: Vector2, loc
     val revJoint = RevoluteJointSpec(nameA, nameB, localAnchorA, localAnchorB)
     revJoint.init()
     this.joints.add(revJoint)
+}
+
+fun SceneSpec.prismaticJoint(nameA: String?, nameB: String, init: PrismaticJointSpec.() -> Unit) {
+    val prisJoint = PrismaticJointSpec(nameA, nameB)
+    prisJoint.init()
+    this.joints.add(prisJoint)
 }
 
 fun SceneSpec.weldJoint(nameA: String, nameB: String, anchor: Vector2, init: WeldJointSpec.() -> Unit) {

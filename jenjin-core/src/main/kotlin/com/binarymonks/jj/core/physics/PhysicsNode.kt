@@ -2,6 +2,7 @@ package com.binarymonks.jj.core.physics
 
 import com.badlogic.gdx.physics.box2d.Fixture
 import com.badlogic.gdx.utils.ObjectMap
+import com.binarymonks.jj.core.JJ
 
 
 class PhysicsNode(var name: String?, var fixture: Fixture, var physicsRoot: PhysicsRoot, var material: String?) {
@@ -34,6 +35,11 @@ class PhysicsNode(var name: String?, var fixture: Fixture, var physicsRoot: Phys
             fixture.filterData.categoryBits = newCat
             stashed = true
         }
+    }
+
+    fun stashFilter(newGroupName: String) {
+        val collisionData = JJ.B.physicsWorld.collisionGroups.getCollisionData(newGroupName)
+        stashFilter(collisionData.category, collisionData.mask)
     }
 
     fun unStashFilter() {
