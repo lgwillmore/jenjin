@@ -1,8 +1,6 @@
 package com.binarymonks.jj.core.physics
 
-import com.badlogic.gdx.physics.box2d.Contact
-import com.badlogic.gdx.physics.box2d.ContactListener
-import com.badlogic.gdx.physics.box2d.Fixture
+import com.badlogic.gdx.physics.box2d.*
 import com.binarymonks.jj.core.scenes.Scene
 
 class JJContactListener : ContactListener {
@@ -53,8 +51,8 @@ class JJContactListener : ContactListener {
         resolverB.endContact(objectA, fixtureA, contact, fixtureB)
     }
 
-    override fun preSolve(contact: com.badlogic.gdx.physics.box2d.Contact, oldManifold: com.badlogic.gdx.physics.box2d.Manifold) {}
+    override fun preSolve(contact: Contact, oldManifold: Manifold) {}
 
-    override fun postSolve(contact: com.badlogic.gdx.physics.box2d.Contact, impulse: com.badlogic.gdx.physics.box2d.ContactImpulse) {}
+    override fun postSolve(contact: Contact, impulse: ContactImpulse) {}
 
 }
