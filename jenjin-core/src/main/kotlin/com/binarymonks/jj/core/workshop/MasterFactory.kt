@@ -84,7 +84,7 @@ class MasterFactory {
         }
         val scene = Scene(
                 name = paramsStack.peek().name,
-                specName= sceneSpec.name,
+                specName = sceneSpec.name,
                 uniqueName = paramsStack.peek().uniqueInstanceName,
                 physicsRoot = buildPhysicsRoot(sceneSpec.physics, paramsStack),
                 renderRoot = buildRenderRoot(sceneSpec.render, paramsStack),
@@ -139,15 +139,7 @@ class MasterFactory {
 
         val physicsRoot = PhysicsRoot(body)
 
-        for (ibegin in physicsSpec.beginCollisions) {
-            physicsRoot.collisionResolver.addInitialBegin(ibegin.clone())
-        }
-        for (fbegin in physicsSpec.finalBeginCollisions) {
-            physicsRoot.collisionResolver.addFinalBegin(fbegin.clone())
-        }
-        for (end in physicsSpec.endCollisions) {
-            physicsRoot.collisionResolver.addInitialBegin(end.clone())
-        }
+        physicsRoot.collisionResolver.collisions.copyAppendFrom(physicsSpec.collisions)
 
         for (fixtureSpec in physicsSpec.fixtures) {
             buildFixture(physicsRoot, fixtureSpec, body, paramsStack)
@@ -193,16 +185,8 @@ class MasterFactory {
         fDef.filter.categoryBits = cd.category
         fDef.filter.maskBits = cd.mask
         val fixture = body.createFixture(fDef)
-        val physicsNode = PhysicsNode(fixtureSpec.name , fixture, physicsRoot, material?.name)
-        for (ibegin in fixtureSpec.beginCollisions) {
-            physicsNode.collisionResolver.addInitialBegin(ibegin.clone())
-        }
-        for (fbegin in fixtureSpec.finalBeginCollisions) {
-            physicsNode.collisionResolver.addFinalBegin(fbegin.clone())
-        }
-        for (end in fixtureSpec.endCollisions) {
-            physicsNode.collisionResolver.addInitialBegin(end.clone())
-        }
+        val physicsNode = PhysicsNode(fixtureSpec.name, fixture, physicsRoot, material?.name)
+        physicsNode.collisionResolver.collisions.copyAppendFrom(fixtureSpec.collisions)
         fixture.userData = physicsNode
         shape!!.dispose()
     }

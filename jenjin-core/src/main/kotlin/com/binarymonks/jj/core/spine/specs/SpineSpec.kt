@@ -91,9 +91,7 @@ class SpineSpec() : SceneSpecRef {
                         gravityScale = 0f
                         val fixture = buildFixture(bone, mass)
                         addFixture(fixture)
-                        spineSkeleton!!.all.beginCollisions.forEach { beginCollision(it) }
-                        spineSkeleton!!.all.finalBeginCollisions.forEach { finalBeginCollision(it) }
-                        spineSkeleton!!.all.endCollisions.forEach { endCollision(it) }
+                        collisions.copyAppendFrom(spineSkeleton!!.all.collisions)
                     }
                     component(SpineBoneComponent()) {
                         bonePath = path

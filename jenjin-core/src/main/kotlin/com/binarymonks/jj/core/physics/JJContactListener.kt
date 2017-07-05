@@ -51,8 +51,30 @@ class JJContactListener : ContactListener {
         resolverB.endContact(objectA, fixtureA, contact, fixtureB)
     }
 
-    override fun preSolve(contact: Contact, oldManifold: Manifold) {}
+    override fun preSolve(contact: Contact, oldManifold: Manifold) {
+        val fixtureA = contact.fixtureA
+        val sceneA = getScene(fixtureA)
+        val resolverA = getResolver(fixtureA)
 
-    override fun postSolve(contact: Contact, impulse: ContactImpulse) {}
+        val fixtureB = contact.fixtureB
+        val sceneB = getScene(fixtureB)
+        val resolverB = getResolver(fixtureB)
+
+        resolverA.preSolveContact(sceneB, fixtureB, contact, fixtureA, oldManifold)
+        resolverB.preSolveContact(sceneA, fixtureA, contact, fixtureB, oldManifold)
+    }
+
+    override fun postSolve(contact: Contact, impulse: ContactImpulse) {
+        val fixtureA = contact.fixtureA
+        val sceneA = getScene(fixtureA)
+        val resolverA = getResolver(fixtureA)
+
+        val fixtureB = contact.fixtureB
+        val sceneB = getScene(fixtureB)
+        val resolverB = getResolver(fixtureB)
+
+        resolverA.postSolveContact(sceneB, fixtureB, contact, fixtureA, impulse)
+        resolverB.postSolveContact(sceneA, fixtureA, contact, fixtureB, impulse)
+    }
 
 }

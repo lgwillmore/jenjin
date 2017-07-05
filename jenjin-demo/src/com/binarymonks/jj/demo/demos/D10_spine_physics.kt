@@ -47,12 +47,12 @@ class D10_spine_physics : JJGame(MyConfig10.jjConfig) {
             originY = 247f
             spineSkeleton = SpineSkeletonSpec {
                 all.collisionGroup = CollisionGroupSpecName("character")
-                all.beginCollision(TriggerRagDollCollision())
+                all.collisions.begin(TriggerRagDollCollision())
                 overrideFixtureFor("head") {
                     shape = Circle(0.4f)
                     offsetX = 0.4f
-                    friction=0.4f
-                    restitution=0.1f
+                    friction = 0.4f
+                    restitution = 0.1f
                     collsionGroup("character")
                 }
             }
@@ -90,7 +90,7 @@ class D10_spine_physics : JJGame(MyConfig10.jjConfig) {
                 bodyType = BodyDef.BodyType.StaticBody
                 fixture {
                     shape = Rectangle(1f, 1f)
-                    friction=0.5f
+                    friction = 0.5f
                     collsionGroup("terrain")
                 }
             }

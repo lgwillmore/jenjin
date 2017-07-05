@@ -66,10 +66,10 @@ class D03_collisions : JJGame(MyConfig03.jjConfig) {
                     // We bind the collision group to a property key
                     collisionGroupProperty("collisionGroup")
                     // We can add collisions to the fixture (called first)
-                    beginCollision(SoundCollision(soundName = "bounce"))
+                    collisions.begin(SoundCollision(soundName = "bounce"))
                 }
                 //And we can add collisions to the root (called after fixture collision handlers)
-                beginCollision(SoundCollision(soundName = "bounce"))
+                collisions.begin(SoundCollision(soundName = "bounce"))
             }
         }
     }
