@@ -57,8 +57,8 @@ open class Scene(
         componentMaster.addComponent(component)
     }
 
-    fun <T : Component> getComponent(type: KClass<T>): T? {
-        return componentMaster.getComponent(type)
+    fun <T : Component> getComponent(type: KClass<T>): T {
+        return checkNotNull(componentMaster.getComponent(type))
     }
 
     override fun hasProp(key: String): Boolean {

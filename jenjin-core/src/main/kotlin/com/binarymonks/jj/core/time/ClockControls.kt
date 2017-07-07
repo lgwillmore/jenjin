@@ -5,6 +5,16 @@ import com.binarymonks.jj.core.api.ClockAPI
 
 class ClockControls : ClockAPI {
 
+    companion object {
+        private var fixedDelta = (1f / 60).toDouble()
+        private var fixedDeltaFloat = 1f / 60
+        private var realToGameRatio = 1.0f
+        private var DELTA = (1f / 60).toDouble()
+        private var DELTA_FLOAT = 1f / 60
+        private var TIME = 0.0
+        private var timeFunction = TimeFunction.RATIO_TIME
+    }
+
     val scheduler: Scheduler = Scheduler(this::timeFloat)
 
     override fun schedule(function: () -> Unit, delaySeconds: Float, repeat: Int): Int {
@@ -89,15 +99,5 @@ class ClockControls : ClockAPI {
         };
 
         abstract fun update(realDelta: Float)
-    }
-
-    companion object {
-        private var fixedDelta = (1f / 60).toDouble()
-        private var fixedDeltaFloat = 1f / 60
-        private var realToGameRatio = 1.0f
-        private var DELTA = (1f / 60).toDouble()
-        private var DELTA_FLOAT = 1f / 60
-        private var TIME = 0.0
-        private var timeFunction = TimeFunction.RATIO_TIME
     }
 }
