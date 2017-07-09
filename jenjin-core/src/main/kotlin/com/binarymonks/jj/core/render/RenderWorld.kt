@@ -10,6 +10,7 @@ import com.binarymonks.jj.core.scenes.Scene
 import com.esotericsoftware.spine.SkeletonRenderer
 
 open class RenderWorld : RenderAPI {
+
     var shapeRenderer = ShapeRenderer()
     var polyBatch = PolygonSpriteBatch()
     var skeletonRenderer = SkeletonRenderer<PolygonSpriteBatch>()
@@ -37,6 +38,10 @@ open class RenderWorld : RenderAPI {
 
     override fun setAmbientLight(r: Float, g: Float, b: Float, a: Float) {
         rayHandler.setAmbientLight(r, g, b, a)
+    }
+
+    override fun setClearColor(r: Float, g: Float, b: Float, a: Float) {
+        JJ.B.layers.clearColor.set(r, g, b, a)
     }
 
     fun switchToShapes(fill: Boolean) {

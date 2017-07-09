@@ -15,11 +15,10 @@ import com.binarymonks.jj.core.api.LayersAPI
  *
  * T
  */
-class LayerStack : LayersAPI {
+class LayerStack(var clearColor: Color = Color(0f, 0f, 0f, 1f)) : LayersAPI {
 
     private var inputMultiplexer = InputMultiplexer()
-    private  var clearColor = Color(0f, 0f, 0f, 1f)
-    private  var layers = Array<Layer>()
+    private var layers = Array<Layer>()
 
     init {
         Gdx.input.inputProcessor = inputMultiplexer
@@ -44,6 +43,6 @@ class LayerStack : LayersAPI {
     }
 
     fun resize(width: Int, height: Int) {
-        layers.forEach { it.resize(width,height) }
+        layers.forEach { it.resize(width, height) }
     }
 }

@@ -1,10 +1,7 @@
 package com.binarymonks.jj.core.specs.physics
 
-import com.badlogic.gdx.utils.Array
-import com.binarymonks.jj.core.physics.CollisionHandler
+import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.physics.CollisionHandlers
-import com.binarymonks.jj.core.physics.PostSolveHandler
-import com.binarymonks.jj.core.physics.PreSolveHandler
 import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.specs.Rectangle
 import com.binarymonks.jj.core.specs.ShapeSpec
@@ -21,6 +18,7 @@ class FixtureSpec() {
     var collisionGroup: CollisionGroupSpec = CollisionGroupSpecExplicit()
     var shape: ShapeSpec = Rectangle()
     val collisions = CollisionHandlers()
+    internal val properties: ObjectMap<String, Any> = ObjectMap()
 
     /**
      * Set to use [com.binarymonks.jj.core.JJ.physics.materials]
@@ -53,6 +51,10 @@ class FixtureSpec() {
      */
     fun collisionGroupProperty(propertyName: String) {
         this.collisionGroup = CollisionGroupSpecProperty(propertyName)
+    }
+
+    fun prop(key: String, value: Any? = null) {
+        properties.put(key, value)
     }
 
 

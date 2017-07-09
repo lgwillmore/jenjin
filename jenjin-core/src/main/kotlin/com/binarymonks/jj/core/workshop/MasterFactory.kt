@@ -185,7 +185,12 @@ class MasterFactory {
         fDef.filter.categoryBits = cd.category
         fDef.filter.maskBits = cd.mask
         val fixture = body.createFixture(fDef)
-        val physicsNode = PhysicsNode(fixtureSpec.name, fixture, physicsRoot, material?.name)
+        val physicsNode = PhysicsNode(
+                fixtureSpec.name,
+                fixture, physicsRoot,
+                fixtureSpec.properties.copy(),
+                material?.name
+        )
         physicsNode.collisionResolver.collisions.copyAppendFrom(fixtureSpec.collisions)
         fixture.userData = physicsNode
         shape!!.dispose()

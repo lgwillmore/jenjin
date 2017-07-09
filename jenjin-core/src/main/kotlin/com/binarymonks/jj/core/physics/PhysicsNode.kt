@@ -5,8 +5,13 @@ import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.JJ
 
 
-class PhysicsNode(var name: String?, var fixture: Fixture, var physicsRoot: PhysicsRoot, var material: String?) {
-    var properties: ObjectMap<String, Any> = ObjectMap()
+class PhysicsNode(
+        var name: String?,
+        var fixture: Fixture,
+        var physicsRoot: PhysicsRoot,
+        var properties: ObjectMap<String, Any>,
+        var material: String?) {
+
     val collisionResolver: CollisionResolver = CollisionResolver()
     private var stashedCategory: Short = 0
     private var stashedMask: Short = 0

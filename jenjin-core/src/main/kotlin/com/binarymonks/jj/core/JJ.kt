@@ -37,7 +37,7 @@ object JJ {
         B.config = config
         B.clock = ClockControls()
         B.scenes = Scenes()
-        B.layers = LayerStack()
+        B.layers = LayerStack(config.gameView.clearColor)
         B.physicsWorld = PhysicsWorld()
         B.renderWorld = RenderWorld()
         B.sceneWorld = SceneWorld()

@@ -1,5 +1,6 @@
 package com.binarymonks.jj.core
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector2
 
 class JJConfig {
@@ -9,6 +10,7 @@ class JJConfig {
 }
 
 class GameViewConfig {
+    var clearColor = Color.BLACK
     var worldBoxWidth = 50f
     var cameraPosX: Float = 0f
     var cameraPosY: Float = 0f
