@@ -1,6 +1,8 @@
 package com.binarymonks.jj.core.layers
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
+import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
@@ -19,7 +21,7 @@ class GameRenderingLayer(
         var worldBoxWidth: Float,
         var posX: Float,
         var posY: Float
-) : Layer() {
+) : LayerAbs() {
 
     var camera: OrthographicCamera = OrthographicCamera()
 

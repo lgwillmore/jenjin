@@ -24,6 +24,10 @@ class Assets : AssetsAPI {
         return manager.get(path, kClass.java)
     }
 
+    override fun load(path: String, assetClass: KClass<*>) {
+        TODO()
+    }
+
     override fun loadNow(path: String, assetClass: KClass<*>) {
         loadNow(AssetReference(assetClass, path))
     }

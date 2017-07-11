@@ -3,18 +3,18 @@ package com.binarymonks.jj.core.layers
 
 import com.badlogic.gdx.InputMultiplexer
 
-abstract class Layer {
+interface Layer {
 
-    var inputMultiplexer = InputMultiplexer()
-    var stack: LayerStack? = null
+    var inputMultiplexer: InputMultiplexer
+    var stack: LayerStack?
 
-    abstract fun update()
+    fun update()
 
-    fun removeSelf() {
-        if (stack != null) {
-            stack!!.remove(this)
-        }
-    }
-
-    abstract fun resize(width: Int, height: Int)
+    fun resize(width: Int, height: Int)
 }
+
+abstract class LayerAbs(
+        override var inputMultiplexer: InputMultiplexer = InputMultiplexer(),
+        override var stack: LayerStack? = null
+) : Layer
+
