@@ -11,15 +11,19 @@ class UIBuilder() {
         this.build()
     }
 
-    fun <T : Actor> actor(name: String? = null, actor: T, build: (T.() -> Unit)? = null): ActorListenerAppender {
+    fun <T : Actor> actor(name: String, actor: T, build: (T.() -> Unit)? = null): ActorListenerAppender {
         if (build != null) {
             actor.build()
         }
-        if (name != null) {
-            layer.addActor(name, actor)
-        } else {
-            layer.addActor(actor)
+        layer.addActor(name, actor)
+        return ActorListenerAppender(layer, actor)
+    }
+
+    fun <T : Actor> actor(actor: T, build: (T.() -> Unit)? = null): ActorListenerAppender {
+        if (build != null) {
+            actor.build()
         }
+        layer.addActor(actor)
         return ActorListenerAppender(layer, actor)
     }
 

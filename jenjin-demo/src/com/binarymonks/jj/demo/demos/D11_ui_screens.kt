@@ -32,14 +32,30 @@ class D11_ui_screens : JJGame() {
 
         return UIBuilder {
 
-
-            actor("startButton", TextButton("Start", skin)) {
+            actor("beepButton", TextButton("Hide", skin)) {
                 setPosition(width / 2, height / 2)
             }.withListener(object : JJChangeListener() {
                 override fun changed(event: ChangeEvent?, actor: Actor?) {
                     myActor?.isVisible = false
                 }
             })
+
+            actor(TextButton("Hide", skin)) {
+                setPosition(width / 2, height / 2)
+            }.withListener(object : JJChangeListener() {
+                override fun changed(event: ChangeEvent?, actor: Actor?) {
+                    uiLayer?.getActor("beepButton")?.isVisible = false
+                }
+            })
+
+            actor(TextButton("show", skin)) {
+                setPosition(width / 2, height / 2)
+            }.withListener(object : JJChangeListener() {
+                override fun changed(event: ChangeEvent?, actor: Actor?) {
+                    uiLayer?.getActor("beepButton")?.isVisible = true
+                }
+            })
+
 
         }.build()
     }
