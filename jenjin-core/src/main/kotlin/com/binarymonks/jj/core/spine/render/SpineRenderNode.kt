@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.properties.PropOverride
-import com.binarymonks.jj.core.render.nodes.RenderNode
+import com.binarymonks.jj.core.render.nodes.BatchBasedRenderNode
 import com.binarymonks.jj.core.specs.render.RenderGraphType
 import com.esotericsoftware.spine.Event
 import com.esotericsoftware.spine.Skeleton
@@ -17,10 +17,11 @@ class SpineRenderNode(
         color: PropOverride<Color>,
         renderGraphType: RenderGraphType,
         name: String? = null,
+        shaderPipe: String?,
         internal var skeleton: Skeleton,
         internal var skeletonData: SkeletonData,
         internal var positionOffset: Vector2
-) : RenderNode(priority, color, renderGraphType, name) {
+) : BatchBasedRenderNode(priority, color, renderGraphType, name, shaderPipe) {
 
     internal var currentAnimation: String? = null
     internal var animationTimeElapsed: Float = 0.toFloat()

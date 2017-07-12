@@ -59,6 +59,7 @@ internal class SpineRenderNodeSpec(
                 color,
                 renderGraphType,
                 SPINE_RENDER_NAME,
+                shaderPipe,
                 skeleton,
                 skeletonData,
                 positionOffset

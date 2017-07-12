@@ -21,6 +21,7 @@ abstract class RenderNodeSpec {
     var color: PropOverride<Color> = PropOverride(Color.WHITE)
     var renderGraphType: RenderGraphType = RenderGraphType.DEFAULT
     var name:String? = null
+    var shaderPipe: String? = null
     abstract fun getAssets(): Array<AssetReference>
     abstract fun makeNode(paramsStack: ParamStack): RenderNode
 }
@@ -49,6 +50,8 @@ class PolygonRenderNodeSpec : SpatialRenderNodeSpec() {
                 priority,
                 color.copy(),
                 renderGraphType,
+                name,
+                shaderPipe,
                 checkNotNull(sprite),
                 paramsStack.scaleX,
                 paramsStack.scaleY,
@@ -74,6 +77,8 @@ class LineChainRenderNodeSpec : SpatialRenderNodeSpec() {
                 priority,
                 color.copy(),
                 renderGraphType,
+                name,
+                shaderPipe,
                 fill,
                 paramsStack.scaleX,
                 paramsStack.scaleY,
@@ -99,6 +104,8 @@ class CircleRenderNodeSpec : SpatialRenderNodeSpec() {
                 this.priority,
                 this.color.copy(),
                 renderGraphType,
+                name,
+                shaderPipe,
                 fill = fill,
                 offsetX = offsetX*paramsStack.scaleX,
                 offsetY = offsetY*paramsStack.scaleY,
@@ -143,6 +150,8 @@ class TextureNodeSpec : ImageNodeSpec<KClass<Texture>>() {
                 priority = priority,
                 color = color.copy(),
                 renderGraphType = renderGraphType,
+                name=name,
+                shaderPipe = shaderPipe,
                 provider = frameProvider,
                 offsetX = offsetX,
                 offsetY = offsetY,

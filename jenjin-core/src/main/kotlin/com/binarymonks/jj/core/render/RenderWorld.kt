@@ -1,9 +1,12 @@
 package com.binarymonks.jj.core.render
 
 import box2dLight.RayHandler
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
+import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.api.RenderAPI
 import com.binarymonks.jj.core.scenes.Scene
@@ -20,6 +23,7 @@ open class RenderWorld : RenderAPI {
     var worldToScreenScale: Float = 0.toFloat()
     private var currentShapeFill = false
     private var batchStoredColor = Color.WHITE
+    private var shaderPrograms: ObjectMap<String, ShaderProgram> = ObjectMap()
 
     init {
         rayHandler.setBlurNum(3)
@@ -42,6 +46,20 @@ open class RenderWorld : RenderAPI {
 
     override fun setClearColor(r: Float, g: Float, b: Float, a: Float) {
         JJ.B.layers.clearColor.set(r, g, b, a)
+    }
+
+    override fun registerShader(name: String, vertexPath: String, fragmentPath: String) {
+        val vertex = Gdx.files.internal(vertexPath).readString()
+        val fragment = Gdx.files.internal(fragmentPath).readString()
+        val program = ShaderProgram(vertex, fragment)
+        if (!program.isCompiled()) {
+            throw Exception(program.getLog())
+        }
+        shaderPrograms.put(name, program)
+    }
+
+    override fun getShaderPipe(shaderPipeName: String): ShaderProgram {
+        return shaderPrograms.get(shaderPipeName)
     }
 
     fun switchToShapes(fill: Boolean) {

@@ -100,7 +100,7 @@ class GameRenderingLayer(
 
     private fun updateSceneNodes(renderNodes: Array<RenderNode>) {
         for (node in renderNodes) {
-            node.render(camera)
+            node.renderShell(camera)
         }
     }
 

@@ -23,13 +23,15 @@ class PolygonRenderNode constructor(
         priority: Int,
         color: PropOverride<Color>,
         renderGraphType: RenderGraphType,
+        name:String?,
+        renderPipe: String?,
         internal var poly: PolygonSprite,
         internal var scaleX: Float = 1f,
         internal var scaleY: Float = 1f,
         internal var offsetX: Float = 0f,
         internal var offsetY: Float = 0f,
         internal var rotationD: Float = 0f
-) : RenderNode(priority, color, renderGraphType) {
+) : BatchBasedRenderNode(priority, color, renderGraphType, name, renderPipe) {
 
     override fun render(camera: OrthographicCamera) {
         JJ.B.renderWorld.switchToBatch()

@@ -5,8 +5,9 @@ import com.binarymonks.jj.core.layers.Layer
 
 interface LayersAPI {
 
-    fun addLayerTop(add: Layer)
-    fun addLayerTop(layerName: String)
+    fun push(add: Layer)
+    fun push(layerName: String)
+    fun pop()
 
     fun registerLayer(layerName: String, layer: Layer)
 }

@@ -11,9 +11,15 @@ abstract class RenderNode(
         var priority: Int = 0,
         var color: PropOverride<Color>,
         var renderGraphType: RenderGraphType,
-        var name: String? = null
+        var name: String?,
+        var shaderPipe: String?
 ) {
     var parent: Scene? = null
+        set(value) {
+            field = value
+            color.hasProps = value
+        }
+    var active = true
 
     fun myParent(): Scene {
         if (parent == null) {
@@ -21,6 +27,20 @@ abstract class RenderNode(
         }
         return parent!!
     }
+
+    fun renderShell(camera: OrthographicCamera) {
+        if (active) {
+            setShaderAndColor()
+            render(camera)
+            restoreShaderAndColor()
+        }
+    }
+
+
+    abstract fun setShaderAndColor()
+
+    abstract fun restoreShaderAndColor()
+
 
     abstract fun render(camera: OrthographicCamera)
 

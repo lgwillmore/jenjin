@@ -1,5 +1,7 @@
 package com.binarymonks.jj.core.api
 
+import com.badlogic.gdx.graphics.glutils.ShaderProgram
+
 
 interface RenderAPI {
 
@@ -7,5 +9,8 @@ interface RenderAPI {
     fun setAmbientLight(r: Float, g: Float, b: Float, a: Float)
 
     fun setClearColor(r: Float, g: Float, b: Float, a: Float)
+
+    fun registerShader(name: String, vertexPath: String, fragmentPath: String)
+    fun getShaderPipe(shaderPipeName: String): ShaderProgram
 
 }

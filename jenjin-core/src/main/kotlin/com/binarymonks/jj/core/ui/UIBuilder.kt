@@ -1,14 +1,16 @@
 package com.binarymonks.jj.core.ui
 
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.EventListener
+import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.binarymonks.jj.core.layers.Layer
 
 class UIBuilder() {
 
-    val layer: UILayer = UILayer()
+    val layer: UILayer = UILayer(ExtendViewport(1000f, 1000f))
 
-    constructor(build: UIBuilder.() -> Unit) : this() {
-        this.build()
+    constructor(builder: UIBuilder.() -> Unit) : this() {
+        this.builder()
     }
 
     fun <T : Actor> actor(name: String, actor: T, build: (T.() -> Unit)? = null): ActorListenerAppender {
@@ -35,9 +37,12 @@ class UIBuilder() {
 
 class ActorListenerAppender(private val uiLayer: UILayer, private val actor: Actor) {
 
-    fun <T : LayerAwareListener> withListener(listener: T): ActorListenerAppender {
-        listener.myActor = actor
-        listener.uiLayer = uiLayer
+    fun <T : EventListener> withListener(listener: T): ActorListenerAppender {
+        if (listener is LayerAwareListener) {
+            listener.myActor = actor
+            listener.uiLayer = uiLayer
+        }
+        actor.addListener(listener)
         return this
     }
 

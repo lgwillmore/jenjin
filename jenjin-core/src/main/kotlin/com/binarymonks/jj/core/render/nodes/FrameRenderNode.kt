@@ -15,6 +15,8 @@ class FrameRenderNode(
         priority: Int,
         color: PropOverride<Color>,
         renderGraphType: RenderGraphType,
+        name: String?,
+        shaderPipe: String?,
         internal var provider: FrameProvider,
         internal var offsetX: Float,
         internal var offsetY: Float,
@@ -22,7 +24,7 @@ class FrameRenderNode(
         internal var width: Float,
         internal var height: Float,
         internal var scaleX: Float,
-        internal var scaleY: Float) : RenderNode(priority, color, renderGraphType) {
+        internal var scaleY: Float) : BatchBasedRenderNode(priority, color, renderGraphType, name, shaderPipe) {
 
     override fun render(camera: OrthographicCamera) {
         var relativeRotationD = myParent().physicsRoot.rotationR() * MathUtils.radiansToDegrees + rotationD;

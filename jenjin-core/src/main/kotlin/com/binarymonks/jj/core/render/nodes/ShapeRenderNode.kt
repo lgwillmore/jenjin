@@ -18,13 +18,21 @@ abstract class ShapeRenderNode(
         priority: Int,
         color: PropOverride<Color>,
         renderGraphType: RenderGraphType,
+        name: String?,
+        shaderPipe: String?,
         var fill: Boolean = true
-) : RenderNode(priority, color, renderGraphType) {
+) : RenderNode(priority, color, renderGraphType, name, shaderPipe) {
 
     override fun render(camera: OrthographicCamera) {
         JJ.B.renderWorld.switchToShapes(fill)
         JJ.B.renderWorld.shapeRenderer.color = color.get()
         drawShape(camera)
+    }
+
+    override fun setShaderAndColor() {
+    }
+
+    override fun restoreShaderAndColor() {
     }
 
     abstract fun drawShape(camera: OrthographicCamera)
@@ -34,12 +42,14 @@ class CircleRenderNode(
         priority: Int,
         color: PropOverride<Color>,
         renderGraphType: RenderGraphType,
+        name: String?,
+        shaderPipe: String?,
         fill: Boolean = true,
         val offsetX: Float,
         val offsetY: Float,
         val radius: Float,
         var segments: Int = 360
-) : ShapeRenderNode(priority, color, renderGraphType, fill) {
+) : ShapeRenderNode(priority, color, renderGraphType, name, shaderPipe, fill) {
 
     private var positionCache: Vector2 = vec2()
 
@@ -58,6 +68,8 @@ class LineChainRenderNode(
         priority: Int,
         color: PropOverride<Color>,
         renderGraphType: RenderGraphType,
+        name: String?,
+        shaderPipe: String?,
         fill: Boolean = false,
         internal var scaleX: Float = 1f,
         internal var scaleY: Float = 1f,
@@ -65,7 +77,7 @@ class LineChainRenderNode(
         internal var offsetY: Float = 0f,
         internal var rotationD: Float = 0f,
         val vertices: Array<Vector2>
-) : ShapeRenderNode(priority, color, renderGraphType, fill) {
+) : ShapeRenderNode(priority, color, renderGraphType, name, shaderPipe, fill) {
 
     private var vertCache: Array<Vector2> = Array()
 
