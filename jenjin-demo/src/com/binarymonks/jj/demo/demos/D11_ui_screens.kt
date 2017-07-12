@@ -22,7 +22,6 @@ class D11_ui_screens : JJGame() {
 
         JJ.layers.addLayerTop("startScreen")
 
-
     }
 
     private fun startScreen(): Layer {
@@ -48,14 +47,13 @@ class D11_ui_screens : JJGame() {
                 }
             })
 
-            actor(TextButton("show", skin)) {
+            actor(TextButton("Show", skin)) {
                 setPosition(width / 2, height / 2)
             }.withListener(object : JJChangeListener() {
                 override fun changed(event: ChangeEvent?, actor: Actor?) {
                     uiLayer?.getActor("beepButton")?.isVisible = true
                 }
             })
-
 
         }.build()
     }
