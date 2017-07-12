@@ -45,7 +45,7 @@ object JJ {
         B.assets = Assets()
         B.audio = Audio()
         B.defaultGameRenderingLayer = GameRenderingLayer(config.gameView)
-        B.layers.addLayerTop(B.defaultGameRenderingLayer)
+        B.layers.push(B.defaultGameRenderingLayer)
         B.tasks = Tasks()
 
         scenes = B.scenes
