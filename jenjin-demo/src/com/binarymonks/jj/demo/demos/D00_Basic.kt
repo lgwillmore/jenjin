@@ -23,6 +23,7 @@ class D00_Basic : JJGame(MyConfig00.jjConfig) {
 
     public override fun gameOn() {
 
+        //You can register material profiles so that you can quickly set the properties of your fixture
         JJ.physics.materials.registerMaterial("rubber", restitution = 0.8f, friction = 0.2f, density = 0.35f)
         JJ.physics.materials.registerMaterial("plastic", restitution = 0.1f, friction = 0.1f, density = 0.3f)
         JJ.physics.materials.registerMaterial("glass", restitution = 0.0f, friction = 0.05f, density = 0.65f)

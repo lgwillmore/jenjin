@@ -4,6 +4,7 @@ import box2dLight.RayHandler
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
+import com.badlogic.gdx.graphics.glutils.ImmediateModeRenderer20
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.ObjectMap
@@ -14,7 +15,8 @@ import com.esotericsoftware.spine.SkeletonRenderer
 
 open class RenderWorld : RenderAPI {
 
-    var shapeRenderer = ShapeRenderer()
+    val defaultShapeShader: ShaderProgram = ImmediateModeRenderer20.createDefaultShader(false, true, 0)
+    var shapeRenderer = ShapeRenderer(5000, defaultShapeShader)
     var polyBatch = PolygonSpriteBatch()
     var skeletonRenderer = SkeletonRenderer<PolygonSpriteBatch>()
     var rayHandler: RayHandler = RayHandler(JJ.B.physicsWorld.b2dworld)
@@ -97,4 +99,9 @@ open class RenderWorld : RenderAPI {
             shapeRenderer.end()
         }
     }
+}
+
+
+fun main(args: Array<String>) {
+
 }

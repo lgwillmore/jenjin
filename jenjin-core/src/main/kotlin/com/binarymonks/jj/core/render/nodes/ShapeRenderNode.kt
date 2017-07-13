@@ -2,6 +2,9 @@ package com.binarymonks.jj.core.render.nodes
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.glutils.ImmediateModeRenderer20
+import com.badlogic.gdx.graphics.glutils.ShaderProgram
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Transform
 import com.badlogic.gdx.utils.Array
@@ -30,9 +33,21 @@ abstract class ShapeRenderNode(
     }
 
     override fun setShaderAndColor() {
+        if (shaderPipe != null) {
+            // TODO: Should centralize this and check if the current shader is the same or not
+            JJ.B.renderWorld.shapeRenderer.end()
+            JJ.B.renderWorld.shapeRenderer.begin(if (fill) ShapeRenderer.ShapeType.Filled else ShapeRenderer.ShapeType.Line)
+            (JJ.B.renderWorld.shapeRenderer.renderer as ImmediateModeRenderer20).setShader(JJ.B.renderWorld.getShaderPipe(shaderPipe!!))
+        }
     }
 
     override fun restoreShaderAndColor() {
+        if (shaderPipe != null) {
+            // TODO: Should centralize this and check if the current shader is the same or not
+            JJ.B.renderWorld.shapeRenderer.end()
+            JJ.B.renderWorld.shapeRenderer.begin(if (fill) ShapeRenderer.ShapeType.Filled else ShapeRenderer.ShapeType.Line)
+            (JJ.B.renderWorld.shapeRenderer.renderer as ImmediateModeRenderer20).setShader(JJ.B.renderWorld.defaultShapeShader)
+        }
     }
 
     abstract fun drawShape(camera: OrthographicCamera)
