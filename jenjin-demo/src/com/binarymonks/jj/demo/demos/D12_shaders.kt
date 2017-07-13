@@ -13,6 +13,7 @@ class D12_shaders : JJGame(MyConfig12.jjConfig) {
 
         JJ.scenes.addSceneSpec("linearLightCube", linearLightCube())
         JJ.scenes.addSceneSpec("normalCube", normalCube())
+        JJ.scenes.addSceneSpec("pixelCube", pixelCube())
         JJ.scenes.loadAssetsNow()
 
         JJ.render.registerShader(
@@ -21,13 +22,34 @@ class D12_shaders : JJGame(MyConfig12.jjConfig) {
                 fragmentPath = "shaders/linear_light_fragment.glsl"
         )
 
+        JJ.render.registerShader(
+                name = "pixels",
+                vertexPath = "shaders/default_vertex.glsl",
+                fragmentPath = "shaders/pixel_fragment.glsl"
+        )
+
         JJ.scenes.instantiate(scene {
             nodeRef(params { x = -5f; y = 5f;prop("color", Color.BLUE) }) { "linearLightCube" }
             nodeRef(params { x = 5f; y = 5f;prop("color", Color.ORANGE) }) { "linearLightCube" }
+            nodeRef(params { x = -5f; y = 0f;prop("color", Color.BLUE) }) { "pixelCube" }
+            nodeRef(params { x = 5f; y = 0f;prop("color", Color.ORANGE) }) { "pixelCube" }
             nodeRef(params { x = -5f; y = -5f;prop("color", Color.BLUE) }) { "normalCube" }
             nodeRef(params { x = 5f; y = -5f;prop("color", Color.ORANGE) }) { "normalCube" }
         })
 
+    }
+
+    private fun pixelCube(): SceneSpecRef {
+        return scene {
+            render {
+                imageTexture("textures/linear_light_square.png") {
+                    width = 3f
+                    height = 3f
+                    shaderPipe = "pixels"
+                    color.setOverride("color")
+                }
+            }
+        }
     }
 
     private fun normalCube(): SceneSpecRef {
