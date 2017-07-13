@@ -15,7 +15,7 @@ class D12_shaders : JJGame(MyConfig12.jjConfig) {
         JJ.scenes.addSceneSpec("normalCube", normalCube())
         JJ.scenes.addSceneSpec("pixelCube", pixelCube())
         JJ.scenes.addSceneSpec("normalCircle", normalCircle())
-        JJ.scenes.addSceneSpec("positionCircle", positionCircle())
+        JJ.scenes.addSceneSpec("checkeredCircle", checkeredCircle())
         JJ.scenes.loadAssetsNow()
 
         JJ.render.registerShader(
@@ -30,10 +30,11 @@ class D12_shaders : JJGame(MyConfig12.jjConfig) {
                 fragmentPath = "shaders/pixel_fragment.glsl"
         )
 
+        //Shape shaders are a bit different to texture based shaders ie, no texture
         JJ.render.registerShader(
-                name = "shapePosition",
-                vertexPath = "shaders/position_shape_vertex.glsl",
-                fragmentPath = "shaders/default_shape_fragment.glsl"
+                name = "checkeredShape",
+                vertexPath = "shaders/checkered_shape_vertex.glsl",
+                fragmentPath = "shaders/checkered_shape_fragment.glsl"
         )
 
 
@@ -43,7 +44,7 @@ class D12_shaders : JJGame(MyConfig12.jjConfig) {
             nodeRef(params { x = 5f; y = 5f;prop("color", Color.ORANGE) }) { "linearLightCube" }
             nodeRef(params { x = -5f; y = 0f;prop("color", Color.BLUE) }) { "pixelCube" }
             nodeRef(params { x = 5f; y = 0f;prop("color", Color.ORANGE) }) { "pixelCube" }
-            nodeRef(params { x = 0f; y = 0f;prop("color", Color.GREEN) }) { "positionCircle" }
+            nodeRef(params { x = 0f; y = 0f;prop("color", Color.GREEN) }) { "checkeredCircle" }
             nodeRef(params { x = -5f; y = -5f;prop("color", Color.BLUE) }) { "normalCube" }
             nodeRef(params { x = 0f; y = -5f;prop("color", Color.GREEN) }) { "normalCircle" }
             nodeRef(params { x = 5f; y = -5f;prop("color", Color.ORANGE) }) { "normalCube" }
@@ -51,12 +52,12 @@ class D12_shaders : JJGame(MyConfig12.jjConfig) {
 
     }
 
-    private fun positionCircle(): SceneSpecRef {
+    private fun checkeredCircle(): SceneSpecRef {
         return scene {
             render {
                 circleRender(1.5f) {
                     color.setOverride("color")
-                    shaderPipe = "shapePosition"
+                    shaderPipe = "checkeredShape"
                 }
             }
         }
