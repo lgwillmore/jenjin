@@ -3,14 +3,16 @@ package com.binarymonks.jj.core.ui
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.EventListener
 import com.badlogic.gdx.utils.viewport.ExtendViewport
+import com.badlogic.gdx.utils.viewport.Viewport
 import com.binarymonks.jj.core.layers.Layer
 
-class UIBuilder() {
+class UIBuilder private constructor() {
 
-    val layer: UILayer = UILayer(ExtendViewport(1000f, 1000f))
+    lateinit var layer: UILayer
 
-    constructor(builder: UIBuilder.() -> Unit) : this() {
-        this.builder()
+    constructor(viewPort: Viewport = ExtendViewport(1000f, 1000f), builder: UIBuilder.() -> Unit) : this() {
+        layer = UILayer(viewPort)
+        builder()
     }
 
     fun <T : Actor> actor(name: String, actor: T, build: (T.() -> Unit)? = null): ActorListenerAppender {

@@ -15,8 +15,22 @@ interface ScenesAPI {
      * @param scene The scene to instantiate
      * @param instanceParams The instance specific parameters
      */
-    fun instantiate(scene: SceneSpec, instanceParams: InstanceParams = InstanceParams.new()): Bond<Scene>
+    fun instantiate(instanceParams: InstanceParams, scene: SceneSpec): Bond<Scene>
 
+    /**
+     * Instantiate a [SceneSpec]
+     *
+     * @param scene The scene to instantiate
+     */
+    fun instantiate(scene: SceneSpec): Bond<Scene>
+
+
+    /**
+     * Instantiate a [SceneSpec]
+     *
+     * @param path The path to the [SceneSpec]. These can be added with [addSceneSpec]
+     */
+    fun instantiate(path: String): Bond<Scene>
 
     /**
      * Instantiate a [SceneSpec]
@@ -24,7 +38,7 @@ interface ScenesAPI {
      * @param path The path to the [SceneSpec]. These can be added with [addSceneSpec]
      * @param instanceParams The instance specific parameters
      */
-    fun instantiate(path: String, instanceParams: InstanceParams = InstanceParams.new()): Bond<Scene>
+    fun instantiate(instanceParams: InstanceParams = InstanceParams.new(), path: String): Bond<Scene>
 
 
     /**

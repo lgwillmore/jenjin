@@ -13,12 +13,12 @@ interface LayerAwareListener : EventListener {
     var myActor: Actor?
 }
 
-class JJClickListener(
+open class JJClickListener(
         override var uiLayer: UILayer? = null,
         override var myActor: Actor? = null
 ) : ClickListener(), LayerAwareListener
 
-class JJActorGestureListener(
+open class JJActorGestureListener(
         override var uiLayer: UILayer? = null,
         override var myActor: Actor? = null
 ) : ActorGestureListener(), LayerAwareListener

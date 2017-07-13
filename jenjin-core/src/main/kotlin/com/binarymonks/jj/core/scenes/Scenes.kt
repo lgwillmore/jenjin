@@ -24,7 +24,7 @@ class Scenes : ScenesAPI {
 
     private var dirty = false
 
-    override fun instantiate(scene: SceneSpec, instanceParams: InstanceParams): Bond<Scene> {
+    override fun instantiate(instanceParams: InstanceParams, scene: SceneSpec): Bond<Scene> {
         val delayedCreate = new(CreateSceneFunction::class)
         val bond = new(Bond::class) as Bond<Scene>
         delayedCreate.set(scene, instanceParams, bond)
@@ -36,8 +36,16 @@ class Scenes : ScenesAPI {
         return bond
     }
 
-    override fun instantiate(path: String, instanceParams: InstanceParams): Bond<Scene> {
-        return instantiate(sceneSpecs.get(path).resolve(),instanceParams)
+    override fun instantiate(instanceParams: InstanceParams, path: String): Bond<Scene> {
+        return instantiate(instanceParams, sceneSpecs.get(path).resolve())
+    }
+
+    override fun instantiate(scene: SceneSpec): Bond<Scene> {
+        return instantiate(InstanceParams.new(), scene)
+    }
+
+    override fun instantiate(path: String): Bond<Scene> {
+        return instantiate(InstanceParams.new(), path)
     }
 
     override fun addSceneSpec(path: String, scene: SceneSpecRef) {

@@ -36,7 +36,7 @@ class Emitter(
         params.scaleY = scaleY
         params.rotationD = rotationD
 
-        JJ.scenes.instantiate(checkNotNull(sceneSpecRef).resolve(), params)
+        JJ.scenes.instantiate(params, checkNotNull(sceneSpecRef).resolve())
 
         recycle(params)
     }

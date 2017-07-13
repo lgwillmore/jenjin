@@ -3,6 +3,7 @@ package com.binarymonks.jj.demo
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
 import com.binarymonks.jj.demo.demos.*
+import com.binarymonks.jj.demo.pong.Pong
 
 object DesktopLauncher {
     @JvmStatic fun main(arg: Array<String>) {
@@ -11,6 +12,6 @@ object DesktopLauncher {
         lwjglConfig.width = 1000
 
         //Swap out the various demo Games here
-        LwjglApplication(D12_shaders(), lwjglConfig)
+        LwjglApplication(Pong(), lwjglConfig)
     }
 }
