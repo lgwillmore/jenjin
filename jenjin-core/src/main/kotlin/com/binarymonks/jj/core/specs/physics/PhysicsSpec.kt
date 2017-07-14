@@ -12,7 +12,7 @@ class PhysicsSpec {
     var angularDamping = 0f
     var gravityScale = 1f
     var bullet = false
-    val fixedRotation: Boolean = false
+    var fixedRotation: Boolean = false
     var allowSleep = true
     val collisions = CollisionHandlers()
     var lights: Array<LightSpec> = Array()

@@ -78,6 +78,10 @@ class LayerStack(var clearColor: Color = Color(0f, 0f, 0f, 1f)) : LayersAPI {
         registeredLayers.put(layerName, layer)
     }
 
+    override fun <T : Layer> getLayer(layerName: String): T {
+        return registeredLayers.get(layerName) as T
+    }
+
 
     fun resize(width: Int, height: Int) {
         layers.forEach { it.resize(width, height) }

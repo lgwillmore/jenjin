@@ -23,7 +23,7 @@ class CollisionHandlers {
      * You can add as many as you want.
      *
      */
-    fun presolve(handler: PreSolveHandler) {
+    fun preSolve(handler: PreSolveHandler) {
         preSolves.add(handler)
     }
 
@@ -32,7 +32,9 @@ class CollisionHandlers {
      * You can add as many as you want.
      *
      */
-    fun begin(handler: CollisionHandler) {
+    fun <T : CollisionHandler> begin(handler: T, build: (T.() -> Unit)? = null) {
+        if (build != null)
+            handler.build()
         begins.add(handler)
     }
 
@@ -44,7 +46,9 @@ class CollisionHandlers {
      *
      * This is useful if this collision is going to destroy the other object for example.
      */
-    fun finalBegin(handler: CollisionHandler) {
+    fun <T : CollisionHandler> finalBegin(handler: T, build: (T.() -> Unit)? = null) {
+        if (build != null)
+            handler.build()
         finalBegins.add(handler)
     }
 
@@ -53,7 +57,9 @@ class CollisionHandlers {
      * You can add as many as you want.
      *
      */
-    fun end(handler: CollisionHandler) {
+    fun <T : CollisionHandler> end(handler: T, build: (T.() -> Unit)? = null) {
+        if (build != null)
+            handler.build()
         ends.add(handler)
     }
 
@@ -62,7 +68,7 @@ class CollisionHandlers {
      * You can add as many as you want.
      *
      */
-    fun end(handler: PostSolveHandler) {
+    fun postSolve(handler: PostSolveHandler) {
         postSolves.add(handler)
     }
 }

@@ -10,4 +10,5 @@ interface LayersAPI {
     fun pop()
 
     fun registerLayer(layerName: String, layer: Layer)
+    fun <T : Layer> getLayer(layerName: String): T
 }

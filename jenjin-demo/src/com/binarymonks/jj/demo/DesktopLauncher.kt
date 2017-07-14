@@ -2,8 +2,7 @@ package com.binarymonks.jj.demo
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
-import com.binarymonks.jj.demo.demos.*
-import com.binarymonks.jj.demo.pong.Pong
+import com.binarymonks.jj.demo.demos.Pong
 
 object DesktopLauncher {
     @JvmStatic fun main(arg: Array<String>) {

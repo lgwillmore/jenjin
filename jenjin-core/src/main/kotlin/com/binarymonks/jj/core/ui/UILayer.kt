@@ -33,7 +33,7 @@ class UILayer(
         namedActors.put(name, actor)
     }
 
-    fun getActor(name: String): Actor? {
+    fun getActor(name: String): Actor {
         return namedActors.get(name)
     }
 

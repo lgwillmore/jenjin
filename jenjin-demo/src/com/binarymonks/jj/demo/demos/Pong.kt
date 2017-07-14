@@ -1,8 +1,10 @@
-package com.binarymonks.jj.demo.pong
+package com.binarymonks.jj.demo.demos
 
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
+import com.badlogic.gdx.physics.box2d.Contact
+import com.badlogic.gdx.physics.box2d.Fixture
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
@@ -14,16 +16,25 @@ import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.input.mapping.Actions
 import com.binarymonks.jj.core.layers.Layer
+import com.binarymonks.jj.core.physics.CollisionHandler
+import com.binarymonks.jj.core.physics.collisions.DestroyCollision
+import com.binarymonks.jj.core.physics.collisions.EmitEventCollision
 import com.binarymonks.jj.core.physics.collisions.SoundCollision
-import com.binarymonks.jj.core.specs.Circle
+import com.binarymonks.jj.core.scenes.Scene
 import com.binarymonks.jj.core.specs.Rectangle
 import com.binarymonks.jj.core.specs.SceneSpecRef
 import com.binarymonks.jj.core.specs.builders.*
 import com.binarymonks.jj.core.ui.JJClickListener
 import com.binarymonks.jj.core.ui.UIBuilder
+import com.binarymonks.jj.core.ui.UILayer
 
 val COURT_LENGTH = 12f
 val BAT_LENGTH = 1.5f
+
+val PLAYER_A_SCORED = "PLAYER_A_SCORED"
+val PLAYER_B_SCORED = "PLAYER_B_SCORED"
+
+val WIN_SCORE = 3
 
 object PongConfig {
     var jjConfig: JJConfig = JJConfig()
@@ -37,6 +48,9 @@ object PongConfig {
     }
 }
 
+/**
+ * A full and tiny implementation of pong
+ */
 class Pong : JJGame(PongConfig.jjConfig) {
 
     override fun gameOn() {
@@ -44,8 +58,9 @@ class Pong : JJGame(PongConfig.jjConfig) {
         // Load assets
         JJ.assets.loadNow("ui/uiskin.json", Skin::class)
 
-        // Layers
+        // Layers/Menus/UIs
         JJ.layers.registerLayer("mainMenu", mainMenu())
+        JJ.layers.registerLayer("gameHUD", gameHUD())
 
 
         // Scenes
@@ -54,10 +69,62 @@ class Pong : JJGame(PongConfig.jjConfig) {
         JJ.scenes.addSceneSpec("court", court())
         JJ.scenes.loadAssetsNow()
 
-        JJ.scenes.instantiate("court")
+        // Wiring
+        JJ.events.register(PLAYER_A_SCORED, this::playerAScored)
+        JJ.events.register(PLAYER_B_SCORED, this::playerBScored)
 
+        // Instantiate the court and players
+        JJ.scenes.instantiate("court")
+        JJ.scenes.instantiate(params { x = 1f; y = COURT_LENGTH / 2 }, "player").then {
+            val player: Player = checkNotNull(it.getComponent(Player::class))
+            mapPlayer(player, Input.Keys.W, Input.Keys.S)
+        }
+        JJ.scenes.instantiate(params { x = COURT_LENGTH - 1f; y = COURT_LENGTH / 2 }, "player").then {
+            val player: Player = checkNotNull(it.getComponent(Player::class))
+            mapPlayer(player, Input.Keys.UP, Input.Keys.DOWN)
+        }
+
+        //Show the main menu
         JJ.layers.push("mainMenu")
     }
+
+    fun playerAScored() {
+        GameState.playerAScore++
+        if (GameState.playerAScore > WIN_SCORE) {
+            playerWins("Player A Wins")
+        } else {
+            refreshScores()
+            newBall()
+        }
+    }
+
+
+    fun playerBScored() {
+        GameState.playerBScore++
+        if (GameState.playerBScore > WIN_SCORE) {
+            playerWins("Player B Wins")
+        } else {
+            refreshScores()
+            newBall(-1)
+        }
+    }
+
+    private fun playerWins(winnerMessage: String) {
+        JJ.layers.pop()
+        (JJ.layers.getLayer<UILayer>("mainMenu").getActor("message") as Label).setText(winnerMessage)
+        JJ.layers.push("mainMenu")
+    }
+
+}
+
+fun refreshScores() {
+    (JJ.layers.getLayer<UILayer>("gameHUD").getActor("playerBScore") as Label).setText("${GameState.playerBScore}")
+    (JJ.layers.getLayer<UILayer>("gameHUD").getActor("playerAScore") as Label).setText("${GameState.playerAScore}")
+}
+
+object GameState {
+    var playerAScore = 0
+    var playerBScore = 0
 }
 
 fun court(): SceneSpecRef {
@@ -67,6 +134,8 @@ fun court(): SceneSpecRef {
             physics {
                 bodyType = BodyDef.BodyType.StaticBody
                 fixture { shape = Rectangle(1f, COURT_LENGTH) }
+                collisions.begin(DestroyCollision()) { destroyMe = false; destroyOther = true }
+                collisions.begin(EmitEventCollision()) { messege.set(PLAYER_B_SCORED) }
             }
             render { rectangleRender(1f, COURT_LENGTH) }
         }
@@ -75,6 +144,8 @@ fun court(): SceneSpecRef {
             physics {
                 bodyType = BodyDef.BodyType.StaticBody
                 fixture { shape = Rectangle(1f, COURT_LENGTH) }
+                collisions.begin(DestroyCollision()) { destroyMe = false; destroyOther = true }
+                collisions.begin(EmitEventCollision()) { messege.set(PLAYER_A_SCORED) }
             }
             render { rectangleRender(1f, COURT_LENGTH) }
         }
@@ -103,10 +174,26 @@ fun player(): SceneSpecRef {
     return scene {
         physics {
             bodyType = BodyDef.BodyType.KinematicBody
-            fixture { shape = Rectangle(0.3f, BAT_LENGTH) }
+            fixture {
+                shape = Rectangle(0.3f, BAT_LENGTH)
+            }
+            collisions.begin(BatCollision())
         }
         render { rectangleRender(0.3f, BAT_LENGTH) }
         component(Player())
+    }
+}
+
+class BatCollision : CollisionHandler() {
+    //Puts some redirection on the ball
+    override fun collision(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact): Boolean {
+        val myPosition = me.physicsRoot.position()
+        val collisionPosition = contact.worldManifold.points[0]
+
+        val collisionOffset = (collisionPosition.y - myPosition.y) / (BAT_LENGTH / 2)
+
+        other.physicsRoot.b2DBody.applyLinearImpulse(0f, collisionOffset * 0.2f, 0f, 0f, true)
+        return false
     }
 }
 
@@ -157,9 +244,10 @@ fun ball(): SceneSpecRef {
         }
         physics {
             bodyType = BodyDef.BodyType.DynamicBody
+            fixedRotation = true
             fixture {
-                shape = Circle(ballRadius)
-                restitution = 0.9f
+                shape = Rectangle(ballRadius * 2, ballRadius * 2)
+                restitution = 1f
             }
             collisions.begin(SoundCollision(soundName = "bounce"))
         }
@@ -170,18 +258,12 @@ fun ball(): SceneSpecRef {
 }
 
 private fun newGame() {
-    //Player A
-    JJ.scenes.instantiate(params { x = 1f; y = COURT_LENGTH / 2 }, "player").then {
-        val player: Player = checkNotNull(it.getComponent(Player::class))
-        mapPlayer(player, Input.Keys.W, Input.Keys.S)
-    }
-    //Player B
-    JJ.scenes.instantiate(params { x = COURT_LENGTH - 1f; y = COURT_LENGTH / 2 }, "player").then {
-        val player: Player = checkNotNull(it.getComponent(Player::class))
-        mapPlayer(player, Input.Keys.UP, Input.Keys.DOWN)
-    }
+    GameState.playerAScore = 0
+    GameState.playerBScore = 0
+    refreshScores()
     newBall()
 }
+
 
 private fun mapPlayer(player: Player, upKeyCode: Int, downKeyCode: Int) {
     JJ.input.map(upKeyCode, Actions.Key.PRESSED, player::goUp)
@@ -202,7 +284,7 @@ fun mainMenu(): Layer {
     val vHeight = 400f
     return UIBuilder(ExtendViewport(vWidth, vHeight)) {
 
-        actor(Label("PIXEL PONG", skin)) {
+        actor("message", Label("PIXEL PONG", skin)) {
             x = vWidth * 0.4f
             y = vHeight * 2 / 3
         }
@@ -213,8 +295,28 @@ fun mainMenu(): Layer {
         }.withListener(object : JJClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 JJ.layers.pop()
+                JJ.layers.push("gameHUD")
                 newGame()
             }
         })
+    }.build()
+}
+
+fun gameHUD(): Layer {
+    val skin = JJ.assets.getAsset("ui/uiskin.json", Skin::class)
+    val vWidth = 500f
+    val vHeight = 500f
+    return UIBuilder(ExtendViewport(vWidth, vHeight)) {
+
+        actor("playerAScore", Label("0", skin)) {
+            x = vWidth * 0.4f
+            y = vHeight * 0.8f
+        }
+
+        actor("playerBScore", Label("0", skin)) {
+            x = vWidth * 0.6f
+            y = vHeight * 0.8f
+        }
+
     }.build()
 }
