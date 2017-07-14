@@ -1,5 +1,6 @@
 package com.binarymonks.jj.demo.pong
 
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -11,6 +12,7 @@ import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.components.Component
+import com.binarymonks.jj.core.input.mapping.Actions
 import com.binarymonks.jj.core.layers.Layer
 import com.binarymonks.jj.core.physics.collisions.SoundCollision
 import com.binarymonks.jj.core.specs.Circle
@@ -109,7 +111,7 @@ fun player(): SceneSpecRef {
 }
 
 class Player : Component() {
-    internal var velocity = 30f
+    internal var velocity = 10f
 
     internal var up = false
     internal var down = false
@@ -126,13 +128,25 @@ class Player : Component() {
         me().physicsRoot.b2DBody.setLinearVelocity(0f, velocity * direction)
     }
 
-    fun goUp() = { up = true }
+    fun goUp(): Boolean {
+        up = true
+        return true
+    }
 
-    fun stopUp() = { up = false }
+    fun stopUp(): Boolean {
+        up = false
+        return true
+    }
 
-    fun goDown() = { down = true }
+    fun goDown(): Boolean {
+        down = true
+        return true
+    }
 
-    fun stopDown() = { down = false }
+    fun stopDown(): Boolean {
+        down = false
+        return true
+    }
 }
 
 fun ball(): SceneSpecRef {
@@ -158,13 +172,22 @@ fun ball(): SceneSpecRef {
 private fun newGame() {
     //Player A
     JJ.scenes.instantiate(params { x = 1f; y = COURT_LENGTH / 2 }, "player").then {
-
+        val player: Player = checkNotNull(it.getComponent(Player::class))
+        mapPlayer(player, Input.Keys.W, Input.Keys.S)
     }
     //Player B
     JJ.scenes.instantiate(params { x = COURT_LENGTH - 1f; y = COURT_LENGTH / 2 }, "player").then {
-
+        val player: Player = checkNotNull(it.getComponent(Player::class))
+        mapPlayer(player, Input.Keys.UP, Input.Keys.DOWN)
     }
     newBall()
+}
+
+private fun mapPlayer(player: Player, upKeyCode: Int, downKeyCode: Int) {
+    JJ.input.map(upKeyCode, Actions.Key.PRESSED, player::goUp)
+    JJ.input.map(upKeyCode, Actions.Key.RELEASED, player::stopUp)
+    JJ.input.map(downKeyCode, Actions.Key.PRESSED, player::goDown)
+    JJ.input.map(downKeyCode, Actions.Key.RELEASED, player::stopDown)
 }
 
 private fun newBall(direction: Int = 1) {
