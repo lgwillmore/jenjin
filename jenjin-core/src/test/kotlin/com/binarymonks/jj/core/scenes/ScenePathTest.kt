@@ -45,30 +45,30 @@ class ScenePathTest {
     }
 
     @Test
-    fun getCousin(){
-        Assert.assertEquals(cousin,ScenePath(UP,UP,"uncle","cousin").from(me))
+    fun getCousin() {
+        Assert.assertEquals(cousin, ScenePath(UP, UP, "uncle", "cousin").from(me))
     }
 
     @Test
-    fun getChild(){
-        Assert.assertEquals(child,ScenePath("child1").from(me))
+    fun getChild() {
+        Assert.assertEquals(child, ScenePath("child1").from(me))
     }
 
     @Test
-    fun getMe(){
-        Assert.assertEquals(me,ScenePath().from(me))
+    fun getMe() {
+        Assert.assertEquals(me, ScenePath().from(me))
     }
 
     @Test(expected = Exception::class)
-    fun getBadPath(){
+    fun getBadPath() {
         ScenePath("blah").from(me)
     }
-
 
 
     fun scene(name: String): Scene {
         return Scene(
                 name,
+                null,
                 null,
                 PhysicsRoot(Mockito.mock(Body::class.java)),
                 RenderRoot(1),

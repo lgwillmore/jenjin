@@ -4,14 +4,15 @@ import com.binarymonks.jj.core.api.*
 import com.binarymonks.jj.core.assets.Assets
 import com.binarymonks.jj.core.async.Tasks
 import com.binarymonks.jj.core.audio.Audio
+import com.binarymonks.jj.core.events.EventBus
 import com.binarymonks.jj.core.input.mapping.InputMapper
 import com.binarymonks.jj.core.layers.GameRenderingLayer
 import com.binarymonks.jj.core.layers.LayerStack
 import com.binarymonks.jj.core.physics.PhysicsWorld
 import com.binarymonks.jj.core.pools.Pools
 import com.binarymonks.jj.core.render.RenderWorld
-import com.binarymonks.jj.core.scenes.Scenes
 import com.binarymonks.jj.core.scenes.SceneWorld
+import com.binarymonks.jj.core.scenes.Scenes
 import com.binarymonks.jj.core.time.ClockControls
 
 /**
@@ -31,6 +32,7 @@ object JJ {
     lateinit var render: RenderAPI
     lateinit var tasks: TasksAPI
     lateinit var input: InputAPI
+    lateinit var events: EventsAPI
 
     lateinit var B: Backend
 
@@ -60,6 +62,7 @@ object JJ {
         assets = B.assets
         render = B.renderWorld
         tasks = B.tasks
-        input= B.input
+        input = B.input
+        events = EventBus()
     }
 }
