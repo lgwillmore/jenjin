@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Transform
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.properties.PropOverride
+import com.binarymonks.jj.core.render.ShaderSpec
 import com.binarymonks.jj.core.specs.render.RenderGraphType
 
 class FrameRenderNode(
@@ -16,7 +17,7 @@ class FrameRenderNode(
         color: PropOverride<Color>,
         renderGraphType: RenderGraphType,
         name: String?,
-        shaderPipe: String?,
+        shaderSpec: ShaderSpec?,
         internal var provider: FrameProvider,
         internal var offsetX: Float,
         internal var offsetY: Float,
@@ -24,7 +25,7 @@ class FrameRenderNode(
         internal var width: Float,
         internal var height: Float,
         internal var scaleX: Float,
-        internal var scaleY: Float) : BatchBasedRenderNode(priority, color, renderGraphType, name, shaderPipe) {
+        internal var scaleY: Float) : BatchBasedRenderNode(priority, color, renderGraphType, name, shaderSpec) {
 
     override fun render(camera: OrthographicCamera) {
         var relativeRotationD = myParent().physicsRoot.rotationR() * MathUtils.radiansToDegrees + rotationD;

@@ -14,6 +14,7 @@ import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.pools.recycleItems
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.properties.PropOverride
+import com.binarymonks.jj.core.render.ShaderSpec
 import com.binarymonks.jj.core.specs.render.RenderGraphType
 
 
@@ -22,9 +23,9 @@ abstract class ShapeRenderNode(
         color: PropOverride<Color>,
         renderGraphType: RenderGraphType,
         name: String?,
-        shaderPipe: String?,
+        shaderSpec: ShaderSpec?,
         var fill: Boolean = true
-) : RenderNode(priority, color, renderGraphType, name, shaderPipe) {
+) : RenderNode(priority, color, renderGraphType, name, shaderSpec) {
 
     override fun render(camera: OrthographicCamera) {
         JJ.B.renderWorld.switchToShapes(fill)
@@ -33,16 +34,16 @@ abstract class ShapeRenderNode(
     }
 
     override fun setShaderAndColor() {
-        if (shaderPipe != null) {
+        if (shaderSpec != null) {
             // TODO: Should centralize this and check if the current shader is the same or not
             JJ.B.renderWorld.shapeRenderer.end()
             JJ.B.renderWorld.shapeRenderer.begin(if (fill) ShapeRenderer.ShapeType.Filled else ShapeRenderer.ShapeType.Line)
-            (JJ.B.renderWorld.shapeRenderer.renderer as ImmediateModeRenderer20).setShader(JJ.B.renderWorld.getShaderPipe(shaderPipe!!))
+            (JJ.B.renderWorld.shapeRenderer.renderer as ImmediateModeRenderer20).setShader(JJ.B.renderWorld.getShaderPipe(shaderSpec!!.shaderPipe))
         }
     }
 
     override fun restoreShaderAndColor() {
-        if (shaderPipe != null) {
+        if (shaderSpec != null) {
             // TODO: Should centralize this and check if the current shader is the same or not
             JJ.B.renderWorld.shapeRenderer.end()
             JJ.B.renderWorld.shapeRenderer.begin(if (fill) ShapeRenderer.ShapeType.Filled else ShapeRenderer.ShapeType.Line)
@@ -58,13 +59,13 @@ class CircleRenderNode(
         color: PropOverride<Color>,
         renderGraphType: RenderGraphType,
         name: String?,
-        shaderPipe: String?,
+        shaderSpec: ShaderSpec?,
         fill: Boolean = true,
         val offsetX: Float,
         val offsetY: Float,
         val radius: Float,
         var segments: Int = 360
-) : ShapeRenderNode(priority, color, renderGraphType, name, shaderPipe, fill) {
+) : ShapeRenderNode(priority, color, renderGraphType, name, shaderSpec, fill) {
 
     private var positionCache: Vector2 = vec2()
 
@@ -84,7 +85,7 @@ class LineChainRenderNode(
         color: PropOverride<Color>,
         renderGraphType: RenderGraphType,
         name: String?,
-        shaderPipe: String?,
+        shaderSpec: ShaderSpec?,
         fill: Boolean = false,
         internal var scaleX: Float = 1f,
         internal var scaleY: Float = 1f,
@@ -92,7 +93,7 @@ class LineChainRenderNode(
         internal var offsetY: Float = 0f,
         internal var rotationD: Float = 0f,
         val vertices: Array<Vector2>
-) : ShapeRenderNode(priority, color, renderGraphType, name, shaderPipe, fill) {
+) : ShapeRenderNode(priority, color, renderGraphType, name, shaderSpec, fill) {
 
     private var vertCache: Array<Vector2> = Array()
 

@@ -3,6 +3,7 @@ package com.binarymonks.jj.core.render.nodes
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.binarymonks.jj.core.properties.PropOverride
+import com.binarymonks.jj.core.render.ShaderSpec
 import com.binarymonks.jj.core.specs.render.RenderGraphType
 import com.binarymonks.jj.core.scenes.Scene
 
@@ -12,7 +13,7 @@ abstract class RenderNode(
         var color: PropOverride<Color>,
         var renderGraphType: RenderGraphType,
         var name: String?,
-        var shaderPipe: String?
+        var shaderSpec: ShaderSpec?
 ) {
     var parent: Scene? = null
         set(value) {

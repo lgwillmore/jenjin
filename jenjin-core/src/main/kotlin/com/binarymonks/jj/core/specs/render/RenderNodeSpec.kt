@@ -10,6 +10,7 @@ import com.binarymonks.jj.core.assets.AssetReference
 import com.binarymonks.jj.core.extensions.copy
 import com.binarymonks.jj.core.pools.recycleItems
 import com.binarymonks.jj.core.properties.PropOverride
+import com.binarymonks.jj.core.render.ShaderSpec
 import com.binarymonks.jj.core.render.nodes.*
 import com.binarymonks.jj.core.workshop.ParamStack
 import kotlin.reflect.KClass
@@ -21,7 +22,7 @@ abstract class RenderNodeSpec {
     var color: PropOverride<Color> = PropOverride(Color.WHITE)
     var renderGraphType: RenderGraphType = RenderGraphType.DEFAULT
     var name:String? = null
-    var shaderPipe: String? = null
+    var shaderSpec: ShaderSpec? = null
     abstract fun getAssets(): Array<AssetReference>
     abstract fun makeNode(paramsStack: ParamStack): RenderNode
 }
@@ -51,7 +52,7 @@ class PolygonRenderNodeSpec : SpatialRenderNodeSpec() {
                 color.copy(),
                 renderGraphType,
                 name,
-                shaderPipe,
+                shaderSpec,
                 checkNotNull(sprite),
                 paramsStack.scaleX,
                 paramsStack.scaleY,
@@ -78,7 +79,7 @@ class LineChainRenderNodeSpec : SpatialRenderNodeSpec() {
                 color.copy(),
                 renderGraphType,
                 name,
-                shaderPipe,
+                shaderSpec,
                 fill,
                 paramsStack.scaleX,
                 paramsStack.scaleY,
@@ -105,7 +106,7 @@ class CircleRenderNodeSpec : SpatialRenderNodeSpec() {
                 this.color.copy(),
                 renderGraphType,
                 name,
-                shaderPipe,
+                shaderSpec,
                 fill = fill,
                 offsetX = offsetX*paramsStack.scaleX,
                 offsetY = offsetY*paramsStack.scaleY,
@@ -151,7 +152,7 @@ class TextureNodeSpec : ImageNodeSpec<KClass<Texture>>() {
                 color = color.copy(),
                 renderGraphType = renderGraphType,
                 name=name,
-                shaderPipe = shaderPipe,
+                shaderSpec = shaderSpec,
                 provider = frameProvider,
                 offsetX = offsetX,
                 offsetY = offsetY,

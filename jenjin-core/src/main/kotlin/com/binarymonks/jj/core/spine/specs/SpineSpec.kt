@@ -9,6 +9,7 @@ import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.assets.AssetReference
 import com.binarymonks.jj.core.extensions.copy
 import com.binarymonks.jj.core.pools.vec2
+import com.binarymonks.jj.core.render.ShaderSpec
 import com.binarymonks.jj.core.specs.Circle
 import com.binarymonks.jj.core.specs.Rectangle
 import com.binarymonks.jj.core.specs.SceneSpec
@@ -29,6 +30,7 @@ class SpineSpec() : SceneSpecRef {
     var scale: Float = 1f
     var originX: Float = 0f
     var originY: Float = 0f
+    var shaderSpec : ShaderSpec? = null
     var startingAnimation: String? = null
     var spineSkeleton: SpineSkeletonSpec? = null
 
@@ -49,7 +51,8 @@ class SpineSpec() : SceneSpecRef {
                                 dataPath,
                                 originX,
                                 originY,
-                                scale
+                                scale,
+                                shaderSpec
                         )
                 )
             }

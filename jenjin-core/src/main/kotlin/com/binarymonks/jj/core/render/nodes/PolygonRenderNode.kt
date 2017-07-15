@@ -16,6 +16,7 @@ import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.properties.PropOverride
+import com.binarymonks.jj.core.render.ShaderSpec
 import com.binarymonks.jj.core.specs.render.RenderGraphType
 import com.binarymonks.jj.core.specs.render.RenderNodeSpec
 
@@ -24,7 +25,7 @@ class PolygonRenderNode constructor(
         color: PropOverride<Color>,
         renderGraphType: RenderGraphType,
         name:String?,
-        renderPipe: String?,
+        renderPipe: ShaderSpec?,
         internal var poly: PolygonSprite,
         internal var scaleX: Float = 1f,
         internal var scaleY: Float = 1f,
