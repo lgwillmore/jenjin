@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.ObjectMap
+import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.api.LayersAPI
 import com.binarymonks.jj.core.pools.Poolable
 import com.binarymonks.jj.core.pools.new

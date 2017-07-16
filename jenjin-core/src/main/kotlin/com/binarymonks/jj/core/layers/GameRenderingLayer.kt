@@ -45,9 +45,11 @@ class GameRenderingLayer(
         camera.update()
         updateScreenToWorldScale()
         touchManager.update()
+        JJ.B.renderWorld.postProcessor.capture()
         renderGraph(JJ.B.renderWorld.defaultRenderGraph)
         renderLights()
         renderGraph(JJ.B.renderWorld.lightSourceRenderGraph)
+        JJ.B.renderWorld.postProcessor.render()
         if (JJ.B.config.b2d.debug) {
             drenderer.render(JJ.B.physicsWorld.b2dworld, JJ.B.renderWorld.polyBatch.getProjectionMatrix())
         }
@@ -69,7 +71,7 @@ class GameRenderingLayer(
         JJ.B.renderWorld.polyBatch.projectionMatrix = camera.combined
         JJ.B.renderWorld.shapeRenderer.projectionMatrix = camera.combined
 
-        JJ.B.renderWorld.postProcessor.capture()
+//        JJ.B.renderWorld.postProcessor.capture()
         JJ.B.renderWorld.polyBatch.begin()
         var renderedCount = 0
         var layerIndex = 0
@@ -81,7 +83,7 @@ class GameRenderingLayer(
             layerIndex++
         }
         JJ.B.renderWorld.end()
-        JJ.B.renderWorld.postProcessor.render()
+//        JJ.B.renderWorld.postProcessor.render()
     }
 
     private fun renderLights() {

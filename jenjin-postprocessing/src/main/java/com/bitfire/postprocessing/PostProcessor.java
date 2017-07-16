@@ -261,8 +261,8 @@ public final class PostProcessor implements Disposable {
 		if (enabled && !capturing) {
 			if (buildEnabledEffectsList() == 0) {
 				// no enabled effects
-				// Gdx.app.log( "PostProcessor::capture()",
-				// "No post-processor effects enabled" );
+				 Gdx.app.log( "PostProcessor::capture()",
+				 "No post-processor effects enabled" );
 				return false;
 			}
 
@@ -291,8 +291,8 @@ public final class PostProcessor implements Disposable {
 		if (enabled && !capturing) {
 			if (buildEnabledEffectsList() == 0) {
 				// no enabled effects
-				// Gdx.app.log( "PostProcessor::captureNoClear",
-				// "No post-processor effects enabled" );
+				 Gdx.app.log( "PostProcessor::captureNoClear",
+				 "No post-processor effects enabled" );
 				return false;
 			}
 
