@@ -36,7 +36,7 @@ object JJ {
 
     lateinit var B: Backend
 
-    fun initialise(config: JJConfig) {
+    internal fun initialise(config: JJConfig) {
         B = Backend()
         B.config = config
         B.clock = ClockControls()

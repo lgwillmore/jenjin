@@ -68,6 +68,8 @@ class GameRenderingLayer(
         JJ.B.renderWorld.polyBatch.enableBlending()
         JJ.B.renderWorld.polyBatch.projectionMatrix = camera.combined
         JJ.B.renderWorld.shapeRenderer.projectionMatrix = camera.combined
+
+        JJ.B.renderWorld.postProcessor.capture()
         JJ.B.renderWorld.polyBatch.begin()
         var renderedCount = 0
         var layerIndex = 0
@@ -79,6 +81,7 @@ class GameRenderingLayer(
             layerIndex++
         }
         JJ.B.renderWorld.end()
+        JJ.B.renderWorld.postProcessor.render()
     }
 
     private fun renderLights() {

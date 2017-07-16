@@ -3,7 +3,11 @@ package com.binarymonks.jj.core
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector2
 
-class JJConfig {
+class JJConfig() {
+    constructor(build: JJConfig.() -> Unit) : this() {
+        this.build()
+    }
+
     var gameView = GameViewConfig()
     var b2d = B2DConfig()
     var spine = SpineConfig()

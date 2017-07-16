@@ -46,6 +46,7 @@ project(":jenjin-core") {
 
     dependencies {
         compile project(":jenjin-spine")
+        compile project(":jenjin-postprocessing")
         compile fileTree(dir: '../libs', include: '*.jar')
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
         compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
@@ -69,6 +70,18 @@ project(":jenjin-spine") {
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+    }
+}
+
+project(":jenjin-postprocessing") {
+    apply plugin: 'java'
+    apply plugin: 'maven-publish'
+    apply plugin: 'idea'
+
+    sourceCompatibility = '1.8'
+
+    dependencies {
+        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
     }
 }
 

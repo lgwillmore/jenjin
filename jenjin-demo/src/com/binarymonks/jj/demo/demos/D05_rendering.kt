@@ -13,7 +13,13 @@ import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.*
 
 
-class D05_rendering : JJGame(MyConfig05.jjConfig) {
+class D05_rendering : JJGame(JJConfig {
+    b2d.debug = true
+
+    gameView.worldBoxWidth = 30f
+    gameView.cameraPosX = 0f
+    gameView.cameraPosY = 0f
+}) {
     override fun gameOn() {
         JJ.scenes.addSceneSpec("shapes", shapes())
 
@@ -113,17 +119,5 @@ class D05_rendering : JJGame(MyConfig05.jjConfig) {
                 }
             }
         }
-    }
-}
-
-object MyConfig05 {
-    var jjConfig: JJConfig = JJConfig()
-
-    init {
-        MyConfig05.jjConfig.b2d.debug = true
-
-        MyConfig05.jjConfig.gameView.worldBoxWidth = 30f
-        MyConfig05.jjConfig.gameView.cameraPosX = 0f
-        MyConfig05.jjConfig.gameView.cameraPosY = 0f
     }
 }
