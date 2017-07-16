@@ -274,8 +274,8 @@ public final class PostProcessor implements Disposable {
 				Gdx.gl.glClearDepthf(clearDepth);
 			}
 
-			Gdx.gl.glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
-			Gdx.gl.glClear(clearBits);
+			Gdx.gl20.glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
+			Gdx.gl20.glClear(clearBits);
 			return true;
 		}
 

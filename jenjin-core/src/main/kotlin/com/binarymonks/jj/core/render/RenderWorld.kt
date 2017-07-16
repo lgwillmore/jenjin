@@ -107,7 +107,7 @@ open class RenderWorld : RenderAPI, PostProcessorListener {
     }
 
     override fun beforeRenderToScreen() {
-        Gdx.gl20.glEnable(GL20.GL_BLEND)
-        Gdx.gl20.glBlendFunc(GL20.GL_SRC_COLOR, GL20.GL_SRC_ALPHA)
+//        Gdx.gl20.glEnable(GL20.GL_BLEND)
+//        Gdx.gl20.glBlendFunc(GL20.GL_SRC_COLOR, GL20.GL_SRC_ALPHA)
     }
 }

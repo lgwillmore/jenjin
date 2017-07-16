@@ -11,7 +11,7 @@ import com.bitfire.postprocessing.effects.Pixels
 
 
 class D13_postprocessing : JJGame(JJConfig {
-//    gameView.clearColor = Color(0.5f, 0.7f, 1f, 1f)
+    gameView.clearColor = Color(0.5f, 0.7f, 1f, 1f)
     gameView.worldBoxWidth = 6f
     gameView.cameraPosX = 0f
     gameView.cameraPosY = 0f
