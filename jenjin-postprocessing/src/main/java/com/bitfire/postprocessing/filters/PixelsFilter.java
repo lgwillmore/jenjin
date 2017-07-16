@@ -31,15 +31,15 @@ public class PixelsFilter extends Filter<PixelsFilter> {
             "\n" +
             "varying vec2 v_texCoords;\n" +
             "\n" +
-            "//uniform float dx;\n" +
-            "//uniform float dy;\n" +
+            "uniform float pixel_width;\n" +
+            "uniform float pixel_height;" +
             "\n" +
             "uniform sampler2D u_texture0;\n" +
             "\n" +
             "void main()\n" +
             "{\n" +
-            " float dy=0.01;\n" +
-            " float dx=0.01;\n" +
+            " float dy=pixel_width;\n" +
+            " float dx=pixel_width;\n" +
             " vec2 coord = vec2(dx*floor(v_texCoords.x/dx),\n" +
             "                   dy*floor(v_texCoords.y/dy));\n" +
             "\n" +
@@ -47,6 +47,33 @@ public class PixelsFilter extends Filter<PixelsFilter> {
             " //gl_FragColor = vec4(value,value,value,1);\n" +
             "  gl_FragColor = vec4(texture2D(u_texture0, coord).xyz,1);\n" +
             "}";
+
+    float pixelWidth;
+    float pixelHeight;
+
+    public enum Param implements Parameter {
+        // @formatter:off
+		Texture0("u_texture0", 0), PixelWidth("pixel_width",0), PixelHeight("pixel_height",0);
+		// @formatter:on
+
+        private final String mnemonic;
+        private int elementSize;
+
+        private Param(String m, int elementSize) {
+            this.mnemonic = m;
+            this.elementSize = elementSize;
+        }
+
+        @Override
+        public String mnemonic() {
+            return this.mnemonic;
+        }
+
+        @Override
+        public int arrayElementSize() {
+            return this.elementSize;
+        }
+    }
 
     static ShaderProgram shader() {
         ShaderProgram shader = new ShaderProgram(vertex, fragment);
@@ -58,14 +85,18 @@ public class PixelsFilter extends Filter<PixelsFilter> {
         return shader;
     }
 
-    public PixelsFilter(float PixelWidth, float PixelHeight) {
+    public PixelsFilter(float pixelWidth, float pixelHeight) {
         super(shader());
+        this.pixelWidth = pixelWidth;
+        this.pixelHeight = pixelHeight;
         rebind();
     }
 
     @Override
     public void rebind() {
-        setParams(Vignetting.Param.Texture0, u_texture0);
+        setParams(Param.Texture0, u_texture0);
+        setParams(Param.PixelWidth, pixelWidth);
+        setParams(Param.PixelHeight, pixelHeight);
         endParams();
     }
 

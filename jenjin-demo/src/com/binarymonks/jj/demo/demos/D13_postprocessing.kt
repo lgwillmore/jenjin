@@ -1,6 +1,5 @@
 package com.binarymonks.jj.demo.demos
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
@@ -8,7 +7,6 @@ import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.*
 import com.bitfire.postprocessing.effects.Pixels
-import com.bitfire.postprocessing.effects.Vignette
 
 
 class D13_postprocessing : JJGame(JJConfig {
@@ -22,8 +20,7 @@ class D13_postprocessing : JJGame(JJConfig {
         JJ.scenes.addSceneSpec("shape", shape())
         JJ.scenes.loadAssetsNow()
 
-//        JJ.B.renderWorld.postProcessor.addEffect(Vignette(Gdx.graphics.width, Gdx.graphics.height, false))
-        JJ.B.renderWorld.postProcessor.addEffect(Pixels(5f, 5f))
+        JJ.B.renderWorld.postProcessor.addEffect(Pixels(0.005f, 0.005f))
 
         JJ.scenes.instantiate(scene {
 
@@ -51,7 +48,7 @@ fun shape(): SceneSpec {
         render {
             rectangleRender(1f, 1f) {
                 color.set(Color.BLUE)
-                rotationD=45f
+                rotationD = 45f
             }
         }
     }
