@@ -2,14 +2,15 @@ package com.binarymonks.jj.core.spine.specs
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.assets.AssetReference
+import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.extensions.copy
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.render.ShaderSpec
+import com.binarymonks.jj.core.scenes.ScenePath
 import com.binarymonks.jj.core.specs.Circle
 import com.binarymonks.jj.core.specs.Rectangle
 import com.binarymonks.jj.core.specs.SceneSpec
@@ -17,6 +18,7 @@ import com.binarymonks.jj.core.specs.SceneSpecRef
 import com.binarymonks.jj.core.specs.builders.*
 import com.binarymonks.jj.core.specs.physics.FixtureSpec
 import com.binarymonks.jj.core.spine.components.SpineBoneComponent
+import com.binarymonks.jj.core.spine.components.SpineComponent
 import com.esotericsoftware.spine.Bone
 import com.esotericsoftware.spine.Skeleton
 import com.esotericsoftware.spine.SkeletonJson
@@ -30,9 +32,10 @@ class SpineSpec() : SceneSpecRef {
     var scale: Float = 1f
     var originX: Float = 0f
     var originY: Float = 0f
-    var shaderSpec : ShaderSpec? = null
+    var shaderSpec: ShaderSpec? = null
     var startingAnimation: String? = null
     var spineSkeleton: SpineSkeletonSpec? = null
+    var rootComponents: Array<Component> = Array()
 
 
     constructor(build: com.binarymonks.jj.core.spine.specs.SpineSpec.() -> Unit) : this() {
@@ -40,6 +43,7 @@ class SpineSpec() : SceneSpecRef {
     }
 
     override fun resolve(): SceneSpec {
+        val spineComponent = SpineComponent()
         val scene = scene {
             physics {
                 bodyType = BodyDef.BodyType.KinematicBody
@@ -56,8 +60,11 @@ class SpineSpec() : SceneSpecRef {
                         )
                 )
             }
-            component(com.binarymonks.jj.core.spine.components.SpineComponent()) {
+            component(spineComponent) {
                 startingAnimation = this@SpineSpec.startingAnimation
+            }
+            for (component in rootComponents) {
+                this.component(component)
             }
         }
         if (spineSkeleton != null) {
@@ -68,7 +75,7 @@ class SpineSpec() : SceneSpecRef {
             json.scale = actualScale
             val skeletonData = json.readSkeletonData(Gdx.files.internal(dataPath))
             val skeleton = Skeleton(skeletonData)
-            buildPhysicsSkeleton(scene, skeleton)
+            buildPhysicsSkeleton(scene, skeleton, spineComponent)
         }
         return scene
     }
@@ -79,14 +86,14 @@ class SpineSpec() : SceneSpecRef {
         return assets
     }
 
-    private fun buildPhysicsSkeleton(scene: SceneSpec, skeleton: Skeleton) {
+    private fun buildPhysicsSkeleton(scene: SceneSpec, skeleton: Skeleton, spineComponent: SpineComponent) {
         val bone = skeleton.rootBone
         val path: Array<String> = Array()
         path.add(bone.data.name)
-        buildBoneRecurse(bone, spineSkeleton!!.coreMass, path, scene)
+        buildBoneRecurse(bone, spineSkeleton!!.coreMass, path, scene, spineComponent)
     }
 
-    private fun buildBoneRecurse(bone: Bone, mass: Float, path: Array<String>, parentScene: SceneSpec): String {
+    private fun buildBoneRecurse(bone: Bone, mass: Float, path: Array<String>, parentScene: SceneSpec, spineComponent: SpineComponent): String {
         parentScene.addNode(
                 scene {
                     physics {
@@ -102,17 +109,15 @@ class SpineSpec() : SceneSpecRef {
                     bone.children.forEach {
                         val a = path.copy()
                         a.add(it.data.name)
-                        val childName = buildBoneRecurse(it, mass * spineSkeleton!!.massFalloff, a, this@scene)
+                        val childName = buildBoneRecurse(it, mass * spineSkeleton!!.massFalloff, a, this@scene, spineComponent)
                         revJoint(null, childName, vec2(it.x, it.y), vec2()) {
-                            enableLimit = true
-                            lowerAngle = spineSkeleton!!.all.jointLowerLimitD * MathUtils.degRad
-                            upperAngle = spineSkeleton!!.all.jointUpperLimitD * MathUtils.degRad
                             collideConnected = false
                         }
                     }
                 },
                 params { name = bone.data.name }
         )
+        spineComponent.bonePaths.put(bone.data.name, ScenePath(path.copy()))
         return bone.data.name
     }
 

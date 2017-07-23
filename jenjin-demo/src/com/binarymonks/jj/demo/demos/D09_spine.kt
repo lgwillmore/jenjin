@@ -10,7 +10,13 @@ import com.binarymonks.jj.core.specs.builders.scene
 import com.binarymonks.jj.core.spine.specs.SpineSpec
 
 
-class D09_spine : JJGame(MyConfig09.jjConfig) {
+class D09_spine : JJGame(JJConfig {
+    b2d.debug = false
+    b2d.gravity=Vector2()
+    gameView.worldBoxWidth = 4f
+    gameView.cameraPosX = 0f
+    gameView.cameraPosY = 0f
+}) {
     override fun gameOn() {
         JJ.scenes.addSceneSpec("spineBoy", spineBoy())
         JJ.scenes.loadAssetsNow()
@@ -28,18 +34,5 @@ class D09_spine : JJGame(MyConfig09.jjConfig) {
             scale = 1f / 247f
             originY = 247f
         }
-    }
-}
-
-object MyConfig09 {
-    var jjConfig: JJConfig = JJConfig()
-
-    init {
-        jjConfig.b2d.debug = false
-        jjConfig.b2d.gravity = Vector2()
-
-        jjConfig.gameView.worldBoxWidth = 4f
-        jjConfig.gameView.cameraPosX = 0f
-        jjConfig.gameView.cameraPosY = 0f
     }
 }

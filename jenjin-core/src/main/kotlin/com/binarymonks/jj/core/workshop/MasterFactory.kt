@@ -67,6 +67,10 @@ class MasterFactory {
             )
             JJ.B.physicsWorld.b2dworld.createJoint(jointDef)
         }
+
+        JJ.B.renderWorld.addScene(myScene)
+        JJ.B.sceneWorld.add(myScene)
+
         return myScene
     }
 
@@ -93,9 +97,6 @@ class MasterFactory {
                 pooled = sceneSpec.isPooled
         )
         addBehaviour(scene, sceneSpec)
-
-        JJ.B.renderWorld.addScene(scene)
-        JJ.B.sceneWorld.add(scene)
 
         return scene
     }

@@ -28,6 +28,7 @@ class SceneWorld {
             }
             namedScenes.put(scene.uniqueName, scene)
         }
+        scene.onAddToWorld()
     }
 
     fun getSceneByUniqueName(uniqueName: String): Scene {

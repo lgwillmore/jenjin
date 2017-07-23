@@ -28,7 +28,7 @@ class Draggable : TouchHandler() {
         me().physicsRoot.b2DBody.setLinearVelocity(0f, 0f)
     }
 
-    override fun onAddToWorld() {
+    override fun onAddToScene() {
         touched = false
     }
 }

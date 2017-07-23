@@ -5,7 +5,7 @@ import com.binarymonks.jj.core.pools.Poolable
 
 val UP: String = ".."
 
-class ScenePath() : Poolable{
+class ScenePath() : Poolable {
 
     internal val path: Array<String> = Array()
 
@@ -13,17 +13,27 @@ class ScenePath() : Poolable{
         pathElements.forEach { path.add(it) }
     }
 
-    fun build(vararg pathElements: String): ScenePath{
+    constructor(path: Array<String>) : this() {
+        path.forEach { this.path.add(it) }
+    }
+
+    fun build(vararg pathElements: String): ScenePath {
         reset()
         pathElements.forEach { path.add(it) }
         return this
     }
 
-    fun child(childName:String){
+    fun build(path: Array<String>): ScenePath {
+        reset()
+        path.forEach { this.path.add(it) }
+        return this
+    }
+
+    fun child(childName: String) {
         path.add(childName)
     }
 
-    fun up(){
+    fun up() {
         path.add(UP)
     }
 

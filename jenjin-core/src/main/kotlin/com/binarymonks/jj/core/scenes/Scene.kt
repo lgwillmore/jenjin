@@ -24,7 +24,7 @@ open class Scene(
 
 
     var id = JJ.B.nextID()
-    internal var componentMaster = ComponentMaster()
+    private var componentMaster = ComponentMaster()
     var isDestroyed: Boolean = false
         private set
     private var children: NamedArray<Scene> = NamedArray()
@@ -52,8 +52,10 @@ open class Scene(
         }
     }
 
+
     fun addComponent(component: Component) {
         component.scene = this
+        component.onAddToScene()
         componentMaster.addComponent(component)
     }
 
@@ -78,6 +80,10 @@ open class Scene(
         nodeScene.parent = this
     }
 
+    fun onAddToWorld() {
+        componentMaster.onAddToWorld()
+    }
+
     fun getChild(name: String): Scene? {
         return children.get(name)
     }
@@ -97,12 +103,11 @@ open class Scene(
     internal fun executeDestruction() {
         renderRoot.destroy(pooled)
         physicsRoot.destroy(pooled)
-        componentMaster.neutralise()
+        componentMaster.destroy()
     }
 
     internal fun resetFromPool(x: Float, y: Float, rotationD: Float) {
         physicsRoot.reset(x, y, rotationD)
-        componentMaster.reactivate()
     }
 
     override fun equals(other: Any?): Boolean {

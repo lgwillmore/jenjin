@@ -39,10 +39,7 @@ project(":jenjin-core") {
     apply plugin: 'maven-publish'
     apply plugin: 'idea'
 
-
     sourceCompatibility = '1.8'
-
-
 
     dependencies {
         compile project(":jenjin-spine")
@@ -50,6 +47,7 @@ project(":jenjin-core") {
         compile fileTree(dir: '../libs', include: '*.jar')
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
         compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+        compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.16"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"

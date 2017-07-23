@@ -22,28 +22,14 @@ class ComponentMaster {
 
     fun clean() {
         for (entry in removeTrackedComponents.entries()) {
-            entry.value.onRemoveFromWorld()
+            entry.value.onRemoveFromScene()
             trackedComponents.remove(entry.key)
         }
         removeTrackedComponents.clear()
         for (entry in addTrackedComponent.entries()) {
             trackedComponents.put(entry.key, entry.value)
-            entry.value.onAddToWorld()
         }
         addTrackedComponent.clear()
-    }
-
-    fun neutralise() {
-        clean()
-        for (entry in trackedComponents.entries()) {
-            entry.value.onRemoveFromWorld()
-        }
-    }
-
-    fun reactivate() {
-        for (entry in trackedComponents.entries()) {
-            entry.value.onAddToWorld()
-        }
     }
 
     fun addComponent(component: Component) {
@@ -64,6 +50,16 @@ class ComponentMaster {
             return addTrackedComponent.get(type) as T
         }
         return null
+    }
+
+    fun onAddToWorld() {
+        addTrackedComponent.forEach { it.value.onAddToWorld() }
+        trackedComponents.forEach { it.value.onAddToWorld() }
+    }
+
+    fun destroy() {
+        clean()
+        trackedComponents.forEach { it.value.onRemoveFromWorld() }
     }
 
 }

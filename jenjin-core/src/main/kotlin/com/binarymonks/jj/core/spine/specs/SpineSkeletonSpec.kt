@@ -29,7 +29,5 @@ class All {
     var collisionGroup: CollisionGroupSpec = CollisionGroupSpecExplicit()
     var restitution = 0.2f
     var friction = 0.2f
-    var jointLowerLimitD = -30f
-    var jointUpperLimitD = 90f
     val collisions = CollisionHandlers()
 }

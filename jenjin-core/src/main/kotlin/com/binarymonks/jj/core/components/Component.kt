@@ -55,10 +55,10 @@ abstract class Component {
     }
 
     /**
-     * This will be called when a new instance or a de-pooled instance is added to the game world as part of its
-     * [Scene] - if your component is not stateless, and your [Scene] is pooled you should re-initialise that state.
+     * Called when the component is added to a [Scene]. The parent [Scene] will be available, but not necessarily fully
+     * initialised.
      */
-    open fun onAddToWorld() {
+    open fun onAddToScene() {
     }
 
     /**
@@ -69,13 +69,10 @@ abstract class Component {
     }
 
     /**
-     * This will be called when the [Scene] is removed from the game world to be pooled/disposed.
-     *
-     * It will also be called if your [Component] identifies itself as being [Component.isDone]
-     *
-     * Cleanup any references or state as appropriate.
+     * Called when the component is removed from the [Scene]. This is called when the component indicates it should be removed
+     * via [isDone]
      */
-    open fun onRemoveFromWorld() {
+    open fun onRemoveFromScene() {
     }
 
     /**
@@ -84,6 +81,25 @@ abstract class Component {
      */
     open fun isDone(): Boolean {
         return false
+    }
+
+    /**
+     * Called when the components [Scene] is added to the world. The [Scene] will be fully initialised and it will
+     * have all of its children nodes.
+     * This is also called when a pooled [Scene] is drawn from the pool. Any resetting of state for the [Component]
+     * should be done with this in mind.
+     */
+    open fun onAddToWorld() {
+
+    }
+
+    /**
+     * Called when the components [Scene] is removed from the world. Do any required cleanup here.
+     * This is also called when a pooled [Scene] is placed in the pool. Any resetting of state for the [Component]
+     * should be done with this in mind.
+     */
+    open fun onRemoveFromWorld() {
+
     }
 
 }
