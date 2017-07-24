@@ -51,11 +51,11 @@ class SpineComponent : Component() {
         }
     }
 
-    fun triggerRagDoll() {
+    fun triggerRagDoll(gravity: Float = 1f) {
         if (!ragDoll) {
             ragDoll = true
             for (partEntry in spineBoneComponents) {
-                partEntry.value.triggerRagDoll()
+                partEntry.value.triggerRagDoll(gravity)
             }
         }
     }

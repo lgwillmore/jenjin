@@ -11,10 +11,7 @@ import com.binarymonks.jj.core.extensions.copy
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.render.ShaderSpec
 import com.binarymonks.jj.core.scenes.ScenePath
-import com.binarymonks.jj.core.specs.Circle
-import com.binarymonks.jj.core.specs.Rectangle
-import com.binarymonks.jj.core.specs.SceneSpec
-import com.binarymonks.jj.core.specs.SceneSpecRef
+import com.binarymonks.jj.core.specs.*
 import com.binarymonks.jj.core.specs.builders.*
 import com.binarymonks.jj.core.specs.physics.FixtureSpec
 import com.binarymonks.jj.core.spine.components.SpineBoneComponent
@@ -23,6 +20,7 @@ import com.esotericsoftware.spine.Bone
 import com.esotericsoftware.spine.Skeleton
 import com.esotericsoftware.spine.SkeletonJson
 import com.esotericsoftware.spine.attachments.AtlasAttachmentLoader
+import com.esotericsoftware.spine.attachments.BoundingBoxAttachment
 
 
 class SpineSpec() : SceneSpecRef {
@@ -90,16 +88,16 @@ class SpineSpec() : SceneSpecRef {
         val bone = skeleton.rootBone
         val path: Array<String> = Array()
         path.add(bone.data.name)
-        buildBoneRecurse(bone, spineSkeleton!!.coreMass, path, scene, spineComponent)
+        buildBoneRecurse(bone, spineSkeleton!!.coreMass, path, scene, spineComponent, skeleton)
     }
 
-    private fun buildBoneRecurse(bone: Bone, mass: Float, path: Array<String>, parentScene: SceneSpec, spineComponent: SpineComponent): String {
+    private fun buildBoneRecurse(bone: Bone, mass: Float, path: Array<String>, parentScene: SceneSpec, spineComponent: SpineComponent, skeleton: Skeleton): String {
         parentScene.addNode(
                 scene {
                     physics {
                         bodyType = BodyDef.BodyType.DynamicBody
                         gravityScale = 0f
-                        val fixture = buildFixture(bone, mass)
+                        val fixture = buildFixture(bone, mass, skeleton)
                         addFixture(fixture)
                         collisions.copyAppendFrom(spineSkeleton!!.all.collisions)
                     }
@@ -109,7 +107,7 @@ class SpineSpec() : SceneSpecRef {
                     bone.children.forEach {
                         val a = path.copy()
                         a.add(it.data.name)
-                        val childName = buildBoneRecurse(it, mass * spineSkeleton!!.massFalloff, a, this@scene, spineComponent)
+                        val childName = buildBoneRecurse(it, mass * spineSkeleton!!.massFalloff, a, this@scene, spineComponent, skeleton)
                         revJoint(null, childName, vec2(it.x, it.y), vec2()) {
                             collideConnected = false
                         }
@@ -121,9 +119,21 @@ class SpineSpec() : SceneSpecRef {
         return bone.data.name
     }
 
-    private fun buildFixture(bone: Bone, mass: Float): FixtureSpec {
+    private fun buildFixture(bone: Bone, mass: Float, skeleton: Skeleton): FixtureSpec {
         if (spineSkeleton!!.boneFixtureOverrides.containsKey(bone.data.name)) {
             return spineSkeleton!!.boneFixtureOverrides[bone.data.name]
+        }
+        if (spineSkeleton!!.boundingBoxes) {
+            val boundingBox: Polygon? = findPolygon(bone, skeleton)
+            if (boundingBox != null) {
+                return FixtureSpec {
+                    shape = boundingBox
+                    density = mass
+                    restitution = spineSkeleton!!.all.restitution
+                    friction = spineSkeleton!!.all.friction
+                    collisionGroup = spineSkeleton!!.all.collisionGroup
+                }
+            }
         }
         val boneLength = bone.data.length
         if (boneLength > 0) {
@@ -142,5 +152,23 @@ class SpineSpec() : SceneSpecRef {
             collisionGroup = spineSkeleton!!.all.collisionGroup
         }
     }
+
+    private fun findPolygon(bone: Bone, skeleton: Skeleton): Polygon? {
+        val boneName = bone.data.name
+        for (slot in skeleton.slots) {
+            if (slot.bone.data.name == boneName) {
+                if (slot.attachment is BoundingBoxAttachment) {
+                    val bb: BoundingBoxAttachment = slot.attachment as BoundingBoxAttachment
+                    val poly = Polygon()
+                    for (i in 0..bb.vertices.size-2 step 2) {
+                        poly.vertices.add(vec2(bb.vertices[i], bb.vertices[i + 1]))
+                    }
+                    return poly
+                }
+            }
+        }
+        return null
+    }
+
 }
 

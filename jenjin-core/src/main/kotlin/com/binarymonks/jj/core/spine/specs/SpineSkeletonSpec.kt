@@ -12,6 +12,7 @@ class SpineSkeletonSpec() {
     var coreMass: Float = 0.5f
     var massFalloff = 0.8f
     var all = All()
+    var boundingBoxes = false
     val boneFixtureOverrides: ObjectMap<String, FixtureSpec> = ObjectMap()
 
     constructor(build: SpineSkeletonSpec.() -> Unit) : this() {

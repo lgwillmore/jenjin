@@ -28,8 +28,8 @@ class SpineBoneComponent : Component() {
 //        spineParent!!.addBone(bone!!.data.name, this)
     }
 
-    fun setSpineComponent(spineParentScene: Scene){
-        spineParent=spineParentScene.getComponent(SpineComponent::class)
+    fun setSpineComponent(spineParentScene: Scene) {
+        spineParent = spineParentScene.getComponent(SpineComponent::class)
         val spineRender: SpineRenderNode = spineParentScene.renderRoot.getNode(SPINE_RENDER_NAME) as SpineRenderNode
         val boneNode = findMyBone(spineRender.skeleton.rootBone, 0) as RagDollBone
         setBone(boneNode)
@@ -40,11 +40,11 @@ class SpineBoneComponent : Component() {
         if (boneNode == null) {
             throw Exception("Could not find bone")
         }
-        if (offset+1 == bonePath.size) {
+        if (offset + 1 == bonePath.size) {
             return boneNode
         }
         boneNode.children.forEach {
-            if (it.data.name == bonePath[offset+1]) {
+            if (it.data.name == bonePath[offset + 1]) {
                 return findMyBone(it, offset + 1)
             }
         }
@@ -53,7 +53,7 @@ class SpineBoneComponent : Component() {
 
     private fun getRootNode(): Scene {
         val scenePath: ScenePath = new(ScenePath::class)
-        for(i in 0..bonePath.size-1){
+        for (i in 0..bonePath.size - 1) {
             scenePath.up()
         }
         val root = me().getNode(scenePath)
@@ -66,7 +66,7 @@ class SpineBoneComponent : Component() {
     }
 
     fun updatePosition() {
-        if (!ragDoll && bone!=null) {
+        if (!ragDoll && bone != null) {
             val x = bone!!.worldX
             val y = bone!!.worldY
             val rotation = bone!!.worldRotationX
@@ -74,13 +74,14 @@ class SpineBoneComponent : Component() {
         }
     }
 
-    fun triggerRagDoll() {
-        if(bone==null) println("No bone $bonePath")
-        if (!ragDoll && bone!=null) {
+    fun triggerRagDoll(gravity: Float = 1f) {
+        if (bone == null) println("No bone $bonePath")
+        if (!ragDoll && bone != null) {
             ragDoll = true
             bone!!.triggerRagDoll()
             scene!!.physicsRoot.b2DBody.type = BodyDef.BodyType.DynamicBody
-            spineParent!!.triggerRagDoll()
+            scene!!.physicsRoot.b2DBody.gravityScale = gravity
+            spineParent!!.triggerRagDoll(gravity)
         }
     }
 
@@ -94,6 +95,7 @@ class SpineBoneComponent : Component() {
             ragDoll = false
             bone!!.reverseRagDoll()
             me().physicsRoot.b2DBody.type = BodyDef.BodyType.StaticBody
+            me().physicsRoot.b2DBody.gravityScale = 0f
             spineParent!!.reverseRagDoll()
         }
     }
