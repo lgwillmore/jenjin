@@ -30,6 +30,7 @@ class SpineSpec() : SceneSpecRef {
     var scale: Float = 1f
     var originX: Float = 0f
     var originY: Float = 0f
+    var layer = 0
     var shaderSpec: ShaderSpec? = null
     var startingAnimation: String? = null
     var spineSkeleton: SpineSkeletonSpec? = null
@@ -47,16 +48,16 @@ class SpineSpec() : SceneSpecRef {
                 bodyType = BodyDef.BodyType.KinematicBody
             }
             render {
-                renderNodes.add(
-                        SpineRenderNodeSpec(
-                                atlasPath,
-                                dataPath,
-                                originX,
-                                originY,
-                                scale,
-                                shaderSpec
-                        )
+                val renderSpec = SpineRenderNodeSpec(
+                        atlasPath,
+                        dataPath,
+                        originX,
+                        originY,
+                        scale,
+                        shaderSpec
                 )
+                renderSpec.layer = layer
+                renderNodes.add(renderSpec)
             }
             component(spineComponent) {
                 startingAnimation = this@SpineSpec.startingAnimation
@@ -110,7 +111,16 @@ class SpineSpec() : SceneSpecRef {
                         val childName = buildBoneRecurse(it, mass * spineSkeleton!!.massFalloff, a, this@scene, spineComponent, skeleton)
                         revJoint(null, childName, vec2(it.x, it.y), vec2()) {
                             collideConnected = false
+                            enableMotor=true
+                            motorSpeed=0f
+                            maxMotorTorque=0.5f
                         }
+                    }
+                    spineSkeleton!!.all.properties.forEach {
+                        prop(it.key, it.value)
+                    }
+                    for (component in spineSkeleton!!.all.components) {
+                        this.component(component)
                     }
                 },
                 params { name = bone.data.name }
@@ -131,6 +141,10 @@ class SpineSpec() : SceneSpecRef {
                     density = mass
                     restitution = spineSkeleton!!.all.restitution
                     friction = spineSkeleton!!.all.friction
+                    val mat = spineSkeleton!!.all.material
+                    if (mat != null) {
+                        material.set(mat)
+                    }
                     collisionGroup = spineSkeleton!!.all.collisionGroup
                 }
             }
@@ -144,6 +158,10 @@ class SpineSpec() : SceneSpecRef {
                 restitution = spineSkeleton!!.all.restitution
                 friction = spineSkeleton!!.all.friction
                 collisionGroup = spineSkeleton!!.all.collisionGroup
+                val mat = spineSkeleton!!.all.material
+                if (mat != null) {
+                    material.set(mat)
+                }
             }
         }
         return FixtureSpec {
@@ -160,7 +178,7 @@ class SpineSpec() : SceneSpecRef {
                 if (slot.attachment is BoundingBoxAttachment) {
                     val bb: BoundingBoxAttachment = slot.attachment as BoundingBoxAttachment
                     val poly = Polygon()
-                    for (i in 0..bb.vertices.size-2 step 2) {
+                    for (i in 0..bb.vertices.size - 2 step 2) {
                         poly.vertices.add(vec2(bb.vertices[i], bb.vertices[i + 1]))
                     }
                     return poly

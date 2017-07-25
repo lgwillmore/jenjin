@@ -1,6 +1,8 @@
 package com.binarymonks.jj.core.spine.specs
 
 import com.badlogic.gdx.utils.ObjectMap
+import com.badlogic.gdx.utils.Array
+import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.physics.CollisionHandlers
 import com.binarymonks.jj.core.specs.physics.CollisionGroupSpec
 import com.binarymonks.jj.core.specs.physics.CollisionGroupSpecExplicit
@@ -28,7 +30,10 @@ class SpineSkeletonSpec() {
 
 class All {
     var collisionGroup: CollisionGroupSpec = CollisionGroupSpecExplicit()
+    var components: Array<Component> = Array()
     var restitution = 0.2f
     var friction = 0.2f
+    var material: String? = null
     val collisions = CollisionHandlers()
+    val properties: ObjectMap<String, Any> = ObjectMap()
 }

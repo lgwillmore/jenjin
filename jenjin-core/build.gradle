@@ -5,8 +5,8 @@ buildscript {
     }
 }
 
-task sourceJar(type: Jar) {
-    from sourceSets.main.allJava
+task sourceJar(type: Jar, dependsOn: project.classes) {
+    from sourceSets.main.allSource
 }
 
 kotlin {

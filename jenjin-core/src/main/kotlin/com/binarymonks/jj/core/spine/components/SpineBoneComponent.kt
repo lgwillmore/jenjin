@@ -19,15 +19,6 @@ class SpineBoneComponent : Component() {
     internal var ragDoll = false
     var bonePath: Array<String> = Array()
 
-    override fun onAddToWorld() {
-//        val spineParentScene = getRootNode()
-//        spineParent = spineParentScene.getComponent(SpineComponent::class)
-//        val spineRender: SpineRenderNode = spineParentScene.renderRoot.getNode(SPINE_RENDER_NAME) as SpineRenderNode
-//        val boneNode = findMyBone(spineRender.skeleton.rootBone, 0) as RagDollBone
-//        setBone(boneNode)
-//        spineParent!!.addBone(bone!!.data.name, this)
-    }
-
     fun setSpineComponent(spineParentScene: Scene) {
         spineParent = spineParentScene.getComponent(SpineComponent::class)
         val spineRender: SpineRenderNode = spineParentScene.renderRoot.getNode(SPINE_RENDER_NAME) as SpineRenderNode
@@ -59,6 +50,10 @@ class SpineBoneComponent : Component() {
         val root = me().getNode(scenePath)
         recycle(scenePath)
         return root
+    }
+
+    fun applyToBones(sceneOperation: (Scene) -> Unit) {
+        spineParent!!.applyToBones(sceneOperation)
     }
 
     override fun update() {

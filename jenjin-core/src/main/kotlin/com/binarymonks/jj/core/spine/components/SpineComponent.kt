@@ -2,6 +2,7 @@ package com.binarymonks.jj.core.spine.components
 
 import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.components.Component
+import com.binarymonks.jj.core.scenes.Scene
 import com.binarymonks.jj.core.scenes.ScenePath
 import com.binarymonks.jj.core.spine.render.SpineRenderNode
 
@@ -21,6 +22,12 @@ class SpineComponent : Component() {
         bonePaths.forEach { it.value.from(me()).getComponent(SpineBoneComponent::class)!!.setSpineComponent(me()) }
         if (startingAnimation != null) {
             myRender().triggerAnimation(startingAnimation!!)
+        }
+    }
+
+    fun applyToBones(sceneOperation: (Scene) -> Unit) {
+        bonePaths.forEach {
+            sceneOperation(it.value.from(me()))
         }
     }
 
