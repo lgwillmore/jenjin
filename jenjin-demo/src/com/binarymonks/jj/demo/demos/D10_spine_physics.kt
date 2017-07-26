@@ -48,12 +48,11 @@ class D10_spine_physics : JJGame(MyConfig10.jjConfig) {
             spineSkeleton = SpineSkeletonSpec {
                 all.collisionGroup = CollisionGroupSpecName("character")
                 all.collisions.begin(TriggerRagDollCollision())
-                overrideFixtureFor("head") {
-                    shape = Circle(0.4f)
-                    offsetX = 0.4f
-                    friction = 0.4f
-                    restitution = 0.1f
-                    collsionGroup("character")
+                customize("head"){
+                    override {
+                        shape = Circle(0.4f)
+                        offsetX = 0.4f
+                    }
                 }
             }
         }

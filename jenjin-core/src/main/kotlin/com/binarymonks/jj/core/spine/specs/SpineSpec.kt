@@ -98,7 +98,7 @@ class SpineSpec() : SceneSpecRef {
                     physics {
                         bodyType = BodyDef.BodyType.DynamicBody
                         gravityScale = 0f
-                        val fixture = buildFixture(bone, mass, skeleton)
+                        val fixture = buildFixture(bone, mass, skeleton, spineSkeleton!!.customs.get(path.last()))
                         addFixture(fixture)
                         collisions.copyAppendFrom(spineSkeleton!!.all.collisions)
                     }
@@ -109,11 +109,16 @@ class SpineSpec() : SceneSpecRef {
                         val a = path.copy()
                         a.add(it.data.name)
                         val childName = buildBoneRecurse(it, mass * spineSkeleton!!.massFalloff, a, this@scene, spineComponent, skeleton)
+                        val custom = spineSkeleton!!.customs.get(childName)
                         revJoint(null, childName, vec2(it.x, it.y), vec2()) {
                             collideConnected = false
-                            enableMotor=true
-                            motorSpeed=0f
-                            maxMotorTorque=0.5f
+                            enableLimit = custom?.boneOverride?.enableLimit ?: spineSkeleton!!.all.enableLimit
+                            lowerAngle = custom?.boneOverride?.lowerAngle ?: spineSkeleton!!.all.lowerAngle
+                            upperAngle = custom?.boneOverride?.upperAngle ?: spineSkeleton!!.all.upperAngle
+
+                            enableMotor= custom?.boneOverride?.enableMotor ?: spineSkeleton!!.all.enableMotor
+                            motorSpeed= custom?.boneOverride?.motorSpeed ?: spineSkeleton!!.all.motorSpeed
+                            maxMotorTorque= custom?.boneOverride?.maxMotorTorque ?: spineSkeleton!!.all.maxMotorTorque
                         }
                     }
                     spineSkeleton!!.all.properties.forEach {
@@ -129,39 +134,37 @@ class SpineSpec() : SceneSpecRef {
         return bone.data.name
     }
 
-    private fun buildFixture(bone: Bone, mass: Float, skeleton: Skeleton): FixtureSpec {
-        if (spineSkeleton!!.boneFixtureOverrides.containsKey(bone.data.name)) {
-            return spineSkeleton!!.boneFixtureOverrides[bone.data.name]
-        }
+    private fun buildFixture(bone: Bone, mass: Float, skeleton: Skeleton, customBone : CustomBone?): FixtureSpec {
         if (spineSkeleton!!.boundingBoxes) {
             val boundingBox: Polygon? = findPolygon(bone, skeleton)
             if (boundingBox != null) {
                 return FixtureSpec {
-                    shape = boundingBox
-                    density = mass
-                    restitution = spineSkeleton!!.all.restitution
-                    friction = spineSkeleton!!.all.friction
-                    val mat = spineSkeleton!!.all.material
+                    shape = customBone?.boneOverride?.shape ?: boundingBox
+                    density = customBone?.boneOverride?.mass ?: mass
+                    restitution = customBone?.boneOverride?.restitution ?:spineSkeleton!!.all.restitution
+                    friction = customBone?.boneOverride?.friction ?:spineSkeleton!!.all.friction
+                    val mat = customBone?.boneOverride?.material ?: spineSkeleton!!.all.material
                     if (mat != null) {
                         material.set(mat)
                     }
-                    collisionGroup = spineSkeleton!!.all.collisionGroup
+                    collisionGroup = customBone?.boneOverride?.collisionGroup ?:spineSkeleton!!.all.collisionGroup
                 }
             }
         }
         val boneLength = bone.data.length
         if (boneLength > 0) {
             return FixtureSpec {
-                shape = Rectangle(boneLength, spineSkeleton!!.boneWidth)
-                offsetX = boneLength / 2
-                density = mass
-                restitution = spineSkeleton!!.all.restitution
-                friction = spineSkeleton!!.all.friction
-                collisionGroup = spineSkeleton!!.all.collisionGroup
-                val mat = spineSkeleton!!.all.material
+                shape = customBone?.boneOverride?.shape ?: Rectangle(boneLength, spineSkeleton!!.boneWidth)
+                offsetX = customBone?.boneOverride?.offsetX ?: boneLength / 2
+                offsetY = customBone?.boneOverride?.offsetX ?: 0f
+                density = customBone?.boneOverride?.mass ?: mass
+                restitution = customBone?.boneOverride?.restitution ?:spineSkeleton!!.all.restitution
+                friction = customBone?.boneOverride?.friction ?:spineSkeleton!!.all.friction
+                val mat = customBone?.boneOverride?.material ?: spineSkeleton!!.all.material
                 if (mat != null) {
                     material.set(mat)
                 }
+                collisionGroup = customBone?.boneOverride?.collisionGroup ?:spineSkeleton!!.all.collisionGroup
             }
         }
         return FixtureSpec {
