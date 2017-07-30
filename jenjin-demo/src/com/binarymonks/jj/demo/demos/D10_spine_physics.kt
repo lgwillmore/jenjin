@@ -51,7 +51,6 @@ class D10_spine_physics : JJGame(MyConfig10.jjConfig) {
                 customize("head"){
                     override {
                         shape = Circle(0.4f)
-                        offsetX = 0.4f
                     }
                 }
             }
@@ -105,7 +104,7 @@ object MyConfig10 {
     var jjConfig: JJConfig = JJConfig()
 
     init {
-//        jjConfig.b2d.debug = true
+        jjConfig.b2d.debug = true
 
         MyConfig10.jjConfig.gameView.worldBoxWidth = 15f
         MyConfig10.jjConfig.gameView.cameraPosX = 0f

@@ -8,6 +8,8 @@ interface TasksAPI {
 
     fun addPostPhysicsTask(task: Task)
 
+    fun doOnceAfterPhysics(fn: () -> Unit)
+
     fun addPrePhysicsTask(task: Task)
 
 }

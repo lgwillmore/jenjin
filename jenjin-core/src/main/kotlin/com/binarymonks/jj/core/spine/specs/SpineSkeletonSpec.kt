@@ -12,7 +12,9 @@ import com.binarymonks.jj.core.specs.physics.CollisionGroupSpecExplicit
 class SpineSkeletonSpec() {
     var boneWidth: Float = 0.1f
     var coreMass: Float = 0.5f
-    var massFalloff = 0.8f
+    var massFalloff = 0.5f
+    var coreMotorTorque = 0.5f
+    var coreMotorTorqueFalloff = 0.5f
     var all = All()
     var boundingBoxes = false
     internal val customs: ObjectMap<String, CustomBone> = ObjectMap()
@@ -38,8 +40,6 @@ class All {
     var lowerAngle: Float = 0f
     var upperAngle: Float = 30f
     var enableMotor: Boolean = true
-    var motorSpeed: Float = 0f
-    var maxMotorTorque: Float = 0.5f
     internal val components: Array<Component> = Array()
     val collisions = CollisionHandlers()
     internal val properties: ObjectMap<String, Any> = ObjectMap()
