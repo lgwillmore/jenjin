@@ -24,25 +24,10 @@ class SpineRenderNode(
         internal var positionOffset: Vector2
 ) : BatchBasedRenderNode(priority, color, renderGraphType, name, shaderSpec) {
 
-    internal var currentAnimation: String? = null
-    internal var animationTimeElapsed: Float = 0.toFloat()
-    internal var events: Array<Event> = Array() //What is this?
-
-    fun triggerAnimation(animationName: String) {
-        currentAnimation = animationName
-        animationTimeElapsed = 0f
-    }
-
     override fun render(camera: OrthographicCamera) {
-        animationTimeElapsed += JJ.clock.deltaFloat
         val position = parent!!.physicsRoot.position().sub(positionOffset)
-
-        if (currentAnimation != null) {
-            skeletonData.findAnimation(currentAnimation).apply(skeleton, animationTimeElapsed, animationTimeElapsed, true, events, 1f, false, false)
-        }
         skeleton.setPosition(position.x, position.y)
         skeleton.updateWorldTransform()
-
         if (JJ.B.config.spine.render) {
             JJ.B.renderWorld.switchToBatch()
             JJ.B.renderWorld.skeletonRenderer.draw(JJ.B.renderWorld.polyBatch, skeleton)

@@ -7,7 +7,7 @@ import com.binarymonks.jj.core.physics.CollisionHandler
 import com.binarymonks.jj.core.scenes.Scene
 
 /**
- * Triggers a sound on collision
+ * Triggers a sounds on collision
  */
 class SoundCollision(
         var soundName: String? = null,

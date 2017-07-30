@@ -53,6 +53,7 @@ object JJ {
         B.defaultGameRenderingLayer.inputMultiplexer.addProcessor(B.input)
         B.layers.push(B.defaultGameRenderingLayer)
         B.tasks = Tasks()
+        B.defaultGameRenderingLayer.postProccessingEnabled=config.gameView.postProcessingEnabled
 
         scenes = B.scenes
         layers = B.layers

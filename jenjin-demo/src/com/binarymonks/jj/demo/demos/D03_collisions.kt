@@ -14,7 +14,7 @@ import com.binarymonks.jj.core.specs.builders.*
  *
  * To hook into the collision lifecycle you need to implement a [com.binarymonks.jj.core.physics.collisions.CollisionHandler]
  *
- * Here we use a built in [com.binarymonks.jj.core.physics.collisions.CollisionHandler] to trigger a sound.
+ * Here we use a built in [com.binarymonks.jj.core.physics.collisions.CollisionHandler] to trigger a sounds.
  *
  * Deciding what can collide with what is also important for how your physics behaves with things such as layers, projectiles and terrain.
  *
@@ -55,9 +55,7 @@ class D03_collisions : JJGame(MyConfig03.jjConfig) {
 
     private fun ball(): SceneSpec {
         return scene {
-            sound("bounce", "sounds/pong.mp3") {
-                volume = 0.6f
-            }
+            sounds.sound("bounce", "sounds/pong.mp3", volume = 0.6f)
             physics {
                 fixture {
                     bodyType = BodyDef.BodyType.DynamicBody

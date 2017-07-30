@@ -42,7 +42,7 @@ class D10_spine_physics : JJGame(MyConfig10.jjConfig) {
         return SpineSpec {
             atlasPath = "spine/spineboy/spineboy-pma.atlas"
             dataPath = "spine/spineboy/spineboy.json"
-            startingAnimation = "walk"
+            animation.startingAnimation = "walk"
             scale = 1f / 247f
             originY = 247f
             spineSkeleton = SpineSkeletonSpec {

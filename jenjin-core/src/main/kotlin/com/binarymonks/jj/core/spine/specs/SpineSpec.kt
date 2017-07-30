@@ -1,9 +1,11 @@
 package com.binarymonks.jj.core.spine.specs
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.utils.Array
+import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.assets.AssetReference
 import com.binarymonks.jj.core.components.Component
@@ -14,13 +16,18 @@ import com.binarymonks.jj.core.scenes.ScenePath
 import com.binarymonks.jj.core.specs.*
 import com.binarymonks.jj.core.specs.builders.*
 import com.binarymonks.jj.core.specs.physics.FixtureSpec
+import com.binarymonks.jj.core.spine.SpineEventHandler
 import com.binarymonks.jj.core.spine.components.SpineBoneComponent
 import com.binarymonks.jj.core.spine.components.SpineComponent
 import com.esotericsoftware.spine.Bone
+import com.esotericsoftware.spine.Event
 import com.esotericsoftware.spine.Skeleton
 import com.esotericsoftware.spine.SkeletonJson
 import com.esotericsoftware.spine.attachments.AtlasAttachmentLoader
 import com.esotericsoftware.spine.attachments.BoundingBoxAttachment
+import kotlin.reflect.KClass
+import kotlin.reflect.KFunction1
+import kotlin.reflect.KFunction2
 
 
 class SpineSpec() : SceneSpecRef {
@@ -32,17 +39,18 @@ class SpineSpec() : SceneSpecRef {
     var originY: Float = 0f
     var layer = 0
     var shaderSpec: ShaderSpec? = null
-    var startingAnimation: String? = null
+    val sounds = SoundSpec()
+    val animation = SpineAnimations()
     var spineSkeleton: SpineSkeletonSpec? = null
     var rootComponents: Array<Component> = Array()
 
 
-    constructor(build: com.binarymonks.jj.core.spine.specs.SpineSpec.() -> Unit) : this() {
+    constructor(build: SpineSpec.() -> Unit) : this() {
         this.build()
     }
 
     override fun resolve(): SceneSpec {
-        val spineComponent = SpineComponent()
+        val spineComponent = SpineComponent(animation)
         val scene = scene {
             physics {
                 bodyType = BodyDef.BodyType.KinematicBody
@@ -59,12 +67,11 @@ class SpineSpec() : SceneSpecRef {
                 renderSpec.layer = layer
                 renderNodes.add(renderSpec)
             }
-            component(spineComponent) {
-                startingAnimation = this@SpineSpec.startingAnimation
-            }
+            component(spineComponent)
             for (component in rootComponents) {
                 this.component(component)
             }
+            this.sounds = this@SpineSpec.sounds
         }
         if (spineSkeleton != null) {
             val atlas = JJ.assets.getAsset(checkNotNull(atlasPath), TextureAtlas::class)
@@ -82,6 +89,11 @@ class SpineSpec() : SceneSpecRef {
     override fun getAssets(): Array<AssetReference> {
         val assets: Array<AssetReference> = Array()
         assets.add(AssetReference(TextureAtlas::class, checkNotNull(atlasPath)))
+        sounds.params.forEach {
+            it.soundPaths.forEach {
+                assets.add(AssetReference(Sound::class, it))
+            }
+        }
         return assets
     }
 
@@ -191,5 +203,46 @@ class SpineSpec() : SceneSpecRef {
         return null
     }
 
+
+}
+
+internal class CrossFade(
+        val fromName: String,
+        val toName: String,
+        val duration: Float
+)
+
+internal class EventToComponentCall(
+        val componentType: KClass<Component>,
+        val componentFunction: KFunction2<Component, @ParameterName(name = "event") Event, Unit>
+)
+
+internal class ComponentCall(
+        val componentType: KClass<Component>,
+        val componentFunction: KFunction1<Component, Unit>
+)
+
+class SpineAnimations {
+    var startingAnimation: String? = null
+    internal val crossFades: Array<CrossFade> = Array()
+    internal var functionHandlers: ObjectMap<String, SpineEventHandler> = ObjectMap()
+    internal var componentHandlers: ObjectMap<String, EventToComponentCall> = ObjectMap()
+    internal var componentFunctions: ObjectMap<String, ComponentCall> = ObjectMap()
+
+    fun setMix(fromName: String, toName: String, duration: Float) {
+        crossFades.add(CrossFade(fromName, toName, duration))
+    }
+
+    fun registerEventHandler(eventName: String, handler: SpineEventHandler) {
+        functionHandlers.put(eventName, handler)
+    }
+
+    fun <T : Component> registerEventHandler(eventName: String, componentType: KClass<T>, componentFunction: KFunction2<T, @ParameterName(name = "event") Event, Unit>) {
+        componentHandlers.put(eventName, EventToComponentCall(componentType as KClass<Component>, componentFunction as KFunction2<Component, @kotlin.ParameterName(name = "event") Event, Unit>))
+    }
+
+    fun <T : Component> registerEventFunction(eventName: String, componentType: KClass<T>, componentFunction: KFunction1<T, Unit>) {
+        componentFunctions.put(eventName, ComponentCall(componentType as KClass<Component>, componentFunction as KFunction1<Component, Unit>))
+    }
 }
 

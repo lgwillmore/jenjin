@@ -57,7 +57,7 @@ class SoundEffects : Disposable {
 
     private fun trigger(soundfxID: String, mode: SoundMode) {
         if (sounds.containsKey(soundfxID)) {
-            val proposedSound = sounds[soundfxID] ?: throw Exception("Proposed sound is null")
+            val proposedSound = sounds[soundfxID] ?: throw Exception("Proposed sounds is null")
             proposedSound.selectRandom()
             if (proposedSound.canTriggerSingleton()) {
                 stopCurrentSound()

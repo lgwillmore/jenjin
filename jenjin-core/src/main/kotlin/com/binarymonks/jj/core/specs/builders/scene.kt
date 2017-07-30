@@ -1,9 +1,7 @@
 package com.binarymonks.jj.core.specs.builders
 
 import com.badlogic.gdx.math.Vector2
-import com.binarymonks.jj.core.audio.SoundParams
 import com.binarymonks.jj.core.components.Component
-import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.specs.InstanceParams
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.physics.PhysicsSpec
@@ -54,19 +52,6 @@ fun SceneSpec.render(init: RenderSpec.() -> Unit) {
     this.render.init()
 }
 
-fun SceneSpec.sound(name: String, path: String, init: SoundParams.() -> Unit) {
-    val soundParams = SoundParams(name)
-    soundParams.soundPaths.add(path)
-    soundParams.init()
-    this.sounds.add(soundParams)
-}
-
-fun SceneSpec.sound(name: String, path: String): SoundParams {
-    val soundParams = SoundParams(name)
-    soundParams.soundPaths.add(path)
-    this.sounds.add(soundParams)
-    return soundParams
-}
 
 fun <T : Component> SceneSpec.component(component: T, init: T.() -> Unit) {
     component.init()

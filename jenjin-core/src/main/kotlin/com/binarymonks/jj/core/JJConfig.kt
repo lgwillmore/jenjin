@@ -18,6 +18,7 @@ class GameViewConfig {
     var worldBoxWidth = 50f
     var cameraPosX: Float = 0f
     var cameraPosY: Float = 0f
+    var postProcessingEnabled = false
 }
 
 class B2DConfig {

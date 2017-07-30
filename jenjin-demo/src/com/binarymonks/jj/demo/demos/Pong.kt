@@ -239,9 +239,7 @@ class Player : Component() {
 fun ball(): SceneSpecRef {
     val ballRadius = 0.15f
     return scene {
-        sound("bounce", "sounds/pong.mp3") {
-            volume = 0.6f
-        }
+        sounds.sound("bounce", "sounds/pong.mp3", volume = 0.6f)
         physics {
             bodyType = BodyDef.BodyType.DynamicBody
             fixedRotation = true

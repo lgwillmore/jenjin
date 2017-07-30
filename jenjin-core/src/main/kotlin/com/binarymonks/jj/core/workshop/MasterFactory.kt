@@ -92,7 +92,7 @@ class MasterFactory {
                 uniqueName = paramsStack.peek().uniqueInstanceName,
                 physicsRoot = buildPhysicsRoot(sceneSpec.physics, paramsStack),
                 renderRoot = buildRenderRoot(sceneSpec.render, paramsStack),
-                soundEffects = buildSoundEffects(sceneSpec.sounds),
+                soundEffects = buildSoundEffects(sceneSpec.sounds.params),
                 properties = sceneSpec.properties.copy().merge(paramsStack.peek().properties),
                 pooled = sceneSpec.isPooled
         )

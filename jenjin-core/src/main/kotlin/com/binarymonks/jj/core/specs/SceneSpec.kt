@@ -21,7 +21,7 @@ open class SceneSpec : SceneSpecRef {
     internal var nodeCounter = 0
     var physics: PhysicsSpec = PhysicsSpec()
     var render: RenderSpec = RenderSpec()
-    var sounds: Array<SoundParams> = Array()
+    var sounds =  SoundSpec()
     var components: Array<Component> = Array()
     var properties: ObjectMap<String, Any> = ObjectMap()
     internal var isPooled: Boolean = true
@@ -70,7 +70,7 @@ open class SceneSpec : SceneSpecRef {
         for (node in render.renderNodes) {
             assets.addAll(node.getAssets())
         }
-        sounds.forEach {
+        sounds.params.forEach {
             it.soundPaths.forEach {
                 assets.add(AssetReference(Sound::class, it))
             }

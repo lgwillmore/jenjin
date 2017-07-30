@@ -22,4 +22,12 @@ class SoundParams(var id: String) {
         isBig = big
         return this
     }
+
+    fun copy(): SoundParams {
+        val copy = SoundParams(id)
+        copy.soundPaths = soundPaths
+        copy.volume = volume
+        copy.isBig = isBig
+        return copy
+    }
 }
