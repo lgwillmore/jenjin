@@ -42,7 +42,7 @@ class Scheduler(val timeFunction: () -> Float) {
     }
 
     fun cancel(id: Int) {
-        if (scheduledFunctions.containsKey(id) && scheduledFunctions.get(id).isFinished()) {
+        if (scheduledFunctions.containsKey(id)) {
             recycle(scheduledFunctions.remove(id))
         }
     }

@@ -80,4 +80,5 @@ fabric.properties
 # Kotlin
 
 build
+out
 

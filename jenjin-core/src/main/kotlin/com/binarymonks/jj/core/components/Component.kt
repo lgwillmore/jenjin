@@ -14,7 +14,7 @@ private val propDelegateType = PropOverride::class.createType(listOf(KTypeProjec
 
 abstract class Component {
 
-    internal var scene: Scene? = null
+    open internal var scene: Scene? = null
         set(value) {
             field = value
             this::class.declaredMemberProperties.forEach {

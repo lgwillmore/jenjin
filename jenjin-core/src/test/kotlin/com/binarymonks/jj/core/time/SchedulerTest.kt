@@ -25,6 +25,22 @@ class FunctionMock() {
     }
 }
 
+class SelfCancelingFunctionMock() {
+    var schedular: Scheduler? = null
+    var scheduleId = -1
+    var counter = 0
+
+    fun call() {
+        counter++
+        schedular!!.cancel(scheduleId)
+    }
+
+    fun assertCalls(calls: Int) {
+        Assert.assertEquals(calls, counter)
+    }
+
+}
+
 class SchedulerTest {
 
     val timeMock = TimeFunctionMock(0f)
@@ -128,6 +144,24 @@ class SchedulerTest {
 
         functionMock.assertCalls(0)
 
+    }
+
+    @Test
+    fun schedule_canceled_from_inside_scheduled_function() {
+        val functionMock = SelfCancelingFunctionMock()
+        functionMock.schedular = testObj
+        val delay = 1f
+
+        functionMock.scheduleId = testObj.schedule(functionMock::call, delay)
+
+        tick(1f)
+
+        functionMock.assertCalls(1)
+
+
+        tick(1f)
+
+        functionMock.assertCalls(1)
     }
 
 
