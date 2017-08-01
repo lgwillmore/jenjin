@@ -1,13 +1,14 @@
 package com.binarymonks.jj.core.components.fsm
 
 import com.badlogic.gdx.utils.Array
+import com.binarymonks.jj.core.Copyable
 import com.binarymonks.jj.core.copy
 import com.binarymonks.jj.core.scenes.Scene
 
 
-abstract class TransitionCondition {
+abstract class TransitionCondition : Copyable<TransitionCondition> {
 
-    internal var scene: Scene? = null
+    open internal var scene: Scene? = null
 
     fun me(): Scene {
         return scene!!
@@ -15,7 +16,7 @@ abstract class TransitionCondition {
 
     abstract fun met(): Boolean
 
-    open fun clone(): TransitionCondition {
+    override fun clone(): TransitionCondition {
         return copy(this)
     }
 
@@ -24,7 +25,14 @@ abstract class TransitionCondition {
 
 class AndTransitionCondition() : TransitionCondition() {
 
-    private var conditions: Array<TransitionCondition> = Array()
+    var conditions: Array<TransitionCondition> = Array()
+
+    override var scene: Scene?
+        get() = super.scene
+        set(value) {
+            super.scene = value
+            conditions.forEach { it.scene = value }
+        }
 
     constructor(construc: AndTransitionCondition.() -> Unit) : this() {
         this.construc()
@@ -50,7 +58,14 @@ class AndTransitionCondition() : TransitionCondition() {
 
 class OrTransitionCondition() : TransitionCondition() {
 
-    private var conditions: Array<TransitionCondition> = Array()
+    var conditions: Array<TransitionCondition> = Array()
+
+    override var scene: Scene?
+        get() = super.scene
+        set(value) {
+            super.scene = value
+            conditions.forEach { it.scene = value }
+        }
 
     constructor(construc: OrTransitionCondition.() -> Unit) : this() {
         this.construc()
@@ -77,6 +92,13 @@ class OrTransitionCondition() : TransitionCondition() {
 class NotTransitionCondition() : TransitionCondition() {
 
     var condition: TransitionCondition? = null
+
+    override var scene: Scene?
+        get() = super.scene
+        set(value) {
+            super.scene = value
+            condition?.scene=value
+        }
 
     constructor(condition: TransitionCondition) : this() {
         this.condition = condition

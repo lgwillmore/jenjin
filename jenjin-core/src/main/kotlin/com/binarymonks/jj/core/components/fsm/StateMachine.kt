@@ -21,6 +21,11 @@ class StateMachine() : State() {
             states.forEach {
                 it.value.scene = value
             }
+            transitions.forEach{
+                it.value.forEach{
+                    it.condition?.scene=value
+                }
+            }
         }
 
     constructor(construct: StateMachineBuilder.() -> Unit) : this() {

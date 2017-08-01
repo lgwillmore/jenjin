@@ -1,5 +1,6 @@
 package com.binarymonks.jj.core.components
 
+import com.binarymonks.jj.core.Copyable
 import com.binarymonks.jj.core.copy
 import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.scenes.Scene
@@ -12,7 +13,7 @@ import kotlin.reflect.full.memberProperties
 
 private val propDelegateType = PropOverride::class.createType(listOf(KTypeProjection(null, null)))
 
-abstract class Component {
+abstract class Component : Copyable<Component> {
 
     open internal var scene: Scene? = null
         set(value) {
@@ -39,7 +40,7 @@ abstract class Component {
      *
      * If this is not sufficient then override this method.
      */
-    open fun clone(): Component {
+    override fun clone(): Component {
         return copy(this)
     }
 

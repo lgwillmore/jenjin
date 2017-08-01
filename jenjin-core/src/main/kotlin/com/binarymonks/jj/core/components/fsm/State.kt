@@ -23,7 +23,7 @@ abstract class State : Component() {
 
 class CompositeState : State() {
 
-    internal var states: Array<State> = Array()
+    var states: Array<State> = Array()
 
     override var scene: Scene?
         get() = super.scene

@@ -49,7 +49,7 @@ class PolygonRenderNodeSpec : SpatialRenderNodeSpec() {
         }
         return PolygonRenderNode(
                 priority,
-                color.copy(),
+                color.clone(),
                 renderGraphType,
                 name,
                 shaderSpec,
@@ -76,7 +76,7 @@ class LineChainRenderNodeSpec : SpatialRenderNodeSpec() {
         vertices.forEach { vertCopy.add(it.copy()) }
         return LineChainRenderNode(
                 priority,
-                color.copy(),
+                color.clone(),
                 renderGraphType,
                 name,
                 shaderSpec,
@@ -103,7 +103,7 @@ class CircleRenderNodeSpec : SpatialRenderNodeSpec() {
     override fun makeNode(paramsStack: ParamStack): RenderNode {
         return CircleRenderNode(
                 this.priority,
-                this.color.copy(),
+                this.color.clone(),
                 renderGraphType,
                 name,
                 shaderSpec,
@@ -149,7 +149,7 @@ class TextureNodeSpec : ImageNodeSpec<KClass<Texture>>() {
         }
         return FrameRenderNode(
                 priority = priority,
-                color = color.copy(),
+                color = color.clone(),
                 renderGraphType = renderGraphType,
                 name=name,
                 shaderSpec = shaderSpec,

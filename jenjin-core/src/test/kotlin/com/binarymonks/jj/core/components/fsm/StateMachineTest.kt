@@ -14,10 +14,13 @@ class StateMachineTest {
         val initialStateMock = Mockito.mock(State::class.java)
         val anotherStateMock = Mockito.mock(State::class.java)
         val combinationStateMock = Mockito.mock(State::class.java)
+        val transitionMock = Mockito.mock(TransitionCondition::class.java)
         val mocks = listOf<State>(initialStateMock, anotherStateMock, combinationStateMock)
 
         val stateMachine = StateMachine {
-            initialState("initial", initialStateMock)
+            initialState("initial", initialStateMock).withTransitions {
+                to("another").whenJust(transitionMock)
+            }
             addState("another", anotherStateMock)
             addComposite("composite") {
                 part(combinationStateMock)
@@ -35,6 +38,7 @@ class StateMachineTest {
         mocks.forEach {
             Mockito.verify(it).scene = scene
         }
+        Mockito.verify(transitionMock).scene = scene
         stateMachine.onRemoveFromScene()
         mocks.forEach {
             Mockito.verify(it).onRemoveFromScene()

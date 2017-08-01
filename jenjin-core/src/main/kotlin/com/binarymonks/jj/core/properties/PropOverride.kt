@@ -54,7 +54,7 @@ class PropOverride<T>(value: T) : Copyable<PropOverride<T>> {
         return get()
     }
 
-    override fun copy(): PropOverride<T> {
+    override fun clone(): PropOverride<T> {
         val clone = PropOverride(value)
         clone.propOverrideKey = propOverrideKey
         return clone

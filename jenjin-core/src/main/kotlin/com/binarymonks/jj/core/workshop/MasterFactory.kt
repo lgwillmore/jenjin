@@ -170,7 +170,7 @@ class MasterFactory {
     private fun buildPointLight(pointSpec: PointLightSpec, instanceParams: InstanceParams): Light {
         return PointLight(
                 JJ.B.renderWorld.rayHandler,
-                pointSpec.rays, pointSpec.color.copy().get(instanceParams), pointSpec.reach, pointSpec.offsetX, pointSpec.offsetY)
+                pointSpec.rays, pointSpec.color.clone().get(instanceParams), pointSpec.reach, pointSpec.offsetX, pointSpec.offsetY)
     }
 
     private fun buildFixture(physicsRoot: PhysicsRoot, fixtureSpec: FixtureSpec, body: Body, params: ParamStack) {

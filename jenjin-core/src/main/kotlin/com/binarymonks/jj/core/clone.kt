@@ -1,16 +1,42 @@
 package com.binarymonks.jj.core
 
+import com.badlogic.gdx.utils.Array
+import com.badlogic.gdx.utils.ObjectMap
+import com.badlogic.gdx.utils.ObjectSet
+import com.binarymonks.jj.core.extensions.copy
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KProperty1
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.isSubclassOf
-import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
-import kotlin.reflect.jvm.isAccessible
 import kotlin.reflect.jvm.jvmErasure
 
+/**
+ * Something that can make copies of itself. T should be a type or supertype of the implementer for this to make
+ * sense of course.
+ */
+interface Copyable<T> {
 
+    /**
+     * The expectation for this function is that only fields that are visible and modifiable will be copied.
+     * Use [copy] to achieve deep clones of [Copyable] implementations.
+     */
+    fun clone(): T
+}
+
+
+/**
+ * Makes copies of things.
+ *
+ * Will try to copy any visible and modifiable properties.
+ * Will call [Copyable.clone] on properties that implement it.
+ * Will check members of the following collections for [Copyable]:
+ *  - [com.badlogic.gdx.utils.ObjectMap]
+ *  - [com.badlogic.gdx.utils.Array]
+ *  - [com.badlogic.gdx.utils.ObjectSet]
+ *
+ */
 fun <T : Any> copy(original: T): T {
     val myClass = original::class
     var copy = construct(myClass)
@@ -20,6 +46,21 @@ fun <T : Any> copy(original: T): T {
                 if (it.returnType.jvmErasure.isSubclassOf(Copyable::class)) {
                     val name = it.name
                     val sourceProperty = original.javaClass.kotlin.memberProperties.first { it.name == name }.get(original) as Copyable<*>
+                    val destinationProperty = copy.javaClass.kotlin.memberProperties.first { it.name == name } as KMutableProperty<Any>
+                    destinationProperty.setter.call(copy, sourceProperty.clone())
+                } else if (it.returnType.jvmErasure.isSubclassOf(Array::class)) {
+                    val name = it.name
+                    val sourceProperty = original.javaClass.kotlin.memberProperties.first { it.name == name }.get(original) as Array<*>
+                    val destinationProperty = copy.javaClass.kotlin.memberProperties.first { it.name == name } as KMutableProperty<Any>
+                    destinationProperty.setter.call(copy, sourceProperty.copy())
+                } else if (it.returnType.jvmErasure.isSubclassOf(ObjectMap::class)) {
+                    val name = it.name
+                    val sourceProperty = original.javaClass.kotlin.memberProperties.first { it.name == name }.get(original) as ObjectMap<*, *>
+                    val destinationProperty = copy.javaClass.kotlin.memberProperties.first { it.name == name } as KMutableProperty<Any>
+                    destinationProperty.setter.call(copy, sourceProperty.copy())
+                } else if (it.returnType.jvmErasure.isSubclassOf(ObjectSet::class)) {
+                    val name = it.name
+                    val sourceProperty = original.javaClass.kotlin.memberProperties.first { it.name == name }.get(original) as ObjectSet<*>
                     val destinationProperty = copy.javaClass.kotlin.memberProperties.first { it.name == name } as KMutableProperty<Any>
                     destinationProperty.setter.call(copy, sourceProperty.copy())
                 } else {
