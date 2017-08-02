@@ -2,7 +2,7 @@ package com.binarymonks.jj.demo
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
-import com.binarymonks.jj.demo.demos.*
+import com.binarymonks.jj.demo.demos.D14_spine_bounding_boxes
 
 object DesktopLauncher {
     @JvmStatic fun main(arg: Array<String>) {
@@ -11,6 +11,6 @@ object DesktopLauncher {
         lwjglConfig.width = 1000
 
         //Swap out the various demo Games here
-        LwjglApplication(D09_spine(), lwjglConfig)
+        LwjglApplication(D14_spine_bounding_boxes(), lwjglConfig)
     }
 }

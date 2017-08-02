@@ -32,11 +32,13 @@ class D14_spine_bounding_boxes : JJGame(JJConfig {
 
     fun spine_with_bounding_boxes(): SceneSpecRef {
         return SpineSpec {
-            atlasPath = "spine/male_base.atlas"
-            dataPath = "spine/male_base.json"
-            scale = 1.5f / 103f
-            spineSkeleton = SpineSkeletonSpec {
-                boundingBoxes=true
+            spineRender {
+                atlasPath = "spine/male_base.atlas"
+                dataPath = "spine/male_base.json"
+                scale = 1.5f / 103f
+            }
+            skeleton {
+                boundingBoxes = true
             }
         }
     }
