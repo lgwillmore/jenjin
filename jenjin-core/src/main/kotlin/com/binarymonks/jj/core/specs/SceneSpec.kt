@@ -96,7 +96,7 @@ fun sceneRef(path: String): SceneSpecRef {
 class SceneSpecRefPath(val path: String) : SceneSpecRef {
 
     override fun getAssets(): Array<AssetReference> {
-        return JJ.B.scenes.getScene(path).getAssets()
+        return Array()
     }
 
     override fun resolve(): SceneSpec {

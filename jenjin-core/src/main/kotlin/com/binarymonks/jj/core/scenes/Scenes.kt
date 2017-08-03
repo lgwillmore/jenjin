@@ -19,8 +19,8 @@ import com.binarymonks.jj.core.workshop.MasterFactory
 class Scenes : ScenesAPI {
 
     val masterFactory = MasterFactory()
-    //Temporary in memory scene specs
-    val sceneSpecs: ObjectMap<String, SceneSpecRef> = ObjectMap()
+    private val unresolvedSpecRefs: ObjectMap<String, SceneSpecRef> = ObjectMap()
+    val sceneSpecs: ObjectMap<String, SceneSpec> = ObjectMap()
 
     private var dirty = false
 
@@ -37,37 +37,44 @@ class Scenes : ScenesAPI {
     }
 
     override fun instantiate(instanceParams: InstanceParams, path: String): Bond<Scene> {
-        return instantiate(instanceParams, sceneSpecs.get(path).resolve())
+        loadAssetsNow()
+        return instantiate(instanceParams, sceneSpecs.get(path))
     }
 
     override fun instantiate(scene: SceneSpec): Bond<Scene> {
+        loadAssetsNow()
         return instantiate(InstanceParams.new(), scene)
     }
 
     override fun instantiate(path: String): Bond<Scene> {
+        loadAssetsNow()
         return instantiate(InstanceParams.new(), path)
     }
 
     override fun addSceneSpec(path: String, scene: SceneSpecRef) {
-        sceneSpecs.put(path, scene)
+        unresolvedSpecRefs.put(path, scene)
         dirty = true
     }
 
     fun getScene(path: String): SceneSpec {
-        return sceneSpecs.get(path).resolve()
+        return sceneSpecs.get(path)
     }
 
     override fun loadAssetsNow() {
         if (dirty) {
             var assets: Array<AssetReference> = getAllAssets()
             JJ.B.assets.loadNow(assets)
+            unresolvedSpecRefs.forEach {
+                sceneSpecs.put(it.key, it.value.resolve())
+            }
+            unresolvedSpecRefs.clear()
         }
         dirty = false
     }
 
     private fun getAllAssets(): Array<AssetReference> {
         val assets: Array<AssetReference> = Array()
-        for (entry in sceneSpecs) {
+        for (entry in unresolvedSpecRefs) {
             assets.addAll(entry.value.getAssets())
         }
         return assets

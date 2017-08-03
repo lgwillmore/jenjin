@@ -84,7 +84,7 @@ class SpineSpec() : SceneSpecRef {
             json.scale = actualScale
             val skeletonData = json.readSkeletonData(Gdx.files.internal(renderModel.dataPath))
             val skeleton = Skeleton(skeletonData)
-            buildPhysicsSkeleton(root, skeleton, spineComponent)
+            buildPhysicsSkeleton(root, skeleton, spineComponent, checkNotNull(skel))
         }
         return root
     }
@@ -95,22 +95,30 @@ class SpineSpec() : SceneSpecRef {
         return assets
     }
 
-    private fun buildPhysicsSkeleton(scene: SceneSpec, skeleton: Skeleton, spineComponent: SpineComponent) {
+    private fun buildPhysicsSkeleton(scene: SceneSpec, skeleton: Skeleton, spineComponent: SpineComponent, customSkeleton: SpineSkeletonSpec) {
         val bone = skeleton.rootBone
         val path: Array<String> = Array()
         path.add(bone.data.name)
-        buildBoneRecurse(bone, skel!!.coreMass, skel!!.coreMotorTorque, path, scene, spineComponent, skeleton)
+        buildBoneRecurse(bone, customSkeleton.coreMass, customSkeleton.coreMotorTorque, path, scene, spineComponent, skeleton, customSkeleton)
     }
 
-    private fun buildBoneRecurse(bone: Bone, mass: Float, motorTorque: Float, path: Array<String>, parentScene: SceneSpec, spineComponent: SpineComponent, skeleton: Skeleton): String {
+    private fun buildBoneRecurse(
+            bone: Bone, mass: Float,
+            motorTorque: Float,
+            path: Array<String>,
+            parentScene: SceneSpec,
+            spineComponent: SpineComponent,
+            skeleton: Skeleton,
+            customSkeleton: SpineSkeletonSpec): String {
+        val boneName = path.last()
         parentScene.addNode(
                 scene {
                     physics {
                         bodyType = BodyDef.BodyType.DynamicBody
                         gravityScale = 0f
-                        val fixture = buildFixture(bone, mass, skeleton, skel!!.customs.get(path.last()))
+                        val fixture = buildFixture(bone, mass, skeleton, customSkeleton.customs.get(boneName), customSkeleton)
                         addFixture(fixture)
-                        collisions.copyAppendFrom(skel!!.all.collisions)
+                        collisions.copyAppendFrom(customSkeleton.all.collisions)
                     }
                     component(SpineBoneComponent()) {
                         bonePath = path
@@ -118,24 +126,29 @@ class SpineSpec() : SceneSpecRef {
                     bone.children.forEach {
                         val a = path.copy()
                         a.add(it.data.name)
-                        val childName = buildBoneRecurse(it, mass * skel!!.massFalloff, motorTorque * skel!!.coreMotorTorqueFalloff, a, this@scene, spineComponent, skeleton)
-                        val custom = skel!!.customs.get(childName)
+                        val childName = buildBoneRecurse(it, mass * customSkeleton.massFalloff, motorTorque * customSkeleton.coreMotorTorqueFalloff, a, this@scene, spineComponent, skeleton, customSkeleton)
+                        val custom = customSkeleton.customs.get(childName)
                         revJoint(null, childName, vec2(it.x, it.y), vec2()) {
                             collideConnected = false
-                            enableLimit = custom?.boneOverride?.enableLimit ?: skel!!.all.enableLimit
-                            lowerAngle = custom?.boneOverride?.lowerAngle ?: skel!!.all.lowerAngle
-                            upperAngle = custom?.boneOverride?.upperAngle ?: skel!!.all.upperAngle
+                            enableLimit = custom?.boneOverride?.enableLimit ?: customSkeleton.all.enableLimit
+                            lowerAngle = custom?.boneOverride?.lowerAngle ?: customSkeleton.all.lowerAngle
+                            upperAngle = custom?.boneOverride?.upperAngle ?: customSkeleton.all.upperAngle
 
-                            enableMotor = custom?.boneOverride?.enableMotor ?: skel!!.all.enableMotor
+                            enableMotor = custom?.boneOverride?.enableMotor ?: customSkeleton.all.enableMotor
                             motorSpeed = custom?.boneOverride?.motorSpeed ?: 0f
                             maxMotorTorque = custom?.boneOverride?.maxMotorTorque ?: motorTorque
                         }
                     }
-                    skel!!.all.properties.forEach {
+                    customSkeleton.all.properties.forEach {
                         prop(it.key, it.value)
                     }
-                    for (component in skel!!.all.components) {
+                    for (component in customSkeleton.all.components) {
                         this.component(component)
+                    }
+                    if (customSkeleton.customs.containsKey(boneName)) {
+                        for (component in customSkeleton.customs.get(boneName).components) {
+                            this.component(component)
+                        }
                     }
                 },
                 params { name = bone.data.name }
@@ -144,43 +157,43 @@ class SpineSpec() : SceneSpecRef {
         return bone.data.name
     }
 
-    private fun buildFixture(bone: Bone, mass: Float, skeleton: Skeleton, customBone: CustomBone?): FixtureSpec {
-        if (skel!!.boundingBoxes) {
+    private fun buildFixture(bone: Bone, mass: Float, skeleton: Skeleton, customBone: CustomBone?, customSkeleton: SpineSkeletonSpec): FixtureSpec {
+        if (customSkeleton.boundingBoxes) {
             val boundingBox: Polygon? = findPolygon(bone, skeleton)
             if (boundingBox != null) {
                 return FixtureSpec {
                     shape = customBone?.boneOverride?.shape ?: boundingBox
                     density = customBone?.boneOverride?.mass ?: mass
-                    restitution = customBone?.boneOverride?.restitution ?: skel!!.all.restitution
-                    friction = customBone?.boneOverride?.friction ?: skel!!.all.friction
-                    val mat = customBone?.boneOverride?.material ?: skel!!.all.material
+                    restitution = customBone?.boneOverride?.restitution ?: customSkeleton.all.restitution
+                    friction = customBone?.boneOverride?.friction ?: customSkeleton.all.friction
+                    val mat = customBone?.boneOverride?.material ?: customSkeleton.all.material
                     if (mat != null) {
                         material.set(mat)
                     }
-                    collisionGroup = customBone?.boneOverride?.collisionGroup ?: skel!!.all.collisionGroup
+                    collisionGroup = customBone?.boneOverride?.collisionGroup ?: customSkeleton.all.collisionGroup
                 }
             }
         }
         val boneLength = bone.data.length
         if (boneLength > 0) {
             return FixtureSpec {
-                shape = customBone?.boneOverride?.shape ?: Rectangle(boneLength, skel!!.boneWidth)
+                shape = customBone?.boneOverride?.shape ?: Rectangle(boneLength, customSkeleton.boneWidth)
                 offsetX = customBone?.boneOverride?.offsetX ?: boneLength / 2
                 offsetY = customBone?.boneOverride?.offsetX ?: 0f
                 density = customBone?.boneOverride?.mass ?: mass
-                restitution = customBone?.boneOverride?.restitution ?: skel!!.all.restitution
-                friction = customBone?.boneOverride?.friction ?: skel!!.all.friction
-                val mat = customBone?.boneOverride?.material ?: skel!!.all.material
+                restitution = customBone?.boneOverride?.restitution ?: customSkeleton.all.restitution
+                friction = customBone?.boneOverride?.friction ?: customSkeleton.all.friction
+                val mat = customBone?.boneOverride?.material ?: customSkeleton.all.material
                 if (mat != null) {
                     material.set(mat)
                 }
-                collisionGroup = customBone?.boneOverride?.collisionGroup ?: skel!!.all.collisionGroup
+                collisionGroup = customBone?.boneOverride?.collisionGroup ?: customSkeleton.all.collisionGroup
             }
         }
         return FixtureSpec {
-            shape = Circle(skel!!.boneWidth)
+            shape = Circle(customSkeleton.boneWidth)
             density = mass
-            collisionGroup = skel!!.all.collisionGroup
+            collisionGroup = customSkeleton.all.collisionGroup
         }
     }
 
