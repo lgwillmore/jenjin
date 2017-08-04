@@ -41,12 +41,12 @@ class ScenePathTest {
 
     @Test
     fun getGrandParent() {
-        Assert.assertEquals(grandParent, ScenePath(UP, UP).from(me))
+        Assert.assertEquals(grandParent, ScenePath(ScenePath.UP, ScenePath.UP).from(me))
     }
 
     @Test
     fun getCousin() {
-        Assert.assertEquals(cousin, ScenePath(UP, UP, "uncle", "cousin").from(me))
+        Assert.assertEquals(cousin, ScenePath(ScenePath.UP, ScenePath.UP, "uncle", "cousin").from(me))
     }
 
     @Test

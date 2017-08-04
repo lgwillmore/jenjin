@@ -10,6 +10,7 @@ class ComponentMaster {
     private var removeTrackedComponents = ObjectMap<KClass<*>, Component>()
 
     fun update() {
+        addTrackedComponent.forEach { it.value.onFullyInitialized() }
         clean()
         for (entry in trackedComponents.entries()) {
             if (entry.value.isDone()) {

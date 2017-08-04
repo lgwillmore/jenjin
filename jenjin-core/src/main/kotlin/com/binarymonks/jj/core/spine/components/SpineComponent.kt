@@ -45,6 +45,7 @@ class SpineComponent(
         return myClone
     }
 
+
     private fun initialiseAnimations() {
         val stateData = AnimationStateData(spineRenderNode!!.skeletonData)
         animations.crossFades.forEach { stateData.setMix(it.fromName, it.toName, it.duration) }
@@ -53,6 +54,10 @@ class SpineComponent(
             animationState.setAnimation(0, animations.startingAnimation, true)
         }
         animationState.addListener(JJSpineAnimationStateListener(this, animations))
+    }
+
+    fun animationState(): AnimationState{
+        return animationState
     }
 
     fun applyToBones(sceneOperation: (Scene) -> Unit) {

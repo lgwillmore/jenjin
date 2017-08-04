@@ -85,8 +85,8 @@ abstract class Component : Copyable<Component> {
     }
 
     /**
-     * Called when the components [Scene] is added to the world. The [Scene] will be fully initialised and it will
-     * have all of its children nodes.
+     * Called when the components [Scene] is added to the world. The [Scene] will  have all of its children nodes.
+     * It will not have its parent node yet though. Leaves are built first.
      * This is also called when a pooled [Scene] is drawn from the pool. Any resetting of state for the [Component]
      * should be done with this in mind.
      */
@@ -101,6 +101,13 @@ abstract class Component : Copyable<Component> {
      */
     open fun onRemoveFromWorld() {
 
+    }
+
+    /**
+     * Called when the Component is being updated for the first time.
+     * The parent Scene will be available as well as the children scene
+     */
+    open fun onFullyInitialized() {
     }
 
 }

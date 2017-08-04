@@ -3,11 +3,14 @@ package com.binarymonks.jj.core.scenes
 import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.pools.Poolable
 
-val UP: String = ".."
 
 class ScenePath() : Poolable {
 
     internal val path: Array<String> = Array()
+
+    companion object {
+        val UP: String = ".."
+    }
 
     constructor(vararg pathElements: String) : this() {
         pathElements.forEach { path.add(it) }
@@ -29,12 +32,14 @@ class ScenePath() : Poolable {
         return this
     }
 
-    fun child(childName: String) {
+    fun child(childName: String): ScenePath {
         path.add(childName)
+        return this
     }
 
-    fun up() {
+    fun up(): ScenePath {
         path.add(UP)
+        return this
     }
 
     fun from(scene: Scene): Scene {
