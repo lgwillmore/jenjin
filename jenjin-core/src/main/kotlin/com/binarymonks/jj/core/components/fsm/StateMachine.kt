@@ -7,12 +7,13 @@ import com.binarymonks.jj.core.copy
 import com.binarymonks.jj.core.scenes.Scene
 
 
-class StateMachine() : State() {
+open class StateMachine() : State() {
 
     var initialState: String? = null
     val states: ObjectMap<String, State> = ObjectMap()
     val transitions: ObjectMap<String, Array<TransitionEdge>> = ObjectMap()
-    internal var currentState: String? = null
+    private var currentState: String? = null
+    private var requestedTransition: String? = null
 
     override var scene: Scene?
         get() = super.scene
@@ -21,14 +22,19 @@ class StateMachine() : State() {
             states.forEach {
                 it.value.scene = value
             }
-            transitions.forEach{
-                it.value.forEach{
-                    it.condition?.scene=value
+            transitions.forEach {
+                it.value.forEach {
+                    it.condition?.scene = value
                 }
             }
         }
 
     constructor(construct: StateMachineBuilder.() -> Unit) : this() {
+        val builder = StateMachineBuilder(this)
+        builder.construct()
+    }
+
+    fun buildStates(construct: StateMachineBuilder.() -> Unit) {
         val builder = StateMachineBuilder(this)
         builder.construct()
     }
@@ -41,6 +47,10 @@ class StateMachine() : State() {
         states.forEach { it.value.onAddToWorld() }
     }
 
+    override fun onFullyInitialized() {
+        states.forEach { it.value.onFullyInitialized() }
+    }
+
     override fun onRemoveFromScene() {
         states.forEach { it.value.onRemoveFromScene() }
     }
@@ -50,15 +60,23 @@ class StateMachine() : State() {
     }
 
     override fun update() {
+        if (requestedTransition != null) {
+            if(currentState!=null){
+                state().exitWrapper()
+            }
+            currentState = requestedTransition
+            requestedTransition = null
+            state().enterWrapper()
+        }
         if (currentState == null) {
             currentState = initialState
-            state().enter()
+            state().enterWrapper()
         }
         for (edge in transitions.get(currentState)) {
             if (edge.condition!!.met()) {
-                state().exit()
+                state().exitWrapper()
                 currentState = edge.toEventName
-                state().enter()
+                state().enterWrapper()
                 break
             }
         }
@@ -82,6 +100,10 @@ class StateMachine() : State() {
             myClone.transitions.put(it.key, edges)
         }
         return myClone
+    }
+
+    fun transitionTo(stateName: String) {
+        requestedTransition = stateName
     }
 }
 

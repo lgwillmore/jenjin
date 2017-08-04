@@ -7,6 +7,19 @@ import com.binarymonks.jj.core.scenes.Scene
 
 abstract class State : Component() {
 
+    open var active = false
+        internal set
+
+    fun enterWrapper() {
+        active = true
+        enter()
+    }
+
+    fun exitWrapper() {
+        active = false
+        exit()
+    }
+
 
     /**
      * Called when the state is entered
@@ -25,6 +38,15 @@ class CompositeState : State() {
 
     var states: Array<State> = Array()
 
+    override var active: Boolean = false
+        get() = super.active
+        set(value) {
+            field = value
+            states.forEach {
+                it.active = value
+            }
+        }
+
     override var scene: Scene?
         get() = super.scene
         set(value) {
@@ -38,6 +60,10 @@ class CompositeState : State() {
 
     override fun onAddToWorld() {
         states.forEach { it.onAddToWorld() }
+    }
+
+    override fun onFullyInitialized() {
+        states.forEach { it.onFullyInitialized() }
     }
 
     override fun onRemoveFromScene() {

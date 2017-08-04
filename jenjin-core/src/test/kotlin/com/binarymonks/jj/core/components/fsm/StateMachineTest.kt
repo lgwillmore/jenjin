@@ -1,6 +1,7 @@
 package com.binarymonks.jj.core.components.fsm
 
 import com.binarymonks.jj.core.scenes.Scene
+import org.junit.Assert
 import org.junit.Test
 import org.mockito.Mockito
 
@@ -33,6 +34,10 @@ class StateMachineTest {
         stateMachine.onAddToWorld()
         mocks.forEach {
             Mockito.verify(it).onAddToWorld()
+        }
+        stateMachine.onFullyInitialized()
+        mocks.forEach {
+            Mockito.verify(it).onFullyInitialized()
         }
         stateMachine.scene = scene
         mocks.forEach {
@@ -108,5 +113,31 @@ class StateMachineTest {
         Mockito.verify(initialStateMock, Mockito.never()).exit()
         Mockito.verify(anotherStateMock, Mockito.never()).enter()
         Mockito.verify(anotherStateMock, Mockito.never()).update()
+    }
+
+    @Test
+    fun forceTransitionOverridesTransitionConditions() {
+
+        val initialStateMock = Mockito.mock(State::class.java)
+        val anotherStateMock = Mockito.mock(State::class.java)
+        val forceToMeStateMock = Mockito.mock(State::class.java)
+        val transitionMock = Mockito.mock(TransitionCondition::class.java)
+        Mockito.`when`(transitionMock.met()).thenReturn(true)
+
+        val stateMachine = StateMachine {
+            initialState("initial", initialStateMock).withTransitions {
+                to("another").whenJust(transitionMock)
+            }
+            addState("another", anotherStateMock)
+            addState("forceToMe", forceToMeStateMock)
+        }
+
+        stateMachine.update()
+        stateMachine.transitionTo("forceToMe")
+        stateMachine.update()
+        Mockito.verify(anotherStateMock).exit()
+        Mockito.verify(forceToMeStateMock).enter()
+        Mockito.verify(forceToMeStateMock, Mockito.never()).exit()
+
     }
 }

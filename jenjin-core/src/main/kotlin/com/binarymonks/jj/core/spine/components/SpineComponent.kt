@@ -126,8 +126,11 @@ class JJSpineAnimationStateListener(
 
     override fun event(entry: AnimationState.TrackEntry, event: Event) {
         val name = event.data.name
-        if (spineAnimations.functionHandlers.containsKey(name)) {
-            spineAnimations.functionHandlers.get(name)(spineComponent, event)
+        if (spineAnimations.handlers.containsKey(name)) {
+            spineAnimations.handlers.get(name)(spineComponent, event)
+        }
+        if (spineAnimations.functions.containsKey(name)) {
+            spineAnimations.functions.get(name)()
         }
         if (spineAnimations.componentHandlers.containsKey(name)) {
             val mapping = spineAnimations.componentHandlers.get(name)

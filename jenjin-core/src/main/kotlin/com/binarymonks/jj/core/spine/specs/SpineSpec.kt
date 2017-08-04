@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.ObjectMap
+import com.binarymonks.jj.core.Copyable
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.assets.AssetReference
 import com.binarymonks.jj.core.components.Component
@@ -242,10 +243,12 @@ internal class ComponentCall(
         val componentFunction: KFunction1<Component, Unit>
 )
 
-class SpineAnimations {
+class SpineAnimations : Copyable<SpineAnimations> {
+
     var startingAnimation: String? = null
-    internal val crossFades: Array<CrossFade> = Array()
-    internal var functionHandlers: ObjectMap<String, SpineEventHandler> = ObjectMap()
+    internal var crossFades: Array<CrossFade> = Array()
+    internal var handlers: ObjectMap<String, SpineEventHandler> = ObjectMap()
+    internal var functions: ObjectMap<String, () -> Unit> = ObjectMap()
     internal var componentHandlers: ObjectMap<String, EventToComponentCall> = ObjectMap()
     internal var componentFunctions: ObjectMap<String, ComponentCall> = ObjectMap()
 
@@ -254,7 +257,11 @@ class SpineAnimations {
     }
 
     fun registerEventHandler(eventName: String, handler: SpineEventHandler) {
-        functionHandlers.put(eventName, handler)
+        handlers.put(eventName, handler)
+    }
+
+    fun registerEventFunction(eventName: String, function: () -> Unit) {
+        functions.put(eventName, function)
     }
 
     fun <T : Component> registerEventHandler(eventName: String, componentType: KClass<T>, componentFunction: KFunction2<T, @ParameterName(name = "event") Event, Unit>) {
@@ -263,6 +270,16 @@ class SpineAnimations {
 
     fun <T : Component> registerEventFunction(eventName: String, componentType: KClass<T>, componentFunction: KFunction1<T, Unit>) {
         componentFunctions.put(eventName, ComponentCall(componentType as KClass<Component>, componentFunction as KFunction1<Component, Unit>))
+    }
+
+    override fun clone(): SpineAnimations {
+        val copy = SpineAnimations()
+        copy.startingAnimation = startingAnimation
+        copy.crossFades = crossFades.copy()
+        copy.handlers = handlers.copy()
+        copy.componentHandlers = componentHandlers.copy()
+        componentFunctions = componentFunctions.copy()
+        return copy
     }
 }
 
