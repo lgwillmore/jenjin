@@ -147,8 +147,9 @@ class MasterFactory {
         }
 
         for (lightSpec in physicsSpec.lights) {
-            val light = buildLight(lightSpec, paramsStack.peek())
-            light.attachToBody(body)
+            val light = buildLight(lightSpec, body, paramsStack.peek())
+            val colData = lightSpec.collisionGroup.toCollisionData(paramsStack.peek().properties)
+            light.setContactFilter(colData.category,0,colData.mask)
             if (lightSpec.name != null) {
                 physicsRoot.lights.add(checkNotNull(lightSpec.name), light)
             } else {
@@ -160,17 +161,24 @@ class MasterFactory {
 
     }
 
-    private fun buildLight(lightSpec: LightSpec, instanceParams: InstanceParams): Light {
+    private fun buildLight(lightSpec: LightSpec, body: Body, instanceParams: InstanceParams): Light {
         when (lightSpec) {
-            is PointLightSpec -> return buildPointLight(lightSpec, instanceParams)
+            is PointLightSpec -> return buildPointLight(lightSpec, body, instanceParams)
             else -> throw Exception("Don't know that light")
         }
     }
 
-    private fun buildPointLight(pointSpec: PointLightSpec, instanceParams: InstanceParams): Light {
-        return PointLight(
+    private fun buildPointLight(pointSpec: PointLightSpec, body: Body, instanceParams: InstanceParams): Light {
+        val pl = PointLight(
                 JJ.B.renderWorld.rayHandler,
-                pointSpec.rays, pointSpec.color.clone().get(instanceParams), pointSpec.reach, pointSpec.offsetX, pointSpec.offsetY)
+                pointSpec.rays,
+                pointSpec.color.clone().get(instanceParams),
+                pointSpec.reach,
+                0f,
+                0f
+        )
+        pl.attachToBody(body, pointSpec.offsetX, pointSpec.offsetY)
+        return pl
     }
 
     private fun buildFixture(physicsRoot: PhysicsRoot, fixtureSpec: FixtureSpec, body: Body, params: ParamStack) {

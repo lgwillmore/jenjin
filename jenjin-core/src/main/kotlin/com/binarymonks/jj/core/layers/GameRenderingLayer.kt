@@ -46,13 +46,13 @@ class GameRenderingLayer(
         camera.update()
         updateScreenToWorldScale()
         touchManager.update()
-        if(postProccessingEnabled)
+        if (postProccessingEnabled)
             JJ.B.renderWorld.postProcessor.capture()
         renderGraph(JJ.B.renderWorld.defaultRenderGraph)
+        if (postProccessingEnabled)
+            JJ.B.renderWorld.postProcessor.render()
         renderLights()
         renderGraph(JJ.B.renderWorld.lightSourceRenderGraph)
-        if(postProccessingEnabled)
-            JJ.B.renderWorld.postProcessor.render()
         if (JJ.B.config.b2d.debug) {
             drenderer.render(JJ.B.physicsWorld.b2dworld, JJ.B.renderWorld.polyBatch.getProjectionMatrix())
         }

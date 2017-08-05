@@ -56,6 +56,7 @@ open class StateMachine() : State() {
     }
 
     override fun onRemoveFromWorld() {
+        currentState=null
         states.forEach { it.value.onRemoveFromWorld() }
     }
 
@@ -69,6 +70,9 @@ open class StateMachine() : State() {
             state().enterWrapper()
         }
         if (currentState == null) {
+            if(initialState==null){
+                throw Exception("You need to set an initial state")
+            }
             currentState = initialState
             state().enterWrapper()
         }
@@ -86,6 +90,8 @@ open class StateMachine() : State() {
     fun state(): State {
         return states.get(currentState)
     }
+
+
 
     override fun clone(): Component {
         val myClone = super.clone() as StateMachine
