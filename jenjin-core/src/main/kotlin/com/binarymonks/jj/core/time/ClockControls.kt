@@ -17,12 +17,12 @@ class ClockControls : ClockAPI {
 
     val scheduler: Scheduler = Scheduler(this::timeFloat)
 
-    override fun schedule(function: () -> Unit, delaySeconds: Float, repeat: Int): Int {
-        return scheduler.schedule(function, delaySeconds, repeat)
+    override fun schedule(function: () -> Unit, delaySeconds: Float, repeat: Int, name: String?): Int {
+        return scheduler.schedule(function, delaySeconds, repeat, name)
     }
 
-    override fun schedule(function: () -> Unit, delayMinSeconds: Float, delayMaxSeconds: Float,repeat: Int): Int {
-        return scheduler.schedule(function, delayMinSeconds, delayMaxSeconds, repeat)
+    override fun schedule(function: () -> Unit, delayMinSeconds: Float, delayMaxSeconds: Float, repeat: Int, name: String?): Int {
+        return scheduler.schedule(function, delayMinSeconds, delayMaxSeconds, repeat, name)
     }
 
     override fun cancel(id: Int) {

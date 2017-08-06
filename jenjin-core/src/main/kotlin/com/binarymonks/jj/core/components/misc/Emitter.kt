@@ -5,6 +5,7 @@ import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.specs.InstanceParams
 import com.binarymonks.jj.core.specs.SceneSpecRef
+import com.binarymonks.jj.core.specs.SceneSpecRefPath
 
 
 class Emitter(
@@ -19,10 +20,14 @@ class Emitter(
         var repeat: Int = 0
 ) : Component() {
 
+    fun setSpec(path: String) {
+        sceneSpecRef = SceneSpecRefPath(path)
+    }
+
     private var scheduledID = -1
 
     override fun onAddToWorld() {
-        scheduledID = JJ.clock.schedule(this::emit, delayMinSeconds, delayMaxSeconds, repeat)
+        scheduledID = JJ.clock.schedule(this::emit, delayMinSeconds, delayMaxSeconds, repeat, "Emitter")
     }
 
     override fun onRemoveFromWorld() {

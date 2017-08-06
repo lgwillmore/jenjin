@@ -25,6 +25,7 @@ class Scenes : ScenesAPI {
     private var dirty = false
 
     override fun instantiate(instanceParams: InstanceParams, scene: SceneSpec): Bond<Scene> {
+        loadAssetsNow()
         val delayedCreate = new(CreateSceneFunction::class)
         val bond = new(Bond::class) as Bond<Scene>
         delayedCreate.set(scene, instanceParams, bond)
@@ -37,17 +38,17 @@ class Scenes : ScenesAPI {
     }
 
     override fun instantiate(instanceParams: InstanceParams, path: String): Bond<Scene> {
-        loadAssetsNow()
+
         return instantiate(instanceParams, sceneSpecs.get(path))
     }
 
     override fun instantiate(scene: SceneSpec): Bond<Scene> {
-        loadAssetsNow()
+//        loadAssetsNow()
         return instantiate(InstanceParams.new(), scene)
     }
 
     override fun instantiate(path: String): Bond<Scene> {
-        loadAssetsNow()
+//        loadAssetsNow()
         return instantiate(InstanceParams.new(), path)
     }
 

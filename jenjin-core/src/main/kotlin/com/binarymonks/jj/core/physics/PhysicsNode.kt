@@ -1,5 +1,6 @@
 package com.binarymonks.jj.core.physics
 
+import com.badlogic.gdx.physics.box2d.Filter
 import com.badlogic.gdx.physics.box2d.Fixture
 import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.JJ
@@ -36,8 +37,10 @@ class PhysicsNode(
         if (!stashed) {
             stashedCategory = fixture.filterData.categoryBits
             stashedMask = fixture.filterData.maskBits
-            fixture.filterData.maskBits = newMask
-            fixture.filterData.categoryBits = newCat
+            val filter = Filter()
+            filter.maskBits = newMask
+            filter.categoryBits = newCat
+            fixture.filterData = filter
             stashed = true
         }
     }
@@ -49,8 +52,10 @@ class PhysicsNode(
 
     fun unStashFilter() {
         if (stashed) {
-            fixture.filterData.maskBits = stashedMask
-            fixture.filterData.categoryBits = stashedCategory
+            val filter = Filter()
+            filter.maskBits = stashedMask
+            filter.categoryBits = stashedCategory
+            fixture.filterData = filter
             stashed = false
         }
     }

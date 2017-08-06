@@ -36,13 +36,14 @@ class Scheduler(val timeFunction: () -> Float) {
     fun schedule(
             function: () -> Unit,
             delaySeconds: Float,
-            repeat: Int = 1
+            repeat: Int = 1,
+            name: String? = null
     ): Int {
         idCounter++
 
         scheduledFunctions.put(
                 idCounter,
-                new(FunctionTracker::class).set(function, delaySeconds, delaySeconds, timeFunction.invoke(), repeat, idCounter)
+                new(FunctionTracker::class).set(function, delaySeconds, delaySeconds, timeFunction.invoke(), repeat, idCounter, name)
         )
         return idCounter
     }
@@ -51,13 +52,14 @@ class Scheduler(val timeFunction: () -> Float) {
             function: () -> Unit,
             delayMinSeconds: Float,
             delayMaxSeconds: Float,
-            repeat: Int = 1
+            repeat: Int = 1,
+            name: String? = null
     ): Int {
         idCounter++
 
         scheduledFunctions.put(
                 idCounter,
-                new(FunctionTracker::class).set(function, delayMinSeconds, delayMaxSeconds, timeFunction.invoke(), repeat, idCounter)
+                new(FunctionTracker::class).set(function, delayMinSeconds, delayMaxSeconds, timeFunction.invoke(), repeat, idCounter, name)
         )
         return idCounter
     }
@@ -73,23 +75,25 @@ val doNothing: () -> Unit = {}
 
 class FunctionTracker : Poolable {
 
-    private var function: () -> Unit = doNothing
-    private var scheduledAt = 0f
-    private var delayMin = 0f
-    private var delayMax = 0f
-    private var actualDelay = 0f
-    private var repeat = 1
-    private var callCount = 0
-    private var scheduleID = -1
-    private var finished = false
+    var function: () -> Unit = doNothing
+    var lastCall = 0f
+    var delayMin = 0f
+    var delayMax = 0f
+    var actualDelay = 0f
+    var repeat = 1
+    var callCount = 0
+    var scheduleID = -1
+    var finished = false
+    var name: String? = null
 
 
     fun call(time: Float): Boolean {
-        val elapsed = time - scheduledAt
-        if (elapsed / actualDelay >= callCount + 1) {
+        val elapsed = time - lastCall
+        if (elapsed > actualDelay) {
             updateDelay()
             function.invoke()
             callCount++
+            lastCall = time
         }
         if (repeat == 0) {
             return false
@@ -109,19 +113,21 @@ class FunctionTracker : Poolable {
         delayMin = 0f
         delayMax = 0f
         actualDelay = 0f
-        scheduledAt = 0f
+        lastCall = 0f
         repeat = 1
         callCount = 0
         finished = false
+        name = null
     }
 
-    fun set(function: () -> Unit, delayMin: Float, delayMax: Float, time: Float, repeat: Int, scheduleID: Int): FunctionTracker {
+    fun set(function: () -> Unit, delayMin: Float, delayMax: Float, time: Float, repeat: Int, scheduleID: Int, name: String?): FunctionTracker {
         this.function = function
         this.delayMin = delayMin
         this.delayMax = delayMax
-        this.scheduledAt = time
+        this.lastCall = time
         this.repeat = repeat
         this.scheduleID = scheduleID
+        this.name = name
         updateDelay()
         return this
     }
@@ -132,9 +138,4 @@ class FunctionTracker : Poolable {
         else
             actualDelay = MathUtils.random(delayMin, delayMax)
     }
-
-    fun isFinished(): Boolean {
-        return finished
-    }
-
 }
