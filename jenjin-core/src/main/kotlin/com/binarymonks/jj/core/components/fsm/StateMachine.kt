@@ -10,8 +10,8 @@ import com.binarymonks.jj.core.scenes.Scene
 open class StateMachine() : State() {
 
     var initialState: String? = null
-    val states: ObjectMap<String, State> = ObjectMap()
-    val transitions: ObjectMap<String, Array<TransitionEdge>> = ObjectMap()
+    var states: ObjectMap<String, State> = ObjectMap()
+    var transitions: ObjectMap<String, Array<TransitionEdge>> = ObjectMap()
     private var currentState: String? = null
     private var requestedTransition: String? = null
 
@@ -89,23 +89,6 @@ open class StateMachine() : State() {
 
     fun state(): State {
         return states.get(currentState)
-    }
-
-
-
-    override fun clone(): Component {
-        val myClone = super.clone() as StateMachine
-        myClone.states.clear()
-        states.forEach {
-            myClone.states.put(it.key, it.value.clone() as State)
-        }
-        myClone.transitions.clear()
-        transitions.forEach {
-            val edges: Array<TransitionEdge> = Array()
-            it.value.forEach { edges.add(it.clone()) }
-            myClone.transitions.put(it.key, edges)
-        }
-        return myClone
     }
 
     fun transitionTo(stateName: String) {

@@ -26,14 +26,14 @@ class D08_pooling_and_destroying : JJGame(MyConfig08.jjConfig) {
         JJ.scenes.instantiate(scene {
             //generator
             node(params { y = -3f;x = 3f }) {
-                component(com.binarymonks.jj.core.components.misc.Emitter()) { sceneSpecRef = sceneRef("nestedCompositeScene"); delaySeconds = spawnDelay }
+                component(com.binarymonks.jj.core.components.misc.Emitter()) { sceneSpecRef = sceneRef("nestedCompositeScene"); delayMinSeconds = spawnDelay }
                 render {
                     circleRender(0.5f) { color.set(Color.YELLOW) }
                 }
             }
             //scaled generator
             node(params { y = 3f;x = -3f }) {
-                component(com.binarymonks.jj.core.components.misc.Emitter()) { sceneSpecRef = sceneRef("nestedCompositeScene"); delaySeconds = spawnDelay; scaleX = 0.5f; scaleY = 0.5f }
+                component(com.binarymonks.jj.core.components.misc.Emitter()) { sceneSpecRef = sceneRef("nestedCompositeScene"); delayMinSeconds = spawnDelay; scaleX = 0.5f; scaleY = 0.5f }
                 render {
                     circleRender(0.5f) { color.set(Color.PURPLE) }
                 }

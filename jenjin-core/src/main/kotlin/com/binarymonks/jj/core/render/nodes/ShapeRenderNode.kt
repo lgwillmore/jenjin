@@ -3,7 +3,6 @@ package com.binarymonks.jj.core.render.nodes
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.glutils.ImmediateModeRenderer20
-import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Transform
@@ -70,7 +69,7 @@ class CircleRenderNode(
     private var positionCache: Vector2 = vec2()
 
     override fun drawShape(camera: OrthographicCamera) {
-        val transform: Transform = myParent().physicsRoot.transform
+        val transform: Transform = me().physicsRoot.transform
         positionCache.set(offsetX, offsetY)
         transform.mul(positionCache)
         JJ.B.renderWorld.shapeRenderer.circle(positionCache.x, positionCache.y, radius, segments)
@@ -98,7 +97,7 @@ class LineChainRenderNode(
     private var vertCache: Array<Vector2> = Array()
 
     override fun drawShape(camera: OrthographicCamera) {
-        val transform: Transform = myParent().physicsRoot.transform
+        val transform: Transform = me().physicsRoot.transform
         val localTransform = mat3()
         localTransform.scale(scaleX, scaleY)
         localTransform.translate(offsetX, offsetY)

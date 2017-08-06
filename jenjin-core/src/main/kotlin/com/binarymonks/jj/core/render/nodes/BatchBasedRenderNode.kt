@@ -1,6 +1,7 @@
 package com.binarymonks.jj.core.render.nodes
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.render.ShaderSpec

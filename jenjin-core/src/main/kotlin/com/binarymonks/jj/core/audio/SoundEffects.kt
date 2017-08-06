@@ -46,16 +46,16 @@ class SoundEffects : Disposable {
         }
     }
 
-    fun triggerSound(soundfxID: String, mode: SoundMode) {
+    fun triggerSound(soundfxID: String, mode: SoundMode, volume: Float =1f, pitch: Float = 1f) {
         val elapsed = JJ.B.clock.time - currentSoundStart
         if (currentSound == null ||
                 currentSoundfxID != soundfxID || elapsed > REPEAT_ELAPSED_TIME) {
             currentSoundId = soundfxID
-            trigger(soundfxID, mode)
+            trigger(soundfxID, mode, volume, pitch)
         }
     }
 
-    private fun trigger(soundfxID: String, mode: SoundMode) {
+    private fun trigger(soundfxID: String, mode: SoundMode, volume: Float, pitch: Float) {
         if (sounds.containsKey(soundfxID)) {
             val proposedSound = sounds[soundfxID] ?: throw Exception("Proposed sounds is null")
             proposedSound.selectRandom()
@@ -65,16 +65,16 @@ class SoundEffects : Disposable {
                 currentSound = proposedSound
                 currentSound!!.triggering()
                 currentSoundStart = JJ.clock.time
-                val volume = if (JJ.B.audio.effects.isMute)
+                val actualVolume = if (JJ.B.audio.effects.isMute)
                     0.0f
                 else
-                    currentSound!!.parameters.volume * JJ.B.audio.effects.volume
-                currentSoundPlayID = currentSound!!.play(volume)
+                    currentSound!!.parameters.volume * JJ.B.audio.effects.volume * volume
+                currentSoundPlayID = currentSound!!.play(actualVolume)
                 if (mode == SoundMode.LOOP) {
                     currentSound!!.setLooping(currentSoundPlayID, true)
                 }
                 currentSound!!.setPitch(currentSoundPlayID,
-                        JJ.B.clock.getRealToGameRatio())
+                        JJ.B.clock.getRealToGameRatio()*pitch)
             }
         }
     }

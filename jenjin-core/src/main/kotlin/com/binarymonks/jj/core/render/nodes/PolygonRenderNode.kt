@@ -36,8 +36,8 @@ class PolygonRenderNode constructor(
 
     override fun render(camera: OrthographicCamera) {
         JJ.B.renderWorld.switchToBatch()
-        val parentRotation = (myParent().physicsRoot.rotationR() * MathUtils.radDeg)
-        val parentTransform = myParent().physicsRoot.transform
+        val parentRotation = (me().physicsRoot.rotationR() * MathUtils.radDeg)
+        val parentTransform = me().physicsRoot.transform
         val myPosition = vec2(offsetX, offsetY)
         parentTransform.mul(myPosition)
         poly.color = color.get()

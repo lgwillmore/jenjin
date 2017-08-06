@@ -8,19 +8,21 @@ import com.binarymonks.jj.core.specs.SceneSpecRef
 
 
 class Emitter(
-        var sceneSpecRef: SceneSpecRef? =null,
-        var offsetX:Float = 0f,
-        var offsetY:Float = 0f,
-        var scaleX:Float = 1f,
-        var scaleY:Float = 1f,
-        var rotationD:Float = 0f,
-        var delaySeconds:Float = 0f
+        var sceneSpecRef: SceneSpecRef? = null,
+        var offsetX: Float = 0f,
+        var offsetY: Float = 0f,
+        var scaleX: Float = 1f,
+        var scaleY: Float = 1f,
+        var rotationD: Float = 0f,
+        var delayMinSeconds: Float = 1f,
+        var delayMaxSeconds: Float = 1f,
+        var repeat: Int = 0
 ) : Component() {
 
     private var scheduledID = -1
 
     override fun onAddToWorld() {
-        scheduledID = JJ.clock.schedule(this::emit, delaySeconds, 0)
+        scheduledID = JJ.clock.schedule(this::emit, delayMinSeconds, delayMaxSeconds, repeat)
     }
 
     override fun onRemoveFromWorld() {

@@ -21,6 +21,10 @@ class ClockControls : ClockAPI {
         return scheduler.schedule(function, delaySeconds, repeat)
     }
 
+    override fun schedule(function: () -> Unit, delayMinSeconds: Float, delayMaxSeconds: Float,repeat: Int): Int {
+        return scheduler.schedule(function, delayMinSeconds, delayMaxSeconds, repeat)
+    }
+
     override fun cancel(id: Int) {
         scheduler.cancel(id)
     }

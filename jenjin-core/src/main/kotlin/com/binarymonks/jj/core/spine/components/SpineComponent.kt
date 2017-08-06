@@ -39,12 +39,6 @@ class SpineComponent(
         animationState.apply(spineRenderNode.skeleton)
     }
 
-    override fun clone(): Component {
-        val myClone = copy(this)
-        myClone.animations = animations
-        return myClone
-    }
-
 
     private fun initialiseAnimations() {
         val stateData = AnimationStateData(spineRenderNode!!.skeletonData)
@@ -101,6 +95,8 @@ class SpineComponent(
             }
         }
     }
+
+
 }
 
 class JJSpineAnimationStateListener(

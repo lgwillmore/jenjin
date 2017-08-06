@@ -15,6 +15,15 @@ fun RenderSpec.imageTexture(assetpath: String, init: (TextureNodeSpec.() -> Unit
     this.renderNodes.add(imageSpec)
 }
 
+fun RenderSpec.particles(assetpath: String, init: (ParticleNodeSpec.() -> Unit)? = null) {
+    val particleNodeSpec: ParticleNodeSpec = ParticleNodeSpec()
+    particleNodeSpec.effectPath = assetpath
+    if (init != null) {
+        particleNodeSpec.init()
+    }
+    this.renderNodes.add(particleNodeSpec)
+}
+
 fun RenderSpec.polygonRender(vertices: Array<Vector2>, init: (PolygonRenderNodeSpec.() -> Unit)? = null) {
     val shapeSpec: PolygonRenderNodeSpec = PolygonRenderNodeSpec()
     vertices.forEach { shapeSpec.vertices.add(it) }

@@ -1,7 +1,9 @@
 package com.binarymonks.jj.core.specs.render
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.ParticleEffect
 import com.badlogic.gdx.graphics.g2d.PolygonSprite
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
@@ -21,7 +23,7 @@ abstract class RenderNodeSpec {
     var priority: Int = 0
     var color: PropOverride<Color> = PropOverride(Color.WHITE)
     var renderGraphType: RenderGraphType = RenderGraphType.DEFAULT
-    var name:String? = null
+    var name: String? = null
     var shaderSpec: ShaderSpec? = null
     abstract fun getAssets(): Array<AssetReference>
     abstract fun makeNode(paramsStack: ParamStack): RenderNode
@@ -108,8 +110,8 @@ class CircleRenderNodeSpec : SpatialRenderNodeSpec() {
                 name,
                 shaderSpec,
                 fill = fill,
-                offsetX = offsetX*paramsStack.scaleX,
-                offsetY = offsetY*paramsStack.scaleY,
+                offsetX = offsetX * paramsStack.scaleX,
+                offsetY = offsetY * paramsStack.scaleY,
                 radius = radius * paramsStack.scaleX
         )
     }
@@ -137,6 +139,41 @@ abstract class ImageNodeSpec<out K : KClass<*>> : SpatialRenderNodeSpec() {
     open abstract fun assetClass(): K
 }
 
+class ParticleNodeSpec : SpatialRenderNodeSpec() {
+
+    var effectPath: String? = null
+    var imageDir: String? = null
+    var atlatPath: String? = null
+    var scale = 1f
+
+    override fun getAssets(): Array<AssetReference> {
+        if (imageDir == null && atlatPath == null) {
+            throw Exception("Need to set one of imageDir or atlasPath")
+        }
+        //TODO: Make the spec point at an optional atlas to allow preloading particle images
+        val assets: Array<AssetReference> = Array()
+        return assets
+    }
+
+    override fun makeNode(paramsStack: ParamStack): RenderNode {
+        val particleEffect = ParticleEffect()
+        particleEffect.load(Gdx.files.internal(effectPath), Gdx.files.internal(imageDir))
+        return ParticleRenderNode(
+                priority = priority,
+                color = color.clone(),
+                renderGraphType = renderGraphType,
+                name = name,
+                shaderSpec = shaderSpec,
+                particleEffect = particleEffect,
+                offsetX = offsetX,
+                offsetY = offsetY,
+                rotationD = rotationD,
+                scale = scale*paramsStack.scaleX
+        )
+    }
+
+}
+
 class TextureNodeSpec : ImageNodeSpec<KClass<Texture>>() {
 
     override fun assetClass() = Texture::class
@@ -151,7 +188,7 @@ class TextureNodeSpec : ImageNodeSpec<KClass<Texture>>() {
                 priority = priority,
                 color = color.clone(),
                 renderGraphType = renderGraphType,
-                name=name,
+                name = name,
                 shaderSpec = shaderSpec,
                 provider = frameProvider,
                 offsetX = offsetX,

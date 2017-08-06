@@ -22,7 +22,7 @@ abstract class RenderNode(
         }
     var active = true
 
-    fun myParent(): Scene {
+    fun me(): Scene {
         if (parent == null) {
             throw Exception("scene has not been set")
         }
