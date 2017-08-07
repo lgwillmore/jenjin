@@ -65,7 +65,7 @@ class SchedulerTest {
 
         functionMock.assertCalls(0)
 
-        tick(0.5f)
+        tick(0.51f)
 
         functionMock.assertCalls(1)
 

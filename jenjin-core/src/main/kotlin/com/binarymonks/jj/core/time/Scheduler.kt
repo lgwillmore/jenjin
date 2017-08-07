@@ -89,7 +89,7 @@ class FunctionTracker : Poolable {
 
     fun call(time: Float): Boolean {
         val elapsed = time - lastCall
-        if (elapsed > actualDelay) {
+        if (elapsed >= actualDelay) {
             updateDelay()
             function.invoke()
             callCount++
