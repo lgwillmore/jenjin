@@ -1,6 +1,8 @@
 package com.binarymonks.jj.core.api
 
+import com.binarymonks.jj.core.async.FunctionClosureBuilder
 import com.binarymonks.jj.core.async.Task
+import kotlin.reflect.KFunction
 
 interface TasksAPI {
 
@@ -9,6 +11,8 @@ interface TasksAPI {
     fun addPostPhysicsTask(task: Task)
 
     fun doOnceAfterPhysics(fn: () -> Unit)
+
+    fun doOnceAfterPhysicsCapture(function: KFunction<*>, build: (FunctionClosureBuilder.() -> Unit)? = null)
 
     fun addPrePhysicsTask(task: Task)
 

@@ -4,6 +4,7 @@ import com.binarymonks.jj.core.api.TasksAPI
 import com.binarymonks.jj.core.pools.Poolable
 import com.binarymonks.jj.core.pools.new
 import com.binarymonks.jj.core.pools.recycle
+import kotlin.reflect.KFunction
 
 class Tasks : TasksAPI {
 
@@ -21,6 +22,11 @@ class Tasks : TasksAPI {
 
     override fun doOnceAfterPhysics(fn: () -> Unit) {
         postPhysicsTasks.addTask(new(OneTimeFunctionWrapper::class).set(fn))
+    }
+
+    override fun doOnceAfterPhysicsCapture(function: KFunction<*>, build: (FunctionClosureBuilder.() -> Unit)?) {
+        val functionCapture = capture(function, build)
+        postPhysicsTasks.addTask(new(OneTimeFunctionWrapper::class).set(functionCapture::call))
     }
 
     override fun addPrePhysicsTask(task: Task) {

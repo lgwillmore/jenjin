@@ -35,7 +35,7 @@ class FunctionClosure : Poolable {
         return this
     }
 
-    internal fun call() {
+    fun call() {
         function!!.parameters.forEach {
             if (args.containsKey(it.name)) {
                 kparams.put(it, args[it.name])
