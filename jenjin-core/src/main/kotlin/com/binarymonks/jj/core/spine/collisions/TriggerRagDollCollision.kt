@@ -13,9 +13,12 @@ import com.binarymonks.jj.core.scenes.Scene
 
 class TriggerRagDollCollision : CollisionHandler() {
 
+    var all = true
+    var gravity = 1f
+
     override fun collision(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact): Boolean {
         val boneComponent: SpineBoneComponent = checkNotNull(me.getComponent(SpineBoneComponent::class))
-        JJ.tasks.addPostPhysicsTask(new(DelayedTriggerRagDoll::class).set(boneComponent, other))
+        JJ.tasks.addPostPhysicsTask(new(DelayedTriggerRagDoll::class).set(all, gravity, boneComponent, other))
         return false
     }
 
@@ -26,26 +29,30 @@ class TriggerRagDollCollision : CollisionHandler() {
     class DelayedTriggerRagDoll : OneTimeTask(), Poolable {
         internal var spineBone: SpineBoneComponent? = null
         internal var other: Scene? = null
+        internal var all = false
+        internal var gravity = 1f
 
-        operator fun set(spineBoneComponent: SpineBoneComponent, other: Scene): DelayedTriggerRagDoll {
+        operator fun set(all: Boolean, gravity: Float, spineBoneComponent: SpineBoneComponent, other: Scene): DelayedTriggerRagDoll {
             this.spineBone = spineBoneComponent
             this.other = other
+            this.all = all
+            this.gravity = gravity
             return this
         }
 
         override fun doOnce() {
-            spineBone!!.triggerRagDoll()
-            val myBody = spineBone!!.me().physicsRoot.b2DBody
-            myBody.gravityScale = 1f
-            for (fixture in myBody.getFixtureList()) {
-                fixture.setSensor(false)
-            }
+            if (all)
+                spineBone!!.spineParent!!.triggerRagDoll(gravity)
+            else
+                spineBone!!.triggerRagDoll(gravity)
             recycle(this)
         }
 
         override fun reset() {
             spineBone = null
             other = null
+            all = false
+            gravity = 1f
         }
     }
 }

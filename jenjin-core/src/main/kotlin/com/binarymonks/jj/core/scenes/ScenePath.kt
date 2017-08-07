@@ -32,6 +32,10 @@ class ScenePath() : Poolable {
         return this
     }
 
+    fun pop(): String {
+        return path.pop()
+    }
+
     fun child(childName: String): ScenePath {
         path.add(childName)
         return this

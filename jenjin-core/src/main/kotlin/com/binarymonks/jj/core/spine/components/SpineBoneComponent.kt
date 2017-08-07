@@ -76,7 +76,11 @@ class SpineBoneComponent : Component() {
             bone!!.triggerRagDoll()
             scene!!.physicsRoot.b2DBody.type = BodyDef.BodyType.DynamicBody
             scene!!.physicsRoot.b2DBody.gravityScale = gravity
-            spineParent!!.triggerRagDoll(gravity)
+            bone!!.children.forEach {
+                val name = it.data.name
+                val boneComponent = me().getChild(name)!!.getComponent(SpineBoneComponent::class)
+                boneComponent!!.triggerRagDoll(gravity)
+            }
         }
     }
 
@@ -91,7 +95,11 @@ class SpineBoneComponent : Component() {
             bone!!.reverseRagDoll()
             me().physicsRoot.b2DBody.type = BodyDef.BodyType.StaticBody
             me().physicsRoot.b2DBody.gravityScale = 0f
-            spineParent!!.reverseRagDoll()
+            bone!!.children.forEach {
+                val name = it.data.name
+                val boneComponent = me().getChild(name)!!.getComponent(SpineBoneComponent::class)
+                boneComponent!!.reverseRagDoll()
+            }
         }
     }
 

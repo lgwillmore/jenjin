@@ -22,6 +22,7 @@ class SpineComponent(
     constructor() : this(SpineAnimations())
 
     internal var spineBoneComponents: ObjectMap<String, SpineBoneComponent> = ObjectMap()
+    internal var rootBone: SpineBoneComponent? = null
     lateinit internal var spineRenderNode: SpineRenderNode
     lateinit internal var animationState: AnimationState
     internal var ragDoll = false
@@ -30,7 +31,12 @@ class SpineComponent(
 
     override fun onAddToWorld() {
         spineRenderNode = me().renderRoot.getNode(SPINE_RENDER_NAME) as SpineRenderNode
-        bonePaths.forEach { it.value.from(me()).getComponent(SpineBoneComponent::class)!!.setSpineComponent(me()) }
+        bonePaths.forEach {
+            it.value.from(me()).getComponent(SpineBoneComponent::class)!!.setSpineComponent(me())
+            if (it.value.path.size == 1) {
+                rootBone = it.value.from(me()).getComponent(SpineBoneComponent::class)
+            }
+        }
         initialiseAnimations()
     }
 
@@ -41,6 +47,7 @@ class SpineComponent(
 
 
     private fun initialiseAnimations() {
+        //FIXME: There must be a problem with pooling and doing this!
         val stateData = AnimationStateData(spineRenderNode!!.skeletonData)
         animations.crossFades.forEach { stateData.setMix(it.fromName, it.toName, it.duration) }
         animationState = AnimationState(stateData)
@@ -50,7 +57,7 @@ class SpineComponent(
         animationState.addListener(JJSpineAnimationStateListener(this, animations))
     }
 
-    fun animationState(): AnimationState{
+    fun animationState(): AnimationState {
         return animationState
     }
 
@@ -58,6 +65,11 @@ class SpineComponent(
         bonePaths.forEach {
             sceneOperation(it.value.from(me()))
         }
+    }
+
+    fun triggerRagDollBelow(rootBoneName: String, gravity: Float = 1f) {
+        val component = spineBoneComponents.get(rootBoneName)
+        component.triggerRagDoll(gravity)
     }
 
     fun addBone(name: String, spineBoneComponent: SpineBoneComponent) {
@@ -81,18 +93,14 @@ class SpineComponent(
     fun reverseRagDoll() {
         if (ragDoll) {
             ragDoll = false
-            for (partEntry in spineBoneComponents) {
-                partEntry.value.reverseRagDoll()
-            }
+            rootBone!!.reverseRagDoll()
         }
     }
 
     fun triggerRagDoll(gravity: Float = 1f) {
         if (!ragDoll) {
             ragDoll = true
-            for (partEntry in spineBoneComponents) {
-                partEntry.value.triggerRagDoll(gravity)
-            }
+            rootBone!!.triggerRagDoll(1f)
         }
     }
 

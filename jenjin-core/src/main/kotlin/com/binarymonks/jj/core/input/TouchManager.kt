@@ -20,10 +20,11 @@ import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.scenes.Scene
 
 class TouchManager(internal var camera: OrthographicCamera) : InputProcessor {
+
+    var touchBoxWidth = 0.1f
+
     internal var touchTracker = ObjectMap<Int, Touch>(10)
     internal var touchRemovals = Array<Int>(10)
-
-
     internal var testPoint = new(Vector3::class)
     internal var testPoint2 = new(Vector2::class)
     internal var touchOffset = new(Vector2::class)
@@ -87,7 +88,7 @@ class TouchManager(internal var camera: OrthographicCamera) : InputProcessor {
     }
 
     private fun checkForTouchHandler(button: Int) {
-        JJ.B.physicsWorld.b2dworld.QueryAABB(this::reportFixture, testPoint.x - 0.3f, testPoint.y - 0.3f, testPoint.x + 0.3f, testPoint.y + 0.3f)
+        JJ.B.physicsWorld.b2dworld.QueryAABB(this::reportFixture, testPoint.x - (touchBoxWidth/2), testPoint.y - (touchBoxWidth/2), testPoint.x + (touchBoxWidth/2), testPoint.y + (touchBoxWidth/2))
         selectTouchHandler(button)
     }
 
