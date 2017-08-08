@@ -5,7 +5,7 @@ import com.binarymonks.jj.core.layers.Layer
 
 interface LayersAPI {
 
-    fun push(add: Layer)
+    fun push(layer: Layer)
     fun push(layerName: String)
     fun pop()
 

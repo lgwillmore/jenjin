@@ -41,6 +41,7 @@ open class PhysicsWorld(
      * Lets you create joints during the physics step
      */
     fun createJoint(jointDef: JointDef): Bond<Joint> {
+        @Suppress("UNCHECKED_CAST")
         val bond = new(Bond::class) as Bond<Joint>
         val delayedJoint = new(DelayedCreateJoint::class).set(jointDef, bond)
         if (isUpdating) {

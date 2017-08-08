@@ -24,7 +24,7 @@ class UnitBond : Poolable {
 
 class Bond<RESULT> : Poolable {
 
-    private val noCallback: (RESULT) -> Unit = { result: RESULT -> Unit }
+    private val noCallback: (RESULT) -> Unit = { _ : RESULT -> Unit }
 
     override fun reset() {
         callback = noCallback

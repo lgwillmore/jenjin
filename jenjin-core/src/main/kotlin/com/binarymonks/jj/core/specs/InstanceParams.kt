@@ -72,13 +72,13 @@ class InstanceParams : HasProps {
 
 class ParamsPoolManager : PoolManager<InstanceParams> {
 
-    override fun reset(instanceParams: InstanceParams) {
-        instanceParams.x = 0f
-        instanceParams.y = 0f
-        instanceParams.scaleX = 1f
-        instanceParams.scaleY = 1f
-        instanceParams.rotationD = 0f
-        instanceParams.properties.clear()
+    override fun reset(pooled: InstanceParams) {
+        pooled.x = 0f
+        pooled.y = 0f
+        pooled.scaleX = 1f
+        pooled.scaleY = 1f
+        pooled.rotationD = 0f
+        pooled.properties.clear()
 
     }
 
@@ -86,7 +86,7 @@ class ParamsPoolManager : PoolManager<InstanceParams> {
         return InstanceParams()
     }
 
-    override fun dispose(instanceParams: InstanceParams) {
+    override fun dispose(pooled: InstanceParams) {
 
     }
 }

@@ -42,25 +42,25 @@ fun <T : Any> copy(original: T): T {
     var copy = construct(myClass)
     myClass.memberProperties.forEach {
         try {
-            if (it.visibility == KVisibility.PUBLIC && isPublicallyMutable(it)) {
+            if (it.visibility == KVisibility.PUBLIC && isPubliclyMutable(it)) {
                 val name = it.name
                 if (original.javaClass.kotlin.memberProperties.first { it.name == name }.get(original) == null) {
                     copyProperty(original, copy, name)
                 } else if (it.returnType.jvmErasure.isSubclassOf(Copyable::class)) {
                     val sourceProperty = original.javaClass.kotlin.memberProperties.first { it.name == name }.get(original) as Copyable<*>
-                    val destinationProperty = copy.javaClass.kotlin.memberProperties.first { it.name == name } as KMutableProperty<Any>
+                    val destinationProperty = getMutable(copy, name)
                     destinationProperty.setter.call(copy, sourceProperty.clone())
                 } else if (it.returnType.jvmErasure.isSubclassOf(Array::class)) {
                     val sourceProperty = original.javaClass.kotlin.memberProperties.first { it.name == name }.get(original) as Array<*>
-                    val destinationProperty = copy.javaClass.kotlin.memberProperties.first { it.name == name } as KMutableProperty<Any>
+                    val destinationProperty = getMutable(copy, name)
                     destinationProperty.setter.call(copy, sourceProperty.copy())
                 } else if (it.returnType.jvmErasure.isSubclassOf(ObjectMap::class)) {
                     val sourceProperty = original.javaClass.kotlin.memberProperties.first { it.name == name }.get(original) as ObjectMap<*, *>
-                    val destinationProperty = copy.javaClass.kotlin.memberProperties.first { it.name == name } as KMutableProperty<Any>
+                    val destinationProperty = getMutable(copy, name)
                     destinationProperty.setter.call(copy, sourceProperty.copy())
                 } else if (it.returnType.jvmErasure.isSubclassOf(ObjectSet::class)) {
                     val sourceProperty = original.javaClass.kotlin.memberProperties.first { it.name == name }.get(original) as ObjectSet<*>
-                    val destinationProperty = copy.javaClass.kotlin.memberProperties.first { it.name == name } as KMutableProperty<Any>
+                    val destinationProperty = getMutable(copy, name)
                     destinationProperty.setter.call(copy, sourceProperty.copy())
                 } else {
                     copyProperty(original, copy, name)
@@ -73,7 +73,15 @@ fun <T : Any> copy(original: T): T {
     return copy
 }
 
-fun isPublicallyMutable(property: KProperty1<*, *>): Boolean {
+fun getMutable(instance: Any, name: String): KMutableProperty<*> {
+    val property = instance.javaClass.kotlin.memberProperties.first { it.name == name }
+    if (property is KMutableProperty<*>) {
+        return property
+    }
+    throw Exception("Seems that property is not actually mutable")
+}
+
+fun isPubliclyMutable(property: KProperty1<*, *>): Boolean {
     if (property is KMutableProperty<*>) {
         if (property.setter.visibility == KVisibility.PUBLIC) {
             return true
@@ -105,6 +113,6 @@ fun <T : Any> construct(kClass: KClass<T>): T {
 
 fun copyProperty(source: Any, destination: Any, propertyName: String) {
     val sourceProperty = source.javaClass.kotlin.memberProperties.first { it.name == propertyName }.get(source)
-    val destinationProperty = destination.javaClass.kotlin.memberProperties.first { it.name == propertyName } as KMutableProperty<Any>
+    val destinationProperty = getMutable(destination, propertyName)
     destinationProperty.setter.call(destination, sourceProperty)
 }

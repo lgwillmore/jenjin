@@ -72,8 +72,8 @@ class PoolsTest {
 
     class ScenePoolManager(internal var initialise_value: Int, internal var reset_value: Int) : PoolManager<SceneToPool> {
 
-        override fun reset(sceneToPool: SceneToPool) {
-            sceneToPool.someValue = reset_value
+        override fun reset(pooled: SceneToPool) {
+            pooled.someValue = reset_value
         }
 
         override fun create_new(): SceneToPool {
@@ -82,7 +82,7 @@ class PoolsTest {
             return newObj
         }
 
-        override fun dispose(sceneToPool: SceneToPool) {
+        override fun dispose(pooled: SceneToPool) {
 
         }
     }

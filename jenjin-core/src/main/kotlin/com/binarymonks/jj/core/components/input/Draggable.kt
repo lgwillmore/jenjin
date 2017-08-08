@@ -9,7 +9,7 @@ class Draggable : TouchHandler() {
     var velocityScale: Float = 50f
     private var touched = false
 
-    override fun onTouchDown(worldX: Float, worldY: Float, touchIdx: Int): Boolean {
+    override fun onTouchDown(touchX: Float, touchY: Float, button: Int): Boolean {
         if (!touched) {
             touched = true
             return true
@@ -17,14 +17,14 @@ class Draggable : TouchHandler() {
         return false
     }
 
-    override fun onTouchMove(worldX: Float, worldY: Float, button: Int) {
+    override fun onTouchMove(touchX: Float, touchY: Float, button: Int) {
         val currentPosition = me().physicsRoot.position()
-        val direction = vec2(worldX, worldY).sub(currentPosition)
+        val direction = vec2(touchX, touchY).sub(currentPosition)
         me().physicsRoot.b2DBody.linearVelocity = direction.scl(velocityScale)
         recycle(direction)
     }
 
-    override fun onTouchUp(worldX: Float, worldY: Float, button: Int) {
+    override fun onTouchUp(touchX: Float, touchY: Float, button: Int) {
         me().physicsRoot.b2DBody.setLinearVelocity(0f, 0f)
     }
 

@@ -40,7 +40,7 @@ class PolygonRenderNodeSpec : SpatialRenderNodeSpec() {
     var vertices: Array<Vector2> = Array()
 
     override fun makeNode(paramsStack: ParamStack): RenderNode {
-        var sprite: PolygonSprite? = null
+        var sprite: PolygonSprite?
         if (PolygonRenderNode.haveBuilt(this)) {
             sprite = PolygonRenderNode.getSprite(this)
         } else {
@@ -136,7 +136,7 @@ abstract class ImageNodeSpec<out K : KClass<*>> : SpatialRenderNodeSpec() {
         return assets
     }
 
-    open abstract fun assetClass(): K
+    abstract fun assetClass(): K
 }
 
 class ParticleNodeSpec : SpatialRenderNodeSpec() {

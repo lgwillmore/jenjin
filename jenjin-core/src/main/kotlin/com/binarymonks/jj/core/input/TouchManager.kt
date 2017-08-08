@@ -63,10 +63,9 @@ class TouchManager(internal var camera: OrthographicCamera) : InputProcessor {
             unproject(Gdx.input.getX(touch.key), Gdx.input.getY(touch.key))
             touch.value.move(testPoint2, touch.key)
         }
-        for (touch in touchRemovals) {
-            val t = touchTracker.remove(touch!!)
-            recycle(t)
-        }
+        touchRemovals
+                .map { touchTracker.remove(it!!) }
+                .forEach { recycle(it) }
         touchRemovals.clear()
     }
 
@@ -88,33 +87,31 @@ class TouchManager(internal var camera: OrthographicCamera) : InputProcessor {
     }
 
     private fun checkForTouchHandler(button: Int) {
-        JJ.B.physicsWorld.b2dworld.QueryAABB(this::reportFixture, testPoint.x - (touchBoxWidth/2), testPoint.y - (touchBoxWidth/2), testPoint.x + (touchBoxWidth/2), testPoint.y + (touchBoxWidth/2))
+        JJ.B.physicsWorld.b2dworld.QueryAABB(this::reportFixture, testPoint.x - (touchBoxWidth / 2), testPoint.y - (touchBoxWidth / 2), testPoint.x + (touchBoxWidth / 2), testPoint.y + (touchBoxWidth / 2))
         selectTouchHandler(button)
     }
 
     private fun selectTouchHandler(button: Int) {
         for (fixture in possibleBodies) {
             val node = fixture.userData as PhysicsNode
-            if (node != null) {
-                val parent = checkNotNull(node!!.physicsRoot.parent)
-                if (!parent.isDestroyed) {
-                    val t = parent.getComponent(TouchHandler::class)
-                    if (t != null) {
-                        touchedScene = parent
-                        val touchLocation = new(Vector2::class).set(testPoint.x, testPoint.y)
-                        val touchHandled = t!!.onTouchDown(testPoint.x, testPoint.y, button)
-                        recycle(touchLocation)
-                        if (!touchHandled) continue
-                        val hitBody = fixture.body
-                        val bodyPosition = new(Vector2::class).set(hitBody.position)
-                        if (t!!.relativeToTouch) {
-                            touchOffset.set(bodyPosition.sub(testPoint.x, testPoint.y))
-                        } else {
-                            touchOffset.set(0f, 0f)
-                        }
-                        recycle(bodyPosition)
-                        break
+            val parent = checkNotNull(node.physicsRoot.parent)
+            if (!parent.isDestroyed) {
+                val t = parent.getComponent(TouchHandler::class)
+                if (t != null) {
+                    touchedScene = parent
+                    val touchLocation = new(Vector2::class).set(testPoint.x, testPoint.y)
+                    val touchHandled = t.onTouchDown(testPoint.x, testPoint.y, button)
+                    recycle(touchLocation)
+                    if (!touchHandled) continue
+                    val hitBody = fixture.body
+                    val bodyPosition = new(Vector2::class).set(hitBody.position)
+                    if (t.relativeToTouch) {
+                        touchOffset.set(bodyPosition.sub(testPoint.x, testPoint.y))
+                    } else {
+                        touchOffset.set(0f, 0f)
                     }
+                    recycle(bodyPosition)
+                    break
                 }
             }
         }

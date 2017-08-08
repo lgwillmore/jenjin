@@ -13,6 +13,7 @@ fun <K, V> ObjectMap<K, V>.copy(): ObjectMap<K, V> {
     for (entry in this) {
         val value = entry.value
         if (value is Copyable<*>) {
+            @Suppress("UNCHECKED_CAST")
             clone.put(entry.key, value.clone() as V)
         } else {
             clone.put(entry.key, value)
@@ -49,6 +50,7 @@ fun <T> Array<T>.copy(): Array<T> {
     val clone: Array<T> = Array()
     this.forEach {
         if (it is Copyable<*>) {
+            @Suppress("UNCHECKED_CAST")
             clone.add(it.clone() as T)
         } else {
             clone.add(it)
@@ -78,6 +80,7 @@ fun <T> ObjectSet<T>.copy(): ObjectSet<T> {
     val clone: ObjectSet<T> = ObjectSet()
     this.forEach {
         if (it is Copyable<*>) {
+            @Suppress("UNCHECKED_CAST")
             clone.add(it.clone() as T)
         } else {
             clone.add(it)

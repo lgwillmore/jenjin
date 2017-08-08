@@ -13,7 +13,7 @@ abstract class BatchBasedRenderNode(
         color: PropOverride<Color>,
         renderGraphType: RenderGraphType,
         name: String?,
-        shaderSpec: ShaderSpec??
+        shaderSpec: ShaderSpec?
 ) : RenderNode(
         priority,
         color,

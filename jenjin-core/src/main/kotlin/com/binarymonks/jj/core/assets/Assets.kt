@@ -20,8 +20,8 @@ class Assets : AssetsAPI {
         manager.update()
     }
 
-    override fun <T : Any> getAsset(path: String, kClass: KClass<T>): T {
-        return manager.get(path, kClass.java)
+    override fun <T : Any> getAsset(path: String, assetClass: KClass<T>): T {
+        return manager.get(path, assetClass.java)
     }
 
     override fun load(path: String, assetClass: KClass<*>) {

@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Array
 class Pool<POOLED>(internal var manager: PoolManager<POOLED>) {
     internal var pool = Array<POOLED>()
 
-    fun getPooled(): POOLED{
+    fun getPooled(): POOLED {
         if (pool.size == 0) {
             return manager.create_new()
         }
@@ -13,6 +13,7 @@ class Pool<POOLED>(internal var manager: PoolManager<POOLED>) {
     }
 
     fun add(pooled: Any) {
+        @Suppress("UNCHECKED_CAST")
         manager.reset(pooled as POOLED)
         pool.add(pooled)
     }

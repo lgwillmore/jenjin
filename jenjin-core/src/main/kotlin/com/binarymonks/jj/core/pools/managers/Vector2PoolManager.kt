@@ -4,15 +4,15 @@ import com.badlogic.gdx.math.Vector2
 import com.binarymonks.jj.core.pools.PoolManager
 
 class Vector2PoolManager : PoolManager<Vector2> {
-    override fun reset(vector2: Vector2) {
-        vector2.set(0f, 0f)
+    override fun reset(pooled: Vector2) {
+        pooled.set(0f, 0f)
     }
 
     override fun create_new(): Vector2 {
         return Vector2()
     }
 
-    override fun dispose(vector2: Vector2) {
+    override fun dispose(pooled: Vector2) {
 
     }
 }

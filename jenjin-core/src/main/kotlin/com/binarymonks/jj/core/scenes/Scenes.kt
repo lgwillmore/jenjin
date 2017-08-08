@@ -27,6 +27,7 @@ class Scenes : ScenesAPI {
     override fun instantiate(instanceParams: InstanceParams, scene: SceneSpec): Bond<Scene> {
         loadAssetsNow()
         val delayedCreate = new(CreateSceneFunction::class)
+        @Suppress("UNCHECKED_CAST")
         val bond = new(Bond::class) as Bond<Scene>
         delayedCreate.set(scene, instanceParams, bond)
         if (!JJ.B.physicsWorld.isUpdating) {

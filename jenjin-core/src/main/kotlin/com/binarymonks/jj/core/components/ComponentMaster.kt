@@ -45,9 +45,11 @@ class ComponentMaster {
 
     fun <T : Component> getComponent(type: KClass<T>): T? {
         if (trackedComponents.containsKey(type)) {
+            @Suppress("UNCHECKED_CAST")
             return trackedComponents.get(type) as T
         }
         if (addTrackedComponent.containsKey(type)) {
+            @Suppress("UNCHECKED_CAST")
             return addTrackedComponent.get(type) as T
         }
         return null

@@ -52,6 +52,7 @@ abstract class Component : Copyable<Component> {
      * will be used to store and retrieve your [Component] if you need to.
      */
     open fun type(): KClass<Component> {
+        @Suppress("UNCHECKED_CAST")
         return this::class as KClass<Component>
     }
 

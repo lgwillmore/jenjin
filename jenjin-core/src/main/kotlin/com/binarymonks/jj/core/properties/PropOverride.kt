@@ -41,6 +41,7 @@ class PropOverride<T>(value: T) : Copyable<PropOverride<T>> {
      */
     fun get(): T {
         if (propOverrideKey != null && hasProps != null && hasProps!!.hasProp(propOverrideKey!!)) {
+            @Suppress("UNCHECKED_CAST")
             return hasProps!!.getProp(propOverrideKey!!) as T
         }
         return value

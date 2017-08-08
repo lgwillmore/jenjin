@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.ObjectMap
-import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.api.LayersAPI
 import com.binarymonks.jj.core.pools.Poolable
 import com.binarymonks.jj.core.pools.new
@@ -48,6 +47,7 @@ class LayerStack(var clearColor: Color = Color(0f, 0f, 0f, 1f)) : LayersAPI {
     }
 
     private fun actuallyPush(layer: Layer?) {
+        @Suppress("NAME_SHADOWING")
         val layer = checkNotNull(layer)
         layer.resize(Gdx.graphics.width, Gdx.graphics.height)
         layers.insert(layers.size, layer)
@@ -80,6 +80,7 @@ class LayerStack(var clearColor: Color = Color(0f, 0f, 0f, 1f)) : LayersAPI {
     }
 
     override fun <T : Layer> getLayer(layerName: String): T {
+        @Suppress("UNCHECKED_CAST")
         return registeredLayers.get(layerName) as T
     }
 

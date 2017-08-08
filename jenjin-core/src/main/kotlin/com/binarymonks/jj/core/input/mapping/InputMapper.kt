@@ -10,11 +10,11 @@ class InputMapper : InputAPI, InputProcessor {
     internal var keyToActionToFunctionMap = ObjectMap<Int, ObjectMap<Actions.Key, GeneralHandler>>()
     internal var keyToHandlerMap = ObjectMap<Int, KeyHandler>()
 
-    override fun map(keyCode: Int, keyAction: Actions.Key, function: GeneralHandler) {
+    override fun map(keyCode: Int, keyAction: Actions.Key, handler: GeneralHandler) {
         if (!keyToActionToFunctionMap.containsKey(keyCode)) {
             keyToActionToFunctionMap.put(keyCode, ObjectMap<Actions.Key, GeneralHandler>())
         }
-        keyToActionToFunctionMap.get(keyCode).put(keyAction, function)
+        keyToActionToFunctionMap.get(keyCode).put(keyAction, handler)
     }
 
     override fun map(keyCode: Int, keyHandler: KeyHandler) {

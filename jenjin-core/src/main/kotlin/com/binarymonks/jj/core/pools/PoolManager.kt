@@ -9,9 +9,9 @@ interface PoolManager<POOLED_THING> {
     /**
      * Called to reset each scene as it enters the pool
 
-     * @param pooledScene
+     * @param pooled
      */
-    fun reset(pooledScene: POOLED_THING)
+    fun reset(pooled: POOLED_THING)
 
     /**
      * Called when there are none in the pool
@@ -23,7 +23,7 @@ interface PoolManager<POOLED_THING> {
     /**
      * Called when the pool is being dumped. Clean up any assets or other entangling references.
 
-     * @param pooledScene
+     * @param pooled
      */
-    fun dispose(pooledScene: POOLED_THING)
+    fun dispose(pooled: POOLED_THING)
 }

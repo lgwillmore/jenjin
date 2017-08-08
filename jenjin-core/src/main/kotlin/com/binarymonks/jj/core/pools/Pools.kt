@@ -57,6 +57,7 @@ fun recycleItems(collectionOfObjects: Iterable<*>) {
     }
 }
 
+@Suppress("UNCHECKED_CAST")
 /**
  * A place to manage your pools and pooled objects.
  *
@@ -65,7 +66,7 @@ fun recycleItems(collectionOfObjects: Iterable<*>) {
  *
  * Once you have that you can use [new], [recycle] and [recycleItems] to deal with your pooled objects
  */
-class Pools : PoolsAPI{
+class Pools : PoolsAPI {
 
     internal var pools = ObjectMap<Class<*>, Pool<*>>()
     internal var poolablePools = ObjectMap<Class<*>, Array<Poolable>>()
@@ -152,7 +153,7 @@ class Pools : PoolsAPI{
         if (!pools.containsKey(pooled.javaClass)) {
             throw NoPoolManagerException(pooled.javaClass)
         } else {
-            var pool = pools.get(pooled.javaClass).add(pooled)
+            pools.get(pooled.javaClass).add(pooled)
         }
     }
 
