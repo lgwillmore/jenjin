@@ -1,5 +1,6 @@
 package com.binarymonks.jj.core.extensions
 
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.ObjectMap
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.ObjectSet
@@ -70,6 +71,14 @@ fun <T> Array<T>.build(builder: Array<T>.() -> Unit): Array<T> {
 fun <T> Array<T>.addVar(vararg add: T): Array<T> {
     add.forEach { this.add(it) }
     return this
+}
+
+/**
+ * Selects a random member
+ */
+fun <T> Array<T>.random(): T {
+    val index = MathUtils.random(0, this.size)
+    return this[index]
 }
 
 

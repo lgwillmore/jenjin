@@ -80,7 +80,7 @@ class D00_Basic : JJGame(MyConfig00.jjConfig) {
     }
 
     fun sceneCreated(scene: Scene){
-        println("Created the scene")
+        println("Created the scene $scene")
     }
 
     private fun square(): SceneSpec {

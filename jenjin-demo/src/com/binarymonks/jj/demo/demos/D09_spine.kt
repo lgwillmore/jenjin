@@ -41,7 +41,7 @@ class D09_spine : JJGame(JJConfig {
             animations {
                 startingAnimation = "run"
                 registerEventHandler("footstep", {
-                    component, event ->
+                    component, _ ->
                     component.me().soundEffects.triggerSound("footstep", SoundMode.NORMAL)
                 })
                 registerEventHandler("footstep", SpineBoyComponent::class, SpineBoyComponent::onEvent)
