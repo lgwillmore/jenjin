@@ -11,6 +11,7 @@ import com.binarymonks.jj.core.pools.recycle
 class Scheduler(val timeFunction: () -> Float) {
     var idCounter = 0
     val scheduledFunctions: ObjectMap<Int, FunctionTracker> = ObjectMap()
+    val adds: ObjectMap<Int, FunctionTracker> = ObjectMap()
     private val removals: Array<Int> = Array()
 
     fun update() {
@@ -21,7 +22,6 @@ class Scheduler(val timeFunction: () -> Float) {
                 removals.add(it.key)
             }
         }
-        clean()
     }
 
     fun clean() {
@@ -31,6 +31,10 @@ class Scheduler(val timeFunction: () -> Float) {
             }
         }
         removals.clear()
+        adds.forEach {
+            scheduledFunctions.put(it.key, it.value)
+        }
+        adds.clear()
     }
 
     fun schedule(
@@ -39,13 +43,7 @@ class Scheduler(val timeFunction: () -> Float) {
             repeat: Int = 1,
             name: String? = null
     ): Int {
-        idCounter++
-
-        scheduledFunctions.put(
-                idCounter,
-                new(FunctionTracker::class).set(function, delaySeconds, delaySeconds, timeFunction.invoke(), repeat, idCounter, name)
-        )
-        return idCounter
+        return schedule(function, delaySeconds, delaySeconds, repeat, name)
     }
 
     fun schedule(
@@ -57,7 +55,7 @@ class Scheduler(val timeFunction: () -> Float) {
     ): Int {
         idCounter++
 
-        scheduledFunctions.put(
+        adds.put(
                 idCounter,
                 new(FunctionTracker::class).set(function, delayMinSeconds, delayMaxSeconds, timeFunction.invoke(), repeat, idCounter, name)
         )
