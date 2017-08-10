@@ -73,14 +73,6 @@ fun <T> Array<T>.addVar(vararg add: T): Array<T> {
     return this
 }
 
-/**
- * Selects a random member
- */
-fun <T> Array<T>.random(): T {
-    val index = MathUtils.random(0, this.size)
-    return this[index]
-}
-
 
 /**
  * Copies the set with [Copyable] awareness for values

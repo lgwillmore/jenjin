@@ -47,22 +47,18 @@ open class StateMachine() : State() {
         states.forEach { it.value.onAddToWorld() }
     }
 
-    override fun onFullyInitialized() {
-        states.forEach { it.value.onFullyInitialized() }
-    }
-
     override fun onRemoveFromScene() {
         states.forEach { it.value.onRemoveFromScene() }
     }
 
     override fun onRemoveFromWorld() {
-        currentState=null
+        currentState = null
         states.forEach { it.value.onRemoveFromWorld() }
     }
 
     override fun update() {
         if (requestedTransition != null) {
-            if(currentState!=null){
+            if (currentState != null) {
                 state().exitWrapper()
             }
             currentState = requestedTransition
@@ -70,7 +66,7 @@ open class StateMachine() : State() {
             state().enterWrapper()
         }
         if (currentState == null) {
-            if(initialState==null){
+            if (initialState == null) {
                 throw Exception("You need to set an initial state")
             }
             currentState = initialState

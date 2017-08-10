@@ -55,7 +55,7 @@ class MasterFactory {
             paramsStack.add(nodeParams)
             val nodeScene = createSceneHelper(nodeSceneRef, paramsStack)
             scenes.put(entry.key, nodeScene)
-            myScene.addChild(nodeScene)
+            myScene.add(nodeScene)
             paramsStack.pop()
         }
         for (jointSpec in scene.joints) {
@@ -90,6 +90,7 @@ class MasterFactory {
                 name = paramsStack.peek().name,
                 specName = sceneSpec.name,
                 uniqueName = paramsStack.peek().uniqueInstanceName,
+                specID = sceneSpec.id,
                 physicsRoot = buildPhysicsRoot(sceneSpec.physics, paramsStack),
                 renderRoot = buildRenderRoot(sceneSpec.render, paramsStack),
                 soundEffects = buildSoundEffects(sceneSpec.sounds.params),

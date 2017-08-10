@@ -48,7 +48,7 @@ class SpineComponent(
 
     private fun initialiseAnimations() {
         //FIXME: There must be a problem with pooling and doing this!
-        val stateData = AnimationStateData(spineRenderNode!!.skeletonData)
+        val stateData = AnimationStateData(spineRenderNode.skeletonData)
         animations.crossFades.forEach { stateData.setMix(it.fromName, it.toName, it.duration) }
         animationState = AnimationState(stateData)
         if (animations.startingAnimation != null) {
@@ -100,7 +100,7 @@ class SpineComponent(
     fun triggerRagDoll(gravity: Float = 1f) {
         if (!ragDoll) {
             ragDoll = true
-            rootBone!!.triggerRagDoll(1f)
+            rootBone!!.triggerRagDoll(gravity)
         }
     }
 

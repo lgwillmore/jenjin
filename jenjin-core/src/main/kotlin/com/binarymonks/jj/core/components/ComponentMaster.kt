@@ -10,7 +10,6 @@ class ComponentMaster {
     private var removeTrackedComponents = ObjectMap<KClass<*>, Component>()
 
     fun update() {
-        addTrackedComponent.forEach { it.value.onFullyInitialized() }
         clean()
         for (entry in trackedComponents.entries()) {
             if (entry.value.isDone()) {
@@ -63,6 +62,10 @@ class ComponentMaster {
     fun destroy() {
         clean()
         trackedComponents.forEach { it.value.onRemoveFromWorld() }
+    }
+
+    fun onScenePool() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 }

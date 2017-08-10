@@ -32,11 +32,11 @@ class ScenePathTest {
         cousin = scene("cousin")
         child = scene("child1")
 
-        grandParent.addChild(uncle)
-        grandParent.addChild(parent)
-        parent.addChild(me)
-        uncle.addChild(cousin)
-        me.addChild(child)
+        grandParent.add(uncle)
+        grandParent.add(parent)
+        parent.add(me)
+        uncle.add(cousin)
+        me.add(child)
     }
 
     @Test
@@ -70,6 +70,7 @@ class ScenePathTest {
                 name,
                 null,
                 null,
+                1,
                 PhysicsRoot(Mockito.mock(Body::class.java)),
                 RenderRoot(1),
                 SoundEffects(),

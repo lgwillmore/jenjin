@@ -35,10 +35,6 @@ class StateMachineTest {
         mocks.forEach {
             Mockito.verify(it).onAddToWorld()
         }
-        stateMachine.onFullyInitialized()
-        mocks.forEach {
-            Mockito.verify(it).onFullyInitialized()
-        }
         stateMachine.scene = scene
         mocks.forEach {
             Mockito.verify(it).scene = scene

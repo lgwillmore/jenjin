@@ -264,10 +264,12 @@ class SpineAnimations : Copyable<SpineAnimations> {
         functions.put(eventName, function)
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun <T : Component> registerEventHandler(eventName: String, componentType: KClass<T>, componentFunction: KFunction2<T, @ParameterName(name = "event") Event, Unit>) {
         componentHandlers.put(eventName, EventToComponentCall(componentType as KClass<Component>, componentFunction as KFunction2<Component, @kotlin.ParameterName(name = "event") Event, Unit>))
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun <T : Component> registerEventFunction(eventName: String, componentType: KClass<T>, componentFunction: KFunction1<T, Unit>) {
         componentFunctions.put(eventName, ComponentCall(componentType as KClass<Component>, componentFunction as KFunction1<Component, Unit>))
     }

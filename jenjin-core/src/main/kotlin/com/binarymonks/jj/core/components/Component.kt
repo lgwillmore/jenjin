@@ -56,10 +56,7 @@ abstract class Component : Copyable<Component> {
         return this::class as KClass<Component>
     }
 
-    /**
-     * Called when the component is added to a [Scene]. The parent [Scene] will be available, but not necessarily fully
-     * initialised.
-     */
+
     open fun onAddToScene() {
     }
 
@@ -70,10 +67,7 @@ abstract class Component : Copyable<Component> {
 
     }
 
-    /**
-     * Called when the component is removed from the [Scene]. This is called when the component indicates it should be removed
-     * via [isDone]
-     */
+
     open fun onRemoveFromScene() {
     }
 
@@ -85,30 +79,14 @@ abstract class Component : Copyable<Component> {
         return false
     }
 
-    /**
-     * Called when the components [Scene] is added to the world. The [Scene] will  have all of its children nodes.
-     * It will not have its parent node yet though. Leaves are built first.
-     * This is also called when a pooled [Scene] is drawn from the pool. Any resetting of state for the [Component]
-     * should be done with this in mind.
-     */
+
     open fun onAddToWorld() {
 
     }
 
-    /**
-     * Called when the components [Scene] is removed from the world. Do any required cleanup here.
-     * This is also called when a pooled [Scene] is placed in the pool. Any resetting of state for the [Component]
-     * should be done with this in mind.
-     */
+
     open fun onRemoveFromWorld() {
 
-    }
-
-    /**
-     * Called when the Component is being updated for the first time.
-     * The parent Scene will be available as well as the children scene
-     */
-    open fun onFullyInitialized() {
     }
 
 }

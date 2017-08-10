@@ -62,10 +62,6 @@ class CompositeState : State() {
         states.forEach { it.onAddToWorld() }
     }
 
-    override fun onFullyInitialized() {
-        states.forEach { it.onFullyInitialized() }
-    }
-
     override fun onRemoveFromScene() {
         states.forEach { it.onRemoveFromScene() }
     }

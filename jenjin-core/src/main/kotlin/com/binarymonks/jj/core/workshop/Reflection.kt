@@ -19,6 +19,7 @@ object Reflection {
 
     fun <T> getFieldFromInstance(field: Field, parentObject: Any): T {
         try {
+            @Suppress("UNCHECKED_CAST")
             return field.get(parentObject) as T
         } catch (e: IllegalAccessException) {
             throw RuntimeException(String.format("Could not checkPools the field value %s from class %s", field.name, parentObject.javaClass.canonicalName))

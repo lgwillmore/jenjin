@@ -1,20 +1,38 @@
 package com.binarymonks.jj.core.scenes
 
+import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.audio.SoundEffects
 import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.components.ComponentMaster
 import com.binarymonks.jj.core.physics.PhysicsRoot
+import com.binarymonks.jj.core.pools.Poolable
+import com.binarymonks.jj.core.pools.new
+import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.properties.HasProps
 import com.binarymonks.jj.core.render.RenderRoot
-import com.binarymonks.jj.core.utils.NamedArray
 import kotlin.reflect.KClass
 
+/**
+ * Scene Lifecycle                   |   Component lifecycle
+ *
+ *                                       * addToScene              - called once for component - unless Component is itself pooled.
+ *
+ *  * addToScene                                                   - called multiple times if scene is pooled
+ *
+ *  * addToWorld                         * addToWorld              - called multiple times if scene is pooled
+ *
+ *  * onRemoveFromWorld                  * onRemoveFromWorld       - called multiple times if scene is pooled
+ *
+ *                                       * onScenePooled           - called multiple times if scene is pooled
+ *
+ */
 open class Scene(
         var name: String?,
         var specName: String?,
         var uniqueName: String?,
+        var specID: Int,
         val physicsRoot: PhysicsRoot,
         val renderRoot: RenderRoot,
         val soundEffects: SoundEffects,
@@ -22,39 +40,29 @@ open class Scene(
         val pooled: Boolean = false
 ) : HasProps {
 
-
-    var id = JJ.B.nextID()
-    private var componentMaster = ComponentMaster()
-    var isDestroyed: Boolean = false
-        private set
-    private var children: NamedArray<Scene> = NamedArray()
-    private var parent: Scene? = null
-
     init {
         physicsRoot.parent = this
         renderRoot.parent = this
     }
 
-    fun update() {
-        componentMaster.update()
-    }
+    var id = JJ.B.nextID()
 
-    fun destroy() {
-        if (!isDestroyed) {
-            isDestroyed = true
-            com.binarymonks.jj.core.JJ.B.sceneWorld.remove(this)
-            children.forEach {
-                it.destroy()
-            }
-            if (parent != null && !checkNotNull(parent).isDestroyed) {
-                checkNotNull(parent).children.removeValue(this, true)
-            }
-        }
-    }
-
+    var parent: Scene? = null
+    internal var sceneLayers = ObjectMap<Int, Array<Scene>>(5)
+    internal var sceneToLayerIndex = ObjectMap<Int, Int>()
+    internal var nameChildren = ObjectMap<String, Scene>()
+    internal var queuedForAddScenes = Array<AddScene>(100)
+    internal var removals = Array<Scene>()
+    private var componentMaster = ComponentMaster()
+    internal var inUpdate = false
+    var inWorld = false
+    var isDestroyed = false
 
     fun addComponent(component: Component) {
         component.scene = this
+        if (inWorld) {
+            component.onAddToWorld()
+        }
         component.onAddToScene()
         componentMaster.addComponent(component)
     }
@@ -71,25 +79,8 @@ open class Scene(
         return properties.get(key)
     }
 
-    fun addChild(nodeScene: Scene) {
-        if (nodeScene.name != null) {
-            children.add(nodeScene.name!!, nodeScene)
-        } else {
-            children.add(nodeScene)
-        }
-        nodeScene.parent = this
-    }
-
-    fun onAddToWorld() {
-        componentMaster.onAddToWorld()
-    }
-
     fun getChild(name: String): Scene? {
-        return children.get(name)
-    }
-
-    fun getChild(index: Int): Scene {
-        return children[index]
+        return nameChildren.get(name)
     }
 
     fun parent(): Scene {
@@ -100,14 +91,110 @@ open class Scene(
         return path.from(this)
     }
 
+
+    fun onAddToWorld() {
+        inWorld = true
+        sceneLayers.forEach {
+            it.value.forEach { it.onAddToWorld() }
+        }
+        componentMaster.onAddToWorld()
+    }
+
+    fun apply(function: (Scene) -> Unit) {
+        function(this)
+        sceneLayers.forEach {
+            it.value.forEach { it.apply(function) }
+        }
+    }
+
+
+    fun add(scene: Scene, layer: Int = 0) {
+        if (inUpdate) {
+            queuedForAddScenes.add(new(AddScene::class).set(scene, layer))
+        } else {
+            reallyAdd(scene, layer)
+        }
+    }
+
+    private fun reallyAdd(scene: Scene, layer: Int) {
+        if (!sceneLayers.containsKey(layer)) {
+            sceneLayers.put(layer, Array())
+        }
+        sceneLayers[layer].add(scene)
+        sceneToLayerIndex.put(scene.id, layer)
+        if (scene.name != null) {
+            nameChildren.put(scene.name, scene)
+        }
+        scene.parent = this
+        if (inWorld) {
+            scene.onAddToWorld()
+        }
+    }
+
+    open fun update() {
+        clean()
+        inUpdate = true
+        componentMaster.update()
+        sceneLayers.forEach {
+            it.value.forEach { it.onAddToWorld() }
+        }
+        inUpdate = false
+    }
+
+
+    fun clean() {
+        for (sceneEntry in queuedForAddScenes) {
+            reallyAdd(sceneEntry.scene!!, sceneEntry.layer!!)
+            recycle(sceneEntry)
+        }
+        for (removal in removals) {
+            reallyRemove(removal)
+        }
+        queuedForAddScenes.clear()
+    }
+
+    fun remove(scene: Scene) {
+        if (inUpdate) {
+            removals.add(scene)
+        } else {
+            reallyRemove(scene)
+        }
+    }
+
+    fun destroy() {
+        if (!isDestroyed) {
+            isDestroyed = true
+            sceneLayers.forEach {
+                it.value.forEach { it.isDestroyed = true }
+            }
+            parent?.remove(this)
+        }
+    }
+
     internal fun executeDestruction() {
+        sceneLayers.forEach {
+            it.value.forEach { it.executeDestruction() }
+        }
         renderRoot.destroy(pooled)
         physicsRoot.destroy(pooled)
         componentMaster.destroy()
+        if (pooled) {
+            componentMaster.onScenePool()
+        }
     }
 
     internal fun resetFromPool(x: Float, y: Float, rotationD: Float) {
         physicsRoot.reset(x, y, rotationD)
+    }
+
+    private fun reallyRemove(removal: Scene) {
+        val layer = sceneToLayerIndex.get(removal.id)
+        sceneLayers.remove(removal.id)
+        if (removal.name != null) {
+            nameChildren.remove(removal.name)
+        }
+        sceneLayers.get(layer).removeValue(removal,true)
+        removal.executeDestruction()
     }
 
     override fun equals(other: Any?): Boolean {
@@ -128,6 +215,21 @@ open class Scene(
     override fun toString(): String {
         return "Scene(name=$name, uniqueName=$uniqueName, id=$id)"
     }
+}
 
+class AddScene : Poolable {
+    var scene: Scene? = null
+    var layer: Int? = null
+
+    fun set(scene: Scene, layer: Int): AddScene {
+        this.scene = scene
+        this.layer = layer
+        return this
+    }
+
+    override fun reset() {
+        scene = null
+        layer = null
+    }
 
 }

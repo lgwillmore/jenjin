@@ -1,5 +1,6 @@
 package com.binarymonks.jj.core
 
+import com.badlogic.gdx.physics.box2d.BodyDef
 import com.binarymonks.jj.core.api.*
 import com.binarymonks.jj.core.assets.Assets
 import com.binarymonks.jj.core.async.Tasks
@@ -13,6 +14,9 @@ import com.binarymonks.jj.core.pools.Pools
 import com.binarymonks.jj.core.render.RenderWorld
 import com.binarymonks.jj.core.scenes.SceneWorld
 import com.binarymonks.jj.core.scenes.Scenes
+import com.binarymonks.jj.core.specs.builders.params
+import com.binarymonks.jj.core.specs.builders.physics
+import com.binarymonks.jj.core.specs.builders.scene
 import com.binarymonks.jj.core.time.ClockControls
 
 /**
@@ -53,7 +57,10 @@ object JJ {
         B.defaultGameRenderingLayer.inputMultiplexer.addProcessor(B.input)
         B.layers.push(B.defaultGameRenderingLayer)
         B.tasks = Tasks()
-        B.defaultGameRenderingLayer.postProccessingEnabled=config.gameView.postProcessingEnabled
+        B.defaultGameRenderingLayer.postProccessingEnabled = config.gameView.postProcessingEnabled
+
+
+
 
         scenes = B.scenes
         layers = B.layers
@@ -65,5 +72,7 @@ object JJ {
         tasks = B.tasks
         input = B.input
         events = EventBus()
+
+        B.scenes.instantiate(params { }, scene { physics { bodyType = BodyDef.BodyType.StaticBody } }).then({ scene -> B.sceneWorld.rootScene = scene })
     }
 }

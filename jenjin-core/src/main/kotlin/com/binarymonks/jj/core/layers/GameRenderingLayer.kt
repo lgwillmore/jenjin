@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.utils.ObjectMap
 import com.badlogic.gdx.utils.Array
+import com.badlogic.gdx.utils.Sort
 import com.binarymonks.jj.core.GameViewConfig
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.input.TouchManager
@@ -16,6 +17,8 @@ import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.render.RenderGraph
 import com.binarymonks.jj.core.render.RenderLayer
 import com.binarymonks.jj.core.render.nodes.RenderNode
+import com.binarymonks.jj.core.scenes.Scene
+import com.binarymonks.jj.core.specs.render.RenderGraphType
 
 class GameRenderingLayer(
         var worldBoxWidth: Float,
@@ -28,6 +31,7 @@ class GameRenderingLayer(
 
     internal var drenderer = Box2DDebugRenderer()
     internal var touchManager = TouchManager(camera)
+    val sceneComparator = SceneComporator()
 
     init {
         // Constructs a new OrthographicCamera, using the given viewport width and height
@@ -48,11 +52,11 @@ class GameRenderingLayer(
         touchManager.update()
         if (postProccessingEnabled)
             JJ.B.renderWorld.postProcessor.capture()
-        renderGraph(JJ.B.renderWorld.defaultRenderGraph)
+        renderGraph(RenderGraphType.DEFAULT)
         if (postProccessingEnabled)
             JJ.B.renderWorld.postProcessor.render()
         renderLights()
-        renderGraph(JJ.B.renderWorld.lightSourceRenderGraph)
+        renderGraph(RenderGraphType.LIGHT)
         if (JJ.B.config.b2d.debug) {
             drenderer.render(JJ.B.physicsWorld.b2dworld, JJ.B.renderWorld.polyBatch.getProjectionMatrix())
         }
@@ -66,6 +70,52 @@ class GameRenderingLayer(
         val screenRight = camera.project(worldRight)
         JJ.B.renderWorld.worldToScreenScale = (screenRight.x - screenLeft.x) / worldDistance
         recycle(worldLeft, worldRight)
+    }
+
+    private fun renderGraph(type: RenderGraphType) {
+        if (JJ.B.sceneWorld.rootScene != null) {
+            val layers = JJ.B.sceneWorld.rootScene!!.sceneLayers
+            JJ.B.renderWorld.polyBatch.enableBlending()
+            JJ.B.renderWorld.polyBatch.projectionMatrix = camera.combined
+            JJ.B.renderWorld.shapeRenderer.projectionMatrix = camera.combined
+
+            JJ.B.renderWorld.polyBatch.begin()
+            var renderedCount = 0
+            var layerIndex = 0
+            while (renderedCount < layers.size) {
+                if (layers.containsKey(layerIndex)) {
+                    renderedCount++
+                    val scenes = layers.get(layerIndex)
+                    Sort.instance().sort(scenes, sceneComparator)
+                    scenes.forEach {
+                        renderScene(it, type)
+                    }
+                }
+                layerIndex++
+            }
+            JJ.B.renderWorld.end()
+        }
+    }
+
+    private fun renderScene(scene: Scene, type: RenderGraphType) {
+        when (type) {
+            RenderGraphType.DEFAULT -> updateSceneLayers(scene.renderRoot.defaultRenderLayers)
+            RenderGraphType.LIGHT -> updateSceneLayers(scene.renderRoot.lightRenderLayers)
+        }
+        val layers = scene.sceneLayers
+        var renderedCount = 0
+        var layerIndex = 0
+        while (renderedCount < layers.size) {
+            if (layers.containsKey(layerIndex)) {
+                renderedCount++
+                val scenes = layers.get(layerIndex)
+                Sort.instance().sort(scenes, sceneComparator)
+                scenes.forEach {
+                    renderScene(it, type)
+                }
+            }
+            layerIndex++
+        }
     }
 
     private fun renderGraph(renderGraph: RenderGraph) {
@@ -125,4 +175,11 @@ class GameRenderingLayer(
         camera.viewportHeight = camera.viewportWidth * (newHeight / newWidth)
         camera.update()
     }
+}
+
+class SceneComporator : Comparator<Scene> {
+    override fun compare(o1: Scene?, o2: Scene?): Int {
+        return o1!!.specID - o2!!.specID
+    }
+
 }
