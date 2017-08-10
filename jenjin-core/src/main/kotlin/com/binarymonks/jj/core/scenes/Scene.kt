@@ -136,7 +136,7 @@ open class Scene(
         inUpdate = true
         componentMaster.update()
         sceneLayers.forEach {
-            it.value.forEach { it.onAddToWorld() }
+            it.value.forEach { it.update() }
         }
         inUpdate = false
     }
