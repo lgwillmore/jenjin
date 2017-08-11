@@ -2,6 +2,7 @@ package com.binarymonks.jj.core.api
 
 import com.binarymonks.jj.core.async.Bond
 import com.binarymonks.jj.core.async.UnitBond
+import com.binarymonks.jj.core.scenes.MultiInstantiator
 import com.binarymonks.jj.core.scenes.Scene
 import com.binarymonks.jj.core.specs.InstanceParams
 import com.binarymonks.jj.core.specs.SceneSpec
@@ -39,6 +40,14 @@ interface ScenesAPI {
      * @param instanceParams The instance specific parameters
      */
     fun instantiate(instanceParams: InstanceParams = InstanceParams.new(), path: String): Bond<Scene>
+
+
+    /**
+     * Convenience function for instantiating multiple scenes
+     *
+     * @param multi An extension to a [MultiInstantiator]
+     */
+    fun instantiate(multi: MultiInstantiator.() -> Unit)
 
 
     /**

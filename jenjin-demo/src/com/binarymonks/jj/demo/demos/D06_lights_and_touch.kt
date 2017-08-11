@@ -26,28 +26,27 @@ class D06_lights_and_touch : JJGame(MyConfig06.jjConfig) {
 
         JJ.render.setAmbientLight(0f, 0f, 0f, 0.4f)
 
-        JJ.scenes.instantiate(scene {
-            render { imageTexture("textures/circuit_background.png") { width = 20f; height = 40f } }
-        })
-        JJ.scenes.instantiate(params { x = -5f; y = 5f }, "box")
-        JJ.scenes.instantiate(params { x = 5f; y = -5f }, "box")
-        JJ.scenes.instantiate(scene {
-            physics {
-                bodyType = BodyDef.BodyType.KinematicBody
-                fixture { shape = Rectangle(1.5f, 1.5f) }
-                pointLight {
-                    reach = 20f
-                    color.set(Color.LIME)
+        JJ.scenes.instantiate {
+            instance(scene { render { imageTexture("textures/circuit_background.png") { width = 20f; height = 40f } } })
+            instance(params { x = -5f; y = 5f }, "box")
+            instance(scene {
+                physics {
+                    bodyType = BodyDef.BodyType.KinematicBody
+                    fixture { shape = Rectangle(1.5f, 1.5f) }
+                    pointLight {
+                        reach = 20f
+                        color.set(Color.LIME)
+                    }
                 }
-            }
-            render {
-                rectangleRender(1.5f, 1.5f) {
-                    renderGraphType = RenderGraphType.LIGHT
-                    color.set(Color.LIME)
+                render {
+                    rectangleRender(1.5f, 1.5f) {
+                        renderGraphType = RenderGraphType.LIGHT
+                        color.set(Color.LIME)
+                    }
                 }
-            }
-            component(Draggable())
-        })
+                component(Draggable())
+            })
+        }
     }
 
     private fun box(): SceneSpecRef {
