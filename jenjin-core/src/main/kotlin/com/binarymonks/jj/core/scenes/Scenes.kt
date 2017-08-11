@@ -21,7 +21,6 @@ class Scenes : ScenesAPI {
     val masterFactory = MasterFactory()
     private val unresolvedSpecRefs: ObjectMap<String, SceneSpecRef> = ObjectMap()
     val sceneSpecs: ObjectMap<String, SceneSpec> = ObjectMap()
-    private val multiInstantiator = MultiInstantiator()
 
     private var dirty = false
 
@@ -50,10 +49,6 @@ class Scenes : ScenesAPI {
 
     override fun instantiate(path: String): Bond<Scene> {
         return instantiate(InstanceParams.new(), path)
-    }
-
-    override fun instantiate(multi: MultiInstantiator.() -> Unit) {
-        multiInstantiator.multi()
     }
 
     override fun addSceneSpec(path: String, scene: SceneSpecRef) {
@@ -110,47 +105,5 @@ class CreateSceneFunction : OneTimeTask(), Poolable {
         sceneSpec = null
         instanceParams = null
         bond = null
-    }
-}
-
-class MultiInstantiator {
-
-    /**
-     * Instantiate a [SceneSpec]
-     *
-     * @param scene The scene to instantiate
-     * @param instanceParams The instance specific parameters
-     */
-    fun instance(instanceParams: InstanceParams, scene: SceneSpec): Bond<Scene> {
-        return JJ.scenes.instantiate(instanceParams, scene)
-    }
-
-    /**
-     * Instantiate a [SceneSpec]
-     *
-     * @param scene The scene to instantiate
-     */
-    fun instance(scene: SceneSpec): Bond<Scene> {
-        return JJ.scenes.instantiate(scene)
-    }
-
-
-    /**
-     * Instantiate a [SceneSpec]
-     *
-     * @param path The path to the [SceneSpec]. These can be added with [addSceneSpec]
-     */
-    fun instance(path: String): Bond<Scene> {
-        return JJ.scenes.instantiate(path)
-    }
-
-    /**
-     * Instantiate a [SceneSpec]
-     *
-     * @param path The path to the [SceneSpec]. These can be added with [addSceneSpec]
-     * @param instanceParams The instance specific parameters
-     */
-    fun instance(instanceParams: InstanceParams = InstanceParams.new(), path: String): Bond<Scene> {
-        return JJ.scenes.instantiate(instanceParams, path)
     }
 }

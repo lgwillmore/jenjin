@@ -26,6 +26,7 @@ open class SceneSpec : SceneSpecRef {
     var nodes: ObjectMap<String, SceneNode> = ObjectMap()
     var joints: Array<JointSpec> = Array()
     var layer = 0
+    var container=false
 
 
     /**

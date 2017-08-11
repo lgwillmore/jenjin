@@ -26,10 +26,18 @@ class D06_lights_and_touch : JJGame(MyConfig06.jjConfig) {
 
         JJ.render.setAmbientLight(0f, 0f, 0f, 0.4f)
 
-        JJ.scenes.instantiate {
-            instance(scene { render { imageTexture("textures/circuit_background.png") { width = 20f; height = 40f } } })
-            instance(params { x = -5f; y = 5f }, "box")
-            instance(scene {
+        JJ.scenes.instantiate(scene {
+            container=true
+            node {
+                render { imageTexture("textures/circuit_background.png") { width = 20f; height = 40f; layer=0 } }
+            }
+            nodeRef(params { x = -5f; y = 5f }) { "box" }
+            nodeRef(params { x = 5f; y = -5f }) { "box" }
+
+            /**
+             * A touch draggable light
+             */
+            node {
                 physics {
                     bodyType = BodyDef.BodyType.KinematicBody
                     fixture { shape = Rectangle(1.5f, 1.5f) }
@@ -45,8 +53,8 @@ class D06_lights_and_touch : JJGame(MyConfig06.jjConfig) {
                     }
                 }
                 component(Draggable())
-            })
-        }
+            }
+        })
     }
 
     private fun box(): SceneSpecRef {
