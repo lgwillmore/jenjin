@@ -68,7 +68,6 @@ class MasterFactory {
             JJ.B.physicsWorld.b2dworld.createJoint(jointDef)
         }
 
-        JJ.B.renderWorld.addScene(myScene)
         JJ.B.sceneWorld.add(myScene)
 
         return myScene
@@ -118,7 +117,7 @@ class MasterFactory {
         val renderRoot: RenderRoot = RenderRoot(renderSpec.id)
         for (nodeSpec in renderSpec.renderNodes) {
             val node: RenderNode = nodeSpec.makeNode(paramsStack)
-            renderRoot.addNode(nodeSpec.layer, node)
+            renderRoot.addNode(node)
         }
         return renderRoot
     }
@@ -150,7 +149,7 @@ class MasterFactory {
         for (lightSpec in physicsSpec.lights) {
             val light = buildLight(lightSpec, body, paramsStack.peek())
             val colData = lightSpec.collisionGroup.toCollisionData(paramsStack.peek().properties)
-            light.setContactFilter(colData.category,0,colData.mask)
+            light.setContactFilter(colData.category, 0, colData.mask)
             if (lightSpec.name != null) {
                 physicsRoot.lights.add(checkNotNull(lightSpec.name), light)
             } else {

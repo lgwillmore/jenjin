@@ -19,7 +19,6 @@ import kotlin.reflect.KClass
 
 abstract class RenderNodeSpec {
     var id = JJ.B.nextID()
-    var layer: Int = 0
     var priority: Int = 0
     var color: PropOverride<Color> = PropOverride(Color.WHITE)
     var renderGraphType: RenderGraphType = RenderGraphType.DEFAULT

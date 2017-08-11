@@ -73,7 +73,6 @@ class SpineSpec() : SceneSpecRef {
                 renderModel.scale,
                 renderModel.shader
         )
-        renderSpec.layer = renderModel.layer
         renderSpec.priority = renderModel.priority
         root.render.renderNodes.add(renderSpec)
         root.component(spineComponent)
@@ -223,7 +222,6 @@ class RenderModel {
     var originY: Float = 0f
     var scale: Float = 1f
     var shader: ShaderSpec? = null
-    var layer = 0
     var priority = 0
 }
 

@@ -1,12 +1,9 @@
 package com.binarymonks.jj.core.layers
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
-import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
-import com.badlogic.gdx.utils.ObjectMap
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Sort
 import com.binarymonks.jj.core.GameViewConfig
@@ -14,8 +11,6 @@ import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.input.TouchManager
 import com.binarymonks.jj.core.pools.new
 import com.binarymonks.jj.core.pools.recycle
-import com.binarymonks.jj.core.render.RenderGraph
-import com.binarymonks.jj.core.render.RenderLayer
 import com.binarymonks.jj.core.render.nodes.RenderNode
 import com.binarymonks.jj.core.scenes.Scene
 import com.binarymonks.jj.core.specs.render.RenderGraphType
@@ -99,8 +94,8 @@ class GameRenderingLayer(
 
     private fun renderScene(scene: Scene, type: RenderGraphType) {
         when (type) {
-            RenderGraphType.DEFAULT -> updateSceneLayers(scene.renderRoot.defaultRenderLayers)
-            RenderGraphType.LIGHT -> updateSceneLayers(scene.renderRoot.lightRenderLayers)
+            RenderGraphType.DEFAULT -> updateSceneNodes(scene.renderRoot.defaultRenderNodes)
+            RenderGraphType.LIGHT -> updateSceneNodes(scene.renderRoot.lightRenderNodes)
         }
         val layers = scene.sceneLayers
         var renderedCount = 0
@@ -118,40 +113,9 @@ class GameRenderingLayer(
         }
     }
 
-    private fun renderGraph(renderGraph: RenderGraph) {
-        val layers = renderGraph.graphLayers
-        JJ.B.renderWorld.polyBatch.enableBlending()
-        JJ.B.renderWorld.polyBatch.projectionMatrix = camera.combined
-        JJ.B.renderWorld.shapeRenderer.projectionMatrix = camera.combined
-
-        JJ.B.renderWorld.polyBatch.begin()
-        var renderedCount = 0
-        var layerIndex = 0
-        while (renderedCount < layers.size) {
-            if (layers.containsKey(layerIndex)) {
-                renderedCount++
-                updateLayer(layers.get(layerIndex))
-            }
-            layerIndex++
-        }
-        JJ.B.renderWorld.end()
-    }
-
     private fun renderLights() {
         JJ.B.renderWorld.rayHandler.setCombinedMatrix(camera.combined, camera.position.x, camera.position.y, camera.viewportWidth, camera.viewportHeight)
         JJ.B.renderWorld.rayHandler.updateAndRender()
-    }
-
-    private fun updateLayer(layer: RenderGraph.GraphLayer) {
-        for (componentsByScene in layer.sceneLayersByScenePathAndID) {
-            updateSceneLayers(componentsByScene.value)
-        }
-    }
-
-    private fun updateSceneLayers(sceneLayers: ObjectMap<Int, RenderLayer>) {
-        for (sceneLayer in sceneLayers) {
-            updateSceneNodes(sceneLayer.value.renderNodes)
-        }
     }
 
     private fun updateSceneNodes(renderNodes: Array<RenderNode>) {

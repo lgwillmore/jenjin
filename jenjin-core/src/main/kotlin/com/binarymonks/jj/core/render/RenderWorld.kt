@@ -4,7 +4,6 @@ import box2dLight.RayHandler
 import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.graphics.glutils.ImmediateModeRenderer20
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
@@ -25,8 +24,6 @@ open class RenderWorld : RenderAPI, PostProcessorListener {
     var skeletonRenderer = SkeletonRenderer<PolygonSpriteBatch>()
     var postProcessor = PostProcessor( false, true, (Gdx.app.type == Application.ApplicationType.Desktop) )
     var rayHandler: RayHandler = RayHandler(JJ.B.physicsWorld.b2dworld)
-    var defaultRenderGraph = RenderGraph()
-    var lightSourceRenderGraph = RenderGraph()
     var worldToScreenScale: Float = 0.toFloat()
     private var currentShapeFill = false
     private var batchStoredColor = Color.WHITE
@@ -36,16 +33,6 @@ open class RenderWorld : RenderAPI, PostProcessorListener {
         rayHandler.setBlurNum(3)
         rayHandler.setAmbientLight(0.0f, 0.0f, 0.0f, 1.0f)
         postProcessor.setListener(this)
-    }
-
-    fun addScene(scene: Scene) {
-        defaultRenderGraph.add(scene.renderRoot.specID, scene.id, scene.renderRoot.defaultRenderLayers)
-        lightSourceRenderGraph.add(scene.renderRoot.specID, scene.id, scene.renderRoot.lightRenderLayers)
-    }
-
-    fun removeScene(removal: Scene) {
-        defaultRenderGraph.remove(removal.renderRoot.specID, removal.id, removal.renderRoot.defaultRenderLayers)
-        lightSourceRenderGraph.remove(removal.renderRoot.specID, removal.id, removal.renderRoot.lightRenderLayers)
     }
 
     override fun setAmbientLight(r: Float, g: Float, b: Float, a: Float) {
