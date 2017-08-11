@@ -110,7 +110,7 @@ open class Scene(
     }
 
 
-    fun add(scene: Scene, layer: Int = 0) {
+    fun add(scene: Scene, layer: Int) {
         if (inUpdate) {
             queuedForAddScenes.add(new(AddScene::class).set(scene, layer))
         } else {

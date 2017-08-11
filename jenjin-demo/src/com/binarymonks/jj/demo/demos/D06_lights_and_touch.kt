@@ -1,6 +1,7 @@
 package com.binarymonks.jj.demo.demos
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
@@ -21,42 +22,37 @@ class D06_lights_and_touch : JJGame(MyConfig06.jjConfig) {
     override fun gameOn() {
 
         JJ.scenes.addSceneSpec("box", box())
-        JJ.assets.loadNow("textures/circuit_background.png", com.badlogic.gdx.graphics.Texture::class)
+        JJ.assets.loadNow("textures/circuit_background.png", Texture::class)
 
         JJ.render.setAmbientLight(0f, 0f, 0f, 0.4f)
 
         JJ.scenes.instantiate(scene {
-            node {
-                render { imageTexture("textures/circuit_background.png") { width = 20f; height = 40f} }
-            }
-            nodeRef(params { x = -5f; y = 5f }) { "box" }
-            nodeRef(params { x = 5f; y = -5f }) { "box" }
-
-            /**
-             * A touch draggable light
-             */
-            node {
-                physics {
-                    bodyType = BodyDef.BodyType.KinematicBody
-                    fixture { shape = Rectangle(1.5f, 1.5f) }
-                    pointLight {
-                        reach = 20f
-                        color.set(Color.LIME)
-                    }
+            render { imageTexture("textures/circuit_background.png") { width = 20f; height = 40f } }
+        })
+        JJ.scenes.instantiate(params { x = -5f; y = 5f }, "box")
+        JJ.scenes.instantiate(params { x = 5f; y = -5f }, "box")
+        JJ.scenes.instantiate(scene {
+            physics {
+                bodyType = BodyDef.BodyType.KinematicBody
+                fixture { shape = Rectangle(1.5f, 1.5f) }
+                pointLight {
+                    reach = 20f
+                    color.set(Color.LIME)
                 }
-                render {
-                    rectangleRender(1.5f, 1.5f) {
-                        renderGraphType = RenderGraphType.LIGHT
-                        color.set(Color.LIME)
-                    }
-                }
-                component(Draggable())
             }
+            render {
+                rectangleRender(1.5f, 1.5f) {
+                    renderGraphType = RenderGraphType.LIGHT
+                    color.set(Color.LIME)
+                }
+            }
+            component(Draggable())
         })
     }
 
     private fun box(): SceneSpecRef {
         return scene {
+            layer = 1
             physics {
                 bodyType = BodyDef.BodyType.DynamicBody
                 linearDamping = 1f

@@ -15,6 +15,7 @@ class D13_postprocessing : JJGame(JJConfig {
     gameView.worldBoxWidth = 6f
     gameView.cameraPosX = 0f
     gameView.cameraPosY = 0f
+    gameView.postProcessingEnabled=true
 }) {
     override fun gameOn() {
 

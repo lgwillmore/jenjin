@@ -39,7 +39,7 @@ class MasterFactory {
         paramsStack.add(params)
         var myScene: Scene = createSceneHelper(scene, paramsStack)
         returnParamsStack(paramsStack)
-        JJ.B.sceneWorld.add(myScene)
+        JJ.B.sceneWorld.add(myScene, scene.layer)
         return myScene
     }
 
@@ -56,7 +56,7 @@ class MasterFactory {
             paramsStack.add(nodeParams)
             val nodeScene = createSceneHelper(nodeSceneRef, paramsStack)
             scenes.put(entry.key, nodeScene)
-            myScene.add(nodeScene)
+            myScene.add(nodeScene, sceneSpec.layer)
             paramsStack.pop()
         }
         for (jointSpec in sceneSpec.joints) {

@@ -2,55 +2,31 @@ package com.binarymonks.jj.demo.demos
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.physics.box2d.BodyDef
-import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
+import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.*
 
-/**
- * [com.binarymonks.jj.core.specs.render.RenderNodeSpec.layer] Controls the layers that a Render node appears in relation to the layers
- * of other [com.binarymonks.jj.core.scenes.Scene] layers.
- *
- * [com.binarymonks.jj.core.specs.render.RenderNodeSpec.priority] Controls the render order
- * of the [com.binarymonks.jj.core.scenes.Scene] nodes as they appear in a Layer.
- *
- * This lets you add arbitrary internal layers to a [com.binarymonks.jj.core.scenes.Scene] to build the composite render you want. At the same time
- * it lets [com.binarymonks.jj.core.scenes.Scene]s in the world with interleaving layers render as you would expect them to when they overlap.
- *
- * If 1 of your objects suddenly needs more layer complexity
- * - this does not spill out into having to make your world have more layer complexity and having to shuffle everything around.
- *
- * In this example - there are only 3 world layers, but there are also several internal object layers.
- */
+
 class D02_rendering_layers : JJGame(MyConfig02.jjConfig) {
 
     public override fun gameOn() {
 
-        JJ.scenes.addSceneSpec("0and2", layer0And2())
         JJ.scenes.addSceneSpec("1", layer1())
+        JJ.scenes.addSceneSpec("0", layer0())
         JJ.scenes.loadAssetsNow()
 
-        val initialSceneSpec = scene {
-            nodeRef { "0and2" }
-            nodeRef(params { y = 10f }) { "1" }
-        }
-
-        JJ.scenes.instantiate(initialSceneSpec)
+        JJ.scenes.instantiate("0")
+        JJ.scenes.instantiate(params { y = 10f }, "1")
     }
 
-    private fun layer0And2(): SceneSpec {
+    private fun layer0(): SceneSpec {
         return scene {
             physics {
                 bodyType = BodyDef.BodyType.StaticBody
             }
             render {
-                imageTexture("textures/layers/0_0.png") {
-                    color.set(Color.CORAL)
-                    priority = 0
-                    width = 35f
-                    height = 35f
-                }
                 imageTexture("textures/layers/0_1.png") {
                     color.set(Color.ORANGE)
                     priority = 1
@@ -59,38 +35,26 @@ class D02_rendering_layers : JJGame(MyConfig02.jjConfig) {
                     width = 30f
                     height = 30f
                 }
-                imageTexture("textures/layers/2_0.png") {
-                    color.set(Color.BLUE)
+                imageTexture("textures/layers/0_0.png") {
+                    color.set(Color.CORAL)
                     priority = 0
-                    offsetX = 10f
-                    offsetY = 10f
-                    width = 15f
-                    height = 15f
-                }
-                imageTexture("textures/layers/2_1.png") {
-                    color.set(Color.CYAN)
-                    priority = 1
-                    offsetX = 12.5f
-                    offsetY = 12.5f
-                    width = 10f
-                    height = 10f
+                    width = 35f
+                    height = 35f
                 }
             }
         }
     }
 
+    /**
+     * Set the scenes layer
+     */
     private fun layer1(): SceneSpec {
         return scene {
+            layer = 1
             physics {
                 bodyType = BodyDef.BodyType.StaticBody
             }
             render {
-                imageTexture("textures/layers/1_0.png") {
-                    color.set(Color.GREEN)
-                    priority = 0
-                    width = 25f
-                    height = 25f
-                }
                 imageTexture("textures/layers/1_1.png") {
                     color.set(Color.YELLOW)
                     priority = 1
@@ -98,6 +62,12 @@ class D02_rendering_layers : JJGame(MyConfig02.jjConfig) {
                     offsetY = 5f
                     width = 15f
                     height = 15f
+                }
+                imageTexture("textures/layers/1_0.png") {
+                    color.set(Color.GREEN)
+                    priority = 0
+                    width = 25f
+                    height = 25f
                 }
             }
         }

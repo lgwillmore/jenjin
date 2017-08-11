@@ -8,7 +8,7 @@ class SceneWorld {
     internal var namedScenes = ObjectMap<String, Scene>(10)
     internal var inUpdate = false
 
-    fun add(scene: Scene, layer: Int = 0) {
+    fun add(scene: Scene, layer: Int) {
         rootScene?.add(scene, layer)
         scene.onAddToWorld()
     }
