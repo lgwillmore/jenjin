@@ -65,7 +65,8 @@ class ComponentMaster {
     }
 
     fun onScenePool() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        addTrackedComponent.forEach { it.value.onScenePool() }
+        trackedComponents.forEach { it.value.onScenePool() }
     }
 
 }

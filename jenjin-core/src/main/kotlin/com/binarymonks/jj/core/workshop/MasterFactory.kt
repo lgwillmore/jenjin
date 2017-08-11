@@ -39,17 +39,18 @@ class MasterFactory {
         paramsStack.add(params)
         var myScene: Scene = createSceneHelper(scene, paramsStack)
         returnParamsStack(paramsStack)
+        JJ.B.sceneWorld.add(myScene)
         return myScene
     }
 
     private fun createSceneHelper(
-            scene: SceneSpec,
+            sceneSpec: SceneSpec,
             paramsStack: ParamStack): Scene {
 
-        val myScene = createSceneCore(scene, paramsStack)
+        val myScene = createSceneCore(sceneSpec, paramsStack)
 
         val scenes = ObjectMap<String, Scene>()
-        for (entry in scene.nodes) {
+        for (entry in sceneSpec.nodes) {
             val nodeSceneRef = checkNotNull(entry.value.sceneRef).resolve()
             val nodeParams = entry.value.instanceParams
             paramsStack.add(nodeParams)
@@ -58,7 +59,7 @@ class MasterFactory {
             myScene.add(nodeScene)
             paramsStack.pop()
         }
-        for (jointSpec in scene.joints) {
+        for (jointSpec in sceneSpec.joints) {
             val bodyA: Body = if (jointSpec.nameA == null) myScene.physicsRoot.b2DBody else scenes[jointSpec.nameA, myScene].physicsRoot.b2DBody
             val jointDef = jointSpec.toJointDef(
                     bodyA,
@@ -68,16 +69,15 @@ class MasterFactory {
             JJ.B.physicsWorld.b2dworld.createJoint(jointDef)
         }
 
-        JJ.B.sceneWorld.add(myScene)
-
         return myScene
     }
 
     private fun createSceneCore(sceneSpec: SceneSpec, paramsStack: ParamStack): Scene {
-        if (sceneSpec.isPooled) {
+        if (sceneSpec.pooled) {
             val scene: Scene? = scenePool.get(paramsStack.scaleX, paramsStack.scaleY, sceneSpec.id)
             if (scene != null) {
-                scene.resetFromPool(paramsStack.x, paramsStack.y, paramsStack.rotationD)
+                var worldPosition = vec2().mul(paramsStack.transformMatrix)
+                scene.resetFromPool(worldPosition.x, worldPosition.y, paramsStack.rotationD)
                 scene.uniqueName = paramsStack.peek().uniqueInstanceName
                 scene.name = paramsStack.peek().name
                 scene.properties.clear()
@@ -90,11 +90,12 @@ class MasterFactory {
                 specName = sceneSpec.name,
                 uniqueName = paramsStack.peek().uniqueInstanceName,
                 specID = sceneSpec.id,
+                scale = vec2(paramsStack.scaleX, paramsStack.scaleY),
                 physicsRoot = buildPhysicsRoot(sceneSpec.physics, paramsStack),
                 renderRoot = buildRenderRoot(sceneSpec.render, paramsStack),
                 soundEffects = buildSoundEffects(sceneSpec.sounds.params),
                 properties = sceneSpec.properties.copy().merge(paramsStack.peek().properties),
-                pooled = sceneSpec.isPooled
+                pooled = sceneSpec.pooled
         )
         addBehaviour(scene, sceneSpec)
 

@@ -101,7 +101,7 @@ class D07_b2d_composite : JJGame(MyConfig07.jjConfig) {
         return scene {
             node(params { name = "anchor" }) {
                 physics { bodyType = BodyDef.BodyType.StaticBody }
-                render { circleRender(0.25f) { color.set(Color.GREEN); layer = 1 } }
+                render { circleRender(0.25f) { color.set(Color.GREEN) } }
             }
             node(params { name = "arm" }) {
                 physics {

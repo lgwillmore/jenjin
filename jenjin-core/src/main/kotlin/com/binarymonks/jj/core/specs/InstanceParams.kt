@@ -68,6 +68,11 @@ class InstanceParams : HasProps {
         return copy(this)
     }
 
+    override fun toString(): String {
+        return "InstanceParams(x=$x, y=$y, scaleX=$scaleX, scaleY=$scaleY, rotationD=$rotationD, properties=$properties, name=$name, uniqueInstanceName=$uniqueInstanceName)"
+    }
+
+
 }
 
 class ParamsPoolManager : PoolManager<InstanceParams> {

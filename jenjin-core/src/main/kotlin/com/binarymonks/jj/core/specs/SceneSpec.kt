@@ -19,10 +19,10 @@ open class SceneSpec : SceneSpecRef {
     internal var nodeCounter = 0
     var physics: PhysicsSpec = PhysicsSpec()
     var render: RenderSpec = RenderSpec()
-    var sounds =  SoundSpec()
+    var sounds = SoundSpec()
     var components: Array<Component> = Array()
     var properties: ObjectMap<String, Any> = ObjectMap()
-    internal var isPooled: Boolean = true
+    var pooled: Boolean = true
     var nodes: ObjectMap<String, SceneNode> = ObjectMap()
     var joints: Array<JointSpec> = Array()
 

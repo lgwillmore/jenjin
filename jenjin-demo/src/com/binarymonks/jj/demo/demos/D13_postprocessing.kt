@@ -49,7 +49,6 @@ fun shape(): SceneSpec {
         render {
             rectangleRender(1f, 1f) {
                 color.set(Color.BLUE)
-                layer=1
                 rotationD = 45f
             }
         }

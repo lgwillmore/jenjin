@@ -27,7 +27,7 @@ class D06_lights_and_touch : JJGame(MyConfig06.jjConfig) {
 
         JJ.scenes.instantiate(scene {
             node {
-                render { imageTexture("textures/circuit_background.png") { width = 20f; height = 40f; layer=0 } }
+                render { imageTexture("textures/circuit_background.png") { width = 20f; height = 40f} }
             }
             nodeRef(params { x = -5f; y = 5f }) { "box" }
             nodeRef(params { x = 5f; y = -5f }) { "box" }
@@ -62,7 +62,7 @@ class D06_lights_and_touch : JJGame(MyConfig06.jjConfig) {
                 linearDamping = 1f
                 fixture { shape = Rectangle(2.5f, 2.5f) }
             }
-            render { rectangleRender(2.5f, 2.5f) { color.set(Color.BLUE); layer=1 } }
+            render { rectangleRender(2.5f, 2.5f) { color.set(Color.BLUE) } }
             component(Draggable())
         }
     }

@@ -89,4 +89,8 @@ abstract class Component : Copyable<Component> {
 
     }
 
+    fun onScenePool() {
+
+    }
+
 }
