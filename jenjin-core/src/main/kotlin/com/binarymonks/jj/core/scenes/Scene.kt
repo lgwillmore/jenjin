@@ -1,5 +1,6 @@
 package com.binarymonks.jj.core.scenes
 
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.JJ
@@ -32,7 +33,8 @@ open class Scene(
         var name: String?,
         var specName: String?,
         var uniqueName: String?,
-        var specID: Int,
+        val specID: Int,
+        val scale: Vector2,
         val physicsRoot: PhysicsRoot,
         val renderRoot: RenderRoot,
         val soundEffects: SoundEffects,
@@ -175,11 +177,15 @@ open class Scene(
         sceneLayers.forEach {
             it.value.forEach { it.executeDestruction() }
         }
+        sceneLayers.forEach {
+            it.value.clear()
+        }
         renderRoot.destroy(pooled)
         physicsRoot.destroy(pooled)
         componentMaster.destroy()
         if (pooled) {
             componentMaster.onScenePool()
+            JJ.B.scenes.masterFactory.scenePool.put(scale.x, scale.y, specID, this)
         }
     }
 
@@ -193,7 +199,7 @@ open class Scene(
         if (removal.name != null) {
             nameChildren.remove(removal.name)
         }
-        sceneLayers.get(layer).removeValue(removal,true)
+        sceneLayers.get(layer).removeValue(removal, true)
         removal.executeDestruction()
     }
 

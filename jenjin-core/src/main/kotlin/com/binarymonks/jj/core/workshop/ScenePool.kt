@@ -12,7 +12,8 @@ class ScenePool {
     fun get(scaleX: Float, scaleY: Float, sceneSpecID: Int): Scene? {
         val key = key(scaleX, scaleY, sceneSpecID)
         if (sceneByXandYandID.containsKey(key))
-            return sceneByXandYandID.get(key).pop()
+            if (sceneByXandYandID.get(key).size > 0)
+                return sceneByXandYandID.get(key).pop()
         return null
     }
 

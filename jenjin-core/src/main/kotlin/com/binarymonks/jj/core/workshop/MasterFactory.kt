@@ -91,6 +91,7 @@ class MasterFactory {
                 specName = sceneSpec.name,
                 uniqueName = paramsStack.peek().uniqueInstanceName,
                 specID = sceneSpec.id,
+                scale = vec2(paramsStack.scaleX,paramsStack.scaleY),
                 physicsRoot = buildPhysicsRoot(sceneSpec.physics, paramsStack),
                 renderRoot = buildRenderRoot(sceneSpec.render, paramsStack),
                 soundEffects = buildSoundEffects(sceneSpec.sounds.params),
