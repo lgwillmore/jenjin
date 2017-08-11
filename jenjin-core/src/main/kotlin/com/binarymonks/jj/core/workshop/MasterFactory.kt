@@ -75,10 +75,11 @@ class MasterFactory {
     }
 
     private fun createSceneCore(sceneSpec: SceneSpec, paramsStack: ParamStack): Scene {
-        if (sceneSpec.isPooled) {
+        if (sceneSpec.pooled) {
             val scene: Scene? = scenePool.get(paramsStack.scaleX, paramsStack.scaleY, sceneSpec.id)
             if (scene != null) {
-                scene.resetFromPool(paramsStack.x, paramsStack.y, paramsStack.rotationD)
+                var worldPosition = vec2().mul(paramsStack.transformMatrix)
+                scene.resetFromPool(worldPosition.x, worldPosition.y, paramsStack.rotationD)
                 scene.uniqueName = paramsStack.peek().uniqueInstanceName
                 scene.name = paramsStack.peek().name
                 scene.properties.clear()
@@ -96,7 +97,7 @@ class MasterFactory {
                 renderRoot = buildRenderRoot(sceneSpec.render, paramsStack),
                 soundEffects = buildSoundEffects(sceneSpec.sounds.params),
                 properties = sceneSpec.properties.copy().merge(paramsStack.peek().properties),
-                pooled = sceneSpec.isPooled
+                pooled = sceneSpec.pooled
         )
         addBehaviour(scene, sceneSpec)
 
