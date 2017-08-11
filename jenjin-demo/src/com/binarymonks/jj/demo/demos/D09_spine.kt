@@ -9,6 +9,7 @@ import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.specs.SceneSpecRef
 import com.binarymonks.jj.core.specs.builders.component
 import com.binarymonks.jj.core.specs.builders.nodeRef
+import com.binarymonks.jj.core.specs.builders.params
 import com.binarymonks.jj.core.specs.builders.scene
 import com.binarymonks.jj.core.spine.specs.SpineSpec
 import com.esotericsoftware.spine.Event
@@ -26,7 +27,7 @@ class D09_spine : JJGame(JJConfig {
         JJ.scenes.loadAssetsNow()
 
         JJ.scenes.instantiate(scene {
-            nodeRef { "spineBoy" }
+            nodeRef(params { name="spine" }) { "spineBoy" }
         })
     }
 
