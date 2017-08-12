@@ -39,7 +39,7 @@ class Scenes : ScenesAPI {
     }
 
     override fun instantiate(instanceParams: InstanceParams, path: String): Bond<Scene> {
-
+        loadAssetsNow()
         return instantiate(instanceParams, sceneSpecs.get(path))
     }
 

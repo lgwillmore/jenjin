@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.JJ
+import com.binarymonks.jj.core.async.Bond
 import com.binarymonks.jj.core.audio.SoundEffects
 import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.components.ComponentMaster
@@ -13,6 +14,7 @@ import com.binarymonks.jj.core.pools.new
 import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.properties.HasProps
 import com.binarymonks.jj.core.render.RenderRoot
+import com.binarymonks.jj.core.specs.InstanceParams
 import kotlin.reflect.KClass
 
 /**
@@ -224,6 +226,14 @@ open class Scene(
 
     override fun toString(): String {
         return "Scene(name=$name, uniqueName=$uniqueName, id=$id)"
+    }
+
+    fun append(params: InstanceParams, scenePath: String): Bond<Scene> {
+        TODO()
+    }
+
+    private fun reallyAppend(params: InstanceParams, scenePath: String){
+
     }
 }
 
