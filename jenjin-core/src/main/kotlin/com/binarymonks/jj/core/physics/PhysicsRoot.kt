@@ -77,6 +77,9 @@ open class PhysicsRoot(val b2DBody: Body) {
 
     internal fun neutralise() {
         if (!JJ.B.physicsWorld.isUpdating) {
+            for (node in nodes) {
+                node.unStashFilter()
+            }
             for (fixture in b2DBody.fixtureList) {
                 val sceneNode = fixture.userData as PhysicsNode
                 sceneNode.properties.put(COLLISION_CAT_CACHE, fixture.filterData.categoryBits)
