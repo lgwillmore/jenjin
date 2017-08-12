@@ -20,7 +20,7 @@ private val jointsToDestroy = Array<Joint>()
 private val physicsPoolLocation = Vector2(10000f, 10000f)
 private val NONE: Short = 0x0000
 
-class PhysicsRoot(val b2DBody: Body) {
+open class PhysicsRoot(val b2DBody: Body) {
     var parent: Scene? = null
         set(value) {
             field = value

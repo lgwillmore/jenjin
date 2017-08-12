@@ -29,15 +29,18 @@ class SpineComponent(
     var bonePaths: ObjectMap<String, ScenePath> = ObjectMap()
 
 
-    override fun onAddToWorld() {
+    override fun onAddToScene() {
         spineRenderNode = me().renderRoot.getNode(SPINE_RENDER_NAME) as SpineRenderNode
+        initialiseAnimations()
+    }
+
+    override fun onAddToWorld() {
         bonePaths.forEach {
             it.value.from(me()).getComponent(SpineBoneComponent::class)!!.setSpineComponent(me())
             if (it.value.path.size == 1) {
                 rootBone = it.value.from(me()).getComponent(SpineBoneComponent::class)
             }
         }
-        initialiseAnimations()
     }
 
     override fun update() {

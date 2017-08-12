@@ -155,11 +155,13 @@ class SchedulerTest {
         functionMock.scheduleId = testObj.schedule(functionMock::call, delay)
 
         tick(1f)
+        testObj.update()
 
         functionMock.assertCalls(1)
 
 
         tick(1f)
+        testObj.update()
 
         functionMock.assertCalls(1)
     }
@@ -167,6 +169,7 @@ class SchedulerTest {
 
     private fun tick(delta: Float) {
         timeMock.time += delta
+        testObj.update()
         testObj.update()
     }
 }

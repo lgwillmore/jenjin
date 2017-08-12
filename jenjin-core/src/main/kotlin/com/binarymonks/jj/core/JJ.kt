@@ -73,6 +73,9 @@ object JJ {
         input = B.input
         events = EventBus()
 
-        B.scenes.instantiate(params { }, scene { physics { bodyType = BodyDef.BodyType.StaticBody } }).then({ scene -> B.sceneWorld.rootScene = scene })
+        B.scenes.instantiate(params { }, scene { physics { bodyType = BodyDef.BodyType.StaticBody } }).then({
+            scene -> B.sceneWorld.rootScene = scene
+            scene.onAddToWorld()
+        })
     }
 }

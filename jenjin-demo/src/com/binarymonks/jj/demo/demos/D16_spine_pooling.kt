@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.JJGame
-import com.binarymonks.jj.core.components.Component
+import com.binarymonks.jj.core.audio.SoundMode
 import com.binarymonks.jj.core.components.misc.Emitter
 import com.binarymonks.jj.core.components.misc.SelfDestruct
 import com.binarymonks.jj.core.specs.SceneSpecRef
@@ -25,24 +25,38 @@ class D16_spine_pooling : JJGame(JJConfig {
 }) {
 
     override fun gameOn() {
-        JJ.scenes.addSceneSpec("spineDummy", spine_with_bounding_boxes())
-        JJ.scenes.addSceneSpec("spawn", spawner())
+        JJ.scenes.addSceneSpec("spineBounding", spine_with_bounding_boxes())
+        JJ.scenes.addSceneSpec("spineAnimation", spine_with_animations())
+        JJ.scenes.addSceneSpec("spawnBounding", spawnerBounding())
+        JJ.scenes.addSceneSpec("spawnAnimation", spawnerAnimated())
         JJ.scenes.loadAssetsNow()
 
         JJ.scenes.instantiate(scene {
-            nodeRef(params { x=-2f }) { "spawn" }
-            nodeRef(params { x=2f }) { "spawn" }
+            container=true
+            nodeRef(params { x = -2f }) { "spawnBounding" }
+            nodeRef(params { x = 2f }) { "spawnAnimation" }
         })
 
     }
 
-    fun spawner(): SceneSpecRef{
+    fun spawnerBounding(): SceneSpecRef {
         return scene {
-            component(Emitter()){
-                setSpec("spineDummy")
-                delayMinSeconds=3f
-                delayMaxSeconds=5f
-                repeat=0
+            component(Emitter()) {
+                setSpec("spineBounding")
+                delayMinSeconds = 3f
+                delayMaxSeconds = 3f
+                repeat = 0
+            }
+        }
+    }
+
+    fun spawnerAnimated(): SceneSpecRef {
+        return scene {
+            component(Emitter()) {
+                setSpec("spineAnimation")
+                delayMinSeconds = 3f
+                delayMaxSeconds = 3f
+                repeat = 0
             }
         }
     }
@@ -58,9 +72,36 @@ class D16_spine_pooling : JJGame(JJConfig {
                 boundingBoxes = true
             }
             rootScene {
-                component(SelfDestruct()){
-                    delaySeconds=2f
+                component(SelfDestruct()) {
+                    delaySeconds = 2f
                 }
+            }
+        }
+    }
+
+    fun spine_with_animations(): SceneSpecRef {
+        return SpineSpec {
+            spineRender {
+                atlasPath = "spine/spineboy/spineboy-pma.atlas"
+                dataPath = "spine/spineboy/spineboy.json"
+                scale = 1 / 247f
+                originY = 247f
+            }
+            animations {
+                startingAnimation = "run"
+                registerEventHandler("footstep", {
+                    component, _ ->
+                    component.me().soundEffects.triggerSound("footstep", SoundMode.NORMAL)
+                })
+                registerEventHandler("footstep", SpineBoyComponent::class, SpineBoyComponent::onEvent)
+                registerEventFunction("footstep", SpineBoyComponent::class, SpineBoyComponent::step)
+            }
+            rootScene {
+                component(SpineBoyComponent())
+                component(SelfDestruct()) {
+                    delaySeconds = 2f
+                }
+                sounds.sound("footstep", "sounds/step.mp3")
             }
         }
     }

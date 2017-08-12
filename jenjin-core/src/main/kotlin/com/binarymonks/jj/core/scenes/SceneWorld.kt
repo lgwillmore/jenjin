@@ -10,7 +10,6 @@ class SceneWorld {
 
     fun add(scene: Scene, layer: Int) {
         rootScene?.add(scene, layer)
-        scene.onAddToWorld()
     }
 
     fun getSceneByUniqueName(uniqueName: String): Scene {

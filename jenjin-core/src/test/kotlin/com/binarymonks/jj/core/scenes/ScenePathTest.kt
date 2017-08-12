@@ -1,5 +1,6 @@
 package com.binarymonks.jj.core.scenes
 
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.audio.SoundEffects
@@ -71,6 +72,7 @@ class ScenePathTest {
                 null,
                 null,
                 1,
+                Vector2(),
                 PhysicsRoot(Mockito.mock(Body::class.java)),
                 RenderRoot(1),
                 SoundEffects(),

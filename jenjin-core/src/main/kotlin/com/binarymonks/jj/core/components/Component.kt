@@ -15,6 +15,9 @@ private val propDelegateType = PropOverride::class.createType(listOf(KTypeProjec
 
 abstract class Component : Copyable<Component> {
 
+    private var addedToScene=false
+    private var inWorld=false
+
     open internal var scene: Scene? = null
         set(value) {
             field = value
@@ -26,6 +29,13 @@ abstract class Component : Copyable<Component> {
                 }
             }
         }
+
+    internal fun onAddToSceneWrapper(){
+        if(inWorld && !addedToScene){
+            addedToScene=true
+            onAddToScene()
+        }
+    }
 
     fun me(): Scene {
         return checkNotNull(scene)
@@ -67,6 +77,12 @@ abstract class Component : Copyable<Component> {
 
     }
 
+    internal fun onRemoveFromSceneWrapper(){
+        addedToScene=false
+        inWorld=false
+        onRemoveFromScene()
+    }
+
 
     open fun onRemoveFromScene() {
     }
@@ -79,6 +95,12 @@ abstract class Component : Copyable<Component> {
         return false
     }
 
+    internal fun onAddToWorldWrapper(){
+        inWorld=true
+        onAddToSceneWrapper()
+        onAddToWorld()
+    }
+
 
     open fun onAddToWorld() {
 
@@ -89,7 +111,7 @@ abstract class Component : Copyable<Component> {
 
     }
 
-    fun onScenePool() {
+    open fun onScenePool() {
 
     }
 

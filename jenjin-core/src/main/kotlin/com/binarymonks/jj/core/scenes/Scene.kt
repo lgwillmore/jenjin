@@ -62,10 +62,10 @@ open class Scene(
 
     fun addComponent(component: Component) {
         component.scene = this
+        component.onAddToSceneWrapper()
         if (inWorld) {
-            component.onAddToWorld()
+            component.onAddToWorldWrapper()
         }
-        component.onAddToScene()
         componentMaster.addComponent(component)
     }
 
@@ -110,7 +110,7 @@ open class Scene(
     }
 
 
-    fun add(scene: Scene, layer: Int) {
+    fun add(scene: Scene, layer: Int = 0) {
         if (inUpdate) {
             queuedForAddScenes.add(new(AddScene::class).set(scene, layer))
         } else {
@@ -174,6 +174,7 @@ open class Scene(
     }
 
     internal fun executeDestruction() {
+        inWorld=false
         sceneLayers.forEach {
             it.value.forEach { it.executeDestruction() }
         }
@@ -191,6 +192,8 @@ open class Scene(
 
     internal fun resetFromPool(x: Float, y: Float, rotationD: Float) {
         physicsRoot.reset(x, y, rotationD)
+        isDestroyed=false
+        inUpdate=false
     }
 
     private fun reallyRemove(removal: Scene) {
