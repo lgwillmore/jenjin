@@ -18,7 +18,7 @@ abstract class PreSolveHandler {
     }
 
     internal fun preSolveCollision(me: Scene, myFixture: Fixture,
-                          other: Scene, otherFixture: Fixture, contact: Contact, oldManifold: Manifold): Boolean {
+                                   other: Scene, otherFixture: Fixture, contact: Contact, oldManifold: Manifold): Boolean {
         if (enabled) {
             val gameData = otherFixture.userData as PhysicsNode
             for (ignore in ignoreProperties) {
@@ -60,5 +60,13 @@ abstract class PreSolveHandler {
     fun enable() {
         init()
         enabled = true
+    }
+
+    open fun onAddToWorld() {
+
+    }
+
+    open fun onRemoveFromWorld() {
+
     }
 }

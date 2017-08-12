@@ -12,12 +12,8 @@ abstract class CollisionHandler {
     protected var matchProperties: Array<String> = Array()
     private var enabled = true
 
-    init {
-        init()
-    }
 
-    fun performCollision(me: Scene, myFixture: Fixture,
-                         other: Scene, otherFixture: Fixture, contact: Contact): Boolean {
+    fun performCollision(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact): Boolean {
         if (enabled) {
             val gameData = otherFixture.userData as PhysicsNode
             for (ignore in ignoreProperties) {
@@ -44,9 +40,6 @@ abstract class CollisionHandler {
      */
     abstract fun collision(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact): Boolean
 
-    open fun init() {
-
-    }
 
     open fun clone(): CollisionHandler {
         return copy(this)
@@ -57,7 +50,15 @@ abstract class CollisionHandler {
     }
 
     fun enable() {
-        init()
         enabled = true
+    }
+
+    open fun onAddToWorld() {
+
+    }
+
+    open fun onRemoveFromWorld() {
+
+
     }
 }

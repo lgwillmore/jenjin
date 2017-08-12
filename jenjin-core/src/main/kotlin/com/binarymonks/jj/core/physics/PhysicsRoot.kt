@@ -67,6 +67,7 @@ open class PhysicsRoot(val b2DBody: Body) {
     }
 
     internal fun destroy(pooled: Boolean) {
+        collisionResolver.collisions.onRemoveFromWorld()
         if (!pooled) {
             JJ.B.physicsWorld.b2dworld.destroyBody(b2DBody)
         } else {
@@ -108,7 +109,6 @@ open class PhysicsRoot(val b2DBody: Body) {
                             .setRoot(this)
             )
         }
-
     }
 
     fun reset(x: Float, y: Float, rotationD: Float) {
@@ -133,6 +133,10 @@ open class PhysicsRoot(val b2DBody: Body) {
 
     fun getNode(name:String): PhysicsNode? {
         return nodes.get(name)
+    }
+
+    fun onAddToWorld() {
+        collisionResolver.collisions.onAddToWorld()
     }
 
 }

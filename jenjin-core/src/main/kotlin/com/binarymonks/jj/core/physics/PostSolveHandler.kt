@@ -61,4 +61,12 @@ abstract class PostSolveHandler {
         init()
         enabled = true
     }
+
+    open fun onAddToWorld() {
+
+    }
+
+    open fun onRemoveFromWorld() {
+
+    }
 }

@@ -71,4 +71,19 @@ class CollisionHandlers {
     fun postSolve(handler: PostSolveHandler) {
         postSolves.add(handler)
     }
+
+    fun onAddToWorld() {
+        preSolves.forEach { it.onAddToWorld() }
+        begins.forEach { it.onAddToWorld() }
+        finalBegins.forEach { it.onAddToWorld() }
+        ends.forEach { it.onAddToWorld() }
+        postSolves.forEach { it.onAddToWorld() }
+    }
+
+    fun onRemoveFromWorld() {
+        preSolves.forEach { it.onRemoveFromWorld() }
+        begins.forEach { it.onRemoveFromWorld() }
+        finalBegins.forEach { it.onRemoveFromWorld() }
+        ends.forEach { it.onRemoveFromWorld() }
+        postSolves.forEach { it.onRemoveFromWorld() }    }
 }

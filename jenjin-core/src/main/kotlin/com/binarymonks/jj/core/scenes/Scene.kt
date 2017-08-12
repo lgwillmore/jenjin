@@ -99,6 +99,7 @@ open class Scene(
         sceneLayers.forEach {
             it.value.forEach { it.onAddToWorld() }
         }
+        physicsRoot.onAddToWorld()
         componentMaster.onAddToWorld()
     }
 
