@@ -25,11 +25,15 @@ class Scenes : ScenesAPI {
     private var dirty = false
 
     override fun instantiate(instanceParams: InstanceParams, scene: SceneSpec): Bond<Scene> {
+        return instantiate(instanceParams, scene, JJ.B.sceneWorld.rootScene)
+    }
+
+    internal fun instantiate(instanceParams: InstanceParams, scene: SceneSpec, parentScene: Scene?): Bond<Scene> {
         loadAssetsNow()
         val delayedCreate = new(CreateSceneFunction::class)
         @Suppress("UNCHECKED_CAST")
         val bond = new(Bond::class) as Bond<Scene>
-        delayedCreate.set(scene, instanceParams, bond)
+        delayedCreate.set(scene, instanceParams, bond, parentScene)
         if (!JJ.B.physicsWorld.isUpdating) {
             JJ.tasks.addPrePhysicsTask(delayedCreate)
         } else {
@@ -39,8 +43,13 @@ class Scenes : ScenesAPI {
     }
 
     override fun instantiate(instanceParams: InstanceParams, path: String): Bond<Scene> {
-        loadAssetsNow()
+        loadAssetsNow() // To resolve any new SceneSpecRefs.
         return instantiate(instanceParams, sceneSpecs.get(path))
+    }
+
+    internal fun instantiate(instanceParams: InstanceParams, path: String, parentScene: Scene?): Bond<Scene> {
+        loadAssetsNow() // To resolve any new SceneSpecRefs.
+        return instantiate(instanceParams, sceneSpecs.get(path), parentScene)
     }
 
     override fun instantiate(scene: SceneSpec): Bond<Scene> {
@@ -87,15 +96,17 @@ class CreateSceneFunction : OneTimeTask(), Poolable {
     internal var sceneSpec: SceneSpec? = null
     internal var instanceParams: InstanceParams? = null
     internal var bond: Bond<Scene>? = null
+    internal var parentScene: Scene? = null
 
-    operator fun set(sceneSpec: SceneSpec, instanceParams: InstanceParams, bond: Bond<Scene>) {
+    operator fun set(sceneSpec: SceneSpec, instanceParams: InstanceParams, bond: Bond<Scene>, parentScene: Scene?) {
         this.sceneSpec = sceneSpec
         this.instanceParams = instanceParams.clone()
         this.bond = bond
+        this.parentScene = parentScene
     }
 
     override fun doOnce() {
-        val scene = JJ.B.scenes.masterFactory.createScene(sceneSpec!!, instanceParams!!)
+        val scene = JJ.B.scenes.masterFactory.createScene(sceneSpec!!, instanceParams!!, parentScene)
         bond!!.succeed(scene)
         recycle(instanceParams!!)
         recycle(this)
@@ -105,5 +116,6 @@ class CreateSceneFunction : OneTimeTask(), Poolable {
         sceneSpec = null
         instanceParams = null
         bond = null
+        parentScene = null
     }
 }

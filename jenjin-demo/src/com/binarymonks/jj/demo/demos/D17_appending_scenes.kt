@@ -21,8 +21,8 @@ class D17_appending_scenes : JJGame(JJConfig {
         JJ.scenes.addSceneSpec("parent", parentScene())
         JJ.scenes.addSceneSpec("child", childScene())
 
-        JJ.scenes.instantiate(params { x = -1f }, "parent")
-
+        JJ.scenes.instantiate(params { x = -1f;y = 1.5f }, "parent")
+        JJ.scenes.instantiate(params { x = 1f;y = -1f;rotationD=45f }, "parent")
     }
 
 
@@ -51,12 +51,14 @@ class D17_appending_scenes : JJGame(JJConfig {
 class AddSceneToSceneComponent : Component() {
 
     override fun onAddToWorld() {
-        JJ.clock.schedule(this::addSceneToSelf, 3f, 1)
+        JJ.clock.schedule(this::addSceneToSelf, 1f, 1)
     }
 
 
     fun addSceneToSelf() {
-        me().append(params { x = 2f;y = 2f }, "child")
+        me().append(params {}, "child")
+        me().append(params { x = 1f;y = 1f }, "child")
+        me().append(params { x = -1f;y = -1f;rotationD = 45f }, "child")
     }
 
 

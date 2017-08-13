@@ -177,7 +177,7 @@ open class Scene(
     }
 
     internal fun executeDestruction() {
-        inWorld=false
+        inWorld = false
         sceneLayers.forEach {
             it.value.forEach { it.executeDestruction() }
         }
@@ -195,8 +195,8 @@ open class Scene(
 
     internal fun resetFromPool(x: Float, y: Float, rotationD: Float) {
         physicsRoot.reset(x, y, rotationD)
-        isDestroyed=false
-        inUpdate=false
+        isDestroyed = false
+        inUpdate = false
     }
 
     private fun reallyRemove(removal: Scene) {
@@ -229,11 +229,7 @@ open class Scene(
     }
 
     fun append(params: InstanceParams, scenePath: String): Bond<Scene> {
-        TODO()
-    }
-
-    private fun reallyAppend(params: InstanceParams, scenePath: String){
-
+        return JJ.B.scenes.instantiate(params, scenePath, this)
     }
 }
 

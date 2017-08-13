@@ -34,13 +34,17 @@ class MasterFactory {
     private var paramsStackCache: Array<ParamStack> = Array()
     internal var scenePool: ScenePool = ScenePool()
 
-    fun createScene(sceneSpec: SceneSpec, params: InstanceParams): Scene {
+    fun createScene(sceneSpec: SceneSpec, params: InstanceParams, rootScene: Scene?): Scene {
         var paramsStack = paramsStack()
+        if (rootScene != null) {
+            val rootParams = InstanceParams.from(rootScene)
+            paramsStack.add(rootParams)
+        }
         paramsStack.add(params)
         if (sceneSpec.container) {
             var aScene: Scene? = null
             sceneSpec.nodes.forEach {
-                aScene = createContainerNode(it.value, paramsStack)
+                aScene = createContainerNode(it.value, paramsStack, rootScene)
             }
             if (aScene == null) {
                 throw Exception("A container scene must have at least 1 node")
@@ -50,17 +54,17 @@ class MasterFactory {
         } else {
             val myScene: Scene = createSceneHelper(sceneSpec, paramsStack)
             returnParamsStack(paramsStack)
-            JJ.B.sceneWorld.add(myScene, sceneSpec.layer)
+            rootScene?.add(myScene, sceneSpec.layer)
             return myScene
         }
     }
 
-    private fun createContainerNode(sceneNode: SceneNode, paramsStack: ParamStack): Scene {
+    private fun createContainerNode(sceneNode: SceneNode, paramsStack: ParamStack, rootScene: Scene?): Scene {
         paramsStack.add(sceneNode.instanceParams)
         val childSpec = sceneNode.sceneRef!!.resolve()
         val scene = createSceneHelper(childSpec, paramsStack)
         paramsStack.pop()
-        JJ.B.sceneWorld.add(scene, childSpec.layer)
+        rootScene?.add(scene, childSpec.layer)
         return scene
     }
 

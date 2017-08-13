@@ -1,5 +1,6 @@
 package com.binarymonks.jj.core.specs
 
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Matrix3
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.ObjectMap
@@ -8,6 +9,7 @@ import com.binarymonks.jj.core.pools.PoolManager
 import com.binarymonks.jj.core.pools.mat3
 import com.binarymonks.jj.core.pools.new
 import com.binarymonks.jj.core.properties.HasProps
+import com.binarymonks.jj.core.scenes.Scene
 
 
 class InstanceParams : HasProps {
@@ -15,6 +17,15 @@ class InstanceParams : HasProps {
     companion object Factory {
         fun new(): InstanceParams {
             return new(InstanceParams::class)
+        }
+
+        fun from(rootScene: Scene): InstanceParams {
+            val params = new(InstanceParams::class)
+            val position = rootScene.physicsRoot.position()
+            params.x = position.x
+            params.y = position.y
+            params.rotationD = rootScene.physicsRoot.rotationR() * MathUtils.radDeg
+            return params
         }
     }
 

@@ -8,10 +8,6 @@ class SceneWorld {
     internal var namedScenes = ObjectMap<String, Scene>(10)
     internal var inUpdate = false
 
-    fun add(scene: Scene, layer: Int) {
-        rootScene?.add(scene, layer)
-    }
-
     fun getSceneByUniqueName(uniqueName: String): Scene {
         return namedScenes.get(uniqueName)
     }
