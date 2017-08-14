@@ -15,8 +15,8 @@ private val propDelegateType = PropOverride::class.createType(listOf(KTypeProjec
 
 abstract class Component : Copyable<Component> {
 
-    private var addedToScene=false
-    private var inWorld=false
+    private var addedToScene = false
+    private var inWorld = false
 
     open internal var scene: Scene? = null
         set(value) {
@@ -30,9 +30,9 @@ abstract class Component : Copyable<Component> {
             }
         }
 
-    internal fun onAddToSceneWrapper(){
-        if(inWorld && !addedToScene){
-            addedToScene=true
+    internal fun onAddToSceneWrapper() {
+        if (inWorld && !addedToScene) {
+            addedToScene = true
             onAddToScene()
         }
     }
@@ -61,8 +61,8 @@ abstract class Component : Copyable<Component> {
      * But you may have several implementations of a type. This lets you specify the key type (or top level interface) that
      * will be used to store and retrieve your [Component] if you need to.
      */
+    @Suppress("UNCHECKED_CAST")
     open fun type(): KClass<Component> {
-        @Suppress("UNCHECKED_CAST")
         return this::class as KClass<Component>
     }
 
@@ -77,9 +77,9 @@ abstract class Component : Copyable<Component> {
 
     }
 
-    internal fun onRemoveFromSceneWrapper(){
-        addedToScene=false
-        inWorld=false
+    internal fun onRemoveFromSceneWrapper() {
+        addedToScene = false
+        inWorld = false
         onRemoveFromScene()
     }
 
@@ -95,8 +95,8 @@ abstract class Component : Copyable<Component> {
         return false
     }
 
-    internal fun onAddToWorldWrapper(){
-        inWorld=true
+    internal fun onAddToWorldWrapper() {
+        inWorld = true
         onAddToSceneWrapper()
         onAddToWorld()
     }

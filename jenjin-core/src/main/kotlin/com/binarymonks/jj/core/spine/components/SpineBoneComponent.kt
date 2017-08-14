@@ -20,7 +20,7 @@ class SpineBoneComponent : Component() {
     var bonePath: Array<String> = Array()
 
     fun setSpineComponent(spineParentScene: Scene) {
-        spineParent = spineParentScene.getComponent(SpineComponent::class)
+        spineParent = spineParentScene.getComponent(SpineComponent::class).first()
         val spineRender: SpineRenderNode = spineParentScene.renderRoot.getNode(SPINE_RENDER_NAME) as SpineRenderNode
         val boneNode = findMyBone(spineRender.skeleton.rootBone, 0) as RagDollBone
         setBone(boneNode)
@@ -78,7 +78,7 @@ class SpineBoneComponent : Component() {
             scene!!.physicsRoot.b2DBody.gravityScale = gravity
             bone!!.children.forEach {
                 val name = it.data.name
-                val boneComponent = me().getChild(name)!!.getComponent(SpineBoneComponent::class)
+                val boneComponent = me().getChild(name)!!.getComponent(SpineBoneComponent::class).first()
                 boneComponent!!.triggerRagDoll(gravity)
             }
         }
@@ -97,7 +97,7 @@ class SpineBoneComponent : Component() {
             me().physicsRoot.b2DBody.gravityScale = 0f
             bone!!.children.forEach {
                 val name = it.data.name
-                val boneComponent = me().getChild(name)!!.getComponent(SpineBoneComponent::class)
+                val boneComponent = me().getChild(name)!!.getComponent(SpineBoneComponent::class).first()
                 boneComponent!!.reverseRagDoll()
             }
         }

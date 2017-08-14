@@ -17,7 +17,7 @@ class TriggerRagDollCollision : CollisionHandler() {
     var gravity = 1f
 
     override fun collision(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact): Boolean {
-        val boneComponent: SpineBoneComponent = checkNotNull(me.getComponent(SpineBoneComponent::class))
+        val boneComponent: SpineBoneComponent = checkNotNull(me.getComponent(SpineBoneComponent::class).first())
         JJ.tasks.addPostPhysicsTask(new(DelayedTriggerRagDoll::class).set(all, gravity, boneComponent, other))
         return false
     }

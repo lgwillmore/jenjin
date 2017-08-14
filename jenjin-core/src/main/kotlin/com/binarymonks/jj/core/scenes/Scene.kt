@@ -71,7 +71,7 @@ open class Scene(
         componentMaster.addComponent(component)
     }
 
-    fun <T : Component> getComponent(type: KClass<T>): T? {
+    fun <T : Component> getComponent(type: KClass<T>): Array<T> {
         return componentMaster.getComponent(type)
     }
 

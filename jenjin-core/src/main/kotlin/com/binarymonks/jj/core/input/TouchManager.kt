@@ -29,15 +29,15 @@ class TouchManager(internal var camera: OrthographicCamera) : InputProcessor {
     internal var testPoint2 = new(Vector2::class)
     internal var touchOffset = new(Vector2::class)
     internal var possibleBodies = ObjectSet<Fixture>()
-    internal var touchedScene: Scene? = null
+    internal var touchHandler: TouchHandler? = null
 
 
     override fun touchDown(x: Int, y: Int, pointer: Int, button: Int): Boolean {
         unproject(x, y)
         checkForTouchHandler(button)
-        if (touchedScene != null) {
-            touchTracker.put(pointer, new(Touch::class).set(touchedScene!!, touchOffset))
-            touchedScene = null
+        if (touchHandler != null) {
+            touchTracker.put(pointer, new(Touch::class).set(touchHandler!!, touchOffset))
+            touchHandler = null
         }
         return true
     }
@@ -56,7 +56,7 @@ class TouchManager(internal var camera: OrthographicCamera) : InputProcessor {
 
     fun update() {
         for (touch in touchTracker) {
-            if (touch.value.touchedScene!!.isDestroyed) {
+            if (touch.value.touchedComponent!!.me().isDestroyed) {
                 touchRemovals.add(touch.key)
                 continue
             }
@@ -92,26 +92,28 @@ class TouchManager(internal var camera: OrthographicCamera) : InputProcessor {
     }
 
     private fun selectTouchHandler(button: Int) {
-        for (fixture in possibleBodies) {
+
+        fixtureLoop@ for (fixture in possibleBodies) {
             val node = fixture.userData as PhysicsNode
             val parent = checkNotNull(node.physicsRoot.parent)
             if (!parent.isDestroyed) {
                 val t = parent.getComponent(TouchHandler::class)
-                if (t != null) {
-                    touchedScene = parent
+                for (handler in t) {
+                    touchHandler = handler
                     val touchLocation = new(Vector2::class).set(testPoint.x, testPoint.y)
-                    val touchHandled = t.onTouchDown(testPoint.x, testPoint.y, button)
+                    val touchHandled = handler.onTouchDown(testPoint.x, testPoint.y, button)
                     recycle(touchLocation)
-                    if (!touchHandled) continue
-                    val hitBody = fixture.body
-                    val bodyPosition = new(Vector2::class).set(hitBody.position)
-                    if (t.relativeToTouch) {
-                        touchOffset.set(bodyPosition.sub(testPoint.x, testPoint.y))
-                    } else {
-                        touchOffset.set(0f, 0f)
+                    if (touchHandled) {
+                        val hitBody = fixture.body
+                        val bodyPosition = new(Vector2::class).set(hitBody.position)
+                        if (handler.relativeToTouch) {
+                            touchOffset.set(bodyPosition.sub(testPoint.x, testPoint.y))
+                        } else {
+                            touchOffset.set(0f, 0f)
+                        }
+                        recycle(bodyPosition)
+                        break@fixtureLoop
                     }
-                    recycle(bodyPosition)
-                    break
                 }
             }
         }
@@ -137,12 +139,12 @@ class TouchManager(internal var camera: OrthographicCamera) : InputProcessor {
     }
 
     class Touch : Poolable {
-        internal var touchedScene: Scene? = null
+        internal var touchedComponent: TouchHandler? = null
         internal var testPointCache = new(Vector2::class)
         internal var touchOffset = new(Vector2::class)
 
-        operator fun set(touchedScene: Scene, offset: Vector2): Touch {
-            this.touchedScene = touchedScene
+        operator fun set(touchHandler: TouchHandler, offset: Vector2): Touch {
+            this.touchedComponent = touchHandler
             this.touchOffset.set(offset)
             return this
         }
@@ -151,19 +153,19 @@ class TouchManager(internal var camera: OrthographicCamera) : InputProcessor {
         override fun reset() {
             testPointCache.set(0f, 0f)
             touchOffset.set(0f, 0f)
-            touchedScene = null
+            touchedComponent = null
         }
 
         fun move(newTouchLocation: Vector2, button: Int) {
             testPointCache.set(newTouchLocation)
             val newPosition = new(Vector2::class).set(newTouchLocation).add(touchOffset)
-            touchedScene!!.getComponent(TouchHandler::class)!!.onTouchMove(newPosition.x, newPosition.y, button)
+            touchedComponent!!.onTouchMove(newPosition.x, newPosition.y, button)
             recycle(newPosition)
         }
 
         fun touchUp(upWorld: Vector2, button: Int) {
             upWorld.add(touchOffset)
-            touchedScene!!.getComponent(TouchHandler::class)!!.onTouchUp(upWorld.x, upWorld.y, button)
+            touchedComponent!!.onTouchUp(upWorld.x, upWorld.y, button)
         }
     }
 

@@ -1,30 +1,38 @@
 package com.binarymonks.jj.core.components
 
 import com.badlogic.gdx.utils.ObjectMap
+import com.badlogic.gdx.utils.Array
 import kotlin.reflect.KClass
 
 class ComponentMaster {
 
-    private var trackedComponents = ObjectMap<KClass<*>, Component>()
-    private var addTrackedComponent = ObjectMap<KClass<*>, Component>()
-    private var removeTrackedComponents = ObjectMap<KClass<*>, Component>()
+    private var trackedComponents = ObjectMap<KClass<*>, Array<Component>>()
+    private var addTrackedComponent = ObjectMap<KClass<*>, Array<Component>>()
+    private var removeTrackedComponents = ObjectMap<KClass<*>, Array<Component>>()
 
     fun update() {
         clean()
         for (entry in trackedComponents.entries()) {
-            if (entry.value.isDone()) {
-                removeTrackedComponents.put(entry.key, entry.value)
-            } else {
-                entry.value.update()
+            for (component in entry.value) {
+                if (component.isDone()) {
+                    if (!removeTrackedComponents.containsKey(entry.key))
+                        removeTrackedComponents.put(entry.key, Array())
+                    removeTrackedComponents.get(entry.key).add(component)
+                } else {
+                    component.update()
+                }
             }
         }
     }
 
     fun clean() {
         for (entry in removeTrackedComponents.entries()) {
-            entry.value.onRemoveFromSceneWrapper()
-            trackedComponents.remove(entry.key)
+            for (component in entry.value) {
+                component.onRemoveFromSceneWrapper()
+                trackedComponents.get(entry.key).removeValue(component, true)
+            }
         }
+
         removeTrackedComponents.clear()
         for (entry in addTrackedComponent.entries()) {
             trackedComponents.put(entry.key, entry.value)
@@ -42,16 +50,17 @@ class ComponentMaster {
         addTrackedComponent.put(component.type(), component)
     }
 
-    fun <T : Component> getComponent(type: KClass<T>): T? {
-        if (trackedComponents.containsKey(type)) {
-            @Suppress("UNCHECKED_CAST")
-            return trackedComponents.get(type) as T
-        }
-        if (addTrackedComponent.containsKey(type)) {
-            @Suppress("UNCHECKED_CAST")
-            return addTrackedComponent.get(type) as T
-        }
-        return null
+    fun <T : Component> getComponent(type: KClass<T>): Array<T> {
+        TODO()
+//        if (trackedComponents.containsKey(type)) {
+//            @Suppress("UNCHECKED_CAST")
+//            return trackedComponents.get(type) as T
+//        }
+//        if (addTrackedComponent.containsKey(type)) {
+//            @Suppress("UNCHECKED_CAST")
+//            return addTrackedComponent.get(type) as T
+//        }
+//        return null
     }
 
     fun onAddToWorld() {

@@ -36,9 +36,9 @@ class SpineComponent(
 
     override fun onAddToWorld() {
         bonePaths.forEach {
-            it.value.from(me()).getComponent(SpineBoneComponent::class)!!.setSpineComponent(me())
+            it.value.from(me()).getComponent(SpineBoneComponent::class).first().setSpineComponent(me())
             if (it.value.path.size == 1) {
-                rootBone = it.value.from(me()).getComponent(SpineBoneComponent::class)
+                rootBone = it.value.from(me()).getComponent(SpineBoneComponent::class).first()
             }
         }
     }
@@ -141,13 +141,15 @@ class JJSpineAnimationStateListener(
         }
         if (spineAnimations.componentHandlers.containsKey(name)) {
             val mapping = spineAnimations.componentHandlers.get(name)
-            val componentInstance = checkNotNull(spineComponent.me().getComponent(mapping.componentType))
-            mapping.componentFunction.invoke(componentInstance, event)
+            spineComponent.me().getComponent(mapping.componentType).forEach {
+                mapping.componentFunction.invoke(it, event)
+            }
         }
         if (spineAnimations.componentFunctions.containsKey(name)) {
             val mapping = spineAnimations.componentFunctions.get(name)
-            val componentInstance = checkNotNull(spineComponent.me().getComponent(mapping.componentType))
-            mapping.componentFunction.invoke(componentInstance)
+            spineComponent.me().getComponent(mapping.componentType).forEach {
+                mapping.componentFunction.invoke(it)
+            }
         }
     }
 
