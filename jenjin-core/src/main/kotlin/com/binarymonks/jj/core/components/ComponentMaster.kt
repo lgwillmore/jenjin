@@ -6,9 +6,9 @@ import kotlin.reflect.KClass
 
 class ComponentMaster {
 
-    private var trackedComponents = ObjectMap<KClass<*>, Array<Component>>()
-    private var addTrackedComponent = ObjectMap<KClass<*>, Array<Component>>()
-    private var removeTrackedComponents = ObjectMap<KClass<*>, Array<Component>>()
+    private var trackedComponents = ObjectMap<KClass<*>, Array<Component>>(2)
+    private var addTrackedComponent = ObjectMap<KClass<*>, Array<Component>>(2)
+    private var removeTrackedComponents = ObjectMap<KClass<*>, Array<Component>>(2)
 
     fun update() {
         clean()
@@ -32,10 +32,13 @@ class ComponentMaster {
                 trackedComponents.get(entry.key).removeValue(component, true)
             }
         }
-
         removeTrackedComponents.clear()
         for (entry in addTrackedComponent.entries()) {
-            trackedComponents.put(entry.key, entry.value)
+            if (trackedComponents.containsKey(entry.key)) {
+                trackedComponents.get(entry.key).addAll(entry.value)
+            } else {
+                trackedComponents.put(entry.key, entry.value)
+            }
         }
         addTrackedComponent.clear()
     }
@@ -44,38 +47,38 @@ class ComponentMaster {
         if (!component.type().java.isAssignableFrom(component.javaClass)) {
             throw Exception("Your component ${component::class.simpleName} is not an instance of its type")
         }
-        if (trackedComponents.containsKey(component.type()) || addTrackedComponent.containsKey(component.type())) {
-            throw RuntimeException("Your are adding a tracked component that will clobber another component of type ${component.type().simpleName}")
+        if (!addTrackedComponent.containsKey(component.type())) {
+            addTrackedComponent.put(component.type(), Array(1))
         }
-        addTrackedComponent.put(component.type(), component)
+        addTrackedComponent.get(component.type()).add(component)
     }
 
     fun <T : Component> getComponent(type: KClass<T>): Array<T> {
-        TODO()
-//        if (trackedComponents.containsKey(type)) {
-//            @Suppress("UNCHECKED_CAST")
-//            return trackedComponents.get(type) as T
-//        }
-//        if (addTrackedComponent.containsKey(type)) {
-//            @Suppress("UNCHECKED_CAST")
-//            return addTrackedComponent.get(type) as T
-//        }
-//        return null
+        val result: Array<T> = Array()
+        if (trackedComponents.containsKey(type)) {
+            @Suppress("UNCHECKED_CAST")
+            trackedComponents.get(type).forEach { result.add(it as T) }
+        }
+        if (addTrackedComponent.containsKey(type)) {
+            @Suppress("UNCHECKED_CAST")
+            addTrackedComponent.get(type).forEach { result.add(it as T) }
+        }
+        return result
     }
 
     fun onAddToWorld() {
-        addTrackedComponent.forEach { it.value.onAddToWorldWrapper() }
-        trackedComponents.forEach { it.value.onAddToWorldWrapper() }
+        addTrackedComponent.forEach { it.value.forEach { it.onAddToWorldWrapper() } }
+        trackedComponents.forEach { it.value.forEach { it.onAddToWorldWrapper() } }
     }
 
     fun destroy() {
         clean()
-        trackedComponents.forEach { it.value.onRemoveFromWorld() }
+        trackedComponents.forEach { it.value.forEach { it.onRemoveFromWorld() } }
     }
 
     fun onScenePool() {
-        addTrackedComponent.forEach { it.value.onScenePool() }
-        trackedComponents.forEach { it.value.onScenePool() }
+        addTrackedComponent.forEach { it.value.forEach { it.onScenePool() } }
+        trackedComponents.forEach { it.value.forEach { it.onScenePool() } }
     }
 
 }

@@ -76,11 +76,11 @@ class Pong : JJGame(PongConfig.jjConfig) {
         // Instantiate the court and players
         JJ.scenes.instantiate("court")
         JJ.scenes.instantiate(params { x = 1f; y = COURT_LENGTH / 2 }, "player").then {
-            val player: Player = checkNotNull(it.getComponent(Player::class))
+            val player: Player = it.getComponent(Player::class).first()
             mapPlayer(player, Input.Keys.W, Input.Keys.S)
         }
         JJ.scenes.instantiate(params { x = COURT_LENGTH - 1f; y = COURT_LENGTH / 2 }, "player").then {
-            val player: Player = checkNotNull(it.getComponent(Player::class))
+            val player: Player = it.getComponent(Player::class).first()
             mapPlayer(player, Input.Keys.UP, Input.Keys.DOWN)
         }
 
