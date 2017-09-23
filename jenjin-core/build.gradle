@@ -1,15 +1,31 @@
+
 buildscript {
     repositories {
         mavenCentral()
     }
 }
 
+task sourceJar(type: Jar, dependsOn: project.classes) {
+    from sourceSets.main.allSource
+}
+
+kotlin {
+    experimental {
+        coroutines 'enable'
+    }
+}
+
 publishing {
     publications {
         maven(MavenPublication) {
-//            artifactId 'com.binarymonks.jj.core'
+            artifactId 'jenjin-core'
 
             from components.java
+
+            artifact sourceJar {
+                classifier "sources"
+            }
+
         }
     }
 }

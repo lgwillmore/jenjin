@@ -6,22 +6,21 @@ sourceSets.main.java.srcDirs = ["src/"]
 buildscript {
     repositories {
         mavenCentral()
+
     }
 }
 
 publishing {
     publications {
         maven(MavenPublication) {
-//            artifactId 'com.binarymonks.jj.spine'
-
-            from components.java
+            artifactId 'jenjin-spine'
         }
     }
 }
 
 jar {
-    from configurations.compile.filter{
-        it.toString().contains("libs")? it :null
+    from configurations.compile.filter {
+        it.toString().contains("libs") ? it : null
     }.collect {
         it.isDirectory() ? it : zipTree(it)
     }

@@ -1,4 +1,4 @@
-apply plugin: "java"
+apply plugin: "kotlin"
 
 sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = ["src/"]
@@ -26,14 +26,3 @@ task dist(type: Jar) {
 }
 
 dist.dependsOn classes
-
-task afterEclipseImport(description: "Post processing after project generation", group: "IDE") {
-    doLast {
-        def classpath = new XmlParser().parse(file(".classpath"))
-        new Node(classpath, "classpathentry", [kind: 'src', path: 'assets']);
-        def writer = new FileWriter(file(".classpath"))
-        def printer = new XmlNodePrinter(new PrintWriter(writer))
-        printer.setPreserveWhitespace(true)
-        printer.print(classpath)
-    }
-}

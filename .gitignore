@@ -77,3 +77,8 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+# Kotlin
+
+build
+out
+
