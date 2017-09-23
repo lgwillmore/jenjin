@@ -1,6 +1,7 @@
 package com.binarymonks.jj.core.spine.components
 
 import com.badlogic.gdx.utils.ObjectMap
+import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.copy
@@ -11,6 +12,7 @@ import com.binarymonks.jj.core.spine.specs.SpineAnimations
 import com.esotericsoftware.spine.AnimationState
 import com.esotericsoftware.spine.AnimationStateData
 import com.esotericsoftware.spine.Event
+import com.esotericsoftware.spine.attachments.Attachment
 
 
 val SPINE_RENDER_NAME = "SPINE_RENDER_NODE"
@@ -27,6 +29,7 @@ class SpineComponent(
     lateinit internal var animationState: AnimationState
     internal var ragDoll = false
     var bonePaths: ObjectMap<String, ScenePath> = ObjectMap()
+    private var hiddenSlotAttachments: ObjectMap<String, Attachment> = ObjectMap()
 
 
     override fun onAddToScene() {
@@ -41,6 +44,11 @@ class SpineComponent(
                 rootBone = it.value.from(me()).getComponent(SpineBoneComponent::class).first()
             }
         }
+        val shows = Array<String>()
+        hiddenSlotAttachments.forEach {
+            shows.add(it.key)
+        }
+        shows.forEach { show(it) }
     }
 
     override fun update() {
@@ -70,12 +78,34 @@ class SpineComponent(
         }
     }
 
+    fun hide(slotName: String) {
+        if (!hiddenSlotAttachments.containsKey(slotName)) {
+            spineRenderNode.skeleton.slots.forEach {
+                if (it.data.name == slotName) {
+                    hiddenSlotAttachments.put(slotName, it.attachment)
+                    it.attachment = null
+                }
+            }
+        }
+    }
+
+    fun show(slotName: String) {
+        if (hiddenSlotAttachments.containsKey(slotName)) {
+            spineRenderNode.skeleton.slots.forEach {
+                if (it.data.name == slotName) {
+                    it.attachment = hiddenSlotAttachments.get(slotName)
+                    hiddenSlotAttachments.remove(slotName)
+                }
+            }
+        }
+    }
+
     fun triggerRagDollBelow(rootBoneName: String, gravity: Float = 1f) {
         val component = spineBoneComponents.get(rootBoneName)
         component.triggerRagDoll(gravity)
     }
 
-    fun addBone(name: String, spineBoneComponent: SpineBoneComponent) {
+    internal fun addBone(name: String, spineBoneComponent: SpineBoneComponent) {
         spineBoneComponents.put(name, spineBoneComponent)
         spineBoneComponent.spineParent = this
     }
