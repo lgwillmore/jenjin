@@ -16,15 +16,23 @@ class SpineBoneComponent : Component() {
 
     internal var spineParent: SpineComponent? = null
     internal var bone: RagDollBone? = null
+        set(value) {
+            value!!.spinePart = this
+            field = value
+        }
     internal var ragDoll = false
     var bonePath: Array<String> = Array()
 
-    fun setSpineComponent(spineParentScene: Scene) {
+    internal fun setSpineComponent(spineParentScene: Scene) {
         spineParent = spineParentScene.getComponent(SpineComponent::class).first()
         val spineRender: SpineRenderNode = spineParentScene.renderRoot.getNode(SPINE_RENDER_NAME) as SpineRenderNode
         val boneNode = findMyBone(spineRender.skeleton.rootBone, 0) as RagDollBone
-        setBone(boneNode)
+        bone = boneNode
         spineParent!!.addBone(bone!!.data.name, this)
+    }
+
+    fun spineComponent(): SpineComponent {
+        return checkNotNull(spineParent)
     }
 
     private fun findMyBone(boneNode: Bone?, offset: Int): Bone {
@@ -60,7 +68,7 @@ class SpineBoneComponent : Component() {
         updatePosition()
     }
 
-    fun updatePosition() {
+    internal fun updatePosition() {
         if (!ragDoll && bone != null) {
             val x = bone!!.worldX
             val y = bone!!.worldY
@@ -82,11 +90,6 @@ class SpineBoneComponent : Component() {
                 boneComponent!!.triggerRagDoll(gravity)
             }
         }
-    }
-
-    fun setBone(bone: RagDollBone) {
-        bone.spinePart = this
-        this.bone = bone
     }
 
     fun reverseRagDoll() {
