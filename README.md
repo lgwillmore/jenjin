@@ -14,7 +14,7 @@ Credit must also immediately be given to the work done by manuelbua [here](https
 
 Also - if you want to use the spine runtime that is included in this project, you need to give the esoteric people some money.
 
-Also, if you want to actually start using this now, in its very not complete state, probably the best thing to do would be to clone it, build it and publish it to maven local. Then just include it as a dependency in your own libgdx project.
+If you want to actually start using this now, in its very not complete state, probably the best thing to do would be to clone it, build it and publish it to maven local. Then just include it as a dependency in your own libgdx project.
 
 
 
