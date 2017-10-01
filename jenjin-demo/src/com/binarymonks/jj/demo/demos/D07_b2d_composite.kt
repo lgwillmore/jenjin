@@ -164,7 +164,7 @@ object MyConfig07 {
     var jjConfig: JJConfig = JJConfig()
 
     init {
-//        MyConfig07.jjConfig.b2d.debug = true
+//        MyConfig07.jjConfig.b2d.debugRender = true
 //        jjConfig.b2d.gravity = Vector2()
 
         MyConfig07.jjConfig.gameView.worldBoxWidth = 20f

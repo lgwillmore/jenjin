@@ -16,7 +16,7 @@ import com.esotericsoftware.spine.Event
 
 
 class D09_spine : JJGame(JJConfig {
-    b2d.debug = false
+    b2d.debugRender = false
     b2d.gravity = Vector2()
     gameView.worldBoxWidth = 4f
     gameView.cameraPosX = 0f

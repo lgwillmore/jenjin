@@ -52,7 +52,7 @@ class GameRenderingLayer(
             JJ.B.renderWorld.postProcessor.render()
         renderLights()
         renderGraph(RenderGraphType.LIGHT)
-        if (JJ.B.config.b2d.debug) {
+        if (JJ.B.config.b2d.debugRender) {
             drenderer.render(JJ.B.physicsWorld.b2dworld, JJ.B.renderWorld.polyBatch.getProjectionMatrix())
         }
     }

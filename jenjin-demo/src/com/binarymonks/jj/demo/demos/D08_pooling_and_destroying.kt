@@ -19,7 +19,7 @@ val destroyDelay = 1f
 val poolEverything = false
 
 class D08_pooling_and_destroying : JJGame(JJConfig {
-    b2d.debug = true
+    b2d.debugRender = true
     b2d.gravity = com.badlogic.gdx.math.Vector2()
 
     gameView.worldBoxWidth = 20f

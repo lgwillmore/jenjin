@@ -11,6 +11,7 @@ class JJConfig() {
     var gameView = GameViewConfig()
     var b2d = B2DConfig()
     var spine = SpineConfig()
+    var debugStep = false
 }
 
 class GameViewConfig {
@@ -22,7 +23,7 @@ class GameViewConfig {
 }
 
 class B2DConfig {
-    var debug = false
+    var debugRender = false
     var gravity = Vector2(0f, -9f)
 }
 

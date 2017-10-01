@@ -144,7 +144,7 @@ object MyConfig04 {
     var jjConfig: JJConfig = JJConfig()
 
     init {
-        MyConfig04.jjConfig.b2d.debug = true
+        MyConfig04.jjConfig.b2d.debugRender = true
 
         MyConfig04.jjConfig.gameView.worldBoxWidth = 30f
         MyConfig04.jjConfig.gameView.cameraPosX = 0f

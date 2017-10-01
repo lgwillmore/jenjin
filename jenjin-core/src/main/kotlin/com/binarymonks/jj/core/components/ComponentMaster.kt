@@ -57,11 +57,11 @@ class ComponentMaster {
         val result: Array<T> = Array()
         if (trackedComponents.containsKey(type)) {
             @Suppress("UNCHECKED_CAST")
-            trackedComponents.get(type).forEach { result.add(it as T) }
+            result.addAll(trackedComponents.get(type) as Array<T>)
         }
         if (addTrackedComponent.containsKey(type)) {
             @Suppress("UNCHECKED_CAST")
-            addTrackedComponent.get(type).forEach { result.add(it as T) }
+            result.addAll(addTrackedComponent.get(type) as Array<T>)
         }
         return result
     }

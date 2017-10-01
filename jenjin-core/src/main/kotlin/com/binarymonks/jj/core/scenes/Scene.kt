@@ -75,6 +75,11 @@ open class Scene(
         return componentMaster.getComponent(type)
     }
 
+    fun <T : Component> hasComponent(type: KClass<T>): Boolean {
+        return getComponent(type).size>0
+    }
+
+
     override fun hasProp(key: String): Boolean {
         return properties.containsKey(key)
     }

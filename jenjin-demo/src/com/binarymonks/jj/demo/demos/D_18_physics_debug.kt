@@ -1,30 +1,23 @@
 package com.binarymonks.jj.demo.demos
 
 import com.badlogic.gdx.physics.box2d.BodyDef
-import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
+import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.physics.collisions.SoundCollision
 import com.binarymonks.jj.core.specs.Circle
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.*
 
-/**
- * Collisions are obviously very important.
- *
- * To hook into the collision lifecycle you need to implement a [com.binarymonks.jj.core.physics.collisions.CollisionHandler]
- *
- * Here we use a built in [com.binarymonks.jj.core.physics.collisions.CollisionHandler] to trigger a sounds.
- *
- * Deciding what can collide with what is also important for how your physics behaves with things such as layers, projectiles and terrain.
- *
- * For that you can configure your collision groups with [com.binarymonks.jj.core.JJ.physics]
- * and then use [com.binarymonks.jj.core.specs.physics.FixtureSpec.collisionGroup] or
- * [com.binarymonks.jj.core.specs.physics.FixtureSpec.collisionGroupProperty].
- *
- * Or you can do it all yourself and set your fixture collision data explicitly with [com.binarymonks.jj.core.specs.physics.FixtureSpec.collisionGroupExplicit]
- */
-class D03_collisions : JJGame(MyConfig03.jjConfig) {
+
+class D_18_physics_debug : JJGame(JJConfig {
+    b2d.debugRender = true
+    debugStep = true
+    val width = 30f
+    gameView.worldBoxWidth = width
+    gameView.cameraPosX = 0f
+    gameView.cameraPosY = 0f
+}) {
 
     public override fun gameOn() {
 
@@ -82,17 +75,5 @@ class D03_collisions : JJGame(MyConfig03.jjConfig) {
                 }
             }
         }
-    }
-}
-
-object MyConfig03 {
-    var jjConfig: JJConfig = JJConfig()
-
-    init {
-        MyConfig03.jjConfig.b2d.debugRender = true
-
-        MyConfig03.jjConfig.gameView.worldBoxWidth = 30f
-        MyConfig03.jjConfig.gameView.cameraPosX = 0f
-        MyConfig03.jjConfig.gameView.cameraPosY = 0f
     }
 }

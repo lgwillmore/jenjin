@@ -10,7 +10,7 @@ import com.binarymonks.jj.core.specs.builders.*
 
 
 class D17_appending_scenes : JJGame(JJConfig {
-    b2d.debug = true
+    b2d.debugRender = true
     val width = 6f
     gameView.worldBoxWidth = width
     gameView.cameraPosX = 0f

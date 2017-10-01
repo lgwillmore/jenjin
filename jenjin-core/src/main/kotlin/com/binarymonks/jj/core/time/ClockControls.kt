@@ -85,7 +85,6 @@ class ClockControls : ClockAPI {
                 DELTA = realDelta.toDouble()
                 DELTA_FLOAT = realDelta
             }
-
         },
         FIXED_TIME {
             override fun update(realDelta: Float) {

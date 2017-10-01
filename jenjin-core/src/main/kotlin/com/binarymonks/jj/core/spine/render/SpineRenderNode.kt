@@ -32,7 +32,6 @@ class SpineRenderNode(
             JJ.B.renderWorld.switchToBatch()
             JJ.B.renderWorld.skeletonRenderer.draw(JJ.B.renderWorld.polyBatch, skeleton)
         }
-
     }
 
     override fun dispose() {}

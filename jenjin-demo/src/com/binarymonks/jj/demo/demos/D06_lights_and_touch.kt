@@ -75,7 +75,7 @@ object MyConfig06 {
     var jjConfig: JJConfig = JJConfig()
 
     init {
-        MyConfig06.jjConfig.b2d.debug = false
+        MyConfig06.jjConfig.b2d.debugRender = false
         MyConfig06.jjConfig.b2d.gravity = com.badlogic.gdx.math.Vector2()
 
         MyConfig06.jjConfig.gameView.worldBoxWidth = 20f

@@ -1,18 +1,16 @@
 package com.binarymonks.jj.demo.demos
 
-import com.badlogic.gdx.graphics.Color
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.specs.SceneSpec
-import com.binarymonks.jj.core.specs.builders.circleRender
 import com.binarymonks.jj.core.specs.builders.particles
 import com.binarymonks.jj.core.specs.builders.render
 import com.binarymonks.jj.core.specs.builders.scene
 
 
 class D15_particles : JJGame(JJConfig {
-    b2d.debug = true
+    b2d.debugRender = true
 
     gameView.worldBoxWidth = 30f
     gameView.cameraPosX = 0f

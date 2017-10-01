@@ -1,6 +1,5 @@
 package com.binarymonks.jj.core.physics
 
-import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Joint
 import com.badlogic.gdx.physics.box2d.JointDef
 import com.badlogic.gdx.physics.box2d.World
@@ -19,6 +18,8 @@ open class PhysicsWorld(
 
     var velocityIterations = 20
     var positionIterations = 20
+    var stepping = false
+    var stepReleased = false
     override var collisionGroups = CollisionGroups()
     override var materials = Materials()
     var isUpdating = false
@@ -30,9 +31,9 @@ open class PhysicsWorld(
 
     fun update() {
         isUpdating = true
-        val frameDelta = JJ.clock.delta
+        val frameDelta = JJ.clock.deltaFloat
         if (frameDelta > 0) {
-            b2dworld.step(JJ.clock.deltaFloat, velocityIterations, positionIterations)
+            b2dworld.step(frameDelta, velocityIterations, positionIterations)
         }
         isUpdating = false
     }

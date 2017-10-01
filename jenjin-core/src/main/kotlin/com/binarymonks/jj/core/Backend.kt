@@ -30,6 +30,7 @@ class Backend {
     lateinit var tasks: Tasks
     lateinit var input: InputMapper
     lateinit var defaultGameRenderingLayer: GameRenderingLayer
+    lateinit var game: JJGame
 
     private var idCounter = 0
 

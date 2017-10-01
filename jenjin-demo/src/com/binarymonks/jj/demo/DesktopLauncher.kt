@@ -11,6 +11,6 @@ object DesktopLauncher {
         lwjglConfig.width = 1000
 
         //Swap out the various demo Games here
-        LwjglApplication(D17_appending_scenes(), lwjglConfig)
+        LwjglApplication(D_18_physics_debug(), lwjglConfig)
     }
 }

@@ -5,9 +5,11 @@ import com.binarymonks.jj.core.api.*
 import com.binarymonks.jj.core.assets.Assets
 import com.binarymonks.jj.core.async.Tasks
 import com.binarymonks.jj.core.audio.Audio
+import com.binarymonks.jj.core.debug.Controls
 import com.binarymonks.jj.core.events.EventBus
 import com.binarymonks.jj.core.input.mapping.InputMapper
 import com.binarymonks.jj.core.layers.GameRenderingLayer
+import com.binarymonks.jj.core.layers.InputLayer
 import com.binarymonks.jj.core.layers.LayerStack
 import com.binarymonks.jj.core.physics.PhysicsWorld
 import com.binarymonks.jj.core.pools.Pools
@@ -27,6 +29,7 @@ import com.binarymonks.jj.core.time.ClockControls
  *
  */
 object JJ {
+    private var initialised = false
     lateinit var scenes: ScenesAPI
     lateinit var assets: AssetsAPI
     lateinit var layers: LayersAPI
@@ -40,8 +43,13 @@ object JJ {
 
     lateinit var B: Backend
 
-    internal fun initialise(config: JJConfig) {
+    internal fun initialise(config: JJConfig, game: JJGame) {
+        if (initialised) {
+            throw Exception("Already initialised")
+        }
+        initialised = true
         B = Backend()
+        B.game = game
         B.config = config
         B.clock = ClockControls()
         B.scenes = Scenes()
@@ -58,6 +66,10 @@ object JJ {
         B.layers.push(B.defaultGameRenderingLayer)
         B.tasks = Tasks()
         B.defaultGameRenderingLayer.postProccessingEnabled = config.gameView.postProcessingEnabled
+        if(config.debugStep){
+            B.clock.setTimeFunction(ClockControls.TimeFunction.FIXED_TIME)
+            B.layers.push(InputLayer(Controls()))
+        }
 
 
 

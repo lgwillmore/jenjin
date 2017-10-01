@@ -32,8 +32,8 @@ class D10_spine_physics : JJGame(MyConfig10.jjConfig) {
 
         JJ.scenes.instantiate(scene {
             nodeRef(params { x = 4f; y = -0.4f }) { "spineBoy" }
-            nodeRef(params { x = 7f; y = 4f; rotationD = 90f }) { "hammer" }
-            nodeRef(params { y = -2f; scaleX = 13f; name = "floor" }) { "terrain" }
+//            nodeRef(params { x = 7f; y = 4f; rotationD = 90f }) { "hammer" }
+//            nodeRef(params { y = -2f; scaleX = 13f; name = "floor" }) { "terrain" }
         })
     }
 
@@ -107,7 +107,7 @@ object MyConfig10 {
     var jjConfig: JJConfig = JJConfig()
 
     init {
-        jjConfig.b2d.debug = true
+        jjConfig.b2d.debugRender = true
 
         MyConfig10.jjConfig.gameView.worldBoxWidth = 15f
         MyConfig10.jjConfig.gameView.cameraPosX = 0f

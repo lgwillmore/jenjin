@@ -11,10 +11,13 @@ import com.binarymonks.jj.core.specs.SceneSpec
  *
  * @property jjConfig Configuration for your game.
  */
-abstract class JJGame(val jjConfig: JJConfig = JJConfig()) : ApplicationListener{
+abstract class JJGame(val jjConfig: JJConfig = JJConfig()) : ApplicationListener {
+
+    var step: Boolean = false
+    var stepReleased = false
 
     override fun create() {
-        JJ.initialise(this.jjConfig)
+        JJ.initialise(this.jjConfig, this)
         gameOn()
     }
 
@@ -22,18 +25,32 @@ abstract class JJGame(val jjConfig: JJConfig = JJConfig()) : ApplicationListener
     }
 
     override fun resize(width: Int, height: Int) {
-        JJ.B.layers.resize(width,height)
+        JJ.B.layers.resize(width, height)
     }
 
     override fun render() {
-        JJ.B.clock.update()
-        JJ.B.assets.update()
-        JJ.B.tasks.preloopTasks.update()
-        JJ.B.sceneWorld.update()
-        JJ.B.tasks.prePhysicsTasks.update()
-        JJ.B.physicsWorld.update()
-        JJ.B.tasks.postPhysicsTasks.update()
-        JJ.B.layers.update()
+        if (checkStep()) {
+            JJ.B.clock.update()
+            JJ.B.assets.update()
+            JJ.B.tasks.preloopTasks.update()
+            JJ.B.sceneWorld.update()
+            JJ.B.tasks.prePhysicsTasks.update()
+            JJ.B.physicsWorld.update()
+            JJ.B.tasks.postPhysicsTasks.update()
+            JJ.B.layers.update()
+        }
+    }
+
+    private fun checkStep(): Boolean {
+        if (step) {
+            if (stepReleased) {
+                stepReleased = false
+                return true
+            }
+            return false
+        } else {
+            return true
+        }
     }
 
     override fun resume() {

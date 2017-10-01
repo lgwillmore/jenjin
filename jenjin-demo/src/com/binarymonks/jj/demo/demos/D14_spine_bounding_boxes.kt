@@ -7,12 +7,11 @@ import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.specs.SceneSpecRef
 import com.binarymonks.jj.core.specs.builders.nodeRef
 import com.binarymonks.jj.core.specs.builders.scene
-import com.binarymonks.jj.core.spine.specs.SpineSkeletonSpec
 import com.binarymonks.jj.core.spine.specs.SpineSpec
 
 
 class D14_spine_bounding_boxes : JJGame(JJConfig {
-    b2d.debug = true
+    b2d.debugRender = true
     val width = 6f
     gameView.worldBoxWidth = width
     gameView.cameraPosX = 0f

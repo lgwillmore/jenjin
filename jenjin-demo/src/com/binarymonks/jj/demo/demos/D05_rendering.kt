@@ -14,7 +14,7 @@ import com.binarymonks.jj.core.specs.builders.*
 
 
 class D05_rendering : JJGame(JJConfig {
-    b2d.debug = true
+    b2d.debugRender = true
 
     gameView.worldBoxWidth = 30f
     gameView.cameraPosX = 0f
