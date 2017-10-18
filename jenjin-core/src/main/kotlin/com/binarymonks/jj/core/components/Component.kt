@@ -18,7 +18,7 @@ abstract class Component : Copyable<Component> {
     private var addedToScene = false
     private var inWorld = false
 
-    open internal var scene: Scene? = null
+    open var scene: Scene? = null
         set(value) {
             field = value
             this::class.declaredMemberProperties.forEach {

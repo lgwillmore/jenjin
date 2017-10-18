@@ -17,7 +17,14 @@ import com.binarymonks.jj.core.specs.render.RenderGraphType
  *
  * And also dim the Ambient light to be able to see your lights.
  */
-class D06_lights_and_touch : JJGame(MyConfig06.jjConfig) {
+class D06_lights_and_touch : JJGame(JJConfig {
+    b2d.debugRender = false
+    b2d.gravity = com.badlogic.gdx.math.Vector2()
+
+    gameView.worldBoxWidth = 20f
+    gameView.cameraPosX = 0f
+    gameView.cameraPosY = 0f
+}) {
 
     override fun gameOn() {
 
@@ -27,9 +34,9 @@ class D06_lights_and_touch : JJGame(MyConfig06.jjConfig) {
         JJ.render.setAmbientLight(0f, 0f, 0f, 0.4f)
 
         JJ.scenes.instantiate(scene {
-            container=true
+            container = true
             node {
-                render { imageTexture("textures/circuit_background.png") { width = 20f; height = 40f; layer=0 } }
+                render { imageTexture("textures/circuit_background.png") { width = 20f; height = 40f; layer = 0 } }
             }
             nodeRef(params { x = -5f; y = 5f }) { "box" }
             nodeRef(params { x = 5f; y = -5f }) { "box" }
@@ -71,17 +78,3 @@ class D06_lights_and_touch : JJGame(MyConfig06.jjConfig) {
     }
 }
 
-object MyConfig06 {
-    var jjConfig: JJConfig = JJConfig()
-
-    init {
-        MyConfig06.jjConfig.b2d.debugRender = false
-        MyConfig06.jjConfig.b2d.gravity = com.badlogic.gdx.math.Vector2()
-
-        MyConfig06.jjConfig.gameView.worldBoxWidth = 20f
-        MyConfig06.jjConfig.gameView.cameraPosX = 0f
-        MyConfig06.jjConfig.gameView.cameraPosY = 0f
-
-
-    }
-}

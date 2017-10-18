@@ -6,7 +6,7 @@ import com.binarymonks.jj.core.pools.Poolable
 
 class ScenePath() : Poolable {
 
-    internal val path: Array<String> = Array()
+    val path: Array<String> = Array()
 
     companion object {
         val UP: String = ".."

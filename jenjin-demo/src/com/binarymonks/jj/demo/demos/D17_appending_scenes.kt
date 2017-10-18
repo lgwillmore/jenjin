@@ -22,7 +22,7 @@ class D17_appending_scenes : JJGame(JJConfig {
         JJ.scenes.addSceneSpec("child", childScene())
 
         JJ.scenes.instantiate(params { x = -1f;y = 1.5f }, "parent")
-        JJ.scenes.instantiate(params { x = 1f;y = -1f;rotationD=45f }, "parent")
+        JJ.scenes.instantiate(params { x = 1f;y = -1f;rotationD = 45f }, "parent")
     }
 
 

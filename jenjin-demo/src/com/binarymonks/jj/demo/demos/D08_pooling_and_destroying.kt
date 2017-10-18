@@ -2,9 +2,9 @@ package com.binarymonks.jj.demo.demos
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.physics.box2d.BodyDef
-import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
+import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.components.misc.Emitter
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.specs.Circle

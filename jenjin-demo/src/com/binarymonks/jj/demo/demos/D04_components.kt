@@ -1,9 +1,9 @@
 package com.binarymonks.jj.demo.demos
 
 import com.badlogic.gdx.physics.box2d.BodyDef
-import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
+import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.specs.Circle
@@ -21,7 +21,13 @@ import com.binarymonks.jj.core.specs.builders.*
  *
  * We build it in a way which makes it configurable and reusable across different objects.
  */
-class D04_components : JJGame(MyConfig04.jjConfig) {
+class D04_components : JJGame(JJConfig {
+    b2d.debugRender = true
+
+    gameView.worldBoxWidth = 30f
+    gameView.cameraPosX = 0f
+    gameView.cameraPosY = 15f
+}) {
 
     public override fun gameOn() {
 
@@ -104,7 +110,7 @@ class D04_components : JJGame(MyConfig04.jjConfig) {
     }
 }
 
-enum class Direction {HORIZONTAL, VERTICAL }
+enum class Direction { HORIZONTAL, VERTICAL }
 
 //A reusable and configurable component that can be attache to any Scene
 class BackForwardMovement : Component() {
@@ -139,15 +145,3 @@ class BackForwardMovement : Component() {
     }
 }
 
-
-object MyConfig04 {
-    var jjConfig: JJConfig = JJConfig()
-
-    init {
-        MyConfig04.jjConfig.b2d.debugRender = true
-
-        MyConfig04.jjConfig.gameView.worldBoxWidth = 30f
-        MyConfig04.jjConfig.gameView.cameraPosX = 0f
-        MyConfig04.jjConfig.gameView.cameraPosY = 15f
-    }
-}

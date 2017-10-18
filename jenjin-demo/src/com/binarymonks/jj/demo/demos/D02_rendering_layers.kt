@@ -9,7 +9,13 @@ import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.builders.*
 
 
-class D02_rendering_layers : JJGame(MyConfig02.jjConfig) {
+class D02_rendering_layers : JJGame(JJConfig {
+    b2d.debugRender = true
+
+    gameView.worldBoxWidth = 50f
+    gameView.cameraPosX = 0f
+    gameView.cameraPosY = 0f
+}) {
 
     public override fun gameOn() {
 
@@ -75,14 +81,3 @@ class D02_rendering_layers : JJGame(MyConfig02.jjConfig) {
 }
 
 
-object MyConfig02 {
-    var jjConfig: JJConfig = JJConfig()
-
-    init {
-        MyConfig02.jjConfig.b2d.debugRender = true
-
-        MyConfig02.jjConfig.gameView.worldBoxWidth = 50f
-        MyConfig02.jjConfig.gameView.cameraPosX = 0f
-        MyConfig02.jjConfig.gameView.cameraPosY = 0f
-    }
-}

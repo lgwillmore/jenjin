@@ -315,6 +315,5 @@ fun gameHUD(): Layer {
             x = vWidth * 0.6f
             y = vHeight * 0.8f
         }
-
     }.build()
 }

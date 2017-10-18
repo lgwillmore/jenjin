@@ -12,7 +12,7 @@ import com.binarymonks.jj.core.specs.builders.component
 import com.binarymonks.jj.core.specs.builders.nodeRef
 import com.binarymonks.jj.core.specs.builders.params
 import com.binarymonks.jj.core.specs.builders.scene
-import com.binarymonks.jj.core.spine.specs.SpineSpec
+import com.binarymonks.jj.spine.specs.SpineSpec
 
 
 class D16_spine_pooling : JJGame(JJConfig {
@@ -32,7 +32,7 @@ class D16_spine_pooling : JJGame(JJConfig {
         JJ.scenes.loadAssetsNow()
 
         JJ.scenes.instantiate(scene {
-            container=true
+            container = true
             nodeRef(params { x = -2f }) { "spawnBounding" }
             nodeRef(params { x = 2f }) { "spawnAnimation" }
         })
@@ -89,8 +89,7 @@ class D16_spine_pooling : JJGame(JJConfig {
             }
             animations {
                 startingAnimation = "run"
-                registerEventHandler("footstep", {
-                    component, _ ->
+                registerEventHandler("footstep", { component, _ ->
                     component.me().soundEffects.triggerSound("footstep", SoundMode.NORMAL)
                 })
                 registerEventHandler("footstep", SpineBoyComponent::class, SpineBoyComponent::onEvent)

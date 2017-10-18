@@ -9,7 +9,11 @@ import com.binarymonks.jj.core.specs.SceneSpecRef
 import com.binarymonks.jj.core.specs.builders.*
 
 
-class D12_shaders : JJGame(MyConfig12.jjConfig) {
+class D12_shaders : JJGame(JJConfig{
+    gameView.worldBoxWidth = 20f
+    gameView.cameraPosX = 0f
+    gameView.cameraPosY = 0f
+}) {
     override fun gameOn() {
 
         JJ.scenes.addSceneSpec("linearLightCube", linearLightCube())
@@ -73,7 +77,7 @@ class D12_shaders : JJGame(MyConfig12.jjConfig) {
     private fun pixelPoyCube(): SceneSpecRef {
         return scene {
             render {
-                rectangleRender(3f,3f) {
+                rectangleRender(3f, 3f) {
                     shaderSpec = ShaderSpec("checkeredBatch")
                     color.setOverride("color")
                 }
@@ -108,9 +112,9 @@ class D12_shaders : JJGame(MyConfig12.jjConfig) {
                 imageTexture("textures/linear_light_square.png") {
                     width = 3f
                     height = 3f
-                    shaderSpec = ShaderSpec("paramPixels"){
-                        floatBinding("dx",64f*(1f/1024f))
-                        floatBinding("dy",64f*(1f/1024f))
+                    shaderSpec = ShaderSpec("paramPixels") {
+                        floatBinding("dx", 64f * (1f / 1024f))
+                        floatBinding("dy", 64f * (1f / 1024f))
                     }
                     color.setOverride("color")
                 }
@@ -124,9 +128,9 @@ class D12_shaders : JJGame(MyConfig12.jjConfig) {
                 imageTexture("textures/linear_light_square.png") {
                     width = 3f
                     height = 3f
-                    shaderSpec = ShaderSpec("paramPixels"){
-                        floatBinding("dx",128f*(1f/1024f))
-                        floatBinding("dy",128f*(1f/1024f))
+                    shaderSpec = ShaderSpec("paramPixels") {
+                        floatBinding("dx", 128f * (1f / 1024f))
+                        floatBinding("dy", 128f * (1f / 1024f))
                     }
                     color.setOverride("color")
                 }
@@ -160,12 +164,3 @@ class D12_shaders : JJGame(MyConfig12.jjConfig) {
     }
 }
 
-object MyConfig12 {
-    var jjConfig: JJConfig = JJConfig()
-
-    init {
-        jjConfig.gameView.worldBoxWidth = 20f
-        jjConfig.gameView.cameraPosX = 0f
-        jjConfig.gameView.cameraPosY = 0f
-    }
-}

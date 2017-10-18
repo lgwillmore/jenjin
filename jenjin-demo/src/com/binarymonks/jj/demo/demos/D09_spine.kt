@@ -11,7 +11,7 @@ import com.binarymonks.jj.core.specs.builders.component
 import com.binarymonks.jj.core.specs.builders.nodeRef
 import com.binarymonks.jj.core.specs.builders.params
 import com.binarymonks.jj.core.specs.builders.scene
-import com.binarymonks.jj.core.spine.specs.SpineSpec
+import com.binarymonks.jj.spine.specs.SpineSpec
 import com.esotericsoftware.spine.Event
 
 
@@ -27,7 +27,7 @@ class D09_spine : JJGame(JJConfig {
         JJ.scenes.loadAssetsNow()
 
         JJ.scenes.instantiate(scene {
-            nodeRef(params { name="spine" }) { "spineBoy" }
+            nodeRef(params { name = "spine" }) { "spineBoy" }
         })
     }
 
@@ -41,8 +41,7 @@ class D09_spine : JJGame(JJConfig {
             }
             animations {
                 startingAnimation = "run"
-                registerEventHandler("footstep", {
-                    component, _ ->
+                registerEventHandler("footstep", { component, _ ->
                     component.me().soundEffects.triggerSound("footstep", SoundMode.NORMAL)
                 })
                 registerEventHandler("footstep", SpineBoyComponent::class, SpineBoyComponent::onEvent)

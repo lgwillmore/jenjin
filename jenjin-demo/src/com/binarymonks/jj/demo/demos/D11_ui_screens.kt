@@ -31,7 +31,7 @@ class D11_ui_screens : JJGame() {
         val height = Gdx.graphics.height.toFloat()
         val skin = JJ.assets.getAsset("ui/uiskin.json", Skin::class)
 
-        //UIBuilder lets you add actors and build them
+        //UIBuilder lets you build a UI Layer. Duh.
         return UIBuilder {
 
             actor(Label("SCREEN 1", skin)) {

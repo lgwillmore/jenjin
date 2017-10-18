@@ -11,18 +11,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.api.RenderAPI
-import com.binarymonks.jj.core.scenes.Scene
-import com.bitfire.postprocessing.PostProcessor
-import com.bitfire.postprocessing.PostProcessorListener
-import com.esotericsoftware.spine.SkeletonRenderer
 
-open class RenderWorld : RenderAPI, PostProcessorListener {
+open class RenderWorld : RenderAPI {
 
     val defaultShapeShader: ShaderProgram = ImmediateModeRenderer20.createDefaultShader(false, true, 0)
     var shapeRenderer = ShapeRenderer(5000, defaultShapeShader)
     var polyBatch = PolygonSpriteBatch()
-    var skeletonRenderer = SkeletonRenderer<PolygonSpriteBatch>()
-    var postProcessor = PostProcessor( false, true, (Gdx.app.type == Application.ApplicationType.Desktop) )
     var rayHandler: RayHandler = RayHandler(JJ.B.physicsWorld.b2dworld)
     var worldToScreenScale: Float = 0.toFloat()
     private var currentShapeFill = false
@@ -32,7 +26,6 @@ open class RenderWorld : RenderAPI, PostProcessorListener {
     init {
         rayHandler.setBlurNum(3)
         rayHandler.setAmbientLight(0.0f, 0.0f, 0.0f, 1.0f)
-        postProcessor.setListener(this)
     }
 
     override fun setAmbientLight(r: Float, g: Float, b: Float, a: Float) {
@@ -93,8 +86,4 @@ open class RenderWorld : RenderAPI, PostProcessorListener {
         }
     }
 
-    override fun beforeRenderToScreen() {
-//        Gdx.gl20.glEnable(GL20.GL_BLEND)
-//        Gdx.gl20.glBlendFunc(GL20.GL_SRC_COLOR, GL20.GL_SRC_ALPHA)
-    }
 }

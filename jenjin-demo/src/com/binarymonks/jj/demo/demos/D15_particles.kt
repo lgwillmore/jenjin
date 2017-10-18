@@ -30,8 +30,8 @@ class D15_particles : JJGame(JJConfig {
             render {
                 particles("particles/jet_plume.p") {
                     imageDir = "particles"
-                    scale=0.5f
-                    rotationD=90f
+                    scale = 0.5f
+                    rotationD = 90f
                 }
 //                circleRender(0.5f)
             }

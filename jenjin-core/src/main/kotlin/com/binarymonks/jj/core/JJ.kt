@@ -65,7 +65,6 @@ object JJ {
         B.defaultGameRenderingLayer.inputMultiplexer.addProcessor(B.input)
         B.layers.push(B.defaultGameRenderingLayer)
         B.tasks = Tasks()
-        B.defaultGameRenderingLayer.postProccessingEnabled = config.gameView.postProcessingEnabled
         if(config.debugStep){
             B.clock.setTimeFunction(ClockControls.TimeFunction.FIXED_TIME)
             B.layers.push(InputLayer(Controls()))

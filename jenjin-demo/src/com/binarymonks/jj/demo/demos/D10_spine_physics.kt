@@ -2,9 +2,9 @@ package com.binarymonks.jj.demo.demos
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.physics.box2d.BodyDef
-import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
+import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.specs.Circle
 import com.binarymonks.jj.core.specs.Rectangle
@@ -12,11 +12,17 @@ import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.SceneSpecRef
 import com.binarymonks.jj.core.specs.builders.*
 import com.binarymonks.jj.core.specs.physics.CollisionGroupSpecName
-import com.binarymonks.jj.core.spine.collisions.TriggerRagDollCollision
-import com.binarymonks.jj.core.spine.specs.SpineSpec
+import com.binarymonks.jj.spine.collisions.TriggerRagDollCollision
+import com.binarymonks.jj.spine.specs.SpineSpec
 
 
-class D10_spine_physics : JJGame(MyConfig10.jjConfig) {
+class D10_spine_physics : JJGame(JJConfig{
+    b2d.debugRender = true
+
+    gameView.worldBoxWidth = 15f
+    gameView.cameraPosX = 0f
+    gameView.cameraPosY = 0f
+}) {
 
     override fun gameOn() {
         JJ.physics.collisionGroups.buildGroups {
@@ -107,11 +113,7 @@ object MyConfig10 {
     var jjConfig: JJConfig = JJConfig()
 
     init {
-        jjConfig.b2d.debugRender = true
 
-        MyConfig10.jjConfig.gameView.worldBoxWidth = 15f
-        MyConfig10.jjConfig.gameView.cameraPosX = 0f
-        MyConfig10.jjConfig.gameView.cameraPosY = 0f
     }
 }
 

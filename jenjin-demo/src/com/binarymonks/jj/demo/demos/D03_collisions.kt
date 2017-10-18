@@ -1,9 +1,9 @@
 package com.binarymonks.jj.demo.demos
 
 import com.badlogic.gdx.physics.box2d.BodyDef
-import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
+import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.physics.collisions.SoundCollision
 import com.binarymonks.jj.core.specs.Circle
 import com.binarymonks.jj.core.specs.SceneSpec
@@ -24,7 +24,13 @@ import com.binarymonks.jj.core.specs.builders.*
  *
  * Or you can do it all yourself and set your fixture collision data explicitly with [com.binarymonks.jj.core.specs.physics.FixtureSpec.collisionGroupExplicit]
  */
-class D03_collisions : JJGame(MyConfig03.jjConfig) {
+class D03_collisions : JJGame(JJConfig {
+    b2d.debugRender = true
+
+    gameView.worldBoxWidth = 30f
+    gameView.cameraPosX = 0f
+    gameView.cameraPosY = 0f
+}) {
 
     public override fun gameOn() {
 
@@ -82,17 +88,5 @@ class D03_collisions : JJGame(MyConfig03.jjConfig) {
                 }
             }
         }
-    }
-}
-
-object MyConfig03 {
-    var jjConfig: JJConfig = JJConfig()
-
-    init {
-        MyConfig03.jjConfig.b2d.debugRender = true
-
-        MyConfig03.jjConfig.gameView.worldBoxWidth = 30f
-        MyConfig03.jjConfig.gameView.cameraPosX = 0f
-        MyConfig03.jjConfig.gameView.cameraPosY = 0f
     }
 }

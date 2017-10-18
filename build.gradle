@@ -42,12 +42,9 @@ project(":jenjin-core") {
     sourceCompatibility = '1.8'
 
     dependencies {
-        compile project(":jenjin-spine")
-        compile project(":jenjin-postprocessing")
         compile fileTree(dir: '../libs', include: '*.jar')
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
         compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
-//        compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.16"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
@@ -59,6 +56,7 @@ project(":jenjin-core") {
 }
 
 project(":jenjin-spine") {
+    apply plugin: 'kotlin'
     apply plugin: 'java'
     apply plugin: 'maven-publish'
     apply plugin: 'idea'
@@ -66,29 +64,18 @@ project(":jenjin-spine") {
     sourceCompatibility = '1.8'
 
     dependencies {
+        compile project(":jenjin-core")
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-    }
-}
-
-project(":jenjin-postprocessing") {
-    apply plugin: 'java'
-    apply plugin: 'maven-publish'
-    apply plugin: 'idea'
-
-    sourceCompatibility = '1.8'
-
-    dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
     }
 }
 
 project(":jenjin-demo") {
     apply plugin: "kotlin"
 
-
     dependencies {
         compile project(":jenjin-core")
+        compile project(":jenjin-spine")
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"

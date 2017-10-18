@@ -22,7 +22,6 @@ class GameRenderingLayer(
 ) : LayerAbs() {
 
     var camera: OrthographicCamera = OrthographicCamera()
-    var postProccessingEnabled = false
 
     internal var drenderer = Box2DDebugRenderer()
     internal var touchManager = TouchManager(camera)
@@ -45,11 +44,7 @@ class GameRenderingLayer(
         camera.update()
         updateScreenToWorldScale()
         touchManager.update()
-        if (postProccessingEnabled)
-            JJ.B.renderWorld.postProcessor.capture()
         renderGraph(RenderGraphType.DEFAULT)
-        if (postProccessingEnabled)
-            JJ.B.renderWorld.postProcessor.render()
         renderLights()
         renderGraph(RenderGraphType.LIGHT)
         if (JJ.B.config.b2d.debugRender) {

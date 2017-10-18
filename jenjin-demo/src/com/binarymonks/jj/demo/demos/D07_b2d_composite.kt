@@ -4,16 +4,20 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.utils.Array
-import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
+import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.extensions.addVar
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.specs.*
 import com.binarymonks.jj.core.specs.builders.*
 
 
-class D07_b2d_composite : JJGame(MyConfig07.jjConfig) {
+class D07_b2d_composite : JJGame(JJConfig {
+    gameView.worldBoxWidth = 20f
+    gameView.cameraPosX = 0f
+    gameView.cameraPosY = 5f
+}) {
 
 
     override fun gameOn() {
@@ -28,7 +32,7 @@ class D07_b2d_composite : JJGame(MyConfig07.jjConfig) {
             nodeRef(params { x = 8f; y = 11f; rotationD = 180f;scaleX = 0.5f; scaleY = 0.5f }) { "swingHammer" }
             nodeRef(params { x = 8f; y = 4f; scaleX = 0.5f; scaleY = 0.5f }) { "spinner" }
             nodeRef { "terrain" }
-            nodeRef(params { x = -1f; y = 15f; rotationD=-15f }) { "slider" }
+            nodeRef(params { x = -1f; y = 15f; rotationD = -15f }) { "slider" }
             node(params { x = 7.5f; y = 2.5f }) {
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
@@ -61,7 +65,7 @@ class D07_b2d_composite : JJGame(MyConfig07.jjConfig) {
             }
             prismaticJoint("anchor", "ball") {
                 collideConnected = false
-                enableLimit=true
+                enableLimit = true
                 upperTranslation = sliderLength
             }
         }
@@ -160,15 +164,3 @@ class D07_b2d_composite : JJGame(MyConfig07.jjConfig) {
     }
 }
 
-object MyConfig07 {
-    var jjConfig: JJConfig = JJConfig()
-
-    init {
-//        MyConfig07.jjConfig.b2d.debugRender = true
-//        jjConfig.b2d.gravity = Vector2()
-
-        MyConfig07.jjConfig.gameView.worldBoxWidth = 20f
-        MyConfig07.jjConfig.gameView.cameraPosX = 0f
-        MyConfig07.jjConfig.gameView.cameraPosY = 5f
-    }
-}

@@ -1,9 +1,9 @@
 package com.binarymonks.jj.demo.demos
 
 import com.badlogic.gdx.physics.box2d.BodyDef
-import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
+import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.scenes.Scene
 import com.binarymonks.jj.core.specs.Circle
@@ -19,7 +19,12 @@ import com.binarymonks.jj.core.specs.builders.*
  *
  * Box2D provides the physics, so being familiar with it is obviously very useful. There are loads of online resources.
  */
-class D00_Basic : JJGame(MyConfig00.jjConfig) {
+class D00_Basic : JJGame(JJConfig {
+    b2d.debugRender = true
+    gameView.worldBoxWidth = 30f
+    gameView.cameraPosX = 0f
+    gameView.cameraPosY = 10f
+}) {
 
     public override fun gameOn() {
 
@@ -79,7 +84,7 @@ class D00_Basic : JJGame(MyConfig00.jjConfig) {
         ).then(this::sceneCreated)
     }
 
-    fun sceneCreated(scene: Scene){
+    fun sceneCreated(scene: Scene) {
         println("Created the scene $scene")
     }
 
@@ -118,16 +123,3 @@ class D00_Basic : JJGame(MyConfig00.jjConfig) {
         }
     }
 }
-
-object MyConfig00 {
-    var jjConfig: JJConfig = JJConfig()
-
-    init {
-        MyConfig00.jjConfig.b2d.debugRender = true
-
-        MyConfig00.jjConfig.gameView.worldBoxWidth = 30f
-        MyConfig00.jjConfig.gameView.cameraPosX = 0f
-        MyConfig00.jjConfig.gameView.cameraPosY = 10f
-    }
-}
-
