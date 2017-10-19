@@ -10,7 +10,7 @@ import com.binarymonks.jj.core.specs.SceneSpecRef
 import com.binarymonks.jj.core.specs.params
 
 
-class D12_shaders : JJGame(JJConfig{
+class D12_shaders : JJGame(JJConfig {
     gameView.worldBoxWidth = 20f
     gameView.cameraPosX = 0f
     gameView.cameraPosY = 0f
@@ -60,17 +60,17 @@ class D12_shaders : JJGame(JJConfig{
 
 
         JJ.scenes.instantiate(SceneSpec {
-            nodeRef(params { x = -5f; y = 5f;prop("color", Color.BLUE) }) { "linearLightCube" }
-            nodeRef(params { x = 0f; y = 5f; rotationD = 45f; prop("color", Color.GREEN) }) { "pixelPolyCube" }
-            nodeRef(params { x = 5f; y = 5f;prop("color", Color.ORANGE) }) { "linearLightCube" }
+            nodeRef(params { x = -5f; y = 5f;prop("color", Color.BLUE) }, "linearLightCube")
+            nodeRef(params { x = 0f; y = 5f; rotationD = 45f; prop("color", Color.GREEN) }, "pixelPolyCube")
+            nodeRef(params { x = 5f; y = 5f;prop("color", Color.ORANGE) }, "linearLightCube")
 
-            nodeRef(params { x = -5f; y = 0f;prop("color", Color.BLUE) }) { "pixelCubeLarge" }
-            nodeRef(params { x = 0f; y = 0f;prop("color", Color.GREEN) }) { "checkeredCircle" }
-            nodeRef(params { x = 5f; y = 0f;prop("color", Color.ORANGE) }) { "pixelCubeSmall" }
+            nodeRef(params { x = -5f; y = 0f;prop("color", Color.BLUE) }, "pixelCubeLarge")
+            nodeRef(params { x = 0f; y = 0f;prop("color", Color.GREEN) }, "checkeredCircle")
+            nodeRef(params { x = 5f; y = 0f;prop("color", Color.ORANGE) }, "pixelCubeSmall")
 
-            nodeRef(params { x = -5f; y = -5f;prop("color", Color.BLUE) }) { "normalCube" }
-            nodeRef(params { x = 0f; y = -5f;prop("color", Color.GREEN) }) { "normalCircle" }
-            nodeRef(params { x = 5f; y = -5f;prop("color", Color.ORANGE) }) { "normalCube" }
+            nodeRef(params { x = -5f; y = -5f;prop("color", Color.BLUE) }, "normalCube")
+            nodeRef(params { x = 0f; y = -5f;prop("color", Color.GREEN) }, "normalCircle")
+            nodeRef(params { x = 5f; y = -5f;prop("color", Color.ORANGE) }, "normalCube")
         })
 
     }

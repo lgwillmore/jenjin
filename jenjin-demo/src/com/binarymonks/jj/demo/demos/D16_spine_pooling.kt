@@ -31,8 +31,8 @@ class D16_spine_pooling : JJGame(JJConfig {
 
         JJ.scenes.instantiate(SceneSpec {
             container = true
-            nodeRef(params { x = -2f }) { "spawnBounding" }
-            nodeRef(params { x = 2f }) { "spawnAnimation" }
+            nodeRef(params { x = -2f }, "spawnBounding")
+            nodeRef(params { x = 2f }, "spawnAnimation")
         })
 
     }

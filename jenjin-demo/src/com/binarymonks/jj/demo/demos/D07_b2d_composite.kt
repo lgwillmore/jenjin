@@ -27,11 +27,11 @@ class D07_b2d_composite : JJGame(JJConfig {
         JJ.scenes.addSceneSpec("terrain", floor())
 
         JJ.scenes.instantiate(SceneSpec {
-            nodeRef(params { x = 8f; y = 7f; rotationD = 180f;scaleX = 0.5f; scaleY = 0.5f }) { "swingHammer" }
-            nodeRef(params { x = 8f; y = 11f; rotationD = 180f;scaleX = 0.5f; scaleY = 0.5f }) { "swingHammer" }
-            nodeRef(params { x = 8f; y = 4f; scaleX = 0.5f; scaleY = 0.5f }) { "spinner" }
-            nodeRef { "terrain" }
-            nodeRef(params { x = -1f; y = 15f; rotationD = -15f }) { "slider" }
+            nodeRef(params { x = 8f; y = 7f; rotationD = 180f;scaleX = 0.5f; scaleY = 0.5f }, "swingHammer")
+            nodeRef(params { x = 8f; y = 11f; rotationD = 180f;scaleX = 0.5f; scaleY = 0.5f }, "swingHammer")
+            nodeRef(params { x = 8f; y = 4f; scaleX = 0.5f; scaleY = 0.5f }, "spinner")
+            nodeRef("terrain")
+            nodeRef(params { x = -1f; y = 15f; rotationD = -15f }, "slider")
             node(params { x = 7.5f; y = 2.5f }) {
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody

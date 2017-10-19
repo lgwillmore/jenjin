@@ -45,7 +45,7 @@ class D04_components : JJGame(JJConfig {
                 prop("movementRange", 5f)
                 prop("metersPerSecond", 1f)
 
-            }) { "platform" }
+            }, "platform" )
             nodeRef(params {
                 x = 0f
                 y = 4f
@@ -53,7 +53,7 @@ class D04_components : JJGame(JJConfig {
                 prop("direction", Direction.HORIZONTAL)
                 prop("movementRange", 10f)
                 prop("metersPerSecond", 3f)
-            }) { "platform" }
+            }, "platform" )
             nodeRef(params {
                 x = 6f
                 y = 20f
@@ -61,13 +61,13 @@ class D04_components : JJGame(JJConfig {
                 prop("direction", Direction.VERTICAL)
                 prop("movementRange", 10f)
                 prop("metersPerSecond", 5f)
-            }) { "orb" }
+            }, "orb" )
             //This instance does not set the properties, and so the defaults of the component will be used.
             nodeRef(params {
                 x = 0f
                 y = 20f
                 scaleX = 3f
-            }) { "orb" }
+            }, "orb" )
 
         }
 

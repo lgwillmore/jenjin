@@ -86,7 +86,7 @@ class D08_pooling_and_destroying : JJGame(JJConfig {
                     rectangleRender(1f, 1f) { color.set(Color.BLUE) }
                 }
             }
-            nodeRef(params { name = "circle"; y = 2f }) { "circle" }
+            nodeRef(params { name = "circle"; y = 2f }, "circle")
             weldJoint("rectangle", "circle", vec2()) {}
             weldJoint("rectangle", "rectangle2", vec2()) {}
         }

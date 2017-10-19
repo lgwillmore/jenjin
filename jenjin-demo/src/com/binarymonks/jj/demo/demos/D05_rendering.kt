@@ -23,7 +23,7 @@ class D05_rendering : JJGame(JJConfig {
         JJ.scenes.addSceneSpec("shapes", shapes())
 
         val initialScene = SceneSpec {
-            nodeRef { "shapes" }
+            nodeRef ( "shapes" )
         }
 
         JJ.scenes.instantiate(initialScene)

@@ -29,14 +29,14 @@ class D01_nested_transforms : JJGame(JJConfig {
         JJ.scenes.loadAssetsNow()
 
         val initialSceneSpec = SceneSpec {
-            nodeRef(params { x = 10f;y = 6f }) { "nestedCircles" }
-            nodeRef(params { x = 20f;y = 6f; scaleX = 0.5f; scaleY = 0.5f }) { "nestedCircles" }
-            nodeRef(params { x = -8f; y = 6f }) { "nestedRectangles" }
-            nodeRef(params { x = -18f; y = 6f; scaleX = 0.5f; scaleY = 0.5f }) { "nestedRectangles" }
-            nodeRef(params { x = 10f; y = -15f }) { "nestedPolygons" }
-            nodeRef(params { x = 20f; y = -15f; scaleX = 0.5f; scaleY = 0.5f }) { "nestedPolygons" }
-            nodeRef(params { x = -12f; y = -8f }) { "nestedFixtureTransforms" }
-            nodeRef(params { x = -12f; y = -15f }) { "flatFixtureTransforms" }
+            nodeRef(params { x = 10f;y = 6f }, "nestedCircles")
+            nodeRef(params { x = 20f;y = 6f; scaleX = 0.5f; scaleY = 0.5f }, "nestedCircles")
+            nodeRef(params { x = -8f; y = 6f }, "nestedRectangles")
+            nodeRef(params { x = -18f; y = 6f; scaleX = 0.5f; scaleY = 0.5f }, "nestedRectangles")
+            nodeRef(params { x = 10f; y = -15f }, "nestedPolygons")
+            nodeRef(params { x = 20f; y = -15f; scaleX = 0.5f; scaleY = 0.5f }, "nestedPolygons")
+            nodeRef(params { x = -12f; y = -8f }, "nestedFixtureTransforms")
+            nodeRef(params { x = -12f; y = -15f }, "flatFixtureTransforms")
         }
 
         JJ.scenes.instantiate(initialSceneSpec)

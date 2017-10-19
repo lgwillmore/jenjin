@@ -39,8 +39,8 @@ class D06_lights_and_touch : JJGame(JJConfig {
             node {
                 render { imageTexture("textures/circuit_background.png") { width = 20f; height = 40f; layer = 0 } }
             }
-            nodeRef(params { x = -5f; y = 5f }) { "box" }
-            nodeRef(params { x = 5f; y = -5f }) { "box" }
+            nodeRef(params { x = -5f; y = 5f }, "box" )
+            nodeRef(params { x = 5f; y = -5f }, "box" )
 
             /**
              * A touch draggable light

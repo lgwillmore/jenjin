@@ -23,7 +23,7 @@ class D14_spine_bounding_boxes : JJGame(JJConfig {
         JJ.scenes.loadAssetsNow()
 
         JJ.scenes.instantiate(SceneSpec {
-            nodeRef { "spineDummy" }
+            nodeRef ( "spineDummy" )
         })
 
     }

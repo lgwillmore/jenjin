@@ -42,28 +42,28 @@ class D00_Basic : JJGame(JJConfig {
                     nodeRef(params {
                         x = -8f; y = 8f
                         prop("material", "rubber")
-                    }) { "circle" }
+                    }, "circle" )
                     nodeRef(params {
                         x = -2f; y = 8f; scaleX = 2f; scaleY = 2f
                         prop("material", "plastic")
                     }
-                    ) { "circle" }
+                    , "circle" )
                     nodeRef(params {
                         x = 2f; y = 8f
                         prop("material", "glass")
-                    }) { "circle" }
+                    }, "circle" )
                     nodeRef(params {
                         x = +8f; y = 8f
                         prop("material", "rubber")
-                    }) { "circle" }
+                    }, "circle" )
                     nodeRef(params {
                         x = -6f; y = 5f; rotationD = 45f
                         prop("material", "rubber")
-                    }) { "square" }
+                    }, "square" )
                     nodeRef(params {
                         x = +6f; y = 5f; rotationD = 45f
                         prop("material", "plastic")
-                    }) { "square" }
+                    }, "square" )
                     node(params { x = 0f; y = 6f }) {
                         physics {
                             bodyType = BodyDef.BodyType.StaticBody
@@ -79,7 +79,7 @@ class D00_Basic : JJGame(JJConfig {
                     nodeRef(params {
                         x = 0f; y = 0f; scaleX = 20f
                         prop("material", "glass")
-                    }) { "terrain" }
+                    },"terrain")
                 }
         ).then(this::sceneCreated)
     }

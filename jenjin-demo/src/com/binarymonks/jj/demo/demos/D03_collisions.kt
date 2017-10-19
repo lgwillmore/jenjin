@@ -47,13 +47,13 @@ class D03_collisions : JJGame(JJConfig {
 
         val initialSceneSpec = SceneSpec {
             //Set up some balls and a terrain on 'layer1' collision group
-            nodeRef(params { x = -8f; y = 8f; prop("collisionGroup", "layer1") }) { "ball" }
-            nodeRef(params { x = -2f; y = 9f; scaleX = 2f; scaleY = 2f;prop("collisionGroup", "layer1") }) { "ball" }
-            nodeRef(params { x = 0f; y = 0f; scaleX = 20f;prop("collisionGroup", "layer1") }) { "terrain" }
+            nodeRef(params { x = -8f; y = 8f; prop("collisionGroup", "layer1") }, "ball" )
+            nodeRef(params { x = -2f; y = 9f; scaleX = 2f; scaleY = 2f;prop("collisionGroup", "layer1") }, "ball" )
+            nodeRef(params { x = 0f; y = 0f; scaleX = 20f;prop("collisionGroup", "layer1") }, "terrain" )
             //Set up some balls and a terrain on 'layer2' collision group
-            nodeRef(params { x = 2f; y = 10f;prop("collisionGroup", "layer2") }) { "ball" }
-            nodeRef(params { x = +8f; y = 11f; scaleX = 2f; scaleY = 2f;prop("collisionGroup", "layer2") }) { "ball" }
-            nodeRef(params { x = 0f; y = -10f; scaleX = 20f;prop("collisionGroup", "layer2") }) { "terrain" }
+            nodeRef(params { x = 2f; y = 10f;prop("collisionGroup", "layer2") }, "ball" )
+            nodeRef(params { x = +8f; y = 11f; scaleX = 2f; scaleY = 2f;prop("collisionGroup", "layer2") }, "ball" )
+            nodeRef(params { x = 0f; y = -10f; scaleX = 20f;prop("collisionGroup", "layer2") }, "terrain" )
         }
 
         JJ.scenes.instantiate(initialSceneSpec)

@@ -72,8 +72,12 @@ open class SceneSpec() : SceneSpecRef {
         return sceneSpec
     }
 
-    fun nodeRef(instanceParams: InstanceParams = InstanceParams.new(), pathProvider: () -> String) {
-        this.addNode(pathProvider.invoke(), instanceParams)
+    fun nodeRef(path: String) {
+        this.addNode(path, InstanceParams.new())
+    }
+
+    fun nodeRef(instanceParams: InstanceParams, path: String) {
+        this.addNode(path, instanceParams)
     }
 
     fun physics(init: PhysicsSpec.() -> Unit): PhysicsSpec {
