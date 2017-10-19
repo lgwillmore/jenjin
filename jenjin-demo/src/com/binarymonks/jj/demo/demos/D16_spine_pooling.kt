@@ -7,11 +7,9 @@ import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.audio.SoundMode
 import com.binarymonks.jj.core.components.misc.Emitter
 import com.binarymonks.jj.core.components.misc.SelfDestruct
+import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.SceneSpecRef
-import com.binarymonks.jj.core.specs.builders.component
-import com.binarymonks.jj.core.specs.builders.nodeRef
-import com.binarymonks.jj.core.specs.builders.params
-import com.binarymonks.jj.core.specs.builders.scene
+import com.binarymonks.jj.core.specs.params
 import com.binarymonks.jj.spine.specs.SpineSpec
 
 
@@ -31,7 +29,7 @@ class D16_spine_pooling : JJGame(JJConfig {
         JJ.scenes.addSceneSpec("spawnAnimation", spawnerAnimated())
         JJ.scenes.loadAssetsNow()
 
-        JJ.scenes.instantiate(scene {
+        JJ.scenes.instantiate(SceneSpec {
             container = true
             nodeRef(params { x = -2f }) { "spawnBounding" }
             nodeRef(params { x = 2f }) { "spawnAnimation" }
@@ -40,7 +38,7 @@ class D16_spine_pooling : JJGame(JJConfig {
     }
 
     fun spawnerBounding(): SceneSpecRef {
-        return scene {
+        return SceneSpec {
             component(Emitter()) {
                 setSpec("spineBounding")
                 delayMinSeconds = 3f
@@ -51,7 +49,7 @@ class D16_spine_pooling : JJGame(JJConfig {
     }
 
     fun spawnerAnimated(): SceneSpecRef {
-        return scene {
+        return SceneSpec {
             component(Emitter()) {
                 setSpec("spineAnimation")
                 delayMinSeconds = 3f

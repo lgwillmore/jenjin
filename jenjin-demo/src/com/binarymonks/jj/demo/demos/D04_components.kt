@@ -8,7 +8,7 @@ import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.specs.Circle
 import com.binarymonks.jj.core.specs.SceneSpec
-import com.binarymonks.jj.core.specs.builders.*
+import com.binarymonks.jj.core.specs.params
 
 /**
  * Building [com.binarymonks.jj.core.components.Component]s is what lets you build the behaviour of your game. Along with
@@ -36,7 +36,7 @@ class D04_components : JJGame(JJConfig {
 
         JJ.scenes.loadAssetsNow()
 
-        val initialSceneSpec = scene {
+        val initialSceneSpec = SceneSpec {
             nodeRef(params {
                 x = -10f
                 y = 15f
@@ -75,7 +75,7 @@ class D04_components : JJGame(JJConfig {
     }
 
     private fun orb(): SceneSpec {
-        return scene {
+        return SceneSpec {
             physics {
                 // Kinematic is suited for direct movement of physics objects
                 bodyType = BodyDef.BodyType.KinematicBody
@@ -93,7 +93,7 @@ class D04_components : JJGame(JJConfig {
     }
 
     private fun platform(): SceneSpec {
-        return scene {
+        return SceneSpec {
             physics {
                 // Kinematic is suited for direct movement of physics objects
                 bodyType = BodyDef.BodyType.KinematicBody

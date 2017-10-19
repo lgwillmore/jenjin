@@ -5,8 +5,9 @@ import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.render.ShaderSpec
+import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.SceneSpecRef
-import com.binarymonks.jj.core.specs.builders.*
+import com.binarymonks.jj.core.specs.params
 
 
 class D12_shaders : JJGame(JJConfig{
@@ -58,7 +59,7 @@ class D12_shaders : JJGame(JJConfig{
 
 
 
-        JJ.scenes.instantiate(scene {
+        JJ.scenes.instantiate(SceneSpec {
             nodeRef(params { x = -5f; y = 5f;prop("color", Color.BLUE) }) { "linearLightCube" }
             nodeRef(params { x = 0f; y = 5f; rotationD = 45f; prop("color", Color.GREEN) }) { "pixelPolyCube" }
             nodeRef(params { x = 5f; y = 5f;prop("color", Color.ORANGE) }) { "linearLightCube" }
@@ -75,7 +76,7 @@ class D12_shaders : JJGame(JJConfig{
     }
 
     private fun pixelPoyCube(): SceneSpecRef {
-        return scene {
+        return SceneSpec {
             render {
                 rectangleRender(3f, 3f) {
                     shaderSpec = ShaderSpec("checkeredBatch")
@@ -86,7 +87,7 @@ class D12_shaders : JJGame(JJConfig{
     }
 
     private fun checkeredCircle(): SceneSpecRef {
-        return scene {
+        return SceneSpec {
             render {
                 circleRender(1.5f) {
                     color.setOverride("color")
@@ -97,7 +98,7 @@ class D12_shaders : JJGame(JJConfig{
     }
 
     private fun normalCircle(): SceneSpecRef {
-        return scene {
+        return SceneSpec {
             render {
                 circleRender(1.5f) {
                     color.setOverride("color")
@@ -107,7 +108,7 @@ class D12_shaders : JJGame(JJConfig{
     }
 
     private fun pixelCubeSmall(): SceneSpecRef {
-        return scene {
+        return SceneSpec {
             render {
                 imageTexture("textures/linear_light_square.png") {
                     width = 3f
@@ -123,7 +124,7 @@ class D12_shaders : JJGame(JJConfig{
     }
 
     private fun pixelCubeLarge(): SceneSpecRef {
-        return scene {
+        return SceneSpec {
             render {
                 imageTexture("textures/linear_light_square.png") {
                     width = 3f
@@ -139,7 +140,7 @@ class D12_shaders : JJGame(JJConfig{
     }
 
     private fun normalCube(): SceneSpecRef {
-        return scene {
+        return SceneSpec {
             render {
                 imageTexture("textures/linear_light_square.png") {
                     width = 3f
@@ -151,7 +152,7 @@ class D12_shaders : JJGame(JJConfig{
     }
 
     private fun linearLightCube(): SceneSpecRef {
-        return scene {
+        return SceneSpec {
             render {
                 imageTexture("textures/linear_light_square.png") {
                     width = 3f

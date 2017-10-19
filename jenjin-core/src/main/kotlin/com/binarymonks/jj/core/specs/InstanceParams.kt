@@ -11,6 +11,14 @@ import com.binarymonks.jj.core.pools.new
 import com.binarymonks.jj.core.properties.HasProps
 import com.binarymonks.jj.core.scenes.Scene
 
+/**
+ * A [InstanceParams] builder.
+ */
+fun params(init: InstanceParams.() -> Unit): InstanceParams {
+    val instanceParams = InstanceParams.new()
+    instanceParams.init()
+    return instanceParams
+}
 
 class InstanceParams : HasProps {
 

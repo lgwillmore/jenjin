@@ -10,7 +10,6 @@ import com.binarymonks.jj.core.specs.Chain
 import com.binarymonks.jj.core.specs.Circle
 import com.binarymonks.jj.core.specs.Polygon
 import com.binarymonks.jj.core.specs.SceneSpec
-import com.binarymonks.jj.core.specs.builders.*
 
 
 class D05_rendering : JJGame(JJConfig {
@@ -23,7 +22,7 @@ class D05_rendering : JJGame(JJConfig {
     override fun gameOn() {
         JJ.scenes.addSceneSpec("shapes", shapes())
 
-        val initialScene = scene {
+        val initialScene = SceneSpec {
             nodeRef { "shapes" }
         }
 
@@ -31,7 +30,7 @@ class D05_rendering : JJGame(JJConfig {
     }
 
     private fun line(): SceneSpec {
-        return scene {
+        return SceneSpec {
             render {
                 polygonRender(
                         vec2(0f, 0f),
@@ -66,7 +65,7 @@ class D05_rendering : JJGame(JJConfig {
                 vec2(2f, 0f)
         )
 
-        return scene {
+        return SceneSpec {
 
             // Polygon
             node {

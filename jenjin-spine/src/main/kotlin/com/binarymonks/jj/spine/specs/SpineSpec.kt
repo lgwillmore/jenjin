@@ -14,7 +14,6 @@ import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.render.ShaderSpec
 import com.binarymonks.jj.core.scenes.ScenePath
 import com.binarymonks.jj.core.specs.*
-import com.binarymonks.jj.core.specs.builders.*
 import com.binarymonks.jj.core.specs.physics.FixtureSpec
 import com.binarymonks.jj.core.spine.SpineEventHandler
 import com.binarymonks.jj.spine.components.SpineBoneComponent
@@ -40,7 +39,7 @@ class SpineSpec() : SceneSpecRef {
 
     private val spineAnimaitons = SpineAnimations()
 
-    private val root = scene { physics { bodyType = BodyDef.BodyType.KinematicBody } }
+    private val root = SceneSpec { physics { bodyType = BodyDef.BodyType.KinematicBody } }
 
     private var skel: SpineSkeletonSpec? = null
 
@@ -112,7 +111,7 @@ class SpineSpec() : SceneSpecRef {
             customSkeleton: SpineSkeletonSpec): String {
         val boneName = path.last()
         parentScene.addNode(
-                scene {
+                SceneSpec {
                     physics {
                         bodyType = BodyDef.BodyType.DynamicBody
                         gravityScale = 0f
@@ -126,7 +125,7 @@ class SpineSpec() : SceneSpecRef {
                     bone.children.forEach {
                         val a = path.copy()
                         a.add(it.data.name)
-                        val childName = buildBoneRecurse(it, mass * customSkeleton.massFalloff, motorTorque * customSkeleton.coreMotorTorqueFalloff, a, this@scene, spineComponent, skeleton, customSkeleton)
+                        val childName = buildBoneRecurse(it, mass * customSkeleton.massFalloff, motorTorque * customSkeleton.coreMotorTorqueFalloff, a, this@SceneSpec, spineComponent, skeleton, customSkeleton)
                         val custom = customSkeleton.customs.get(childName)
                         revJoint(null, childName, vec2(it.x, it.y), vec2()) {
                             collideConnected = false

@@ -4,9 +4,8 @@ import com.badlogic.gdx.graphics.Color
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.JJGame
+import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.SceneSpecRef
-import com.binarymonks.jj.core.specs.builders.nodeRef
-import com.binarymonks.jj.core.specs.builders.scene
 import com.binarymonks.jj.spine.specs.SpineSpec
 
 
@@ -23,7 +22,7 @@ class D14_spine_bounding_boxes : JJGame(JJConfig {
         JJ.scenes.addSceneSpec("spineDummy", spine_with_bounding_boxes())
         JJ.scenes.loadAssetsNow()
 
-        JJ.scenes.instantiate(scene {
+        JJ.scenes.instantiate(SceneSpec {
             nodeRef { "spineDummy" }
         })
 

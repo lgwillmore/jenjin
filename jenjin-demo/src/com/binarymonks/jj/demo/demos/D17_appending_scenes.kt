@@ -6,7 +6,7 @@ import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.specs.SceneSpec
-import com.binarymonks.jj.core.specs.builders.*
+import com.binarymonks.jj.core.specs.params
 
 
 class D17_appending_scenes : JJGame(JJConfig {
@@ -27,7 +27,7 @@ class D17_appending_scenes : JJGame(JJConfig {
 
 
     fun parentScene(): SceneSpec {
-        return scene {
+        return SceneSpec {
             render {
                 rectangleRender(2f, 2f) {
                     color.set(Color.BLUE)
@@ -38,7 +38,7 @@ class D17_appending_scenes : JJGame(JJConfig {
     }
 
     fun childScene(): SceneSpec {
-        return scene {
+        return SceneSpec {
             render {
                 rectangleRender(1f, 1f) {
                     color.set(Color.GREEN)

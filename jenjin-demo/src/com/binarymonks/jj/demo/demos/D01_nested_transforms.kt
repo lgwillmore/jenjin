@@ -6,11 +6,7 @@ import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.pools.vec2
-import com.binarymonks.jj.core.specs.Circle
-import com.binarymonks.jj.core.specs.Polygon
-import com.binarymonks.jj.core.specs.Rectangle
-import com.binarymonks.jj.core.specs.SceneSpec
-import com.binarymonks.jj.core.specs.builders.*
+import com.binarymonks.jj.core.specs.*
 
 /**
  * A SceneNode's transforms (translation, rotation, scale) operate in the space of the me.
@@ -32,7 +28,7 @@ class D01_nested_transforms : JJGame(JJConfig {
         JJ.scenes.addSceneSpec("flatFixtureTransforms", flat())
         JJ.scenes.loadAssetsNow()
 
-        val initialSceneSpec = scene {
+        val initialSceneSpec = SceneSpec {
             nodeRef(params { x = 10f;y = 6f }) { "nestedCircles" }
             nodeRef(params { x = 20f;y = 6f; scaleX = 0.5f; scaleY = 0.5f }) { "nestedCircles" }
             nodeRef(params { x = -8f; y = 6f }) { "nestedRectangles" }
@@ -49,7 +45,7 @@ class D01_nested_transforms : JJGame(JJConfig {
     private fun nestedCircles(): SceneSpec {
         val nestedParams = params { x = 4.1f; y = 4.1f; scaleX = 0.5f; scaleY = 0.5f; rotationD = 45f }
         val nestedParams2 = params { x = -4.1f; y = 4.1f; scaleX = 0.5f; scaleY = 0.5f; rotationD = -45f }
-        return scene {
+        return SceneSpec {
             physics {
                 bodyType = BodyDef.BodyType.StaticBody
                 fixture {
@@ -147,7 +143,7 @@ class D01_nested_transforms : JJGame(JJConfig {
         val imageWidth = 8f
         val imageheight = 8f
         val rectangle = Rectangle(imageWidth, imageheight)
-        return scene {
+        return SceneSpec {
             physics {
                 bodyType = BodyDef.BodyType.StaticBody
                 fixture {
@@ -200,7 +196,7 @@ class D01_nested_transforms : JJGame(JJConfig {
                 vec2(-4f, 0f),
                 vec2(4f, 0f)
         )
-        return scene {
+        return SceneSpec {
             physics {
                 bodyType = BodyDef.BodyType.StaticBody
                 fixture {
@@ -255,7 +251,7 @@ class D01_nested_transforms : JJGame(JJConfig {
     }
 
     private fun flat(): SceneSpec {
-        return scene {
+        return SceneSpec {
             node {
                 physics {
                     bodyType = BodyDef.BodyType.StaticBody
@@ -288,7 +284,7 @@ class D01_nested_transforms : JJGame(JJConfig {
     }
 
     private fun nested(): SceneSpec {
-        return scene {
+        return SceneSpec {
             physics {
                 bodyType = BodyDef.BodyType.StaticBody
                 fixture {

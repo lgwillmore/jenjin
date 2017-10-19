@@ -22,4 +22,16 @@ class PhysicsSpec {
     fun addFixture(fixtureSpec: FixtureSpec) {
         fixtures.add(fixtureSpec)
     }
+
+    fun fixture(init: FixtureSpec.() -> Unit) {
+        var fixtureSpec = FixtureSpec()
+        fixtureSpec.init()
+        this.addFixture(fixtureSpec)
+    }
+
+    fun pointLight(init: PointLightSpec.() -> Unit) {
+        val pl = PointLightSpec()
+        pl.init()
+        this.lights.add(pl)
+    }
 }

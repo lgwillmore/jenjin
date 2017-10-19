@@ -22,8 +22,9 @@ import com.binarymonks.jj.core.physics.collisions.EmitEventCollision
 import com.binarymonks.jj.core.physics.collisions.SoundCollision
 import com.binarymonks.jj.core.scenes.Scene
 import com.binarymonks.jj.core.specs.Rectangle
+import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.SceneSpecRef
-import com.binarymonks.jj.core.specs.builders.*
+import com.binarymonks.jj.core.specs.params
 import com.binarymonks.jj.core.ui.JJClickListener
 import com.binarymonks.jj.core.ui.UIBuilder
 import com.binarymonks.jj.core.ui.UILayer
@@ -128,7 +129,7 @@ object GameState {
 }
 
 fun court(): SceneSpecRef {
-    return scene {
+    return SceneSpec {
         //LeftWall
         node(params { x = 0f; y = COURT_LENGTH / 2 }) {
             physics {
@@ -171,7 +172,7 @@ fun court(): SceneSpecRef {
 
 fun player(): SceneSpecRef {
 
-    return scene {
+    return SceneSpec {
         physics {
             bodyType = BodyDef.BodyType.KinematicBody
             fixture {
@@ -238,7 +239,7 @@ class Player : Component() {
 
 fun ball(): SceneSpecRef {
     val ballRadius = 0.15f
-    return scene {
+    return SceneSpec {
         sounds.sound("bounce", "sounds/pong.mp3", volume = 0.6f)
         physics {
             bodyType = BodyDef.BodyType.DynamicBody

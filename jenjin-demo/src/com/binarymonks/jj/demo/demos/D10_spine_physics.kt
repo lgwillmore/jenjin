@@ -6,11 +6,7 @@ import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.pools.vec2
-import com.binarymonks.jj.core.specs.Circle
-import com.binarymonks.jj.core.specs.Rectangle
-import com.binarymonks.jj.core.specs.SceneSpec
-import com.binarymonks.jj.core.specs.SceneSpecRef
-import com.binarymonks.jj.core.specs.builders.*
+import com.binarymonks.jj.core.specs.*
 import com.binarymonks.jj.core.specs.physics.CollisionGroupSpecName
 import com.binarymonks.jj.spine.collisions.TriggerRagDollCollision
 import com.binarymonks.jj.spine.specs.SpineSpec
@@ -36,7 +32,7 @@ class D10_spine_physics : JJGame(JJConfig{
         JJ.scenes.addSceneSpec("terrain", terrain())
         JJ.scenes.loadAssetsNow()
 
-        JJ.scenes.instantiate(scene {
+        JJ.scenes.instantiate(SceneSpec {
             nodeRef(params { x = 4f; y = -0.4f }) { "spineBoy" }
 //            nodeRef(params { x = 7f; y = 4f; rotationD = 90f }) { "hammer" }
 //            nodeRef(params { y = -2f; scaleX = 13f; name = "floor" }) { "terrain" }
@@ -67,7 +63,7 @@ class D10_spine_physics : JJGame(JJConfig{
     }
 
     private fun swingHammer(): SceneSpec {
-        return scene {
+        return SceneSpec {
             node(params { name = "hammerAnchor" }) {
                 physics { bodyType = BodyDef.BodyType.StaticBody }
             }
@@ -92,7 +88,7 @@ class D10_spine_physics : JJGame(JJConfig{
     }
 
     fun terrain(): SceneSpec {
-        return scene {
+        return SceneSpec {
             physics {
                 bodyType = BodyDef.BodyType.StaticBody
                 fixture {

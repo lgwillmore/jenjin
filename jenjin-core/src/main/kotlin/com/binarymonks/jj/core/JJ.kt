@@ -16,9 +16,8 @@ import com.binarymonks.jj.core.pools.Pools
 import com.binarymonks.jj.core.render.RenderWorld
 import com.binarymonks.jj.core.scenes.SceneWorld
 import com.binarymonks.jj.core.scenes.Scenes
-import com.binarymonks.jj.core.specs.builders.params
-import com.binarymonks.jj.core.specs.builders.physics
-import com.binarymonks.jj.core.specs.builders.scene
+import com.binarymonks.jj.core.specs.SceneSpec
+import com.binarymonks.jj.core.specs.params
 import com.binarymonks.jj.core.time.ClockControls
 
 /**
@@ -85,7 +84,7 @@ object JJ {
         events = EventBus()
 
         val rootScene = JJ.B.scenes.masterFactory.createScene(
-                scene { physics { bodyType = BodyDef.BodyType.StaticBody } },
+                SceneSpec { physics { bodyType = BodyDef.BodyType.StaticBody } },
                 params { },
                 null
         )

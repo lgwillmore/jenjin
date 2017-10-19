@@ -9,7 +9,7 @@ import com.binarymonks.jj.core.scenes.Scene
 import com.binarymonks.jj.core.specs.Circle
 import com.binarymonks.jj.core.specs.Polygon
 import com.binarymonks.jj.core.specs.SceneSpec
-import com.binarymonks.jj.core.specs.builders.*
+import com.binarymonks.jj.core.specs.params
 
 
 /**
@@ -38,7 +38,7 @@ class D00_Basic : JJGame(JJConfig {
         JJ.scenes.addSceneSpec("terrain", floor())
 
         JJ.scenes.instantiate(
-                scene {
+                SceneSpec {
                     nodeRef(params {
                         x = -8f; y = 8f
                         prop("material", "rubber")
@@ -89,7 +89,7 @@ class D00_Basic : JJGame(JJConfig {
     }
 
     private fun square(): SceneSpec {
-        return scene {
+        return SceneSpec {
             physics {
                 bodyType = BodyDef.BodyType.DynamicBody
                 fixture {
@@ -100,7 +100,7 @@ class D00_Basic : JJGame(JJConfig {
     }
 
     private fun circle(): SceneSpec {
-        return scene {
+        return SceneSpec {
             physics {
                 bodyType = BodyDef.BodyType.DynamicBody
                 fixture {
@@ -113,7 +113,7 @@ class D00_Basic : JJGame(JJConfig {
     }
 
     private fun floor(): SceneSpec {
-        return scene {
+        return SceneSpec {
             physics {
                 bodyType = BodyDef.BodyType.StaticBody
                 fixture {

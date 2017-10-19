@@ -7,7 +7,7 @@ import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.physics.collisions.SoundCollision
 import com.binarymonks.jj.core.specs.Circle
 import com.binarymonks.jj.core.specs.SceneSpec
-import com.binarymonks.jj.core.specs.builders.*
+import com.binarymonks.jj.core.specs.params
 
 /**
  * Collisions are obviously very important.
@@ -45,7 +45,7 @@ class D03_collisions : JJGame(JJConfig {
             group("layer2").collidesWith("layer2")
         }
 
-        val initialSceneSpec = scene {
+        val initialSceneSpec = SceneSpec {
             //Set up some balls and a terrain on 'layer1' collision group
             nodeRef(params { x = -8f; y = 8f; prop("collisionGroup", "layer1") }) { "ball" }
             nodeRef(params { x = -2f; y = 9f; scaleX = 2f; scaleY = 2f;prop("collisionGroup", "layer1") }) { "ball" }
@@ -60,7 +60,7 @@ class D03_collisions : JJGame(JJConfig {
     }
 
     private fun ball(): SceneSpec {
-        return scene {
+        return SceneSpec {
             sounds.sound("bounce", "sounds/pong.mp3", volume = 0.6f)
             physics {
                 fixture {
@@ -79,7 +79,7 @@ class D03_collisions : JJGame(JJConfig {
     }
 
     private fun floor(): SceneSpec {
-        return scene {
+        return SceneSpec {
             physics {
                 bodyType = BodyDef.BodyType.StaticBody
                 fixture {

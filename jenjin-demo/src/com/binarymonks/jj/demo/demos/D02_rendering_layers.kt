@@ -6,7 +6,7 @@ import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.specs.SceneSpec
-import com.binarymonks.jj.core.specs.builders.*
+import com.binarymonks.jj.core.specs.params
 
 
 class D02_rendering_layers : JJGame(JJConfig {
@@ -28,7 +28,7 @@ class D02_rendering_layers : JJGame(JJConfig {
     }
 
     private fun layer0(): SceneSpec {
-        return scene {
+        return SceneSpec {
             physics {
                 bodyType = BodyDef.BodyType.StaticBody
             }
@@ -55,7 +55,7 @@ class D02_rendering_layers : JJGame(JJConfig {
      * Set the scenes layer
      */
     private fun layer1(): SceneSpec {
-        return scene {
+        return SceneSpec {
             layer = 1
             physics {
                 bodyType = BodyDef.BodyType.StaticBody

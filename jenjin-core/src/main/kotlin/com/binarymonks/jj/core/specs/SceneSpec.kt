@@ -1,18 +1,18 @@
 package com.binarymonks.jj.core.specs
 
 import com.badlogic.gdx.audio.Sound
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.assets.AssetReference
 import com.binarymonks.jj.core.components.Component
-import com.binarymonks.jj.core.specs.physics.JointSpec
-import com.binarymonks.jj.core.specs.physics.PhysicsSpec
+import com.binarymonks.jj.core.specs.physics.*
 import com.binarymonks.jj.core.specs.render.RenderSpec
 
 internal var sceneIDCounter = 0
 
-open class SceneSpec : SceneSpecRef {
+open class SceneSpec() : SceneSpecRef {
 
     var id = sceneIDCounter++
     var name: String? = null
@@ -26,7 +26,11 @@ open class SceneSpec : SceneSpecRef {
     var nodes: ObjectMap<String, SceneNode> = ObjectMap()
     var joints: Array<JointSpec> = Array()
     var layer = 0
-    var container=false
+    var container = false
+
+    constructor(init: SceneSpec.() -> Unit) : this() {
+        this.init()
+    }
 
 
     /**
@@ -59,6 +63,65 @@ open class SceneSpec : SceneSpecRef {
 
     fun prop(key: String, value: Any? = null) {
         properties.put(key, value)
+    }
+
+    fun node(instanceParams: InstanceParams = InstanceParams.new(), init: SceneSpec.() -> Unit): SceneSpec {
+        val sceneSpec = SceneSpec()
+        sceneSpec.init()
+        this.addNode(sceneSpec, instanceParams)
+        return sceneSpec
+    }
+
+    fun nodeRef(instanceParams: InstanceParams = InstanceParams.new(), pathProvider: () -> String) {
+        this.addNode(pathProvider.invoke(), instanceParams)
+    }
+
+    fun physics(init: PhysicsSpec.() -> Unit): PhysicsSpec {
+        this.physics.init()
+        return this.physics
+    }
+
+    fun render(init: RenderSpec.() -> Unit) {
+        this.render.init()
+    }
+
+
+    fun <T : Component> component(component: T, init: T.() -> Unit) {
+        component.init()
+        this.components.add(component)
+    }
+
+    fun <T : Component> component(component: T) {
+        this.components.add(component)
+    }
+
+    fun revJoint(nameA: String?, nameB: String, anchor: Vector2 = Vector2(), init: RevoluteJointSpec.() -> Unit) {
+        val revJoint = RevoluteJointSpec(nameA, nameB, anchor)
+        revJoint.init()
+        this.joints.add(revJoint)
+    }
+
+    fun revJoint(nameA: String?, nameB: String, anchor: Vector2 = Vector2()) {
+        val revJoint = RevoluteJointSpec(nameA, nameB, anchor)
+        this.joints.add(revJoint)
+    }
+
+    fun revJoint(nameA: String?, nameB: String, localAnchorA: Vector2, localAnchorB: Vector2, init: RevoluteJointSpec.() -> Unit) {
+        val revJoint = RevoluteJointSpec(nameA, nameB, localAnchorA, localAnchorB)
+        revJoint.init()
+        this.joints.add(revJoint)
+    }
+
+    fun prismaticJoint(nameA: String?, nameB: String, init: PrismaticJointSpec.() -> Unit) {
+        val prisJoint = PrismaticJointSpec(nameA, nameB)
+        prisJoint.init()
+        this.joints.add(prisJoint)
+    }
+
+    fun weldJoint(nameA: String, nameB: String, anchor: Vector2, init: WeldJointSpec.() -> Unit) {
+        val revJoint = WeldJointSpec(nameA, nameB, anchor)
+        revJoint.init()
+        this.joints.add(revJoint)
     }
 
     override fun resolve(): SceneSpec {

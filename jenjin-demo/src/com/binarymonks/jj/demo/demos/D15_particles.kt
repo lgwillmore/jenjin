@@ -4,9 +4,6 @@ import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.specs.SceneSpec
-import com.binarymonks.jj.core.specs.builders.particles
-import com.binarymonks.jj.core.specs.builders.render
-import com.binarymonks.jj.core.specs.builders.scene
 
 
 class D15_particles : JJGame(JJConfig {
@@ -26,7 +23,7 @@ class D15_particles : JJGame(JJConfig {
 
 
     fun nestedParticles(): SceneSpec {
-        return scene {
+        return SceneSpec {
             render {
                 particles("particles/jet_plume.p") {
                     imageDir = "particles"

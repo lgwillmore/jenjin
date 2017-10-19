@@ -8,8 +8,9 @@ import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.components.input.Draggable
 import com.binarymonks.jj.core.specs.Rectangle
+import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.SceneSpecRef
-import com.binarymonks.jj.core.specs.builders.*
+import com.binarymonks.jj.core.specs.params
 import com.binarymonks.jj.core.specs.render.RenderGraphType
 
 /**
@@ -33,7 +34,7 @@ class D06_lights_and_touch : JJGame(JJConfig {
 
         JJ.render.setAmbientLight(0f, 0f, 0f, 0.4f)
 
-        JJ.scenes.instantiate(scene {
+        JJ.scenes.instantiate(SceneSpec {
             container = true
             node {
                 render { imageTexture("textures/circuit_background.png") { width = 20f; height = 40f; layer = 0 } }
@@ -65,7 +66,7 @@ class D06_lights_and_touch : JJGame(JJConfig {
     }
 
     private fun box(): SceneSpecRef {
-        return scene {
+        return SceneSpec {
             layer = 1
             physics {
                 bodyType = BodyDef.BodyType.DynamicBody

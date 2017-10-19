@@ -10,7 +10,6 @@ import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.extensions.addVar
 import com.binarymonks.jj.core.pools.vec2
 import com.binarymonks.jj.core.specs.*
-import com.binarymonks.jj.core.specs.builders.*
 
 
 class D07_b2d_composite : JJGame(JJConfig {
@@ -27,7 +26,7 @@ class D07_b2d_composite : JJGame(JJConfig {
         JJ.scenes.addSceneSpec("slider", slider())
         JJ.scenes.addSceneSpec("terrain", floor())
 
-        JJ.scenes.instantiate(scene {
+        JJ.scenes.instantiate(SceneSpec {
             nodeRef(params { x = 8f; y = 7f; rotationD = 180f;scaleX = 0.5f; scaleY = 0.5f }) { "swingHammer" }
             nodeRef(params { x = 8f; y = 11f; rotationD = 180f;scaleX = 0.5f; scaleY = 0.5f }) { "swingHammer" }
             nodeRef(params { x = 8f; y = 4f; scaleX = 0.5f; scaleY = 0.5f }) { "spinner" }
@@ -46,7 +45,7 @@ class D07_b2d_composite : JJGame(JJConfig {
 
     private fun slider(): SceneSpecRef {
         val sliderLength = 8f
-        return scene {
+        return SceneSpec {
             node(params { name = "anchor" }) {
                 physics { bodyType = BodyDef.BodyType.StaticBody }
                 render {
@@ -85,7 +84,7 @@ class D07_b2d_composite : JJGame(JJConfig {
                 vec2(8f, 2f),
                 vec2(10f, 2f)
         )
-        return scene {
+        return SceneSpec {
             physics {
                 bodyType = BodyDef.BodyType.StaticBody
                 fixture {
@@ -102,7 +101,7 @@ class D07_b2d_composite : JJGame(JJConfig {
 
     private fun spinner(): SceneSpec {
         //Some forced weld joints, but they work
-        return scene {
+        return SceneSpec {
             node(params { name = "anchor" }) {
                 physics { bodyType = BodyDef.BodyType.StaticBody }
                 render { circleRender(0.25f) { color.set(Color.GREEN) } }
@@ -139,7 +138,7 @@ class D07_b2d_composite : JJGame(JJConfig {
     }
 
     private fun swingHammer(): SceneSpec {
-        return scene {
+        return SceneSpec {
             node(params { name = "hammerAnchor" }) {
                 physics { bodyType = BodyDef.BodyType.StaticBody }
             }
