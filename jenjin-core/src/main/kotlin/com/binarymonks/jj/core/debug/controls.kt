@@ -21,6 +21,5 @@ class Controls : InputProcessorAbstract() {
             }
             else -> false
         }
-
     }
 }
