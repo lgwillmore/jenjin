@@ -9,6 +9,8 @@ class InputMapper : InputAPI, InputProcessor {
 
     internal var keyToActionToFunctionMap = ObjectMap<Int, ObjectMap<Actions.Key, GeneralHandler>>()
     internal var keyToHandlerMap = ObjectMap<Int, KeyHandler>()
+    internal var keyToKeyActionToGameActionMap = ObjectMap<Int, ObjectMap<Actions.Key, String>>()
+    internal var gameActionToFunctionMap = ObjectMap<String, GeneralHandler>()
 
     override fun map(keyCode: Int, keyAction: Actions.Key, handler: GeneralHandler) {
         if (!keyToActionToFunctionMap.containsKey(keyCode)) {
@@ -36,6 +38,15 @@ class InputMapper : InputAPI, InputProcessor {
         }
         if (!handled && keyToHandlerMap.containsKey(keycode)) {
             handled = keyToHandlerMap.get(keycode)(action)
+        }
+        if (!handled && keyToKeyActionToGameActionMap.containsKey(keycode)) {
+            val actionToGameAction = keyToKeyActionToGameActionMap.get(keycode)
+            if (actionToGameAction.containsKey(action)) {
+                val gameAction = actionToGameAction.get(action)
+                if (gameActionToFunctionMap.containsKey(gameAction)) {
+                    handled = gameActionToFunctionMap.get(gameAction)()
+                }
+            }
         }
         return handled
     }
@@ -66,5 +77,16 @@ class InputMapper : InputAPI, InputProcessor {
 
     override fun scrolled(amount: Int): Boolean {
         return false
+    }
+
+    override fun mapToAction(keyCode: Int, keyAction: Actions.Key, actionName: String) {
+        if (!keyToKeyActionToGameActionMap.containsKey(keyCode)) {
+            keyToKeyActionToGameActionMap.put(keyCode, ObjectMap<Actions.Key, String>())
+        }
+        keyToKeyActionToGameActionMap.get(keyCode).put(keyAction, actionName)
+    }
+
+    override fun bindToAction(handler: GeneralHandler, actionName: String) {
+        gameActionToFunctionMap.put(actionName, handler)
     }
 }

@@ -1,7 +1,9 @@
 package com.binarymonks.jj.core.extensions
 
 import com.badlogic.gdx.utils.Array
+import com.binarymonks.jj.core.input.mapping.InputMapper
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
 
 
@@ -9,7 +11,6 @@ class CollectionsTest {
 
     @Test
     fun testArray_random() {
-
         val array: Array<Int> = Array()
         array.addVar(1, 2)
 
@@ -24,7 +25,6 @@ class CollectionsTest {
         }
         Assert.assertTrue(oneFound)
         Assert.assertTrue(twoFound)
-
     }
 
 }
