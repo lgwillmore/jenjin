@@ -1,5 +1,6 @@
 package com.binarymonks.jj.core.components
 
+import com.binarymonks.jj.core.mockoutGDXinJJ
 import com.binarymonks.jj.core.scenes.Scene
 import com.binarymonks.jj.core.testScene
 import org.junit.Before
@@ -19,6 +20,7 @@ class ComponentLifeCycleTest {
 
     @Before
     fun setUp() {
+        mockoutGDXinJJ()
         scene = testScene()
         mockComponent = Mockito.mock(Component::class.java)
         Mockito.`when`(mockComponent.type()).thenReturn(Component::class)
