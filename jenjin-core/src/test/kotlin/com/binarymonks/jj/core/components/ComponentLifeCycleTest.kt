@@ -30,12 +30,10 @@ class ComponentLifeCycleTest {
 
         scene.addComponent(mockComponent)
 
-        Mockito.verify(mockComponent, Mockito.never()).onAddToScene()
         Mockito.verify(mockComponent, Mockito.never()).onAddToWorld()
 
         scene.onAddToWorld()
 
-        Mockito.verify(mockComponent, Mockito.atMost(1)).onAddToScene()
         Mockito.verify(mockComponent, Mockito.atMost(1)).onAddToWorld()
 
         scene.executeDestruction()
@@ -45,7 +43,6 @@ class ComponentLifeCycleTest {
 
         scene.onAddToWorld()
 
-        Mockito.verify(mockComponent, Mockito.atMost(1)).onAddToScene()
         Mockito.verify(mockComponent, Mockito.atLeast(2)).onAddToWorld()
 
     }
@@ -57,7 +54,6 @@ class ComponentLifeCycleTest {
         scene.onAddToWorld()
         scene.addComponent(mockComponent)
 
-        Mockito.verify(mockComponent).onAddToScene()
         Mockito.verify(mockComponent).onAddToWorld()
     }
 
@@ -69,13 +65,17 @@ class ComponentLifeCycleTest {
         scene.addComponent(mockComponent)
         scene.update()
         scene.update()
+        Mockito.verify(mockComponent, Mockito.atLeast(1)).onRemoveFromWorld()
 
-        Mockito.verify(mockComponent).onRemoveFromScene()
 
         scene.addComponent(mockComponent)
-        Mockito.verify(mockComponent, Mockito.atLeast(2)).onAddToScene()
         Mockito.verify(mockComponent, Mockito.atLeast(2)).onAddToWorld()
 
+    }
+
+    @Test
+    fun addToScene_graphIsComlete() {
+        //TODO: Write a test to make sure that all Scene nodes only get called when the tree is complete
     }
 
 

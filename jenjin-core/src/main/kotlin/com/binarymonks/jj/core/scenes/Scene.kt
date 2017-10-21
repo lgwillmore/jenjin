@@ -64,7 +64,6 @@ open class Scene(
 
     fun addComponent(component: Component) {
         component.scene = this
-        component.onAddToSceneWrapper()
         if (inWorld) {
             component.onAddToWorldWrapper()
         }

@@ -15,7 +15,6 @@ private val propDelegateType = PropOverride::class.createType(listOf(KTypeProjec
 
 abstract class Component : Copyable<Component> {
 
-    private var addedToScene = false
     private var inWorld = false
 
     open var scene: Scene? = null
@@ -29,13 +28,6 @@ abstract class Component : Copyable<Component> {
                 }
             }
         }
-
-    internal fun onAddToSceneWrapper() {
-        if (inWorld && !addedToScene) {
-            addedToScene = true
-            onAddToScene()
-        }
-    }
 
     fun me(): Scene {
         return checkNotNull(scene)
@@ -66,10 +58,6 @@ abstract class Component : Copyable<Component> {
         return this::class as KClass<Component>
     }
 
-
-    open fun onAddToScene() {
-    }
-
     /**
      * This will be called on every game loop. Override this for ongoing tasks
      */
@@ -77,15 +65,6 @@ abstract class Component : Copyable<Component> {
 
     }
 
-    internal fun onRemoveFromSceneWrapper() {
-        addedToScene = false
-        inWorld = false
-        onRemoveFromScene()
-    }
-
-
-    open fun onRemoveFromScene() {
-    }
 
     /**
      * You can also build short lived components which can be applied to a [Scene] and then identify themselves as
@@ -97,7 +76,6 @@ abstract class Component : Copyable<Component> {
 
     internal fun onAddToWorldWrapper() {
         inWorld = true
-        onAddToSceneWrapper()
         onAddToWorld()
     }
 

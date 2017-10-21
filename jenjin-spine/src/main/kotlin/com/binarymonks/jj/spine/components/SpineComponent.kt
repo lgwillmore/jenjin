@@ -1,7 +1,7 @@
 package com.binarymonks.jj.spine.components
 
-import com.badlogic.gdx.utils.ObjectMap
 import com.badlogic.gdx.utils.Array
+import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.scenes.Scene
@@ -24,6 +24,7 @@ class SpineComponent(
 
     internal var spineBoneComponents: ObjectMap<String, SpineBoneComponent> = ObjectMap()
     internal var rootBone: SpineBoneComponent? = null
+    internal var animationListener = JJSpineAnimationStateListener(this)
     lateinit internal var spineRenderNode: SpineRenderNode
     lateinit internal var animationState: AnimationState
     internal var ragDoll = false
@@ -31,12 +32,9 @@ class SpineComponent(
     private var hiddenSlotAttachments: ObjectMap<String, Attachment> = ObjectMap()
 
 
-    override fun onAddToScene() {
+    override fun onAddToWorld() {
         spineRenderNode = me().renderRoot.getNode(SPINE_RENDER_NAME) as SpineRenderNode
         initialiseAnimations()
-    }
-
-    override fun onAddToWorld() {
         bonePaths.forEach {
             it.value.from(me()).getComponent(SpineBoneComponent::class).first().setSpineComponent(me())
             if (it.value.path.size == 1) {
@@ -64,7 +62,8 @@ class SpineComponent(
         if (animations.startingAnimation != null) {
             animationState.setAnimation(0, animations.startingAnimation, true)
         }
-        animationState.addListener(JJSpineAnimationStateListener(this, animations))
+        animationListener.spineAnimations = animations
+        animationState.addListener(animationListener)
     }
 
     fun animationState(): AnimationState {
@@ -116,6 +115,8 @@ class SpineComponent(
 
     override fun onRemoveFromWorld() {
         spineBoneComponents.clear()
+        animationState.removeListener(animationListener)
+        animationListener.spineAnimations = null
     }
 
     fun myRender(): SpineRenderNode {
@@ -141,7 +142,7 @@ class SpineComponent(
 
 class JJSpineAnimationStateListener(
         val spineComponent: SpineComponent,
-        val spineAnimations: SpineAnimations
+        var spineAnimations: SpineAnimations? = null
 ) : AnimationState.AnimationStateListener {
 
 
@@ -162,20 +163,20 @@ class JJSpineAnimationStateListener(
 
     override fun event(entry: AnimationState.TrackEntry, event: Event) {
         val name = event.data.name
-        if (spineAnimations.handlers.containsKey(name)) {
-            spineAnimations.handlers.get(name)(spineComponent, event)
+        if (spineAnimations!!.handlers.containsKey(name)) {
+            spineAnimations!!.handlers.get(name)(spineComponent, event)
         }
-        if (spineAnimations.functions.containsKey(name)) {
-            spineAnimations.functions.get(name)()
+        if (spineAnimations!!.functions.containsKey(name)) {
+            spineAnimations!!.functions.get(name)()
         }
-        if (spineAnimations.componentHandlers.containsKey(name)) {
-            val mapping = spineAnimations.componentHandlers.get(name)
+        if (spineAnimations!!.componentHandlers.containsKey(name)) {
+            val mapping = spineAnimations!!.componentHandlers.get(name)
             spineComponent.me().getComponent(mapping.componentType).forEach {
                 mapping.componentFunction.invoke(it, event)
             }
         }
-        if (spineAnimations.componentFunctions.containsKey(name)) {
-            val mapping = spineAnimations.componentFunctions.get(name)
+        if (spineAnimations!!.componentFunctions.containsKey(name)) {
+            val mapping = spineAnimations!!.componentFunctions.get(name)
             spineComponent.me().getComponent(mapping.componentType).forEach {
                 mapping.componentFunction.invoke(it)
             }

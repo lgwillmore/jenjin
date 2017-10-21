@@ -54,17 +54,11 @@ class CompositeState : State() {
             states.forEach { it.scene = value }
         }
 
-    override fun onAddToScene() {
-        states.forEach { it.onAddToScene() }
-    }
 
     override fun onAddToWorld() {
         states.forEach { it.onAddToWorld() }
     }
 
-    override fun onRemoveFromScene() {
-        states.forEach { it.onRemoveFromScene() }
-    }
 
     override fun onRemoveFromWorld() {
         states.forEach { it.onRemoveFromWorld() }

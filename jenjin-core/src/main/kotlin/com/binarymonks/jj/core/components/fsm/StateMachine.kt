@@ -39,17 +39,11 @@ open class StateMachine() : State() {
         builder.construct()
     }
 
-    override fun onAddToScene() {
-        states.forEach { it.value.onAddToScene() }
-    }
 
     override fun onAddToWorld() {
         states.forEach { it.value.onAddToWorld() }
     }
 
-    override fun onRemoveFromScene() {
-        states.forEach { it.value.onRemoveFromScene() }
-    }
 
     override fun onRemoveFromWorld() {
         currentState = null

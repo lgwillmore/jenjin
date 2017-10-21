@@ -28,7 +28,6 @@ class ComponentMaster {
     fun clean() {
         for (entry in removeTrackedComponents.entries()) {
             for (component in entry.value) {
-                component.onRemoveFromSceneWrapper()
                 trackedComponents.get(entry.key).removeValue(component, true)
             }
         }
