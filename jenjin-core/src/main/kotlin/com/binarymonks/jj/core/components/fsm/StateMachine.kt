@@ -47,7 +47,7 @@ open class StateMachine() : State() {
 
     override fun onRemoveFromWorld() {
         currentState = null
-        states.forEach { it.value.onRemoveFromWorld() }
+        states.forEach { it.value.onRemoveFromWorldWrapper() }
     }
 
     override fun update() {

@@ -27,10 +27,6 @@ class StateMachineTest {
                 part(combinationStateMock)
             }
         }
-        stateMachine.onAddToScene()
-        mocks.forEach {
-            Mockito.verify(it).onAddToScene()
-        }
         stateMachine.onAddToWorld()
         mocks.forEach {
             Mockito.verify(it).onAddToWorld()
@@ -40,13 +36,9 @@ class StateMachineTest {
             Mockito.verify(it).scene = scene
         }
         Mockito.verify(transitionMock).scene = scene
-        stateMachine.onRemoveFromScene()
-        mocks.forEach {
-            Mockito.verify(it).onRemoveFromScene()
-        }
         stateMachine.onRemoveFromWorld()
         mocks.forEach {
-            Mockito.verify(it).onRemoveFromWorld()
+            Mockito.verify(it).onRemoveFromWorldWrapper()
         }
     }
 

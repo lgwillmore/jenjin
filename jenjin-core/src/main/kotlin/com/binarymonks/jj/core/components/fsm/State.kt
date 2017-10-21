@@ -56,12 +56,12 @@ class CompositeState : State() {
 
 
     override fun onAddToWorld() {
-        states.forEach { it.onAddToWorld() }
+        states.forEach { it.onAddToWorldWrapper() }
     }
 
 
     override fun onRemoveFromWorld() {
-        states.forEach { it.onRemoveFromWorld() }
+        states.forEach { it.onRemoveFromWorldWrapper() }
     }
 
     fun <T : State> part(component: T, build: (T.() -> Unit)? = null) {

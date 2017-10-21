@@ -84,6 +84,10 @@ abstract class Component : Copyable<Component> {
 
     }
 
+    internal fun onRemoveFromWorldWrapper() {
+        inWorld = false
+        onRemoveFromWorld()
+    }
 
     open fun onRemoveFromWorld() {
 

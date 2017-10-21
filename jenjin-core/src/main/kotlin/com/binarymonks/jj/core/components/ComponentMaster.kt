@@ -72,7 +72,7 @@ class ComponentMaster {
 
     fun destroy() {
         clean()
-        trackedComponents.forEach { it.value.forEach { it.onRemoveFromWorld() } }
+        trackedComponents.forEach { it.value.forEach { it.onRemoveFromWorldWrapper() } }
     }
 
     fun onScenePool() {
