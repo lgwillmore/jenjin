@@ -1,5 +1,6 @@
 package com.binarymonks.jj.core.physics
 
+import com.binarymonks.jj.core.mockoutGDXinJJ
 import com.binarymonks.jj.core.scenes.Scene
 import com.binarymonks.jj.core.testScene
 import org.junit.Before
@@ -23,6 +24,7 @@ class CollisionHandlerLifeCycleTest {
 
     @Before
     fun setUp() {
+        mockoutGDXinJJ()
         scene = testScene()
         mockBeginCollisionHandler = Mockito.mock(CollisionHandler::class.java)
         mockPreSolveHandler = Mockito.mock(PreSolveHandler::class.java)
@@ -37,7 +39,7 @@ class CollisionHandlerLifeCycleTest {
     }
 
     @Test
-    fun collisionHandlersAreCalledWhenDestroyedAndAddedToWorld(){
+    fun collisionHandlersAreCalledWhenDestroyedAndAddedToWorld() {
         scene.onAddToWorld()
 
         Mockito.verify(mockBeginCollisionHandler).onAddToWorld()
