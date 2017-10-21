@@ -1,5 +1,5 @@
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.0'
+    gradleVersion = '4.2.1'
 }
 
 allprojects {
@@ -10,7 +10,7 @@ allprojects {
         gdxVersion = '1.9.6'
         box2DLightsVersion = '1.4'
         junitVersion = '4.12'
-        kotlinVersion = '1.1.2'
+        kotlinVersion = '1.1.50'
     }
 
     repositories {
@@ -23,7 +23,7 @@ allprojects {
 
 buildscript {
 
-    ext.kotlinVersion = '1.1.2'
+    ext.kotlinVersion = '1.1.50'
 
     repositories {
         mavenCentral()
