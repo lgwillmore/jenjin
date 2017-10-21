@@ -1,4 +1,4 @@
-# jenjin ![build-status](https://travis-ci.org/laurencegw/jenjin.svg?branch=master)
+# jenjin
 
 A higher level Kotlin framework built on top of libgdx. Currently only for 2D.
 
