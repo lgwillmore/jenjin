@@ -1,4 +1,4 @@
 language: java
 script:
 - ./gradlew assemble
-- ./gradlew check -i
+- ./gradlew check --stacktrace
