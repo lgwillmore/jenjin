@@ -67,18 +67,13 @@ class ComponentMaster {
     }
 
     fun onAddToWorld() {
-        addTrackedComponent.forEach { it.value.forEach { it.onAddToWorldWrapper() } }
+        clean()
         trackedComponents.forEach { it.value.forEach { it.onAddToWorldWrapper() } }
     }
 
     fun destroy() {
         clean()
         trackedComponents.forEach { it.value.forEach { it.onRemoveFromWorldWrapper() } }
-    }
-
-    fun onScenePool() {
-        addTrackedComponent.forEach { it.value.forEach { it.onScenePool() } }
-        trackedComponents.forEach { it.value.forEach { it.onScenePool() } }
     }
 
 }

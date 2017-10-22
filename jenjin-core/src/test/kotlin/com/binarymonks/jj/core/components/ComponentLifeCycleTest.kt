@@ -2,6 +2,7 @@ package com.binarymonks.jj.core.components
 
 import com.binarymonks.jj.core.mockoutGDXinJJ
 import com.binarymonks.jj.core.scenes.Scene
+import com.binarymonks.jj.core.scenes.ScenePath
 import com.binarymonks.jj.core.testScene
 import org.junit.Before
 import org.junit.Test
@@ -41,7 +42,6 @@ class ComponentLifeCycleTest {
         scene.executeDestruction()
 
         Mockito.verify(mockComponent).onRemoveFromWorld()
-        Mockito.verify(mockComponent).onScenePool()
 
         scene.onAddToWorld()
 
@@ -76,9 +76,45 @@ class ComponentLifeCycleTest {
     }
 
     @Test
-    fun addToScene_graphIsComlete() {
-        //TODO: Write a test to make sure that all Scene nodes only get called when the tree is complete
+    fun onAddToWorld_graphIsComlete_whenAddedToWorld() {
+        val parentScene = testScene()
+        parentScene.addComponent(GetMyChildSceneMock())
+        val childScene = testScene(name = "child")
+        childScene.addComponent(GetMyParentSceneMock())
+        childScene.addComponent(GetMyChildSceneMock())
+        parentScene.add(childScene)
+        val grandChildScene = testScene(name = "child")
+        grandChildScene.addComponent(GetMyParentSceneMock())
+        childScene.add(grandChildScene)
+
+        parentScene.onAddToWorld()
     }
 
+    @Test
+    fun addAddToWorld_graphIsComplete_whenAddedToSceneAlreadyInWorld() {
+        val parentScene = testScene()
+        parentScene.onAddToWorld()
 
+        val childScene = testScene(name = "child")
+        childScene.addComponent(GetMyParentSceneMock())
+        childScene.addComponent(GetMyChildSceneMock())
+        val grandChildScene = testScene(name = "child")
+        grandChildScene.addComponent(GetMyParentSceneMock())
+        childScene.add(grandChildScene)
+
+        parentScene.add(childScene)
+    }
+
+}
+
+class GetMyParentSceneMock : Component() {
+    override fun onAddToWorld() {
+        me().getNode(ScenePath().up()).name
+    }
+}
+
+class GetMyChildSceneMock : Component() {
+    override fun onAddToWorld() {
+        me().getChild("child")!!.name
+    }
 }

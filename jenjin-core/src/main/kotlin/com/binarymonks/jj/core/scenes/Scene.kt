@@ -75,7 +75,7 @@ open class Scene(
     }
 
     fun <T : Component> hasComponent(type: KClass<T>): Boolean {
-        return getComponent(type).size>0
+        return getComponent(type).size > 0
     }
 
 
@@ -192,7 +192,6 @@ open class Scene(
         physicsRoot.destroy(pooled)
         componentMaster.destroy()
         if (pooled) {
-            componentMaster.onScenePool()
             JJ.B.scenes.masterFactory.scenePool.put(scale.x, scale.y, specID, this)
         }
     }

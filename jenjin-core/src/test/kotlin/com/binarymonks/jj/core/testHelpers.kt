@@ -16,8 +16,8 @@ import com.binarymonks.jj.core.pools.Pools
 import com.binarymonks.jj.core.render.RenderRoot
 import com.binarymonks.jj.core.render.RenderWorld
 import com.binarymonks.jj.core.scenes.Scene
-import com.binarymonks.jj.core.scenes.Scenes
 import com.binarymonks.jj.core.scenes.SceneWorld
+import com.binarymonks.jj.core.scenes.Scenes
 import com.binarymonks.jj.core.time.ClockControls
 import org.mockito.Mockito
 
@@ -46,13 +46,13 @@ fun mockoutGDXinJJ() {
     JJ.render = JJ.B.renderWorld
 }
 
-fun testScene(pooled: Boolean = true): Scene {
+fun testScene(pooled: Boolean = true, name: String? = null): Scene {
     val mockBody: Body = Mockito.mock(Body::class.java)
     Mockito.`when`(mockBody.getFixtureList()).thenReturn(Array())
     Mockito.`when`(mockBody.getJointList()).thenReturn(Array())
 
     return Scene(
-            null,
+            name,
             null,
             null,
             1,

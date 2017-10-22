@@ -80,6 +80,11 @@ abstract class Component : Copyable<Component> {
     }
 
 
+    /**
+     * Called when the Component's parent Scene is added to the world,
+     * or when the Component is added to a Scene that is already in the world.
+     * The whole scene graph for that loop of the game cycle will be complete.
+     */
     open fun onAddToWorld() {
 
     }
@@ -89,11 +94,12 @@ abstract class Component : Copyable<Component> {
         onRemoveFromWorld()
     }
 
+    /**
+     * Called when the Component is removed from the scene,
+     * or when the Scene is removed from the world.
+     * This will also be called before being added to a pool (If the Scene is pooled)
+     */
     open fun onRemoveFromWorld() {
-
-    }
-
-    open fun onScenePool() {
 
     }
 
