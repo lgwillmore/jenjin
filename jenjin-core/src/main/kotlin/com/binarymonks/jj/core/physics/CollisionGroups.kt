@@ -11,6 +11,9 @@ class CollisionGroups {
 
     private var groups: ObjectMap<String, CollisionGroup> = ObjectMap()
 
+    /**
+     * Add a collision group
+     */
     fun addGroup(group: CollisionGroup) {
         groups.put(group.name, group)
     }

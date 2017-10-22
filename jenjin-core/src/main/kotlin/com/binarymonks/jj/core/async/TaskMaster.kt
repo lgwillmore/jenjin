@@ -1,6 +1,8 @@
 package com.binarymonks.jj.core.async
 
 import com.badlogic.gdx.utils.Array
+import com.binarymonks.jj.core.pools.Poolable
+import com.binarymonks.jj.core.pools.recycle
 
 class TaskMaster {
 
@@ -23,6 +25,8 @@ class TaskMaster {
     fun clean() {
         for (removeTask in removeTasks) {
             removeTask.tearDown()
+            if (removeTask is Poolable)
+                recycle(removeTask)
             tasks.removeValue(removeTask, true)
         }
         removeTasks.clear()
