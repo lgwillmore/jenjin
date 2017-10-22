@@ -12,10 +12,8 @@ import com.binarymonks.jj.core.Copyable
 class PropOverride<T>(value: T) : Copyable<PropOverride<T>> {
 
     private var value: T = value
-        private set
 
     private var propOverrideKey: String? = null
-        private set
 
     internal var hasProps: HasProps? = null
 
