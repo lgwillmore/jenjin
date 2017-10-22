@@ -6,8 +6,6 @@ import kotlin.reflect.KFunction
 
 /**
  * Lets you add [com.binarymonks.jj.core.async.Task]s to parts of the game loop.
- *
- * When a task is done, if it is [com.binarymonks.jj.core.pools.Poolable] it will be recycled into the pool.
  */
 interface TasksAPI {
 
