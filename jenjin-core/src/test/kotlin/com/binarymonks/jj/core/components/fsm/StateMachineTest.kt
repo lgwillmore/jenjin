@@ -49,7 +49,7 @@ class StateMachineTest {
         val stateMachine = StateMachine {
             initialState("initial", initialStateMock)
         }
-
+        stateMachine.onAddToWorld()
         stateMachine.update()
         Mockito.verify(initialStateMock).enter()
     }
@@ -72,6 +72,7 @@ class StateMachineTest {
             addState("aThird", aThirdStateMock)
         }
 
+        stateMachine.onAddToWorld()
         stateMachine.update()
         Mockito.verify(initialStateMock).exit()
         Mockito.verify(anotherStateMock).enter()
@@ -95,7 +96,7 @@ class StateMachineTest {
             }
             addState("another", anotherStateMock)
         }
-
+        stateMachine.onAddToWorld()
         stateMachine.update()
         Mockito.verify(initialStateMock).update()
         Mockito.verify(initialStateMock, Mockito.never()).exit()
@@ -119,7 +120,7 @@ class StateMachineTest {
             addState("another", anotherStateMock)
             addState("forceToMe", forceToMeStateMock)
         }
-
+        stateMachine.onAddToWorld()
         stateMachine.update()
         stateMachine.transitionTo("forceToMe")
         stateMachine.update()

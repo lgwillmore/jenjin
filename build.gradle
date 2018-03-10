@@ -70,7 +70,23 @@ project(":jenjin-spine") {
     }
 }
 
+
+
 project(":jenjin-demo") {
+    apply plugin: "kotlin"
+
+    dependencies {
+        compile project(":jenjin-core")
+        compile project(":jenjin-spine")
+        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
+        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+    }
+}
+
+project(":jenjin-test") {
     apply plugin: "kotlin"
 
     dependencies {

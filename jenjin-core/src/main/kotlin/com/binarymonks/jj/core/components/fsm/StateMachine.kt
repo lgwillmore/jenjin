@@ -84,6 +84,9 @@ open class StateMachine() : State() {
     fun transitionTo(stateName: String) {
         requestedTransition = stateName
     }
+
+    override fun toString(): String = "{ initialState: $initialState, currentState: $currentState, requestedState: $requestedTransition }"
+
 }
 
 class TransitionEdge() {

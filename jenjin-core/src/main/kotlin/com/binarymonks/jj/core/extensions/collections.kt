@@ -1,8 +1,7 @@
 package com.binarymonks.jj.core.extensions
 
-import com.badlogic.gdx.math.MathUtils
-import com.badlogic.gdx.utils.ObjectMap
 import com.badlogic.gdx.utils.Array
+import com.badlogic.gdx.utils.ObjectMap
 import com.badlogic.gdx.utils.ObjectSet
 import com.binarymonks.jj.core.Copyable
 

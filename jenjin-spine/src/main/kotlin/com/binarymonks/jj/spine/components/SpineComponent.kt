@@ -28,13 +28,27 @@ class SpineComponent(
     lateinit internal var spineRenderNode: SpineRenderNode
     lateinit internal var animationState: AnimationState
     internal var ragDoll = false
+    internal var initialised = false
     var bonePaths: ObjectMap<String, ScenePath> = ObjectMap()
     private var hiddenSlotAttachments: ObjectMap<String, Attachment> = ObjectMap()
 
 
     override fun onAddToWorld() {
         spineRenderNode = me().renderRoot.getNode(SPINE_RENDER_NAME) as SpineRenderNode
-        initialiseAnimations()
+        if (!initialised) {
+            val stateData = AnimationStateData(spineRenderNode.skeletonData)
+            animations.crossFades.forEach { stateData.setMix(it.fromName, it.toName, it.duration) }
+            animationState = AnimationState(stateData)
+        }
+
+
+
+        if (animations.startingAnimation != null) {
+            animationState.setAnimation(0, animations.startingAnimation, true)
+        }
+        animationListener.spineAnimations = animations
+        animationState.addListener(animationListener)
+
         bonePaths.forEach {
             it.value.from(me()).getComponent(SpineBoneComponent::class).first().setSpineComponent(me())
             if (it.value.path.size == 1) {
@@ -56,14 +70,17 @@ class SpineComponent(
 
     private fun initialiseAnimations() {
         //FIXME: There must be a problem with pooling and doing this!
-        val stateData = AnimationStateData(spineRenderNode.skeletonData)
-        animations.crossFades.forEach { stateData.setMix(it.fromName, it.toName, it.duration) }
-        animationState = AnimationState(stateData)
-        if (animations.startingAnimation != null) {
-            animationState.setAnimation(0, animations.startingAnimation, true)
-        }
-        animationListener.spineAnimations = animations
-        animationState.addListener(animationListener)
+//        if (!initialised) {
+//
+//        }
+//        val stateData = AnimationStateData(spineRenderNode.skeletonData)
+//        animations.crossFades.forEach { stateData.setMix(it.fromName, it.toName, it.duration) }
+//        animationState = AnimationState(stateData)
+//        if (animations.startingAnimation != null) {
+//            animationState.setAnimation(0, animations.startingAnimation, true)
+//        }
+//        animationListener.spineAnimations = animations
+//        animationState.addListener(animationListener)
     }
 
     fun animationState(): AnimationState {
