@@ -46,6 +46,9 @@ class SpineComponent(
             shows.add(it.key)
         }
         shows.forEach { show(it) }
+        if (ragDoll) {
+            reverseRagDoll()
+        }
     }
 
     override fun update() {
