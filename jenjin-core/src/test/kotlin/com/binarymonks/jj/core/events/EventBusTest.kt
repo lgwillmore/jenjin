@@ -89,8 +89,8 @@ class EventBusTest {
         val subscriberMock = SubscriberMock()
         val paramSubscriberMock = ParamSubscriberMock()
 
-        val funcID = testObj.register(message, subscriberMock::call)
-        val handlerID = testObj.register(message, paramSubscriberMock::call)
+        testObj.register(message, subscriberMock::call)
+        testObj.register(message, paramSubscriberMock::call)
 
         testObj.clear()
 
