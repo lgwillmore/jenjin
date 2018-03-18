@@ -65,4 +65,39 @@ class EventBusTest {
         Assert.assertEquals(params, paramSubscriberMock.params)
     }
 
+    @Test
+    fun deregister(){
+
+        val subscriberMock = SubscriberMock()
+        val paramSubscriberMock = ParamSubscriberMock()
+
+        val funcID = testObj.register(message, subscriberMock::call)
+        val handlerID = testObj.register(message, paramSubscriberMock::call)
+
+        testObj.deregister(message, funcID)
+        testObj.deregister(message, handlerID)
+
+        testObj.send(message)
+
+        Assert.assertFalse(subscriberMock.called)
+        Assert.assertNull(paramSubscriberMock.params)
+
+    }
+
+    @Test
+    fun clear(){
+        val subscriberMock = SubscriberMock()
+        val paramSubscriberMock = ParamSubscriberMock()
+
+        val funcID = testObj.register(message, subscriberMock::call)
+        val handlerID = testObj.register(message, paramSubscriberMock::call)
+
+        testObj.clear()
+
+        testObj.send(message)
+
+        Assert.assertFalse(subscriberMock.called)
+        Assert.assertNull(paramSubscriberMock.params)
+    }
+
 }

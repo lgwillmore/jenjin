@@ -17,8 +17,10 @@ interface EventsAPI {
      *
      * @property message The message of the event that you want to subscribe to.
      * @property function The handler of the event.
+     *
+     * @return Int : The registered ID
      */
-    fun register(message: String, function: Subscriber)
+    fun register(message: String, function: Subscriber): Int
 
     /**
      * Register a subscriber that does care about event parameters.
@@ -26,8 +28,10 @@ interface EventsAPI {
      *
      * @property message The message of the event that you want to subscribe to.
      * @property function The handler of the event.
+     *
+     * @return Int : The registered ID
      */
-    fun register(message: String, eventHandler: ParamSubscriber)
+    fun register(message: String, eventHandler: ParamSubscriber): Int
 
     /**
      * Lets you send an event with or without parameters

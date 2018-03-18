@@ -8,6 +8,9 @@ import com.binarymonks.jj.core.async.Bond
 import com.binarymonks.jj.core.audio.SoundEffects
 import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.components.ComponentMaster
+import com.binarymonks.jj.core.events.EventBus
+import com.binarymonks.jj.core.events.ParamSubscriber
+import com.binarymonks.jj.core.events.Subscriber
 import com.binarymonks.jj.core.physics.PhysicsRoot
 import com.binarymonks.jj.core.pools.Poolable
 import com.binarymonks.jj.core.pools.new
@@ -15,6 +18,7 @@ import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.properties.HasProps
 import com.binarymonks.jj.core.render.RenderRoot
 import com.binarymonks.jj.core.specs.InstanceParams
+import java.awt.Event
 import kotlin.reflect.KClass
 
 /**
@@ -59,6 +63,7 @@ open class Scene(
     internal var removals = Array<Scene>()
     private var componentMaster = ComponentMaster()
     internal var inUpdate = false
+    private val eventBus = EventBus()
     var inWorld = false
     var isDestroyed = false
 
@@ -191,6 +196,7 @@ open class Scene(
         renderRoot.destroy(pooled)
         physicsRoot.destroy(pooled)
         componentMaster.destroy()
+        eventBus.clear()
         if (pooled) {
             JJ.B.scenes.masterFactory.scenePool.put(scale.x, scale.y, specID, this)
         }
@@ -233,6 +239,21 @@ open class Scene(
 
     fun append(params: InstanceParams, scenePath: String): Bond<Scene> {
         return JJ.B.scenes.instantiate(params, scenePath, this)
+    }
+
+    fun register(message: String, function: Subscriber): Int {
+        return eventBus.register(message, function)
+    }
+
+    fun register(message: String, eventHandler: ParamSubscriber): Int {
+        return eventBus.register(message, eventHandler)
+    }
+
+    fun broadcast(message: String, eventParams: ObjectMap<String, Any> = EventBus.NULLPARAMS, propagate: Boolean = false) {
+        eventBus.send(message, eventParams)
+        if (propagate) {
+            sceneLayers.forEach { it.value.forEach { it.broadcast(message, eventParams, propagate) } }
+        }
     }
 }
 
