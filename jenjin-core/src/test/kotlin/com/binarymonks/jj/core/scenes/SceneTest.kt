@@ -48,4 +48,15 @@ class SceneEventBusTest {
         Assert.assertEquals(EventBus.NULLPARAMS, scene2HandlerMock.params)
     }
 
+    @Test
+    fun deregister(){
+        val mockSubscriber = SubscriberMock()
+        val id = scene1.register(message, mockSubscriber::call)
+        scene1.deregister(message, id)
+
+        scene1.broadcast(message, propagate = false)
+
+        Assert.assertFalse(mockSubscriber.called)
+    }
+
 }

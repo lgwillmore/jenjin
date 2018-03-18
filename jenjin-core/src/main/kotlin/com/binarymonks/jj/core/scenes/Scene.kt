@@ -255,6 +255,10 @@ open class Scene(
             sceneLayers.forEach { it.value.forEach { it.broadcast(message, eventParams, propagate) } }
         }
     }
+
+    fun deregister(message: String, registerID: Int) {
+        eventBus.deregister(message, registerID)
+    }
 }
 
 class AddScene : Poolable {
