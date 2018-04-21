@@ -6,12 +6,15 @@ import com.binarymonks.jj.core.Copyable
 /**
  * Used to indicate fields that can be set by value or by looking up a property of the runtime scene.
  *
- * If [setOverride] is used, this will take precedence  if the property exists. If not the Value will be used
- * as a fallback. If [set] is called it will cancel the property override, and the value will take precedence.
+ * Initialised with a default. This default can be null if the type T is nullable.
+ *
+ * An explicit value can be set using [PropOverride.set]. This will nullify the property key set by [PropOverride.setOverride].
+ *
+ * A property override key can be set using [PropOverride.setOverride]. This will nullify the value set by [PropOverride.set].
+ *
+ * Use [PropOverride.get] for run time use of the resultant actual value.
  */
-class PropOverride<T>(default: T) : Copyable<PropOverride<T>> {
-
-    private val default: T = default
+class PropOverride<T>(var default: T) : Copyable<PropOverride<T>> {
 
     private var value: T? = null
 
@@ -20,7 +23,7 @@ class PropOverride<T>(default: T) : Copyable<PropOverride<T>> {
     internal var hasProps: HasProps? = null
 
     /**
-     * Set to an explicit value - do not delegate to a property
+     * Set to an explicit value - do not delegate to a property.
      */
     fun set(value: T) {
         this.value = value
@@ -30,22 +33,25 @@ class PropOverride<T>(default: T) : Copyable<PropOverride<T>> {
     /**
      * Set the key of the property to refer to.
      *
-     * Will default to the value set/initialised if no property for the key is found.
+     * Will fall back to default if no property for the key is found.
      */
     fun setOverride(propertyKey: String) {
         this.propOverrideKey = propertyKey
-        this.value=null
+        this.value = null
     }
 
     /**
-     * Get the actual value dependent on property or value state
+     * Get the computed value.
+     *
+     * This will be whichever was called last between [PropOverride.set]/[PropOverride.setOverride], if they are not null.
+     * Falling back to the default if they are null or not set.
      */
     fun get(): T {
         if (propOverrideKey != null && hasProps != null && hasProps!!.hasProp(propOverrideKey!!)) {
             @Suppress("UNCHECKED_CAST")
             return hasProps!!.getProp(propOverrideKey!!) as T
         }
-        if (value != null){
+        if (value != null) {
             return value!!
         }
         return default
@@ -62,18 +68,23 @@ class PropOverride<T>(default: T) : Copyable<PropOverride<T>> {
     override fun clone(): PropOverride<T> {
         val clone = PropOverride(default)
         clone.propOverrideKey = propOverrideKey
+        clone.value = value
         return clone
     }
 
     fun copyFrom(original: PropOverride<T>) {
         this.propOverrideKey = original.propOverrideKey
         this.value = original.value
+        this.default = original.default
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is PropOverride<*>) return false
+        if (javaClass != other?.javaClass) return false
 
+        other as PropOverride<*>
+
+        if (default != other.default) return false
         if (value != other.value) return false
         if (propOverrideKey != other.propOverrideKey) return false
 
@@ -81,7 +92,8 @@ class PropOverride<T>(default: T) : Copyable<PropOverride<T>> {
     }
 
     override fun hashCode(): Int {
-        var result = value?.hashCode() ?: 0
+        var result = default?.hashCode() ?: 0
+        result = 31 * result + (value?.hashCode() ?: 0)
         result = 31 * result + (propOverrideKey?.hashCode() ?: 0)
         return result
     }
