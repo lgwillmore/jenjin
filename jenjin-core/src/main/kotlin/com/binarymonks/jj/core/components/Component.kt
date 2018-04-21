@@ -12,7 +12,6 @@ import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
 
 private val propDelegateType = PropOverride::class.createType(listOf(KTypeProjection(null, null)))
-private val propDelegateNullType = PropOverrideNullable::class.createType(listOf(KTypeProjection(null, null)))
 
 abstract class Component : Copyable<Component> {
 
@@ -26,11 +25,6 @@ abstract class Component : Copyable<Component> {
                 if (it.returnType.isSubtypeOf(propDelegateType)) {
                     val b = it.name
                     val pd = this.javaClass.kotlin.memberProperties.first { it.name == b }.get(this) as PropOverride<*>
-                    pd.hasProps = value
-                }
-                if (it.returnType.isSubtypeOf(propDelegateNullType)) {
-                    val b = it.name
-                    val pd = this.javaClass.kotlin.memberProperties.first { it.name == b }.get(this) as PropOverrideNullable<*>
                     pd.hasProps = value
                 }
             }
