@@ -3,6 +3,7 @@ package com.binarymonks.jj.core.components
 import com.binarymonks.jj.core.Copyable
 import com.binarymonks.jj.core.copy
 import com.binarymonks.jj.core.properties.PropOverride
+import com.binarymonks.jj.core.properties.PropOverrideNullable
 import com.binarymonks.jj.core.scenes.Scene
 import kotlin.reflect.KClass
 import kotlin.reflect.KTypeProjection
@@ -12,6 +13,7 @@ import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
 
 private val propDelegateType = PropOverride::class.createType(listOf(KTypeProjection(null, null)))
+private val propDelegateNullType = PropOverrideNullable::class.createType(listOf(KTypeProjection(null, null)))
 
 abstract class Component : Copyable<Component> {
 
@@ -20,10 +22,16 @@ abstract class Component : Copyable<Component> {
     open var scene: Scene? = null
         set(value) {
             field = value
+            // Set all the property override fields to use the parent scene as property source.
             this::class.declaredMemberProperties.forEach {
                 if (it.returnType.isSubtypeOf(propDelegateType)) {
                     val b = it.name
                     val pd = this.javaClass.kotlin.memberProperties.first { it.name == b }.get(this) as PropOverride<*>
+                    pd.hasProps = value
+                }
+                if (it.returnType.isSubtypeOf(propDelegateNullType)) {
+                    val b = it.name
+                    val pd = this.javaClass.kotlin.memberProperties.first { it.name == b }.get(this) as PropOverrideNullable<*>
                     pd.hasProps = value
                 }
             }

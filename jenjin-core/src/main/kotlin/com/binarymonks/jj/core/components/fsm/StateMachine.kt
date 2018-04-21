@@ -4,12 +4,14 @@ import com.badlogic.gdx.utils.ObjectMap
 import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.copy
+import com.binarymonks.jj.core.properties.PropOverride
+import com.binarymonks.jj.core.properties.PropOverrideNullable
 import com.binarymonks.jj.core.scenes.Scene
 
 
 open class StateMachine() : State() {
 
-    var initialState: String? = null
+    var initialState: PropOverrideNullable<String> = PropOverrideNullable(null)
     var states: ObjectMap<String, State> = ObjectMap()
     var transitions: ObjectMap<String, Array<TransitionEdge>> = ObjectMap()
     private var currentState: String? = null
@@ -60,10 +62,10 @@ open class StateMachine() : State() {
             state().enterWrapper()
         }
         if (currentState == null) {
-            if (initialState == null) {
+            if (initialState.get() == null) {
                 throw Exception("You need to set an initial state")
             }
-            currentState = initialState
+            currentState = initialState.get()
             state().enterWrapper()
         }
         for (edge in transitions.get(currentState)) {
@@ -108,12 +110,12 @@ class StateMachineBuilder(
         val stateMachine: StateMachine
 ) {
 
+    fun initialState(name: String){
+        stateMachine.initialState.set(name)
+    }
 
-    fun <T : State> initialState(name: String, component: T): TransitionBuilder {
-        stateMachine.initialState = name
-        stateMachine.states.put(name, component)
-        stateMachine.transitions.put(name, Array<TransitionEdge>())
-        return TransitionBuilder(name, stateMachine)
+    fun initialStateProp(propertyKey:String){
+        stateMachine.initialState.setOverride(propertyKey)
     }
 
     fun <T : State> addState(name: String, component: T): TransitionBuilder {

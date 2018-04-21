@@ -1,12 +1,20 @@
 package com.binarymonks.jj.core.components.fsm
 
+import com.binarymonks.jj.core.mockoutGDXinJJ
 import com.binarymonks.jj.core.scenes.Scene
+import com.binarymonks.jj.core.testScene
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
 
 
 class StateMachineTest {
+
+    @Before
+    fun setUp(){
+        mockoutGDXinJJ()
+    }
 
     @Test
     fun stateMachineInitializationAndLifecycle() {
@@ -19,7 +27,8 @@ class StateMachineTest {
         val mocks = listOf<State>(initialStateMock, anotherStateMock, combinationStateMock)
 
         val stateMachine = StateMachine {
-            initialState("initial", initialStateMock).withTransitions {
+            initialState("initial")
+            addState("initial", initialStateMock).withTransitions {
                 to("another").whenJust(transitionMock)
             }
             addState("another", anotherStateMock)
@@ -47,8 +56,26 @@ class StateMachineTest {
         val initialStateMock = Mockito.mock(State::class.java)
 
         val stateMachine = StateMachine {
-            initialState("initial", initialStateMock)
+            addState("initial", initialStateMock)
+            initialState("initial")
         }
+
+        stateMachine.update()
+        Mockito.verify(initialStateMock).enter()
+    }
+
+    @Test
+    fun transitionsStatesInitialFromProperty() {
+        val initialStateMock = Mockito.mock(State::class.java)
+
+        val sceneWithProperties = testScene()
+        sceneWithProperties.properties.put("initialStateName","initial")
+
+        val stateMachine = StateMachine {
+            addState("initial", initialStateMock)
+            initialStateProp("initialStateName")
+        }
+        sceneWithProperties.addComponent(stateMachine)
 
         stateMachine.update()
         Mockito.verify(initialStateMock).enter()
@@ -63,7 +90,8 @@ class StateMachineTest {
         Mockito.`when`(transitionMock.met()).thenReturn(true)
 
         val stateMachine = StateMachine {
-            initialState("initial", initialStateMock).withTransitions {
+            initialState("initial")
+            addState("initial", initialStateMock).withTransitions {
                 to("another").whenJust(transitionMock)
             }
             addState("another", anotherStateMock).withTransitions {
@@ -90,7 +118,8 @@ class StateMachineTest {
         Mockito.`when`(transitionMock.met()).thenReturn(false)
 
         val stateMachine = StateMachine {
-            initialState("initial", initialStateMock).withTransitions {
+            initialState("initial")
+            addState("initial", initialStateMock).withTransitions {
                 to("another").whenJust(transitionMock)
             }
             addState("another", anotherStateMock)
@@ -113,7 +142,8 @@ class StateMachineTest {
         Mockito.`when`(transitionMock.met()).thenReturn(true)
 
         val stateMachine = StateMachine {
-            initialState("initial", initialStateMock).withTransitions {
+            initialState("initial")
+            addState("initial", initialStateMock).withTransitions {
                 to("another").whenJust(transitionMock)
             }
             addState("another", anotherStateMock)

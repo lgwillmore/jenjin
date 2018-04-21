@@ -76,7 +76,7 @@ class ComponentLifeCycleTest {
     }
 
     @Test
-    fun onAddToWorld_graphIsComlete_whenAddedToWorld() {
+    fun onAddToWorld_graphIsComplete_whenAddedToWorld() {
         val parentScene = testScene()
         parentScene.addComponent(GetMyChildSceneMock())
         val childScene = testScene(name = "child")

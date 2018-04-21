@@ -9,11 +9,9 @@ import com.binarymonks.jj.core.Copyable
  * If [setOverride] is used, this will take precedence  if the property exists. If not the Value will be used
  * as a fallback. If [set] is called it will cancel the property override, and the value will take precedence.
  */
-class PropOverride<T>(default: T) : Copyable<PropOverride<T>> {
+class PropOverrideNullable<T>(value: T?) : Copyable<PropOverrideNullable<T>> {
 
-    private val default: T = default
-
-    private var value: T? = null
+    private var value: T? = value
 
     private var propOverrideKey: String? = null
 
@@ -39,8 +37,8 @@ class PropOverride<T>(default: T) : Copyable<PropOverride<T>> {
     /**
      * Get the actual value dependent on property or value state
      */
-    fun get(): T {
-        if (propOverrideKey != null && hasProps != null && hasProps!!.hasProp(propOverrideKey!!)) {
+    fun get(): T? {
+        if (propOverrideKey != null && hasProps != null) {
             @Suppress("UNCHECKED_CAST")
             return hasProps!!.getProp(propOverrideKey!!) as T
         }
@@ -50,25 +48,25 @@ class PropOverride<T>(default: T) : Copyable<PropOverride<T>> {
     /**
      * Get the actual value with a specific set of properties
      */
-    fun get(hasProps: HasProps): T {
+    fun get(hasProps: HasProps): T? {
         this.hasProps = hasProps
         return get()
     }
 
-    override fun clone(): PropOverride<T> {
-        val clone = PropOverride(value)
+    override fun clone(): PropOverrideNullable<T> {
+        val clone = PropOverrideNullable(value)
         clone.propOverrideKey = propOverrideKey
         return clone
     }
 
-    fun copyFrom(original: PropOverride<T>) {
+    fun copyFrom(original: PropOverrideNullable<T>) {
         this.propOverrideKey = original.propOverrideKey
         this.value = original.value
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is PropOverride<*>) return false
+        if (other !is PropOverrideNullable<*>) return false
 
         if (value != other.value) return false
         if (propOverrideKey != other.propOverrideKey) return false
