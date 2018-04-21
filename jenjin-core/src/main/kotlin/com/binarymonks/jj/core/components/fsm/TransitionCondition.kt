@@ -9,9 +9,17 @@ import com.binarymonks.jj.core.scenes.Scene
 abstract class TransitionCondition : Copyable<TransitionCondition> {
 
     open internal var scene: Scene? = null
+    open internal var machine: StateMachine? = null
 
     fun me(): Scene {
         return scene!!
+    }
+
+    fun myMachine(): StateMachine{
+        if(machine == null){
+            throw Exception("I cannot see my machine yet. I can only see it after I have been activated")
+        }
+        return machine!!
     }
 
     abstract fun met(): Boolean
@@ -32,6 +40,13 @@ class AndTransitionCondition() : TransitionCondition() {
         set(value) {
             super.scene = value
             conditions.forEach { it.scene = value }
+        }
+
+    override var machine: StateMachine?
+        get() = super.machine
+        set(value) {
+            super.machine = value
+            conditions.forEach { it.machine = value }
         }
 
     constructor(construc: AndTransitionCondition.() -> Unit) : this() {
@@ -65,6 +80,13 @@ class OrTransitionCondition() : TransitionCondition() {
         set(value) {
             super.scene = value
             conditions.forEach { it.scene = value }
+        }
+
+    override var machine: StateMachine?
+        get() = super.machine
+        set(value) {
+            super.machine = value
+            conditions.forEach { it.machine = value }
         }
 
     constructor(construc: OrTransitionCondition.() -> Unit) : this() {

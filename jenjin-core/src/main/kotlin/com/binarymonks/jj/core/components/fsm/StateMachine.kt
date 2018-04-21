@@ -1,7 +1,7 @@
 package com.binarymonks.jj.core.components.fsm
 
-import com.badlogic.gdx.utils.ObjectMap
 import com.badlogic.gdx.utils.Array
+import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.copy
 import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.scenes.Scene
@@ -56,17 +56,16 @@ open class StateMachine() : State() {
                 throw Exception("You need to set an initial state")
             }
             currentState = initialState.get()
-            state().enterWrapper(this)
+            prepCurrentState()
         }
         if (requestedTransition != null) {
             if (currentState != null) {
                 state().exitWrapper()
             }
             currentState = requestedTransition
+            prepCurrentState()
             requestedTransition = null
-            state().enterWrapper(this)
-        }
-        else{
+        } else {
             for (edge in transitions.get(currentState)) {
                 if (edge.condition!!.met()) {
                     state().exitWrapper()
@@ -77,6 +76,13 @@ open class StateMachine() : State() {
             }
         }
         state().update()
+    }
+
+    private fun prepCurrentState() {
+        state().enterWrapper(this)
+        for (edge in transitions.get(currentState)) {
+            edge.condition!!.machine=this
+        }
     }
 
     fun state(): State {
@@ -113,14 +119,14 @@ class StateMachineBuilder(
     /**
      * Set the default initial state.
      */
-    fun initialState(name: String){
+    fun initialState(name: String) {
         stateMachine.initialState.default = name
     }
 
     /**
      * Set the propertyKey to override default initial state.
      */
-    fun initialStateProp(propertyKey:String){
+    fun initialStateProp(propertyKey: String) {
         stateMachine.initialState.setOverride(propertyKey)
     }
 
