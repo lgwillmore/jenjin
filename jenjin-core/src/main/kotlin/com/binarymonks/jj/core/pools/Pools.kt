@@ -37,6 +37,13 @@ fun <T : Any> new(pooledClass: KClass<T>): T {
     return new(pooledClass.java)
 }
 
+/**
+ * Get a new instance of an ObjectMap from a pool
+ */
+fun <K, V> newObjectMap(): ObjectMap<K, V> {
+    return JJ.B.pools.nuwObjectMap()
+}
+
 
 /**
  * Recycle a pooled object
@@ -70,6 +77,8 @@ class Pools : PoolsAPI {
 
     internal var pools = ObjectMap<Class<*>, Pool<*>>()
     internal var poolablePools = ObjectMap<Class<*>, Array<Poolable>>()
+    internal var objectMapPool = Array<ObjectMap<*, *>>()
+
 
     init {
         registerManager(Vector2PoolManager(), Vector2::class.java)
@@ -141,11 +150,16 @@ class Pools : PoolsAPI {
 
     /**
      * Recycle the used pooled object. A [PoolManager] must be registered.
-     * There is a nice little convenience function with much less to type [Re.cycle]
+     * There is a nice little convenience function with much less to type [recycle]
 
      * @param pooled
      */
     fun recycle(pooled: Any) {
+        if (pooled is ObjectMap<*, *>) {
+            pooled.clear()
+            objectMapPool.add(pooled)
+            return
+        }
         if (pooled is Poolable) {
             recyclePoolable(pooled)
             return
@@ -189,6 +203,15 @@ class Pools : PoolsAPI {
         if (!pools.containsKey(sceneToPoolClass)) {
             pools.put(sceneToPoolClass, Pool(poolManager))
         }
+    }
+
+    fun <K, V> nuwObjectMap(): ObjectMap<K, V> {
+        if (objectMapPool.size > 0) {
+            val map = objectMapPool.pop()
+            map.clear()
+            return map as ObjectMap<K, V>
+        }
+        return ObjectMap()
     }
 
     class NoPoolManagerException(classWithMissingPool: Class<*>) : RuntimeException(String.format("No PoolManager for %s. Register a pool manager.", classWithMissingPool.canonicalName))

@@ -5,12 +5,14 @@ import com.badlogic.gdx.utils.ObjectMap
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.ObjectSet
 import com.binarymonks.jj.core.Copyable
+import com.binarymonks.jj.core.JJ
+import com.binarymonks.jj.core.pools.newObjectMap
 
 /**
- * Copies the map with [Copyable] awareness for values
+ * Copies the map with [Copyable] awareness for values. Uses pooled Object maps via [newObjectMap]
  */
 fun <K, V> ObjectMap<K, V>.copy(): ObjectMap<K, V> {
-    val clone: ObjectMap<K, V> = ObjectMap()
+    val clone: ObjectMap<K, V> = newObjectMap()
     for (entry in this) {
         val value = entry.value
         if (value is Copyable<*>) {
@@ -21,6 +23,10 @@ fun <K, V> ObjectMap<K, V>.copy(): ObjectMap<K, V> {
         }
     }
     return clone
+}
+
+fun <K,V> ObjectMap<K,V>.recycle(){
+    JJ.B.pools.recycle(this)
 }
 
 /**

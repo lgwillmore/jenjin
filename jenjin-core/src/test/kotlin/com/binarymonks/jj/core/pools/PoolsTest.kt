@@ -1,8 +1,10 @@
 package com.binarymonks.jj.core.pools
 
+import com.badlogic.gdx.utils.ObjectMap
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import org.omg.CORBA.Object
 
 class PoolsTest {
 
@@ -68,6 +70,17 @@ class PoolsTest {
         Assert.assertSame(actual, actual_v2)
         Assert.assertTrue(actual.reset)
 
+    }
+
+    @Test
+    fun newObjectMap(){
+        val actual: ObjectMap<String, Any> = testObj.nuwObjectMap()
+
+        testObj.recycle(actual)
+
+        val anotherActual: ObjectMap<Int,String> = testObj.nuwObjectMap()
+
+        Assert.assertSame(actual,anotherActual)
     }
 
     class ScenePoolManager(internal var initialise_value: Int, internal var reset_value: Int) : PoolManager<SceneToPool> {

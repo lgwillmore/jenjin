@@ -9,7 +9,7 @@ typealias ParamSubscriber = (params: ObjectMap<String, Any>) -> Unit
 
 class EventBus : EventsAPI {
 
-    internal var listeners = ObjectMap<String, Listeners>()
+    private var listeners = ObjectMap<String, Listeners>()
     private var idCounter = 0
 
     private fun nextID(): Int {
