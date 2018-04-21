@@ -34,6 +34,7 @@ class PropOverride<T>(default: T) : Copyable<PropOverride<T>> {
      */
     fun setOverride(propertyKey: String) {
         this.propOverrideKey = propertyKey
+        this.value=null
     }
 
     /**
@@ -44,7 +45,10 @@ class PropOverride<T>(default: T) : Copyable<PropOverride<T>> {
             @Suppress("UNCHECKED_CAST")
             return hasProps!!.getProp(propOverrideKey!!) as T
         }
-        return value
+        if (value != null){
+            return value!!
+        }
+        return default
     }
 
     /**
@@ -56,7 +60,7 @@ class PropOverride<T>(default: T) : Copyable<PropOverride<T>> {
     }
 
     override fun clone(): PropOverride<T> {
-        val clone = PropOverride(value)
+        val clone = PropOverride(default)
         clone.propOverrideKey = propOverrideKey
         return clone
     }

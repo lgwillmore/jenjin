@@ -2,16 +2,14 @@ package com.binarymonks.jj.core.components.fsm
 
 import com.badlogic.gdx.utils.ObjectMap
 import com.badlogic.gdx.utils.Array
-import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.copy
 import com.binarymonks.jj.core.properties.PropOverride
-import com.binarymonks.jj.core.properties.PropOverrideNullable
 import com.binarymonks.jj.core.scenes.Scene
 
 
 open class StateMachine() : State() {
 
-    var initialState: PropOverrideNullable<String> = PropOverrideNullable(null)
+    var initialState = PropOverride<String?>(null)
     var states: ObjectMap<String, State> = ObjectMap()
     var transitions: ObjectMap<String, Array<TransitionEdge>> = ObjectMap()
     private var currentState: String? = null

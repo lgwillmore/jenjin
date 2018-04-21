@@ -69,7 +69,7 @@ class PropOverrideTest {
         propOverride.set(explicit)
         propOverride.setOverride("someOtherPropertyKey")
 
-        Assert.assertEquals(propertyValue, propOverride.get())
+        Assert.assertEquals(default, propOverride.get())
     }
 
     @Test
@@ -79,7 +79,7 @@ class PropOverrideTest {
         propOverride.setOverride(propertyKey)
         propOverride.set(explicit)
 
-        Assert.assertEquals(propertyValue, propOverride.get())
+        Assert.assertEquals(explicit, propOverride.get())
     }
 
     @Test
@@ -89,7 +89,7 @@ class PropOverrideTest {
         propOverride.setOverride("someOtherPropertyKey")
         propOverride.set(explicit)
 
-        Assert.assertEquals(propertyValue, propOverride.get())
+        Assert.assertEquals(explicit, propOverride.get())
     }
 
 

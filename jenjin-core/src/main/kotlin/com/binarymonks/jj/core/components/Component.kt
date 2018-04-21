@@ -3,7 +3,6 @@ package com.binarymonks.jj.core.components
 import com.binarymonks.jj.core.Copyable
 import com.binarymonks.jj.core.copy
 import com.binarymonks.jj.core.properties.PropOverride
-import com.binarymonks.jj.core.properties.PropOverrideNullable
 import com.binarymonks.jj.core.scenes.Scene
 import kotlin.reflect.KClass
 import kotlin.reflect.KTypeProjection
