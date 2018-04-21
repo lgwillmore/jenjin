@@ -46,7 +46,7 @@ class EventBus : EventsAPI {
         }
     }
 
-    fun deregister(channel: String, registerID: Int) {
+    override fun deregister(channel: String, registerID: Int) {
         if (listeners.containsKey(channel)) {
             listeners[channel].funcListeners.remove(registerID)
             listeners[channel].handlers.remove(registerID)
