@@ -18,7 +18,6 @@ import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.properties.HasProps
 import com.binarymonks.jj.core.render.RenderRoot
 import com.binarymonks.jj.core.specs.InstanceParams
-import java.awt.Event
 import kotlin.reflect.KClass
 
 /**
@@ -241,23 +240,23 @@ open class Scene(
         return JJ.B.scenes.instantiate(params, scenePath, this)
     }
 
-    fun register(message: String, function: Subscriber): Int {
-        return eventBus.register(message, function)
+    fun register(channel: String, function: Subscriber): Int {
+        return eventBus.register(channel, function)
     }
 
-    fun register(message: String, eventHandler: ParamSubscriber): Int {
-        return eventBus.register(message, eventHandler)
+    fun register(channel: String, eventHandler: ParamSubscriber): Int {
+        return eventBus.register(channel, eventHandler)
     }
 
-    fun broadcast(message: String, eventParams: ObjectMap<String, Any> = EventBus.NULLPARAMS, propagate: Boolean = false) {
-        eventBus.send(message, eventParams)
+    fun broadcast(channel: String, eventParams: ObjectMap<String, Any> = EventBus.NULLPARAMS, propagate: Boolean = false) {
+        eventBus.send(channel, eventParams)
         if (propagate) {
-            sceneLayers.forEach { it.value.forEach { it.broadcast(message, eventParams, propagate) } }
+            sceneLayers.forEach { it.value.forEach { it.broadcast(channel, eventParams, propagate) } }
         }
     }
 
-    fun deregister(message: String, registerID: Int) {
-        eventBus.deregister(message, registerID)
+    fun deregister(channel: String, registerID: Int) {
+        eventBus.deregister(channel, registerID)
     }
 }
 

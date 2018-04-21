@@ -1,6 +1,5 @@
 package com.binarymonks.jj.core.events
 
-import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.api.EventsAPI
 
@@ -18,39 +17,39 @@ class EventBus : EventsAPI {
         return idCounter
     }
 
-    override fun register(message: String, function: Subscriber): Int {
-        if (!listeners.containsKey(message)) {
-            listeners.put(message, Listeners())
+    override fun register(channel: String, function: Subscriber): Int {
+        if (!listeners.containsKey(channel)) {
+            listeners.put(channel, Listeners())
         }
         val id = nextID()
-        listeners.get(message).funcListeners.put(id, function)
+        listeners.get(channel).funcListeners.put(id, function)
         return id
     }
 
-    override fun register(message: String, eventHandler: ParamSubscriber): Int {
-        if (!listeners.containsKey(message)) {
-            listeners.put(message, Listeners())
+    override fun register(channel: String, eventHandler: ParamSubscriber): Int {
+        if (!listeners.containsKey(channel)) {
+            listeners.put(channel, Listeners())
         }
         val id = nextID()
-        listeners.get(message).handlers.put(id, eventHandler)
+        listeners.get(channel).handlers.put(id, eventHandler)
         return id
     }
 
-    override fun send(message: String, eventParams: ObjectMap<String, Any>) {
-        if (listeners.containsKey(message)) {
-            for (func in listeners.get(message).funcListeners.values()) {
+    override fun send(channel: String, eventParams: ObjectMap<String, Any>) {
+        if (listeners.containsKey(channel)) {
+            for (func in listeners.get(channel).funcListeners.values()) {
                 func()
             }
-            for (handler in listeners.get(message).handlers.values()) {
+            for (handler in listeners.get(channel).handlers.values()) {
                 handler(eventParams)
             }
         }
     }
 
-    fun deregister(message: String, registerID: Int) {
-        if (listeners.containsKey(message)) {
-            listeners[message].funcListeners.remove(registerID)
-            listeners[message].handlers.remove(registerID)
+    fun deregister(channel: String, registerID: Int) {
+        if (listeners.containsKey(channel)) {
+            listeners[channel].funcListeners.remove(registerID)
+            listeners[channel].handlers.remove(registerID)
         }
     }
 
