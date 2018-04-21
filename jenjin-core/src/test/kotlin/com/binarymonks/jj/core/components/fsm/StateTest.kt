@@ -12,17 +12,20 @@ class CompositeStateTest {
     @Mock
     lateinit var stateMock: State
 
+    @Mock
+    lateinit var machineMock: StateMachine
+
     @Test
     fun activeStatusUpdatedOnEnterAndExit() {
         val composite = CompositeState()
         composite.part(stateMock)
 
-        composite.enterWrapper()
+        composite.enterWrapper(machineMock)
 
-        Mockito.verify(stateMock).active = true
+        Mockito.verify(stateMock).enterWrapper(machineMock)
 
         composite.exitWrapper()
 
-        Mockito.verify(stateMock).active = false
+        Mockito.verify(stateMock).exitWrapper()
     }
 }

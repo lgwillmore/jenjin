@@ -61,7 +61,7 @@ class StateMachineTest {
         }
 
         stateMachine.update()
-        Mockito.verify(initialStateMock).enter()
+        Mockito.verify(initialStateMock).enterWrapper(stateMachine)
     }
 
     @Test
@@ -78,7 +78,7 @@ class StateMachineTest {
         sceneWithProperties.addComponent(stateMachine)
 
         stateMachine.update()
-        Mockito.verify(initialStateMock).enter()
+        Mockito.verify(initialStateMock).enterWrapper(stateMachine)
     }
 
     @Test
@@ -101,12 +101,12 @@ class StateMachineTest {
         }
 
         stateMachine.update()
-        Mockito.verify(initialStateMock).exit()
-        Mockito.verify(anotherStateMock).enter()
+        Mockito.verify(initialStateMock).exitWrapper()
+        Mockito.verify(anotherStateMock).enterWrapper(stateMachine)
         Mockito.verify(anotherStateMock).update()
         stateMachine.update()
-        Mockito.verify(anotherStateMock).exit()
-        Mockito.verify(aThirdStateMock).enter()
+        Mockito.verify(anotherStateMock).exitWrapper()
+        Mockito.verify(aThirdStateMock).enterWrapper(stateMachine)
         Mockito.verify(aThirdStateMock).update()
     }
 
@@ -153,9 +153,9 @@ class StateMachineTest {
         stateMachine.update()
         stateMachine.transitionTo("forceToMe")
         stateMachine.update()
-        Mockito.verify(anotherStateMock).exit()
-        Mockito.verify(forceToMeStateMock).enter()
-        Mockito.verify(forceToMeStateMock, Mockito.never()).exit()
+        Mockito.verify(anotherStateMock).exitWrapper()
+        Mockito.verify(forceToMeStateMock).enterWrapper(stateMachine)
+        Mockito.verify(forceToMeStateMock, Mockito.never()).exitWrapper()
 
     }
 }

@@ -51,27 +51,29 @@ open class StateMachine() : State() {
     }
 
     override fun update() {
+        if (currentState == null) {
+            if (initialState.get() == null) {
+                throw Exception("You need to set an initial state")
+            }
+            currentState = initialState.get()
+            state().enterWrapper(this)
+        }
         if (requestedTransition != null) {
             if (currentState != null) {
                 state().exitWrapper()
             }
             currentState = requestedTransition
             requestedTransition = null
-            state().enterWrapper()
+            state().enterWrapper(this)
         }
-        if (currentState == null) {
-            if (initialState.get() == null) {
-                throw Exception("You need to set an initial state")
-            }
-            currentState = initialState.get()
-            state().enterWrapper()
-        }
-        for (edge in transitions.get(currentState)) {
-            if (edge.condition!!.met()) {
-                state().exitWrapper()
-                currentState = edge.toEventName
-                state().enterWrapper()
-                break
+        else{
+            for (edge in transitions.get(currentState)) {
+                if (edge.condition!!.met()) {
+                    state().exitWrapper()
+                    currentState = edge.toEventName
+                    state().enterWrapper(this)
+                    break
+                }
             }
         }
         state().update()

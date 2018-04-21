@@ -7,17 +7,27 @@ import com.binarymonks.jj.core.scenes.Scene
 
 abstract class State : Component() {
 
+    private var machine: StateMachine? = null
+
     open var active = false
         internal set
 
-    fun enterWrapper() {
+    internal open fun enterWrapper(machine: StateMachine) {
+        this.machine=machine
         active = true
         enter()
     }
 
-    fun exitWrapper() {
+    internal open fun exitWrapper() {
         active = false
         exit()
+    }
+
+    fun myMachine(): StateMachine{
+        if(machine == null){
+            throw Exception("I cannot see my machine yet. I can only see it after I have been activated")
+        }
+        return machine!!
     }
 
 
@@ -38,14 +48,15 @@ class CompositeState : State() {
 
     var states: Array<State> = Array()
 
-    override var active: Boolean = false
-        get() = super.active
-        set(value) {
-            field = value
-            states.forEach {
-                it.active = value
-            }
-        }
+    override fun enterWrapper(machine: StateMachine) {
+        super.enterWrapper(machine)
+        states.forEach { it.enterWrapper(machine) }
+    }
+
+    override fun exitWrapper() {
+        super.exitWrapper()
+        states.forEach { it.exitWrapper() }
+    }
 
     override var scene: Scene?
         get() = super.scene
