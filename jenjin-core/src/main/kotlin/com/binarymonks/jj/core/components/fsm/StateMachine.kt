@@ -108,10 +108,16 @@ class StateMachineBuilder(
         val stateMachine: StateMachine
 ) {
 
+    /**
+     * Set the default initial state.
+     */
     fun initialState(name: String){
-        stateMachine.initialState.set(name)
+        stateMachine.initialState.default = name
     }
 
+    /**
+     * Set the propertyKey to override default initial state.
+     */
     fun initialStateProp(propertyKey:String){
         stateMachine.initialState.setOverride(propertyKey)
     }
