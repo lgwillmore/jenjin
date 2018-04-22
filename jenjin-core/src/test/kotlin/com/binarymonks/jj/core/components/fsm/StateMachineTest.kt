@@ -255,6 +255,7 @@ class StateMachineTest {
 class MyCondition: TransitionCondition(){
     var variable = "default"
     override fun met(): Boolean {
+        TODO("Not Used")
     }
 
     override fun equals(other: Any?): Boolean {

@@ -1,5 +1,6 @@
 package com.binarymonks.jj.core
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.ObjectMap
 import com.badlogic.gdx.utils.ObjectSet
@@ -62,8 +63,8 @@ fun <T: Any> copy(original: T): T {
     val myClass = original::class
     var copy = construct(myClass)
     myClass.memberProperties.forEach {
+        val name = it.name
         try {
-            val name = it.name
             if (it.visibility == KVisibility.PUBLIC && isPubliclyMutable(it)) {
                 when {
                     original.javaClass.kotlin.memberProperties.first { it.name == name }.get(original) == null -> copyProperty(original, copy, name)
@@ -99,7 +100,10 @@ fun <T: Any> copy(original: T): T {
                 }
             }
         } catch (e: Exception) {
-            throw Exception("Could not copy something", e)
+            Gdx.app.log("copy","Could not copy $name in ${myClass.simpleName}. Is it okay to share the same instance?")
+            val sourceProperty = original.javaClass.kotlin.memberProperties.first { it.name == name }.get(original)
+            val destinationProperty = getMutable(copy, name)
+            destinationProperty.setter.call(copy, sourceProperty)
         }
     }
     return copy

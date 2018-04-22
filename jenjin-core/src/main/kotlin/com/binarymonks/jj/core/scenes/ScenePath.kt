@@ -1,12 +1,15 @@
 package com.binarymonks.jj.core.scenes
 
 import com.badlogic.gdx.utils.Array
+import com.binarymonks.jj.core.Copyable
+import com.binarymonks.jj.core.copy
 import com.binarymonks.jj.core.pools.Poolable
+import com.binarymonks.jj.core.pools.new
 
 
-class ScenePath() : Poolable {
+class ScenePath() : Poolable, Copyable<ScenePath> {
 
-    val path: Array<String> = Array()
+    var path: Array<String> = Array()
 
     companion object {
         val UP: String = ".."
@@ -66,4 +69,27 @@ class ScenePath() : Poolable {
     override fun reset() {
         path.clear()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is ScenePath) return false
+
+        if (path != other.path) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return path.hashCode()
+    }
+
+    override fun toString(): String {
+        return "ScenePath(path=$path)"
+    }
+
+    override fun clone(): ScenePath {
+        return copy(this)
+    }
+
+
 }
