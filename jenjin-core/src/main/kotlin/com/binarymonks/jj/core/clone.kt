@@ -41,6 +41,18 @@ interface Copyable<T> {
  *
  */
 fun <T : Any> copy(original: T): T {
+    if (original is ObjectMap<*,*>){
+        @Suppress("UNCHECKED_CAST")
+        return original.copy() as T
+    }
+    if (original is Array<*>){
+        @Suppress("UNCHECKED_CAST")
+        return original.copy() as T
+    }
+    if (original is ObjectSet<*>){
+        @Suppress("UNCHECKED_CAST")
+        return original.copy() as T
+    }
     val myClass = original::class
     var copy = construct(myClass)
     myClass.memberProperties.forEach {

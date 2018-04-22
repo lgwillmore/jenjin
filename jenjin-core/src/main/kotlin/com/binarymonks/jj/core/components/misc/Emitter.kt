@@ -46,12 +46,13 @@ class Emitter(
     fun emit() {
         val params = InstanceParams.new()
         val myPosition = me().physicsRoot.position()
+        val props = emitProps.get()
         params.x = myPosition.x + offsetX
         params.y = myPosition.y + offsetY
         params.scaleX = scaleX
         params.scaleY = scaleY
         params.rotationD = rotationD
-        params.properties =emitProps.get()
+        params.properties = copy(props)
 
         JJ.scenes.instantiate(params, checkNotNull(sceneSpecRef).resolve())
 

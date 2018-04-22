@@ -57,6 +57,18 @@ class CopyTest {
 
 
     }
+
+    @Test
+    fun copy_ObjectMap(){
+        val myObjectMap = ObjectMap<String, String>().build {
+            put("one","oneValue")
+        }
+
+        val clone = copy(myObjectMap)
+
+        Assert.assertEquals(myObjectMap,clone)
+        Assert.assertNotSame(myObjectMap,clone)
+    }
 }
 
 
