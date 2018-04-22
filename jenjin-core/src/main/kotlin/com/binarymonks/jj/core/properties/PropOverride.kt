@@ -1,7 +1,10 @@
 package com.binarymonks.jj.core.properties
 
 import com.binarymonks.jj.core.Copyable
+import kotlin.reflect.KTypeProjection
+import kotlin.reflect.full.createType
 
+val PROP_OVERRIDE_TYPE = PropOverride::class.createType(listOf(KTypeProjection(null, null)))
 
 /**
  * Used to indicate fields that can be set by value or by looking up a property of the runtime scene.

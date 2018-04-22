@@ -7,10 +7,16 @@ import com.binarymonks.jj.core.extensions.addVar
 import com.binarymonks.jj.core.extensions.build
 import com.binarymonks.jj.core.properties.PropOverride
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
 
 
 class CopyTest {
+
+    @Before
+    fun setUp(){
+        mockoutGDXinJJ()
+    }
 
     @Test
     fun clone() {
@@ -24,6 +30,7 @@ class CopyTest {
         )
         original.cloneableProp.set("blue")
         original.hiddenName = "altered"
+        original.cloneableValProp.set("green")
 
         val copy: ThingToCopy = copy(original)
 
@@ -34,6 +41,7 @@ class CopyTest {
         Assert.assertNotSame(original.cloneableProp, copy.cloneableProp)
         Assert.assertEquals(original.cloneableProp, copy.cloneableProp)
         Assert.assertEquals(original.readableButNotCopyable, copy.readableButNotCopyable)
+        Assert.assertEquals(original.cloneableValProp,copy.cloneableValProp)
 
         Assert.assertEquals(original.cloneable, copy.cloneable)
         Assert.assertNotSame(original.cloneable, copy.cloneable)
@@ -65,6 +73,7 @@ class ThingToCopy(
         private set
     internal var hiddenName: String = "hidden"
     val fixed = "Cannot change"
+    val cloneableValProp:PropOverride<String> = PropOverride<String>("constantPropOverrideOriginal")
 
 }
 
