@@ -9,7 +9,7 @@ abstract class State : Component() {
 
     private var machine: StateMachine? = null
 
-    open var active = false
+    var active = false
         internal set
 
     internal open fun enterWrapper(machine: StateMachine) {

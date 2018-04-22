@@ -3,7 +3,6 @@ package com.binarymonks.jj.core.components.fsm
 import com.binarymonks.jj.core.mockoutGDXinJJ
 import com.binarymonks.jj.core.scenes.Scene
 import com.binarymonks.jj.core.testScene
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
@@ -54,14 +53,18 @@ class StateMachineTest {
     @Test
     fun transitionsStatesInitial() {
         val initialStateMock = Mockito.mock(State::class.java)
+        val transitionMock = Mockito.mock(TransitionCondition::class.java)
 
         val stateMachine = StateMachine {
-            addState("initial", initialStateMock)
+            addState("initial", initialStateMock).withTransitions {
+                to("anotherState").whenJust(transitionMock)
+            }
             initialState("initial")
         }
 
         stateMachine.update()
         Mockito.verify(initialStateMock).enterWrapper(stateMachine)
+        Mockito.verify(transitionMock).enterWrapper(stateMachine)
     }
 
     @Test
@@ -86,26 +89,33 @@ class StateMachineTest {
         val initialStateMock = Mockito.mock(State::class.java)
         val anotherStateMock = Mockito.mock(State::class.java)
         val aThirdStateMock = Mockito.mock(State::class.java)
-        val transitionMock = Mockito.mock(TransitionCondition::class.java)
-        Mockito.`when`(transitionMock.met()).thenReturn(true)
+        val transitionToAnotherMock = Mockito.mock(TransitionCondition::class.java)
+        Mockito.`when`(transitionToAnotherMock.met()).thenReturn(true)
+
+        val transitionToThirdMock = Mockito.mock(TransitionCondition::class.java)
+        Mockito.`when`(transitionToThirdMock.met()).thenReturn(true)
+
 
         val stateMachine = StateMachine {
             initialState("initial")
             addState("initial", initialStateMock).withTransitions {
-                to("another").whenJust(transitionMock)
+                to("another").whenJust(transitionToAnotherMock)
             }
             addState("another", anotherStateMock).withTransitions {
-                to("aThird").whenJust(transitionMock)
+                to("aThird").whenJust(transitionToThirdMock)
             }
             addState("aThird", aThirdStateMock)
         }
 
         stateMachine.update()
         Mockito.verify(initialStateMock).exitWrapper()
+        Mockito.verify(transitionToAnotherMock).exitWrapper()
         Mockito.verify(anotherStateMock).enterWrapper(stateMachine)
+        Mockito.verify(transitionToThirdMock).enterWrapper(stateMachine)
         Mockito.verify(anotherStateMock).update()
         stateMachine.update()
         Mockito.verify(anotherStateMock).exitWrapper()
+        Mockito.verify(transitionToThirdMock).exitWrapper()
         Mockito.verify(aThirdStateMock).enterWrapper(stateMachine)
         Mockito.verify(aThirdStateMock).update()
     }

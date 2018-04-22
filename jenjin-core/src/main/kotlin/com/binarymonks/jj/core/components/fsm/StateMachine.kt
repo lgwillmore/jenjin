@@ -59,18 +59,12 @@ open class StateMachine() : State() {
             prepCurrentState()
         }
         if (requestedTransition != null) {
-            if (currentState != null) {
-                state().exitWrapper()
-            }
-            currentState = requestedTransition
-            prepCurrentState()
+            executeTransitionTo(requestedTransition!!)
             requestedTransition = null
         } else {
             for (edge in transitions.get(currentState)) {
                 if (edge.condition!!.met()) {
-                    state().exitWrapper()
-                    currentState = edge.toEventName
-                    state().enterWrapper(this)
+                    executeTransitionTo(edge.toEventName!!)
                     break
                 }
             }
@@ -78,10 +72,23 @@ open class StateMachine() : State() {
         state().update()
     }
 
+    private fun executeTransitionTo(state:String){
+        closeCurrentState()
+        currentState=state
+        prepCurrentState()
+    }
+
     private fun prepCurrentState() {
         state().enterWrapper(this)
         for (edge in transitions.get(currentState)) {
-            edge.condition!!.machine=this
+            edge.condition!!.enterWrapper(this)
+        }
+    }
+
+    private fun closeCurrentState(){
+        state().exitWrapper()
+        for (edge in transitions.get(currentState)) {
+            edge.condition!!.exitWrapper()
         }
     }
 

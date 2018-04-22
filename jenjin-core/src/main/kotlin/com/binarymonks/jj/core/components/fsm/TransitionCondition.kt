@@ -8,8 +8,10 @@ import com.binarymonks.jj.core.scenes.Scene
 
 abstract class TransitionCondition : Copyable<TransitionCondition> {
 
-    open internal var scene: Scene? = null
-    open internal var machine: StateMachine? = null
+    internal open var scene: Scene? = null
+    private var machine: StateMachine? = null
+    var active: Boolean = false
+        private set
 
     fun me(): Scene {
         return scene!!
@@ -22,7 +24,28 @@ abstract class TransitionCondition : Copyable<TransitionCondition> {
         return machine!!
     }
 
+    internal open fun enterWrapper(machine: StateMachine) {
+        this.machine=machine
+        active = true
+        enter()
+    }
+
+    internal open fun exitWrapper() {
+        active = false
+        exit()
+    }
+
     abstract fun met(): Boolean
+
+    /**
+     * Called when the condition's state is entered
+     */
+    open fun enter() {}
+
+    /**
+     * Called when the condition's state is exited
+     */
+    open fun exit() {}
 
     override fun clone(): TransitionCondition {
         return copy(this)
@@ -35,19 +58,6 @@ class AndTransitionCondition() : TransitionCondition() {
 
     var conditions: Array<TransitionCondition> = Array()
 
-    override var scene: Scene?
-        get() = super.scene
-        set(value) {
-            super.scene = value
-            conditions.forEach { it.scene = value }
-        }
-
-    override var machine: StateMachine?
-        get() = super.machine
-        set(value) {
-            super.machine = value
-            conditions.forEach { it.machine = value }
-        }
 
     constructor(construc: AndTransitionCondition.() -> Unit) : this() {
         this.construc()
@@ -69,6 +79,16 @@ class AndTransitionCondition() : TransitionCondition() {
         return true
     }
 
+    override fun enterWrapper(machine: StateMachine) {
+        super.enterWrapper(machine)
+        conditions.forEach { it.enterWrapper(machine) }
+    }
+
+    override fun exitWrapper() {
+        super.exitWrapper()
+        conditions.forEach { it.exitWrapper() }
+    }
+
 }
 
 class OrTransitionCondition() : TransitionCondition() {
@@ -80,13 +100,6 @@ class OrTransitionCondition() : TransitionCondition() {
         set(value) {
             super.scene = value
             conditions.forEach { it.scene = value }
-        }
-
-    override var machine: StateMachine?
-        get() = super.machine
-        set(value) {
-            super.machine = value
-            conditions.forEach { it.machine = value }
         }
 
     constructor(construc: OrTransitionCondition.() -> Unit) : this() {
@@ -107,6 +120,16 @@ class OrTransitionCondition() : TransitionCondition() {
             }
         }
         return false
+    }
+
+    override fun enterWrapper(machine: StateMachine) {
+        super.enterWrapper(machine)
+        conditions.forEach { it.enterWrapper(machine) }
+    }
+
+    override fun exitWrapper() {
+        super.exitWrapper()
+        conditions.forEach { it.exitWrapper() }
     }
 
 }
