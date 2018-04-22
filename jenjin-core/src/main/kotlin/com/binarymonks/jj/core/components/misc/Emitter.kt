@@ -1,8 +1,12 @@
 package com.binarymonks.jj.core.components.misc
 
+import com.badlogic.gdx.utils.ObjectMap
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.components.Component
+import com.binarymonks.jj.core.copy
+import com.binarymonks.jj.core.pools.newObjectMap
 import com.binarymonks.jj.core.pools.recycle
+import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.specs.InstanceParams
 import com.binarymonks.jj.core.specs.SceneSpecRef
 import com.binarymonks.jj.core.specs.SceneSpecRefPath
@@ -19,6 +23,11 @@ class Emitter(
         var delayMaxSeconds: Float = 1f,
         var repeat: Int = 0
 ) : Component() {
+
+    /**
+     * The properties to emit the instance with.
+     */
+    val emitProps = PropOverride<ObjectMap<String, Any>>(newObjectMap())
 
     fun setSpec(path: String) {
         sceneSpecRef = SceneSpecRefPath(path)
@@ -42,6 +51,7 @@ class Emitter(
         params.scaleX = scaleX
         params.scaleY = scaleY
         params.rotationD = rotationD
+        params.properties =emitProps.get()
 
         JJ.scenes.instantiate(params, checkNotNull(sceneSpecRef).resolve())
 
