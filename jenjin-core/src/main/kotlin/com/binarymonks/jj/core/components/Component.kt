@@ -19,7 +19,7 @@ abstract class Component : Copyable<Component>, ComponentLifecycle {
         set(value) {
             field = value
             // Set all the property override fields to use the parent scene as property source.
-            this::class.declaredMemberProperties.forEach {
+            this::class.memberProperties.forEach {
                 if (it.returnType.isSubtypeOf(PROP_OVERRIDE_TYPE)) {
                     val b = it.name
                     val pd = this.javaClass.kotlin.memberProperties.first { it.name == b }.get(this) as PropOverride<*>

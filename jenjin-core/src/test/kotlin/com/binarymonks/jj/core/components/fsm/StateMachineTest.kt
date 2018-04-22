@@ -1,8 +1,10 @@
 package com.binarymonks.jj.core.components.fsm
 
 import com.binarymonks.jj.core.mockoutGDXinJJ
+import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.scenes.Scene
 import com.binarymonks.jj.core.testScene
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
@@ -13,6 +15,20 @@ class StateMachineTest {
     @Before
     fun setUp(){
         mockoutGDXinJJ()
+    }
+
+    @Test
+    fun setScene_injectsSceneIntoPropOverrides(){
+
+        val testScene = testScene()
+
+        val myStateMachine = MyStateMachine()
+
+        myStateMachine.scene=testScene
+
+        Assert.assertSame(testScene,myStateMachine.myPropOverrideVal.hasProps)
+        Assert.assertSame(testScene,myStateMachine.myPropOverrideVar.hasProps)
+        Assert.assertSame(testScene,myStateMachine.initialState.hasProps)
     }
 
     @Test
@@ -170,4 +186,10 @@ class StateMachineTest {
         Mockito.verify(forceToMeStateMock, Mockito.never()).exitWrapper()
 
     }
+}
+
+class MyStateMachine: StateMachine(){
+
+    val myPropOverrideVal = PropOverride("originalVal")
+    var myPropOverrideVar = PropOverride("originalVar")
 }
