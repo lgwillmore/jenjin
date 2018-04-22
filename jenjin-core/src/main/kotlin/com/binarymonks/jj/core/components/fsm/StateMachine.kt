@@ -42,12 +42,14 @@ open class StateMachine() : State() {
 
     override fun onAddToWorld() {
         states.forEach { it.value.onAddToWorld() }
+        transitions.forEach { it.value.forEach { it.condition!!.onAddToWorld() } }
     }
 
 
     override fun onRemoveFromWorld() {
         currentState = null
         states.forEach { it.value.onRemoveFromWorldWrapper() }
+        transitions.forEach { it.value.forEach { it.condition!!.onRemoveFromWorld() } }
     }
 
     override fun update() {
@@ -70,6 +72,9 @@ open class StateMachine() : State() {
             }
         }
         state().update()
+        for (edge in transitions.get(currentState)) {
+            edge.condition!!.update()
+        }
     }
 
     private fun executeTransitionTo(state:String){

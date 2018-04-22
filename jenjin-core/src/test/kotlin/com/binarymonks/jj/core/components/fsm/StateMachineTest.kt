@@ -39,6 +39,7 @@ class StateMachineTest {
         mocks.forEach {
             Mockito.verify(it).onAddToWorld()
         }
+        Mockito.verify(transitionMock).onAddToWorld()
         stateMachine.scene = scene
         mocks.forEach {
             Mockito.verify(it).scene = scene
@@ -48,6 +49,7 @@ class StateMachineTest {
         mocks.forEach {
             Mockito.verify(it).onRemoveFromWorldWrapper()
         }
+        Mockito.verify(transitionMock).onRemoveFromWorld()
     }
 
     @Test
@@ -109,10 +111,10 @@ class StateMachineTest {
 
         stateMachine.update()
         Mockito.verify(initialStateMock).exitWrapper()
-        Mockito.verify(transitionToAnotherMock).exitWrapper()
         Mockito.verify(anotherStateMock).enterWrapper(stateMachine)
         Mockito.verify(transitionToThirdMock).enterWrapper(stateMachine)
         Mockito.verify(anotherStateMock).update()
+        Mockito.verify(transitionToThirdMock).update()
         stateMachine.update()
         Mockito.verify(anotherStateMock).exitWrapper()
         Mockito.verify(transitionToThirdMock).exitWrapper()

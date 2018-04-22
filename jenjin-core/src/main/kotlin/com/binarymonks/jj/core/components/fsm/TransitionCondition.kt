@@ -2,11 +2,12 @@ package com.binarymonks.jj.core.components.fsm
 
 import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.Copyable
+import com.binarymonks.jj.core.components.ComponentLifecycle
 import com.binarymonks.jj.core.copy
 import com.binarymonks.jj.core.scenes.Scene
 
 
-abstract class TransitionCondition : Copyable<TransitionCondition> {
+abstract class TransitionCondition : Copyable<TransitionCondition>, ComponentLifecycle {
 
     internal open var scene: Scene? = null
     private var machine: StateMachine? = null
@@ -17,15 +18,15 @@ abstract class TransitionCondition : Copyable<TransitionCondition> {
         return scene!!
     }
 
-    fun myMachine(): StateMachine{
-        if(machine == null){
+    fun myMachine(): StateMachine {
+        if (machine == null) {
             throw Exception("I cannot see my machine yet. I can only see it after I have been activated")
         }
         return machine!!
     }
 
     internal open fun enterWrapper(machine: StateMachine) {
-        this.machine=machine
+        this.machine = machine
         active = true
         enter()
     }
@@ -37,6 +38,7 @@ abstract class TransitionCondition : Copyable<TransitionCondition> {
 
     abstract fun met(): Boolean
 
+
     /**
      * Called when the condition's state is entered
      */
@@ -46,6 +48,15 @@ abstract class TransitionCondition : Copyable<TransitionCondition> {
      * Called when the condition's state is exited
      */
     open fun exit() {}
+
+    override fun update() {
+    }
+
+    override fun onAddToWorld() {
+    }
+
+    override fun onRemoveFromWorld() {
+    }
 
     override fun clone(): TransitionCondition {
         return copy(this)
@@ -87,6 +98,18 @@ class AndTransitionCondition() : TransitionCondition() {
     override fun exitWrapper() {
         super.exitWrapper()
         conditions.forEach { it.exitWrapper() }
+    }
+
+    override fun update() {
+        conditions.forEach { it.update() }
+    }
+
+    override fun onAddToWorld() {
+        conditions.forEach { it.onAddToWorld() }
+    }
+
+    override fun onRemoveFromWorld() {
+        conditions.forEach { it.onRemoveFromWorld() }
     }
 
 }
@@ -132,6 +155,18 @@ class OrTransitionCondition() : TransitionCondition() {
         conditions.forEach { it.exitWrapper() }
     }
 
+    override fun update() {
+        conditions.forEach { it.update() }
+    }
+
+    override fun onAddToWorld() {
+        conditions.forEach { it.onAddToWorld() }
+    }
+
+    override fun onRemoveFromWorld() {
+        conditions.forEach { it.onRemoveFromWorld() }
+    }
+
 }
 
 class NotTransitionCondition() : TransitionCondition() {
@@ -142,7 +177,7 @@ class NotTransitionCondition() : TransitionCondition() {
         get() = super.scene
         set(value) {
             super.scene = value
-            condition?.scene=value
+            condition?.scene = value
         }
 
     constructor(condition: TransitionCondition) : this() {
@@ -154,6 +189,18 @@ class NotTransitionCondition() : TransitionCondition() {
             return false
         }
         return !condition!!.met()
+    }
+
+    override fun update() {
+        condition!!.update()
+    }
+
+    override fun onAddToWorld() {
+        condition!!.onAddToWorld()
+    }
+
+    override fun onRemoveFromWorld() {
+        condition!!.onRemoveFromWorld()
     }
 }
 

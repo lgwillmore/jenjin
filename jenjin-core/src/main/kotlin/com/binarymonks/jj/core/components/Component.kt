@@ -13,7 +13,7 @@ import kotlin.reflect.full.memberProperties
 
 private val propDelegateType = PropOverride::class.createType(listOf(KTypeProjection(null, null)))
 
-abstract class Component : Copyable<Component> {
+abstract class Component : Copyable<Component>, ComponentLifecycle {
 
     private var inWorld = false
 
@@ -62,7 +62,7 @@ abstract class Component : Copyable<Component> {
     /**
      * This will be called on every game loop. Override this for ongoing tasks
      */
-    open fun update() {
+    override fun update() {
 
     }
 
@@ -86,7 +86,7 @@ abstract class Component : Copyable<Component> {
      * or when the Component is added to a Scene that is already in the world.
      * The whole scene graph for that loop of the game cycle will be complete.
      */
-    open fun onAddToWorld() {
+    override fun onAddToWorld() {
 
     }
 
@@ -100,7 +100,7 @@ abstract class Component : Copyable<Component> {
      * or when the Scene is removed from the world.
      * This will also be called before being added to a pool (If the Scene is pooled)
      */
-    open fun onRemoveFromWorld() {
+    override fun onRemoveFromWorld() {
 
     }
 
