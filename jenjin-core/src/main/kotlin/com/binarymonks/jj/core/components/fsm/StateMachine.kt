@@ -2,6 +2,7 @@ package com.binarymonks.jj.core.components.fsm
 
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.ObjectMap
+import com.binarymonks.jj.core.Copyable
 import com.binarymonks.jj.core.copy
 import com.binarymonks.jj.core.properties.PropOverride
 import com.binarymonks.jj.core.scenes.Scene
@@ -12,8 +13,8 @@ open class StateMachine() : State() {
     var initialState = PropOverride<String?>(null)
     var states: ObjectMap<String, State> = ObjectMap()
     var transitions: ObjectMap<String, Array<TransitionEdge>> = ObjectMap()
-    private var currentState: String? = null
-    private var requestedTransition: String? = null
+    internal var currentState: String? = null
+    internal var requestedTransition: String? = null
 
     override var scene: Scene?
         get() = super.scene
@@ -104,9 +105,29 @@ open class StateMachine() : State() {
     fun transitionTo(stateName: String) {
         requestedTransition = stateName
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is StateMachine) return false
+
+        if (initialState != other.initialState) return false
+        if (states != other.states) return false
+        if (transitions != other.transitions) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = initialState.hashCode()
+        result = 31 * result + states.hashCode()
+        result = 31 * result + transitions.hashCode()
+        return result
+    }
+
+
 }
 
-class TransitionEdge() {
+class TransitionEdge() : Copyable<TransitionEdge>{
     var condition: TransitionCondition? = null
     var toEventName: String? = null
 
@@ -118,9 +139,27 @@ class TransitionEdge() {
         this.toEventName = toEventName
     }
 
-    fun clone(): TransitionEdge {
+    override fun clone(): TransitionEdge {
         return copy(this)
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is TransitionEdge) return false
+
+        if (condition != other.condition) return false
+        if (toEventName != other.toEventName) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = condition?.hashCode() ?: 0
+        result = 31 * result + (toEventName?.hashCode() ?: 0)
+        return result
+    }
+
+
 }
 
 

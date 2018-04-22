@@ -40,7 +40,13 @@ interface Copyable<T> {
  *  - [com.badlogic.gdx.utils.ObjectSet]
  *
  */
-fun <T : Any> copy(original: T): T {
+fun <T: Any> copy(original: T): T {
+    if(original is Number){
+        return original
+    }
+    if(original is String){
+        return original
+    }
     if (original is ObjectMap<*,*>){
         @Suppress("UNCHECKED_CAST")
         return original.copy() as T
@@ -97,6 +103,14 @@ fun <T : Any> copy(original: T): T {
         }
     }
     return copy
+}
+
+fun forceCopy(original:Any?):Any?{
+    if(original==null){
+        return original
+    }
+    val notNull: Any = original
+    return copy(notNull)
 }
 
 fun getMutable(instance: Any, name: String): KMutableProperty<*> {

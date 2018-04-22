@@ -8,6 +8,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
+import org.mockito.internal.verification.VerificationModeFactory.times
 
 
 class StateMachineTest {
@@ -184,7 +185,110 @@ class StateMachineTest {
         Mockito.verify(anotherStateMock).exitWrapper()
         Mockito.verify(forceToMeStateMock).enterWrapper(stateMachine)
         Mockito.verify(forceToMeStateMock, Mockito.never()).exitWrapper()
+    }
 
+    @Test
+    fun exitAndEnterWorldResetsToInitial(){
+        val initialStateMock = Mockito.mock(State::class.java)
+        val anotherStateMock = Mockito.mock(State::class.java)
+        val transitionToAnotherMock = Mockito.mock(TransitionCondition::class.java)
+        Mockito.`when`(transitionToAnotherMock.met()).thenReturn(false)
+
+        val transitionToThirdMock = Mockito.mock(TransitionCondition::class.java)
+        Mockito.`when`(transitionToThirdMock.met()).thenReturn(false)
+
+
+        val stateMachine = StateMachine {
+            initialState("initial")
+            addState("initial", initialStateMock).withTransitions {
+                to("another").whenJust(transitionToAnotherMock)
+            }
+            addState("another", anotherStateMock).withTransitions {
+            }
+        }
+
+        // Enter The world
+        stateMachine.onAddToWorldWrapper()
+        stateMachine.update()
+
+        Mockito.verify(initialStateMock).enterWrapper(stateMachine)
+        Mockito.verify(initialStateMock, Mockito.never()).exitWrapper()
+
+        // Transition to some intermediatestate
+        Mockito.`when`(transitionToAnotherMock.met()).thenReturn(true)
+        stateMachine.update()
+
+        Mockito.verify(initialStateMock).exitWrapper()
+
+        // Leave the world and reenter world
+        Mockito.`when`(transitionToAnotherMock.met()).thenReturn(false)
+        stateMachine.onRemoveFromWorldWrapper()
+        stateMachine.onAddToWorldWrapper()
+        stateMachine.update()
+
+        Mockito.verify(initialStateMock,times(2)).enterWrapper(stateMachine)
+        Mockito.verify(initialStateMock, times(1)).exitWrapper()
+
+    }
+
+    @Test
+    fun cloning(){
+        val original = StateMachine {
+            initialState("initial")
+            addState("initial", MyState()).withTransitions {
+                to("another").whenJust(MyCondition())
+            }
+            addState("another", MyState()).withTransitions {
+            }
+        }
+
+        val copy = original.clone() as StateMachine
+
+        Assert.assertEquals(copy, original)
+        Assert.assertNotSame(copy,original)
+
+        Assert.assertNotSame(copy.states["initial"], original.states["initial"])
+        Assert.assertNotSame(copy.transitions["initial"], original.transitions["initial"])
+    }
+}
+
+class MyCondition: TransitionCondition(){
+    var variable = "default"
+    override fun met(): Boolean {
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as MyCondition
+
+        if (variable != other.variable) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return variable.hashCode()
+    }
+}
+
+class MyState: State(){
+    var variable = "default"
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as MyState
+
+        if (variable != other.variable) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return variable.hashCode()
     }
 }
 

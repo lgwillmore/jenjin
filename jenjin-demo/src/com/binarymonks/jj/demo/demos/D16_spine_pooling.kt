@@ -1,15 +1,19 @@
 package com.binarymonks.jj.demo.demos
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.physics.box2d.BodyDef
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJConfig
 import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.audio.SoundMode
+import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.components.misc.Emitter
 import com.binarymonks.jj.core.components.misc.SelfDestruct
+import com.binarymonks.jj.core.specs.Rectangle
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.SceneSpecRef
 import com.binarymonks.jj.core.specs.params
+import com.binarymonks.jj.spine.components.SpineComponent
 import com.binarymonks.jj.spine.specs.SpineSpec
 
 
@@ -33,6 +37,17 @@ class D16_spine_pooling : JJGame(JJConfig {
             container = true
             nodeRef(params { x = -2f }, "spawnBounding")
             nodeRef(params { x = 2f }, "spawnAnimation")
+            node(params{x=-2f; y=-0.18f}) {
+                physics {
+                    bodyType=BodyDef.BodyType.StaticBody
+                    fixture {
+                        shape=Rectangle(5f,0.3f)
+                    }
+                }
+                render {
+                    rectangleRender(5f,0.3f)
+                }
+            }
         })
 
     }
@@ -68,11 +83,14 @@ class D16_spine_pooling : JJGame(JJConfig {
             }
             skeleton {
                 boundingBoxes = true
+                coreMotorTorque=0f
+                coreMotorTorqueFalloff=1f
             }
             rootScene {
                 component(SelfDestruct()) {
                     delaySeconds = 2f
                 }
+                component(DelayedTriggerRagdollComponent())
             }
         }
     }
@@ -101,5 +119,23 @@ class D16_spine_pooling : JJGame(JJConfig {
                 sounds.sound("footstep", "sounds/step.mp3")
             }
         }
+    }
+}
+
+class DelayedTriggerRagdollComponent: Component(){
+
+    private var scheduledID = -1
+
+    override fun onAddToWorld() {
+        super.onAddToWorld()
+        JJ.clock.schedule(this::triggerRagDoll, delaySeconds = 1f)
+    }
+
+    fun triggerRagDoll(){
+        me().getComponent(SpineComponent::class)[0].triggerRagDoll(1f)
+    }
+
+    override fun onRemoveFromWorld() {
+        JJ.clock.cancel(scheduledID)
     }
 }

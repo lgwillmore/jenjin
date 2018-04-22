@@ -69,6 +69,20 @@ class CopyTest {
         Assert.assertEquals(myObjectMap,clone)
         Assert.assertNotSame(myObjectMap,clone)
     }
+
+    @Test
+    fun copyNumber(){
+        val original =3
+        val copy = copy(original)
+        Assert.assertEquals(original,copy)
+    }
+
+    @Test
+    fun copyString(){
+        val original = "Me"
+        val copy = copy(original)
+        Assert.assertEquals(original,copy)
+    }
 }
 
 
