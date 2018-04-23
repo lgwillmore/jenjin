@@ -9,6 +9,10 @@ task sourceJar(type: Jar, dependsOn: project.classes) {
     from sourceSets.main.allSource
 }
 
+task testJar(type: Jar, dependsOn: testClasses) {
+    from sourceSets.test.allSource
+}
+
 kotlin {
     experimental {
         coroutines 'enable'
@@ -17,7 +21,7 @@ kotlin {
 
 publishing {
     publications {
-        maven(MavenPublication) {
+        mavenMain(MavenPublication) {
             artifactId 'jenjin-core'
 
             from components.java
@@ -27,6 +31,15 @@ publishing {
             }
 
         }
+//        mavenTest(MavenPublication) {
+//            artifactId 'jenjin-core-test'
+//
+//            from components.java
+//
+//            artifact testJar {
+//                classifier "sources"
+//            }
+//        }
     }
 }
 

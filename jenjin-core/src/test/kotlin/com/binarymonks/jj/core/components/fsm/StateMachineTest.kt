@@ -248,7 +248,8 @@ class StateMachineTest {
         Assert.assertNotSame(copy,original)
 
         Assert.assertNotSame(copy.states["initial"], original.states["initial"])
-        Assert.assertNotSame(copy.transitions["initial"], original.transitions["initial"])
+        Assert.assertNotSame(copy.transitions["initial"][0], original.transitions["initial"][0])
+        Assert.assertNotSame(copy.transitions["initial"][0].condition, original.transitions["initial"][0].condition)
     }
 }
 

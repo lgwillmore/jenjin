@@ -15,7 +15,7 @@ import com.esotericsoftware.spine.Event
 
 
 class D09_spine : JJGame(JJConfig {
-    b2d.debugRender = false
+    b2d.debugRender = true
     b2d.gravity = Vector2()
     gameView.worldBoxWidth = 4f
     gameView.cameraPosX = 0f
@@ -26,7 +26,8 @@ class D09_spine : JJGame(JJConfig {
         JJ.scenes.loadAssetsNow()
 
         JJ.scenes.instantiate(SceneSpec {
-            nodeRef(params { name = "spine" }, "spineBoy" )
+            nodeRef(params { x=-0.7f; }, "spineBoy" )
+            nodeRef(params { x=0.7f; }, "spineBoy" )
         })
     }
 
@@ -49,6 +50,7 @@ class D09_spine : JJGame(JJConfig {
                 registerEventHandler("footstep", SpineBoyComponent::class, SpineBoyComponent::onEvent)
                 registerEventFunction("footstep", SpineBoyComponent::class, SpineBoyComponent::step)
             }
+            skeleton {  }
             rootScene {
                 component(SpineBoyComponent())
                 sounds.sound("footstep", "sounds/step.mp3")

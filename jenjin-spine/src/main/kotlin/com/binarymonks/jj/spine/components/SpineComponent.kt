@@ -145,7 +145,9 @@ class SpineComponent(
         }
     }
 
-
+    override fun clone(): Component {
+        return super.clone()
+    }
 }
 
 class JJSpineAnimationStateListener(

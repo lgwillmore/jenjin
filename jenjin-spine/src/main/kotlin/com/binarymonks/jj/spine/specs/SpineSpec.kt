@@ -275,10 +275,10 @@ class SpineAnimations : Copyable<SpineAnimations> {
     override fun clone(): SpineAnimations {
         val copy = SpineAnimations()
         copy.startingAnimation = startingAnimation
-        copy.mixes = mixes.copy()
-        copy.handlers = handlers.copy()
-        copy.componentHandlers = componentHandlers.copy()
-        componentFunctions = componentFunctions.copy()
+        mixes.forEach { copy.mixes.add(it) }
+        handlers.forEach { copy.handlers.put(it.key, it.value) }
+        componentHandlers.forEach { copy.componentHandlers.put(it.key, it.value) }
+        componentFunctions.forEach { copy.componentFunctions.put(it.key, it.value) }
         return copy
     }
 }

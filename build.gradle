@@ -67,6 +67,9 @@ project(":jenjin-spine") {
         compile project(":jenjin-core")
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+        testCompile project(':jenjin-core').sourceSets.test.output
+        testCompile "junit:junit:$junitVersion"
+        testCompile "org.mockito:mockito-core:1.9.5"
     }
 }
 
