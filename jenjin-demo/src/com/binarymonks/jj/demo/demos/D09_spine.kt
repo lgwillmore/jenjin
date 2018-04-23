@@ -40,8 +40,9 @@ class D09_spine : JJGame(JJConfig {
             }
             animations {
                 defaultMix=0.5f
-                setMix("walk", "run", 0.3f)
-                setMix( "run", "walk",0.3f)
+                startingAnimation="idle"
+                setMix("walk", "run", 0.4f)
+                setMix( "run", "walk",0.5f)
                 registerEventHandler("footstep", { component, _ ->
                     component.me().soundEffects.triggerSound("footstep", SoundMode.NORMAL)
                 })
@@ -62,7 +63,7 @@ class SpineBoyComponent : Component() {
     var scheduledID = -1
 
     override fun onAddToWorld() {
-        scheduledID= JJ.clock.schedule(this::transition,delaySeconds = 4f, repeat = 0)
+        scheduledID= JJ.clock.schedule(this::transition,delaySeconds = 3f, repeat = 0)
     }
 
     override fun onRemoveFromWorld() {
