@@ -9,6 +9,7 @@ import com.binarymonks.jj.core.components.Component
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.SceneSpecRef
 import com.binarymonks.jj.core.specs.params
+import com.binarymonks.jj.spine.components.SpineComponent
 import com.binarymonks.jj.spine.specs.SpineSpec
 import com.esotericsoftware.spine.Event
 
@@ -38,7 +39,9 @@ class D09_spine : JJGame(JJConfig {
                 originY = 247f
             }
             animations {
-                startingAnimation = "run"
+                defaultMix=0.5f
+                setMix("walk", "run", 0.3f)
+                setMix( "run", "walk",0.3f)
                 registerEventHandler("footstep", { component, _ ->
                     component.me().soundEffects.triggerSound("footstep", SoundMode.NORMAL)
                 })
@@ -55,12 +58,37 @@ class D09_spine : JJGame(JJConfig {
 
 class SpineBoyComponent : Component() {
 
+    var nextTransition = "walk"
+    var scheduledID = -1
+
+    override fun onAddToWorld() {
+        scheduledID= JJ.clock.schedule(this::transition,delaySeconds = 4f, repeat = 0)
+    }
+
+    override fun onRemoveFromWorld() {
+        JJ.clock.cancel(scheduledID)
+    }
+
     fun onEvent(event: Event) {
         println("Just stepped for event: ${event.data.name}")
     }
 
     fun step() {
         println("Just stepped because I was told to")
+    }
+
+    fun transition(){
+        when(nextTransition){
+            "walk" -> {
+                me().getComponent(SpineComponent::class)[0].transitionToAnimation("walk")
+                nextTransition="run"
+            }
+            "run" -> {
+                me().getComponent(SpineComponent::class)[0].transitionToAnimation("run")
+                nextTransition="walk"
+            }
+            else -> println("Confused")
+        }
     }
 
 }

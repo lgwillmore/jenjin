@@ -224,7 +224,7 @@ class RenderModel {
     var priority = 0
 }
 
-internal class CrossFade(
+internal class Mix(
         val fromName: String,
         val toName: String,
         val duration: Float
@@ -243,14 +243,15 @@ internal class ComponentCall(
 class SpineAnimations : Copyable<SpineAnimations> {
 
     var startingAnimation: String? = null
-    internal var crossFades: Array<CrossFade> = Array()
+    var defaultMix = 0f
+    internal var mixes: Array<Mix> = Array()
     internal var handlers: ObjectMap<String, SpineEventHandler> = ObjectMap()
     internal var functions: ObjectMap<String, () -> Unit> = ObjectMap()
     internal var componentHandlers: ObjectMap<String, EventToComponentCall> = ObjectMap()
     internal var componentFunctions: ObjectMap<String, ComponentCall> = ObjectMap()
 
     fun setMix(fromName: String, toName: String, duration: Float) {
-        crossFades.add(CrossFade(fromName, toName, duration))
+        mixes.add(Mix(fromName, toName, duration))
     }
 
     fun registerEventHandler(eventName: String, handler: SpineEventHandler) {
@@ -274,7 +275,7 @@ class SpineAnimations : Copyable<SpineAnimations> {
     override fun clone(): SpineAnimations {
         val copy = SpineAnimations()
         copy.startingAnimation = startingAnimation
-        copy.crossFades = crossFades.copy()
+        copy.mixes = mixes.copy()
         copy.handlers = handlers.copy()
         copy.componentHandlers = componentHandlers.copy()
         componentFunctions = componentFunctions.copy()

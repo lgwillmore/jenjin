@@ -53,6 +53,7 @@ fun <K, V> ObjectMap<K, V>.build(builder: ObjectMap<K, V>.() -> Unit): ObjectMap
  */
 fun <T> Array<T>.copy(): Array<T> {
     val clone: Array<T> = Array()
+    @Suppress("UNCHECKED_CAST")
     this.forEach {
         val valueCopy = forceCopy(it) as T
         clone.add(valueCopy)
@@ -79,6 +80,7 @@ fun <T> Array<T>.addVar(vararg add: T): Array<T> {
  */
 fun <T> ObjectSet<T>.copy(): ObjectSet<T> {
     val clone: ObjectSet<T> = ObjectSet()
+    @Suppress("UNCHECKED_CAST")
     this.forEach {
         val valueCopy = forceCopy(it) as T
         clone.add(valueCopy)

@@ -46,8 +46,7 @@ abstract class Component : Copyable<Component>, ComponentLifecycle {
     }
 
     /**
-     * Components are stored and retrieved by their type. It makes no sense to have more than
-     * one component of the same type operating on a given [Scene]
+     * Components are stored and retrieved by their type.
      *
      * But you may have several implementations of a type. This lets you specify the key type (or top level interface) that
      * will be used to store and retrieve your [Component] if you need to.
