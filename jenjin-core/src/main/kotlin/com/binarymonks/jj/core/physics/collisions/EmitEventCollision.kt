@@ -10,10 +10,10 @@ import com.binarymonks.jj.core.scenes.Scene
 
 class EmitEventCollision : CollisionHandler() {
 
-    var messege: PropOverride<String> = PropOverride("")
+    var channel: PropOverride<String> = PropOverride("")
 
     override fun collision(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact): Boolean {
-        JJ.events.send(messege.get())
+        JJ.events.send(channel.get())
         return false
     }
 }

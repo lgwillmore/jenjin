@@ -136,7 +136,7 @@ fun court(): SceneSpecRef {
                 bodyType = BodyDef.BodyType.StaticBody
                 fixture { shape = Rectangle(1f, COURT_LENGTH) }
                 collisions.begin(DestroyCollision()) { destroyMe = false; destroyOther = true }
-                collisions.begin(EmitEventCollision()) { messege.set(PLAYER_B_SCORED) }
+                collisions.begin(EmitEventCollision()) { channel.set(PLAYER_B_SCORED) }
             }
             render { rectangleRender(1f, COURT_LENGTH) }
         }
@@ -146,7 +146,7 @@ fun court(): SceneSpecRef {
                 bodyType = BodyDef.BodyType.StaticBody
                 fixture { shape = Rectangle(1f, COURT_LENGTH) }
                 collisions.begin(DestroyCollision()) { destroyMe = false; destroyOther = true }
-                collisions.begin(EmitEventCollision()) { messege.set(PLAYER_A_SCORED) }
+                collisions.begin(EmitEventCollision()) { channel.set(PLAYER_A_SCORED) }
             }
             render { rectangleRender(1f, COURT_LENGTH) }
         }

@@ -13,30 +13,26 @@ import com.binarymonks.jj.core.specs.SceneSpecRefPath
 
 
 class Emitter(
-        var sceneSpecRef: SceneSpecRef? = null,
-        var offsetX: Float = 0f,
-        var offsetY: Float = 0f,
-        var scaleX: Float = 1f,
-        var scaleY: Float = 1f,
-        var rotationD: Float = 0f,
-        var delayMinSeconds: Float = 1f,
-        var delayMaxSeconds: Float = 1f,
-        var repeat: Int = 0
+        val sceneSpecRef: PropOverride<SceneSpecRef?> = PropOverride(null),
+        val offsetX: PropOverride<Float> = PropOverride(0f),
+        val offsetY: PropOverride<Float> = PropOverride(0f),
+        val scaleX: PropOverride<Float> = PropOverride(1f),
+        val scaleY: PropOverride<Float> = PropOverride(1f),
+        val rotationD: PropOverride<Float> = PropOverride(0f),
+        val delayMinSeconds: PropOverride<Float> = PropOverride(1f),
+        val delayMaxSeconds: PropOverride<Float> = PropOverride(1f),
+        val repeat: PropOverride<Int> = PropOverride(0),
+        val emitProps: PropOverride<ObjectMap<String, Any>> = PropOverride<ObjectMap<String, Any>>(newObjectMap())
 ) : Component() {
 
-    /**
-     * The properties to emit the instance with.
-     */
-    val emitProps = PropOverride<ObjectMap<String, Any>>(newObjectMap())
-
     fun setSpec(path: String) {
-        sceneSpecRef = SceneSpecRefPath(path)
+        sceneSpecRef.set(SceneSpecRefPath(path))
     }
 
     private var scheduledID = -1
 
     override fun onAddToWorld() {
-        scheduledID = JJ.clock.schedule(this::emit, delayMinSeconds, delayMaxSeconds, repeat, "Emitter")
+        scheduledID = JJ.clock.schedule(this::emit, delayMinSeconds.get(), delayMaxSeconds.get(), repeat.get(), "Emitter")
     }
 
     override fun onRemoveFromWorld() {
@@ -47,14 +43,14 @@ class Emitter(
         val params = InstanceParams.new()
         val myPosition = me().physicsRoot.position()
         val props = emitProps.get()
-        params.x = myPosition.x + offsetX
-        params.y = myPosition.y + offsetY
-        params.scaleX = scaleX
-        params.scaleY = scaleY
-        params.rotationD = rotationD
+        params.x = myPosition.x + offsetX.get()
+        params.y = myPosition.y + offsetY.get()
+        params.scaleX = scaleX.get()
+        params.scaleY = scaleY.get()
+        params.rotationD = rotationD.get()
         params.properties = copy(props)
 
-        JJ.scenes.instantiate(params, checkNotNull(sceneSpecRef).resolve())
+        JJ.scenes.instantiate(params, checkNotNull(sceneSpecRef.get()).resolve())
 
         recycle(params)
     }

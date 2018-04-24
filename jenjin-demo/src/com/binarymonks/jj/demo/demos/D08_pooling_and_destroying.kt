@@ -31,14 +31,24 @@ class D08_pooling_and_destroying : JJGame(JJConfig {
         JJ.scenes.instantiate(SceneSpec {
             //generator
             node(params { y = -3f;x = 3f }) {
-                component(Emitter()) { sceneSpecRef = sceneRef("nestedCompositeScene"); delayMinSeconds = spawnDelay; delayMaxSeconds = spawnDelay }
+                component(Emitter()) {
+                    setSpec("nestedCompositeScene")
+                    delayMinSeconds.set(spawnDelay)
+                    delayMaxSeconds.set(spawnDelay)
+                }
                 render {
                     circleRender(0.5f) { color.set(Color.YELLOW) }
                 }
             }
             //scaled generator
             node(params { y = 3f;x = -3f }) {
-                component(Emitter()) { sceneSpecRef = sceneRef("nestedCompositeScene"); delayMinSeconds = spawnDelay; delayMaxSeconds = spawnDelay; scaleX = 0.5f; scaleY = 0.5f }
+                component(Emitter()) {
+                    sceneSpecRef.set(sceneRef("nestedCompositeScene"))
+                    delayMinSeconds.set(spawnDelay)
+                    delayMaxSeconds.set(spawnDelay)
+                    scaleX.set(0.5f)
+                    scaleY.set(0.5f)
+                }
                 render {
                     circleRender(0.5f) { color.set(Color.PURPLE) }
                 }

@@ -56,9 +56,9 @@ class D16_spine_pooling : JJGame(JJConfig {
         return SceneSpec {
             component(Emitter()) {
                 setSpec("spineBounding")
-                delayMinSeconds = 3f
-                delayMaxSeconds = 3f
-                repeat = 0
+                delayMinSeconds.set(3f)
+                delayMaxSeconds.set(3f)
+                repeat.set(0)
             }
         }
     }
@@ -67,9 +67,9 @@ class D16_spine_pooling : JJGame(JJConfig {
         return SceneSpec {
             component(Emitter()) {
                 setSpec("spineAnimation")
-                delayMinSeconds = 3f
-                delayMaxSeconds = 3f
-                repeat = 0
+                delayMinSeconds.set(3f)
+                delayMaxSeconds.set(3f)
+                repeat.set(0)
             }
         }
     }
