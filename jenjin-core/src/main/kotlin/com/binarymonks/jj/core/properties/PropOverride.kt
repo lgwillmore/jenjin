@@ -44,6 +44,15 @@ class PropOverride<T>(var default: T) : Copyable<PropOverride<T>> {
     }
 
     /**
+     *Set the key of the property to refer to, and the default if it is not found.
+     */
+    fun setOverride(propertyKey: String, default: T) {
+        this.propOverrideKey = propertyKey
+        this.default = default
+        this.value = null
+    }
+
+    /**
      * Get the computed value.
      *
      * This will be whichever was called last between [PropOverride.set]/[PropOverride.setOverride], if they are not null.

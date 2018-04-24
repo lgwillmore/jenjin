@@ -92,5 +92,18 @@ class PropOverrideTest {
         Assert.assertEquals(explicit, propOverride.get())
     }
 
+    @Test
+    fun get_DefaultAndOverrideSet(){
+        val propOverride = PropOverride(default)
+        propOverride.setOverride("someOtherPropertyKey", "someOtherDefault")
+        propOverride.hasProps = hasProps
+
+        Assert.assertEquals("someOtherDefault", propOverride.get())
+
+        propOverride.setOverride(propertyKey,default)
+
+        Assert.assertEquals(propertyValue, propOverride.get())
+    }
+
 
 }
