@@ -16,67 +16,82 @@ class CollisionResolver {
         protected set
 
     fun preSolveContact(otherScene: Scene, otherFixture: Fixture, contact: Contact, myFixture: Fixture, oldManifold: Manifold) {
-        var propogate = true
-        for (function in collisions.preSolves) {
-            if (function.preSolveCollision(checkNotNull(me), myFixture, otherScene, otherFixture, contact, oldManifold)) {
-                propogate = false
-                break
+        for(full in collisions.full){
+            if(full.preSolveWrapper(checkNotNull(me), myFixture, otherScene, otherFixture, contact, oldManifold)){
+                return
             }
         }
-        if (propogate && parent != null) {
+        for (function in collisions.preSolves) {
+            if (function.preSolveCollision(checkNotNull(me), myFixture, otherScene, otherFixture, contact, oldManifold)) {
+                return
+            }
+        }
+        if (parent != null) {
             parent!!.preSolveContact(otherScene, otherFixture, contact, myFixture, oldManifold)
         }
     }
 
     fun beginContact(otherObject: Scene, otherFixture: Fixture, contact: Contact, myFixture: Fixture) {
         collisionCount++
-        var propogate = true
-        for (function in collisions.begins) {
-            if (function.performCollision(checkNotNull(me), myFixture, otherObject, otherFixture, contact)) {
-                propogate = false
-                break
+        for(full in collisions.full){
+            if(full.beginWrapper(checkNotNull(me), myFixture, otherObject, otherFixture, contact)){
+                return
             }
         }
-        if (propogate && parent != null) {
+        for (function in collisions.begins) {
+            if (function.performCollision(checkNotNull(me), myFixture, otherObject, otherFixture, contact)) {
+                return
+            }
+        }
+        if (parent != null) {
             parent!!.beginContact(otherObject, otherFixture, contact, myFixture)
         }
     }
 
     fun finalBeginContact(otherObject: Scene, otherFixture: Fixture, contact: Contact, myFixture: Fixture) {
-        var propogate = true
-        for (function in collisions.finalBegins) {
-            if (function.performCollision(checkNotNull(me), myFixture, otherObject, otherFixture, contact)) {
-                propogate = false
-                break
+        for(full in collisions.full){
+            if(full.finalBeginWrapper(checkNotNull(me), myFixture, otherObject, otherFixture, contact)){
+                return
             }
         }
-        if (propogate && parent != null) {
+        for (function in collisions.finalBegins) {
+            if (function.performCollision(checkNotNull(me), myFixture, otherObject, otherFixture, contact)) {
+               return
+            }
+        }
+        if (parent != null) {
             parent!!.finalBeginContact(otherObject, otherFixture, contact, myFixture)
         }
     }
 
     fun endContact(otherObject: Scene, otherFixture: Fixture, contact: Contact, myFixture: Fixture) {
-        var propogate = true
-        for (function in collisions.ends) {
-            if (function.performCollision(checkNotNull(me), myFixture, otherObject, otherFixture, contact)) {
-                propogate = false
-                break
+        for(full in collisions.full){
+            if(full.endWrapper(checkNotNull(me), myFixture, otherObject, otherFixture, contact)){
+                return
             }
         }
-        if (propogate && parent != null) {
+        for (function in collisions.ends) {
+            if (function.performCollision(checkNotNull(me), myFixture, otherObject, otherFixture, contact)) {
+                return
+            }
+        }
+        if (parent != null) {
             parent!!.endContact(otherObject, otherFixture, contact, myFixture)
         }
     }
 
     fun postSolveContact(otherScene: Scene, otherFixture: Fixture, contact: Contact, myFixture: Fixture, impulse: ContactImpulse) {
-        var propogate = true
-        for (function in collisions.postSolves) {
-            if (function.postSolveCollision(checkNotNull(me), myFixture, otherScene, otherFixture, contact, impulse)) {
-                propogate = false
-                break
+        for(full in collisions.full){
+            if(full.postSolveWrapper(checkNotNull(me), myFixture, otherScene, otherFixture, contact, impulse)){
+                return
             }
         }
-        if (propogate && parent != null) {
+        for (function in collisions.postSolves) {
+            if (function.postSolveCollision(checkNotNull(me), myFixture, otherScene, otherFixture, contact, impulse)) {
+                return
+            }
+        }
+        if (parent != null) {
             parent!!.postSolveContact(otherScene, otherFixture, contact, myFixture, impulse)
         }
     }
@@ -103,6 +118,7 @@ class CollisionResolver {
         collisions.finalBegins.forEach { it.disable() }
         collisions.ends.forEach { it.disable() }
         collisions.postSolves.forEach { it.disable() }
+        collisions.full.forEach { it.disable() }
     }
 
 
@@ -115,6 +131,7 @@ class CollisionResolver {
         collisions.finalBegins.forEach { it.enable() }
         collisions.ends.forEach { it.enable() }
         collisions.postSolves.forEach { it.enable() }
+        collisions.full.forEach { it.enable() }
     }
 
 

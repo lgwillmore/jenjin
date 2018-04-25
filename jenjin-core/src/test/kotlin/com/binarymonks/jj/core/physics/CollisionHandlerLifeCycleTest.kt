@@ -18,6 +18,7 @@ class CollisionHandlerLifeCycleTest {
     lateinit var mockFinalBeginCollisionHandler: CollisionHandler
     lateinit var mockEndCollisionHandler: CollisionHandler
     lateinit var mockPostSolveHandler: PostSolveHandler
+    lateinit var mockFullHandler: FullCollisionHandler
 
     lateinit var scene: Scene
 
@@ -31,11 +32,13 @@ class CollisionHandlerLifeCycleTest {
         mockFinalBeginCollisionHandler = Mockito.mock(CollisionHandler::class.java)
         mockEndCollisionHandler = Mockito.mock(CollisionHandler::class.java)
         mockPostSolveHandler = Mockito.mock(PostSolveHandler::class.java)
+        mockFullHandler = Mockito.mock(FullCollisionHandler::class.java)
         scene.physicsRoot.collisionResolver.collisions.begin(mockBeginCollisionHandler)
         scene.physicsRoot.collisionResolver.collisions.finalBegin(mockFinalBeginCollisionHandler)
         scene.physicsRoot.collisionResolver.collisions.preSolve(mockPreSolveHandler)
         scene.physicsRoot.collisionResolver.collisions.end(mockEndCollisionHandler)
         scene.physicsRoot.collisionResolver.collisions.postSolve(mockPostSolveHandler)
+        scene.physicsRoot.collisionResolver.collisions.full(mockFullHandler)
     }
 
     @Test
@@ -47,6 +50,7 @@ class CollisionHandlerLifeCycleTest {
         Mockito.verify(mockPreSolveHandler).onAddToWorld()
         Mockito.verify(mockEndCollisionHandler).onAddToWorld()
         Mockito.verify(mockPostSolveHandler).onAddToWorld()
+        Mockito.verify(mockFullHandler).onAddToWorld()
 
         scene.executeDestruction()
 
@@ -55,6 +59,7 @@ class CollisionHandlerLifeCycleTest {
         Mockito.verify(mockPreSolveHandler).onRemoveFromWorld()
         Mockito.verify(mockEndCollisionHandler).onRemoveFromWorld()
         Mockito.verify(mockPostSolveHandler).onRemoveFromWorld()
+        Mockito.verify(mockFullHandler).onRemoveFromWorld()
 
     }
 

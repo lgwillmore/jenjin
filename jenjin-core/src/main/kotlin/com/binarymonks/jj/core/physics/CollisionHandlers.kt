@@ -9,6 +9,7 @@ class CollisionHandlers {
     var finalBegins = Array<CollisionHandler>()
     var postSolves = Array<PostSolveHandler>()
     var ends = Array<CollisionHandler>()
+    var full = Array<FullCollisionHandler>()
 
     fun copyAppendFrom(other: CollisionHandlers) {
         other.preSolves.forEach { preSolves.add(it.clone()) }
@@ -16,6 +17,7 @@ class CollisionHandlers {
         other.finalBegins.forEach { finalBegins.add(it.clone()) }
         other.ends.forEach { ends.add(it.clone()) }
         other.postSolves.forEach { postSolves.add(it.clone()) }
+        other.full.forEach { full.add(it.clone()) }
     }
 
     /**
@@ -23,7 +25,9 @@ class CollisionHandlers {
      * You can add as many as you want.
      *
      */
-    fun preSolve(handler: PreSolveHandler) {
+    fun <T : PreSolveHandler> preSolve(handler: T, build: (T.() -> Unit)? = null) {
+        if (build != null)
+            handler.build()
         preSolves.add(handler)
     }
 
@@ -68,8 +72,19 @@ class CollisionHandlers {
      * You can add as many as you want.
      *
      */
-    fun postSolve(handler: PostSolveHandler) {
+    fun <T : PostSolveHandler> postSolve(handler: T, build: (T.() -> Unit)? = null) {
+        if (build != null)
+            handler.build()
         postSolves.add(handler)
+    }
+
+    /**
+     * Add a single handler that has access to the full collision lifecycle
+     */
+    fun <T : FullCollisionHandler> full(handler: T, build: (T.() -> Unit)? = null) {
+        if (build != null)
+            handler.build()
+        full.add(handler)
     }
 
     fun onAddToWorld() {
@@ -78,6 +93,7 @@ class CollisionHandlers {
         finalBegins.forEach { it.onAddToWorld() }
         ends.forEach { it.onAddToWorld() }
         postSolves.forEach { it.onAddToWorld() }
+        full.forEach { it.onAddToWorld() }
     }
 
     fun onRemoveFromWorld() {
@@ -85,5 +101,7 @@ class CollisionHandlers {
         begins.forEach { it.onRemoveFromWorld() }
         finalBegins.forEach { it.onRemoveFromWorld() }
         ends.forEach { it.onRemoveFromWorld() }
-        postSolves.forEach { it.onRemoveFromWorld() }    }
+        postSolves.forEach { it.onRemoveFromWorld() }
+        full.forEach { it.onRemoveFromWorld() }
+    }
 }

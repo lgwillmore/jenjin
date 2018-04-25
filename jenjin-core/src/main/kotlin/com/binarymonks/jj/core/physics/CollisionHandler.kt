@@ -13,7 +13,7 @@ abstract class CollisionHandler {
     private var enabled = true
 
 
-    fun performCollision(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact): Boolean {
+    internal fun performCollision(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact): Boolean {
         if (enabled) {
             val gameData = otherFixture.userData as PhysicsNode
             for (ignore in ignoreProperties) {

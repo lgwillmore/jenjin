@@ -17,8 +17,7 @@ abstract class PostSolveHandler {
         init()
     }
 
-    internal fun postSolveCollision(me: Scene, myFixture: Fixture,
-                                    other: Scene, otherFixture: Fixture, contact: Contact, impulse: ContactImpulse): Boolean {
+    internal fun postSolveCollision(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact, impulse: ContactImpulse): Boolean {
         if (enabled) {
             val gameData = otherFixture.userData as PhysicsNode
             for (ignore in ignoreProperties) {

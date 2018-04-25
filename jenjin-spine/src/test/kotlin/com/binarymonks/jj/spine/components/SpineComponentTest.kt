@@ -23,7 +23,7 @@ class SpineComponentTest {
     @Test
     fun testClone(){
         val original = SpineComponent(SpineAnimations())
-        val copy = original.clone()
+        original.clone()
     }
 }
 
