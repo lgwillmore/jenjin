@@ -115,8 +115,8 @@ class SpineSpec() : SceneSpecRef {
                     physics {
                         bodyType = BodyDef.BodyType.DynamicBody
                         gravityScale = 0f
-                        val fixture = buildFixture(bone, mass, skeleton, customSkeleton.customs.get(boneName), customSkeleton)
-                        addFixture(fixture)
+                        val fixtures = buildFixture(bone, mass, skeleton, customSkeleton.customs.get(boneName), customSkeleton)
+                        fixtures.forEach{ addFixture(it)}
                         collisions.copyAppendFrom(customSkeleton.all.collisions)
                     }
                     component(SpineBoneComponent()) {
@@ -156,7 +156,18 @@ class SpineSpec() : SceneSpecRef {
         return bone.data.name
     }
 
-    private fun buildFixture(bone: Bone, mass: Float, skeleton: Skeleton, customBone: CustomBone?, customSkeleton: SpineSkeletonSpec): FixtureSpec {
+    private fun buildFixture(bone: Bone, mass: Float, skeleton: Skeleton, customBone: CustomBone?, customSkeleton: SpineSkeletonSpec): Array<FixtureSpec> {
+        val fixtures = Array<FixtureSpec>()
+        fixtures.add(buildPrimaryFixture(bone,mass,skeleton,customBone,customSkeleton))
+        if(customBone!=null){
+            for (fixture in customBone.fixtures){
+                fixtures.add(fixture)
+            }
+        }
+        return fixtures
+    }
+
+    private fun buildPrimaryFixture(bone: Bone, mass: Float, skeleton: Skeleton, customBone: CustomBone?, customSkeleton: SpineSkeletonSpec): FixtureSpec {
         if (customSkeleton.boundingBoxes) {
             val boundingBox: Polygon? = findPolygon(bone, skeleton)
             if (boundingBox != null) {

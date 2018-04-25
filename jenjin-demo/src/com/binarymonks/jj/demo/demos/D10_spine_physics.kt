@@ -57,6 +57,11 @@ class D10_spine_physics : JJGame(JJConfig{
                     override {
                         shape = Circle(0.4f)
                     }
+                    fixture {
+                        offsetX = 1.2f
+                        collisionGroup = CollisionGroupSpecName("character")
+                        shape=Rectangle()
+                    }
                 }
             }
         }

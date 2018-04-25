@@ -7,6 +7,8 @@ import com.binarymonks.jj.core.physics.CollisionHandlers
 import com.binarymonks.jj.core.specs.ShapeSpec
 import com.binarymonks.jj.core.specs.physics.CollisionGroupSpec
 import com.binarymonks.jj.core.specs.physics.CollisionGroupSpecExplicit
+import com.binarymonks.jj.core.specs.physics.FixtureSpec
+import com.binarymonks.jj.core.specs.physics.LightSpec
 
 
 class SpineSkeletonSpec() {
@@ -61,6 +63,7 @@ class CustomBone {
     internal val boneOverride = BoneOverride()
     internal val components: Array<Component> = Array()
     internal val properties: ObjectMap<String, Any> = ObjectMap()
+    internal val fixtures: Array<FixtureSpec> = Array()
     val collisions = CollisionHandlers()
 
     fun override(build: BoneOverride.() -> Unit) {
@@ -74,6 +77,12 @@ class CustomBone {
 
     fun <T : Component> component(component: T) {
         components.add(component)
+    }
+
+    fun fixture(init: FixtureSpec.() -> Unit) {
+        val fixtureSpec = FixtureSpec()
+        fixtureSpec.init()
+        this.fixtures.add(fixtureSpec)
     }
 
     fun prop(name: String, value: Any? = null) {

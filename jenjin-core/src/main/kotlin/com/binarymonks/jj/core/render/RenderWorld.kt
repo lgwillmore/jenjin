@@ -32,6 +32,10 @@ open class RenderWorld : RenderAPI {
         rayHandler.setAmbientLight(r, g, b, a)
     }
 
+    override fun setAmbientLightToDefault() {
+        rayHandler.setAmbientLight(0.0f, 0.0f, 0.0f, 1.0f)
+    }
+
     override fun setClearColor(r: Float, g: Float, b: Float, a: Float) {
         JJ.B.layers.clearColor.set(r, g, b, a)
     }

@@ -7,6 +7,7 @@ interface RenderAPI {
 
     //TODO: This needs to hook into the game rendering layer, not the Renderworld. Other layers might not want the same ambient light
     fun setAmbientLight(r: Float, g: Float, b: Float, a: Float)
+    fun setAmbientLightToDefault()
 
     fun setClearColor(r: Float, g: Float, b: Float, a: Float)
 
