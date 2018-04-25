@@ -51,13 +51,6 @@ open class FullCollisionHandler {
         return beginCollision(me, myFixture, other, otherFixture, contact)
     }
 
-    internal fun finalBeginWrapper(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact): Boolean {
-        if (filterCollision(otherFixture)) {
-            return true
-        }
-        return finalBegin(me, myFixture, other, otherFixture, contact)
-    }
-
     internal fun endWrapper(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact): Boolean {
         if (filterCollision(otherFixture)) {
             return true
@@ -75,7 +68,6 @@ open class FullCollisionHandler {
 
     open fun preSolve(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact, oldManifold: Manifold): Boolean{return false}
     open fun beginCollision(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact): Boolean{return false}
-    open fun finalBegin(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact): Boolean{return false}
     open fun end(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact): Boolean{return false}
     open fun postSolve(me: Scene, myFixture: Fixture, other: Scene, otherFixture: Fixture, contact: Contact, impulse: ContactImpulse): Boolean{return false}
 

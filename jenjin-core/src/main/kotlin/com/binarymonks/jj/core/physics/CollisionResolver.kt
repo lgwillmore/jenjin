@@ -48,22 +48,6 @@ class CollisionResolver {
         }
     }
 
-    fun finalBeginContact(otherObject: Scene, otherFixture: Fixture, contact: Contact, myFixture: Fixture) {
-        for(full in collisions.full){
-            if(full.finalBeginWrapper(checkNotNull(me), myFixture, otherObject, otherFixture, contact)){
-                return
-            }
-        }
-        for (function in collisions.finalBegins) {
-            if (function.performCollision(checkNotNull(me), myFixture, otherObject, otherFixture, contact)) {
-               return
-            }
-        }
-        if (parent != null) {
-            parent!!.finalBeginContact(otherObject, otherFixture, contact, myFixture)
-        }
-    }
-
     fun endContact(otherObject: Scene, otherFixture: Fixture, contact: Contact, myFixture: Fixture) {
         for(full in collisions.full){
             if(full.endWrapper(checkNotNull(me), myFixture, otherObject, otherFixture, contact)){
@@ -100,9 +84,6 @@ class CollisionResolver {
         collisions.begins.add(collision)
     }
 
-    fun addFinalBegin(collision: CollisionHandler) {
-        collisions.finalBegins.add(collision)
-    }
 
     fun addEnd(collision: CollisionHandler) {
         collisions.ends.add(collision)
@@ -115,7 +96,6 @@ class CollisionResolver {
     fun disableCurrentCollisions() {
         collisions.preSolves.forEach { it.disable() }
         collisions.begins.forEach { it.disable() }
-        collisions.finalBegins.forEach { it.disable() }
         collisions.ends.forEach { it.disable() }
         collisions.postSolves.forEach { it.disable() }
         collisions.full.forEach { it.disable() }
@@ -128,7 +108,6 @@ class CollisionResolver {
     fun enableCurrentCollisions() {
         collisions.preSolves.forEach { it.enable() }
         collisions.begins.forEach { it.enable() }
-        collisions.finalBegins.forEach { it.enable() }
         collisions.ends.forEach { it.enable() }
         collisions.postSolves.forEach { it.enable() }
         collisions.full.forEach { it.enable() }

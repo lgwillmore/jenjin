@@ -19,10 +19,6 @@ class JJContactListener : ContactListener {
 
         resolverA.beginContact(sceneB, fixtureB, contact, fixtureA)
         resolverB.beginContact(sceneA, fixtureA, contact, fixtureB)
-
-
-        resolverA.finalBeginContact(sceneB, fixtureB, contact, fixtureA)
-        resolverB.finalBeginContact(sceneA, fixtureA, contact, fixtureB)
     }
 
     private fun getResolver(fixture: Fixture): CollisionResolver {
