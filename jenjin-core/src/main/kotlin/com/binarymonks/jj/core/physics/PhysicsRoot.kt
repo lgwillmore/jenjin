@@ -131,7 +131,11 @@ open class PhysicsRoot(val b2DBody: Body) {
     }
 
     fun addNode(physicsNode: PhysicsNode) {
-        nodes.add(physicsNode)
+        if(physicsNode.name != null){
+            nodes.add(physicsNode.name!!,physicsNode)
+        }else{
+            nodes.add(physicsNode)
+        }
     }
 
     fun getNode(name:String): PhysicsNode? {

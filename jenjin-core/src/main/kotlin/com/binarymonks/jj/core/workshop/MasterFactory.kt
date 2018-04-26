@@ -104,7 +104,7 @@ class MasterFactory {
                 var worldPosition = vec2().mul(paramsStack.transformMatrix)
                 scene.resetFromPool(worldPosition.x, worldPosition.y, paramsStack.rotationD)
                 scene.uniqueName = paramsStack.peek().uniqueInstanceName
-                scene.name = paramsStack.peek().name
+                scene.name = paramsStack.peek().name ?: sceneSpec.name
                 scene.properties.clear()
                 scene.properties.merge(sceneSpec.properties).merge(paramsStack.peek().properties)
                 return scene
