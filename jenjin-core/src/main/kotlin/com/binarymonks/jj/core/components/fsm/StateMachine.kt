@@ -218,11 +218,17 @@ class TransitionBuilderTo(
         val stateMachine: StateMachine
 ) {
 
-    fun <T : TransitionCondition> whenJust(whenCondition: T) {
+    fun <T : TransitionCondition> whenJust(whenCondition: T, build: (T.()->Unit)?=null) {
+        if(build!=null){
+            whenCondition.build()
+        }
         stateMachine.transitions.get(from).add(TransitionEdge(whenCondition, to))
     }
 
-    fun <T : TransitionCondition> whenNot(whenCondition: T) {
+    fun <T : TransitionCondition> whenNot(whenCondition: T, build: (T.()->Unit)?=null) {
+        if(build!=null){
+            whenCondition.build()
+        }
         stateMachine.transitions.get(from).add(TransitionEdge(not(whenCondition), to))
     }
 

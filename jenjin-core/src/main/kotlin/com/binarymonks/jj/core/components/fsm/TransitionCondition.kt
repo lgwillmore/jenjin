@@ -74,7 +74,10 @@ class AndTransitionCondition() : TransitionCondition() {
         this.construc()
     }
 
-    fun <T : TransitionCondition> and(condition: T) {
+    fun <T : TransitionCondition> and(condition: T, build: (T.() -> Unit)? = null) {
+        if (build != null) {
+            condition.build()
+        }
         conditions.add(condition)
     }
 
@@ -125,11 +128,14 @@ class OrTransitionCondition() : TransitionCondition() {
             conditions.forEach { it.scene = value }
         }
 
-    constructor(construc: OrTransitionCondition.() -> Unit) : this() {
-        this.construc()
+    constructor(build: OrTransitionCondition.() -> Unit) : this() {
+        this.build()
     }
 
-    fun <T : TransitionCondition> or(condition: T) {
+    fun <T : TransitionCondition> or(condition: T, build: (T.() -> Unit)? = null) {
+        if (build != null) {
+            condition.build()
+        }
         conditions.add(condition)
     }
 

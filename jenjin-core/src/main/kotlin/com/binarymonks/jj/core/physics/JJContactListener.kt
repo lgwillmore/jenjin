@@ -5,9 +5,6 @@ import com.binarymonks.jj.core.scenes.Scene
 
 class JJContactListener : ContactListener {
 
-    /**
-     * beginContact is the only hook that will guarantee that the objects have not been disposed.
-     */
     override fun beginContact(contact: Contact) {
         val fixtureA = contact.fixtureA
         val sceneA = getScene(fixtureA)
@@ -30,10 +27,6 @@ class JJContactListener : ContactListener {
         return checkNotNull(node.physicsRoot.parent)
     }
 
-
-    /**
-     * There may be several game loops before a contact ends. Objects may have been disposed by the beginContact.
-     */
     override fun endContact(contact: com.badlogic.gdx.physics.box2d.Contact) {
         val fixtureA = contact.fixtureA
         val objectA = getScene(fixtureA)

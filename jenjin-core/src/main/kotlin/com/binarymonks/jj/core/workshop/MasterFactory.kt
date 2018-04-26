@@ -111,7 +111,7 @@ class MasterFactory {
             }
         }
         val scene = Scene(
-                name = paramsStack.peek().name,
+                name = paramsStack.peek().name ?: sceneSpec.name,
                 specName = sceneSpec.name,
                 uniqueName = paramsStack.peek().uniqueInstanceName,
                 specID = sceneSpec.id,
