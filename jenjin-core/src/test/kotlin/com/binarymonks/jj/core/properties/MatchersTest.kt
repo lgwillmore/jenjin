@@ -100,6 +100,10 @@ class MatchersTest {
 }
 
 class StubMatch(val result: Boolean) : Matcher {
+    override fun clone(): Matcher {
+        return this
+    }
+
     override fun matches(properties: ObjectMap<String, Any>): Boolean {
         return result
     }

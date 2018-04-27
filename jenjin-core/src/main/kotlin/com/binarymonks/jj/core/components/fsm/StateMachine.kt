@@ -67,7 +67,7 @@ open class StateMachine() : State() {
         } else {
             for (edge in transitions.get(currentState)) {
                 if (edge.condition!!.met()) {
-                    executeTransitionTo(edge.toEventName!!)
+                    executeTransitionTo(edge.toState.resolve()!!)
                     break
                 }
             }
@@ -78,9 +78,9 @@ open class StateMachine() : State() {
         }
     }
 
-    private fun executeTransitionTo(state:String){
+    private fun executeTransitionTo(state: String) {
         closeCurrentState()
-        currentState=state
+        currentState = state
         prepCurrentState()
     }
 
@@ -91,7 +91,7 @@ open class StateMachine() : State() {
         }
     }
 
-    private fun closeCurrentState(){
+    private fun closeCurrentState() {
         state().exitWrapper()
         for (edge in transitions.get(currentState)) {
             edge.condition!!.exitWrapper()
@@ -127,16 +127,34 @@ open class StateMachine() : State() {
 
 }
 
-class TransitionEdge() : Copyable<TransitionEdge>{
+interface StateResolver {
+    fun resolve(): String?
+}
+
+class SingleStateResolver(var state: String? = null) : StateResolver {
+    override fun resolve(): String? {
+        return state
+    }
+}
+
+class RandomStateResolver : StateResolver {
+    var states = Array<String>()
+
+    override fun resolve(): String? {
+        return states.random()
+    }
+}
+
+class TransitionEdge() : Copyable<TransitionEdge> {
     var condition: TransitionCondition? = null
-    var toEventName: String? = null
+    var toState: StateResolver = SingleStateResolver()
 
     constructor(
             condition: TransitionCondition,
-            toEventName: String
+            toState: StateResolver
     ) : this() {
         this.condition = condition
-        this.toEventName = toEventName
+        this.toState = toState
     }
 
     override fun clone(): TransitionEdge {
@@ -148,14 +166,14 @@ class TransitionEdge() : Copyable<TransitionEdge>{
         if (other !is TransitionEdge) return false
 
         if (condition != other.condition) return false
-        if (toEventName != other.toEventName) return false
+        if (toState != other.toState) return false
 
         return true
     }
 
     override fun hashCode(): Int {
         var result = condition?.hashCode() ?: 0
-        result = 31 * result + (toEventName?.hashCode() ?: 0)
+        result = 31 * result + (toState?.hashCode() ?: 0)
         return result
     }
 
@@ -208,25 +226,31 @@ class TransitionBuilder(
 
     fun to(stateName: String): TransitionBuilderTo {
 
-        return TransitionBuilderTo(from, stateName, stateMachine)
+        return TransitionBuilderTo(from, SingleStateResolver(stateName), stateMachine)
+    }
+
+    fun toRandom(vararg stateNames: String): TransitionBuilderTo {
+        val randomResolver = RandomStateResolver()
+        stateNames.forEach { randomResolver.states.add(it) }
+        return TransitionBuilderTo(from, randomResolver, stateMachine)
     }
 }
 
 class TransitionBuilderTo(
         val from: String,
-        val to: String,
+        val to: StateResolver,
         val stateMachine: StateMachine
 ) {
 
-    fun <T : TransitionCondition> whenJust(whenCondition: T, build: (T.()->Unit)?=null) {
-        if(build!=null){
+    fun <T : TransitionCondition> whenJust(whenCondition: T, build: (T.() -> Unit)? = null) {
+        if (build != null) {
             whenCondition.build()
         }
         stateMachine.transitions.get(from).add(TransitionEdge(whenCondition, to))
     }
 
-    fun <T : TransitionCondition> whenNot(whenCondition: T, build: (T.()->Unit)?=null) {
-        if(build!=null){
+    fun <T : TransitionCondition> whenNot(whenCondition: T, build: (T.() -> Unit)? = null) {
+        if (build != null) {
             whenCondition.build()
         }
         stateMachine.transitions.get(from).add(TransitionEdge(not(whenCondition), to))
