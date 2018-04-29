@@ -25,9 +25,9 @@ import com.binarymonks.jj.core.specs.Rectangle
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.SceneSpecRef
 import com.binarymonks.jj.core.specs.params
-import com.binarymonks.jj.core.ui.JJClickListener
-import com.binarymonks.jj.core.ui.UIBuilder
-import com.binarymonks.jj.core.ui.UILayer
+import com.binarymonks.jj.core.layers.ui.JJClickListener
+import com.binarymonks.jj.core.layers.ui.UIBuilder
+import com.binarymonks.jj.core.layers.ui.UILayer
 
 val COURT_LENGTH = 12f
 val BAT_LENGTH = 1.5f

@@ -8,8 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.JJGame
 import com.binarymonks.jj.core.layers.Layer
-import com.binarymonks.jj.core.ui.JJChangeListener
-import com.binarymonks.jj.core.ui.UIBuilder
+import com.binarymonks.jj.core.layers.ui.JJChangeListener
+import com.binarymonks.jj.core.layers.ui.UIBuilder
 
 
 class D11_ui_screens : JJGame() {

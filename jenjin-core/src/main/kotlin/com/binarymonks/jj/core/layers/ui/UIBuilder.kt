@@ -1,4 +1,4 @@
-package com.binarymonks.jj.core.ui
+package com.binarymonks.jj.core.layers.ui
 
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.EventListener
