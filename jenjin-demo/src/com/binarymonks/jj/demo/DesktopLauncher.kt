@@ -11,6 +11,6 @@ object DesktopLauncher {
         lwjglConfig.width = 1000
 
         //Swap out the various demo Games here
-        LwjglApplication(D10_spine_physics(), lwjglConfig)
+        LwjglApplication(D19_in_world_scene_2d(), lwjglConfig)
     }
 }

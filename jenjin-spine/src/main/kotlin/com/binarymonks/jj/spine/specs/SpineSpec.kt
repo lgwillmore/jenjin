@@ -265,10 +265,12 @@ class SpineAnimations : Copyable<SpineAnimations> {
         mixes.add(Mix(fromName, toName, duration))
     }
 
+    //TODO: Maybe - make it possible to register multiple to same event?
     fun registerEventHandler(eventName: String, handler: SpineEventHandler) {
         handlers.put(eventName, handler)
     }
 
+    //TODO: Maybe - make it possible to register multiple to same event?
     fun registerEventFunction(eventName: String, function: () -> Unit) {
         functions.put(eventName, function)
     }

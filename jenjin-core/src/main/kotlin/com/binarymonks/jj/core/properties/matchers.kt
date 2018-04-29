@@ -71,11 +71,10 @@ class AllOf() : Matcher {
         matchers.add(KeyAndValue(key, value))
     }
 
-    fun <T : Matcher> not(matcher: T, build: (T.() -> Unit)? = null) {
-        if (build != null) {
-            matcher.build()
-        }
-        matchers.add(Not(matcher))
+    fun not(build: Not.() -> Unit) {
+        val not = Not()
+        not.build()
+        matchers.add(not)
     }
 
     fun all(build: AllOf.() -> Unit) {
@@ -95,8 +94,30 @@ class Not(var matcher: Matcher? = null) : Matcher {
     override fun clone(): Matcher {
         return copy(this)
     }
+
     override fun matches(properties: ObjectMap<String, Any>): Boolean {
         return !matcher!!.matches(properties)
+    }
+
+    fun key(key: String) {
+        matcher = Key(key)
+    }
+
+    fun keyAndValue(key: String, value: Any?) {
+        matcher = KeyAndValue(key, value)
+    }
+
+
+    fun all(build: AllOf.() -> Unit) {
+        val all = AllOf()
+        all.build()
+        matcher = all
+    }
+
+    fun any(build: AnyOf.() -> Unit) {
+        val all = AnyOf()
+        all.build()
+        matcher = all
     }
 }
 
@@ -126,11 +147,10 @@ class AnyOf() : Matcher {
         matchers.add(KeyAndValue(key, value))
     }
 
-    fun <T : Matcher> not(matcher: T, build: (T.() -> Unit)? = null) {
-        if (build != null) {
-            matcher.build()
-        }
-        matchers.add(Not(matcher))
+    fun not(build: Not.() -> Unit) {
+        val not = Not()
+        not.build()
+        matchers.add(not)
     }
 
     fun all(build: AllOf.() -> Unit) {

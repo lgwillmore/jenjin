@@ -10,7 +10,7 @@ import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.params
 
 
-class D_18_physics_debug : JJGame(JJConfig {
+class D18_physics_debug : JJGame(JJConfig {
     b2d.debugRender = true
     debugStep = true
     val width = 30f

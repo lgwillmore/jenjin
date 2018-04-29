@@ -9,7 +9,7 @@ import com.binarymonks.jj.core.scenes.Scene
 
 
 open class StateMachine() : State() {
-
+    var debug = false
     var initialState = PropOverride<String?>(null)
     var states: ObjectMap<String, State> = ObjectMap()
     var transitions: ObjectMap<String, Array<TransitionEdge>> = ObjectMap()
@@ -85,6 +85,8 @@ open class StateMachine() : State() {
     }
 
     private fun prepCurrentState() {
+        if(debug)
+            println("Entering State $currentState")
         state().enterWrapper(this)
         for (edge in transitions.get(currentState)) {
             edge.condition!!.enterWrapper(this)
@@ -92,6 +94,8 @@ open class StateMachine() : State() {
     }
 
     private fun closeCurrentState() {
+        if(debug)
+            println("Closing State $currentState")
         state().exitWrapper()
         for (edge in transitions.get(currentState)) {
             edge.condition!!.exitWrapper()
@@ -173,7 +177,7 @@ class TransitionEdge() : Copyable<TransitionEdge> {
 
     override fun hashCode(): Int {
         var result = condition?.hashCode() ?: 0
-        result = 31 * result + (toState?.hashCode() ?: 0)
+        result = 31 * result + toState.hashCode()
         return result
     }
 

@@ -68,6 +68,12 @@ abstract class TransitionCondition : Copyable<TransitionCondition>, ComponentLif
 class AndTransitionCondition() : TransitionCondition() {
 
     var conditions: Array<TransitionCondition> = Array()
+    override var scene: Scene?
+        get() = super.scene
+        set(value) {
+            super.scene = value
+            conditions.forEach { it.scene = value }
+        }
 
 
     constructor(construc: AndTransitionCondition.() -> Unit) : this() {
