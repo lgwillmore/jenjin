@@ -201,15 +201,3 @@ class TextureNodeSpec : ImageNodeSpec<KClass<Texture>>() {
 
     }
 }
-
-class Scene2DNodeSpec : RenderNodeSpec() {
-
-    override fun getAssets(): Array<AssetReference> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun makeNode(paramsStack: ParamStack): RenderNode {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-}
