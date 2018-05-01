@@ -16,8 +16,7 @@ class PhysicsSpec {
     var allowSleep = true
     val collisions = CollisionHandlers()
     var lights: Array<LightSpec> = Array()
-
-    internal var fixtures: Array<FixtureSpec> = Array()
+    var fixtures: Array<FixtureSpec> = Array()
 
     fun addFixture(fixtureSpec: FixtureSpec) {
         fixtures.add(fixtureSpec)

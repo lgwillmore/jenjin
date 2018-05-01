@@ -40,6 +40,11 @@ class RenderRoot(var specID: Int) {
         return namedNodes.get(name)
     }
 
+    fun setAllActive(active:Boolean){
+        defaultRenderNodes.forEach { it.active=active }
+        lightRenderNodes.forEach { it.active=active }
+    }
+
     internal fun destroy(pooled: Boolean) {
         if (!pooled) {
             defaultRenderNodes.forEach { it.dispose() }
