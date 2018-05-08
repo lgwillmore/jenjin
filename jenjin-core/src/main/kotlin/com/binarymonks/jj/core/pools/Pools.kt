@@ -44,6 +44,13 @@ fun <K, V> newObjectMap(): ObjectMap<K, V> {
     return JJ.B.pools.nuwObjectMap()
 }
 
+/**
+ *
+ */
+fun <T> newArray(): Array<T> {
+    return JJ.B.pools.nuwArray()
+}
+
 
 /**
  * Recycle a pooled object
@@ -78,6 +85,7 @@ class Pools : PoolsAPI {
     internal var pools = ObjectMap<Class<*>, Pool<*>>()
     internal var poolablePools = ObjectMap<Class<*>, Array<Poolable>>()
     internal var objectMapPool = Array<ObjectMap<*, *>>()
+    internal var arrayPool = Array<Array<*>>()
 
 
     init {
@@ -160,6 +168,11 @@ class Pools : PoolsAPI {
             objectMapPool.add(pooled)
             return
         }
+        if (pooled is Array<*>) {
+            pooled.clear()
+            arrayPool.add(pooled)
+            return
+        }
         if (pooled is Poolable) {
             recyclePoolable(pooled)
             return
@@ -212,6 +225,15 @@ class Pools : PoolsAPI {
             return map as ObjectMap<K, V>
         }
         return ObjectMap()
+    }
+
+    fun <T> nuwArray(): Array<T> {
+        if (arrayPool.size > 0) {
+            val array = arrayPool.pop()
+            array.clear()
+            return array as Array<T>
+        }
+        return Array()
     }
 
     class NoPoolManagerException(classWithMissingPool: Class<*>) : RuntimeException(String.format("No PoolManager for %s. Register a pool manager.", classWithMissingPool.canonicalName))

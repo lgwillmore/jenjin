@@ -209,7 +209,7 @@ open class Scene(
 
     private fun reallyRemove(removal: Scene) {
         val layer = sceneToLayerIndex.get(removal.id)
-        sceneLayers.remove(removal.id)
+//        sceneLayers.remove(removal.id)
         if (removal.name != null) {
             nameChildren.remove(removal.name)
         }

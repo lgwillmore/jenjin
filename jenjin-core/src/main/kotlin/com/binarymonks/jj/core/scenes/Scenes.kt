@@ -88,6 +88,10 @@ class Scenes : ScenesAPI {
         }
         return assets
     }
+
+    override fun destroyAll() {
+        JJ.tasks.doOnceAfterPhysics { JJ.B.sceneWorld.destroyAllScenes() }
+    }
 }
 
 class CreateSceneFunction : OneTimeTask(), Poolable {

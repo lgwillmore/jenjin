@@ -52,4 +52,9 @@ interface ScenesAPI {
      * This is a synchronous call, so your code and your game will be halted where it is while this happens.
      */
     fun loadAssetsNow()
+
+    /**
+     * Destroy all scenes
+     */
+    fun destroyAll()
 }
