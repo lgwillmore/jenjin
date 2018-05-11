@@ -50,7 +50,7 @@ class InstanceParams : HasProps {
     /**
      * This must be a name that is globally unique if set. It is used for retrieving
      */
-    var uniqueInstanceName: String? = null
+    var groupName: String? = null
     private var transformMatrix: Matrix3 = mat3()
 
     fun setPosition(x: Float, y: Float) {
@@ -88,7 +88,7 @@ class InstanceParams : HasProps {
     }
 
     override fun toString(): String {
-        return "InstanceParams(x=$x, y=$y, scaleX=$scaleX, scaleY=$scaleY, rotationD=$rotationD, properties=$properties, name=$name, uniqueInstanceName=$uniqueInstanceName)"
+        return "InstanceParams(x=$x, y=$y, scaleX=$scaleX, scaleY=$scaleY, rotationD=$rotationD, properties=$properties, name=$name, groupName=$groupName)"
     }
 
 

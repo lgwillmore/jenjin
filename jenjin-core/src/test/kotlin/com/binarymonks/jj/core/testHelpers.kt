@@ -16,7 +16,6 @@ import com.binarymonks.jj.core.pools.Pools
 import com.binarymonks.jj.core.render.RenderRoot
 import com.binarymonks.jj.core.render.RenderWorld
 import com.binarymonks.jj.core.scenes.Scene
-import com.binarymonks.jj.core.scenes.SceneWorld
 import com.binarymonks.jj.core.scenes.Scenes
 import com.binarymonks.jj.core.time.ClockControls
 import org.mockito.Mockito
@@ -32,7 +31,6 @@ fun mockoutGDXinJJ() {
     JJ.B.layers = LayerStack()
     JJ.B.physicsWorld = Mockito.mock(PhysicsWorld::class.java)
     JJ.B.renderWorld = Mockito.mock(RenderWorld::class.java)
-    JJ.B.sceneWorld = SceneWorld()
     JJ.B.pools = Pools()
     JJ.B.assets = Assets()
     JJ.B.audio = Audio()

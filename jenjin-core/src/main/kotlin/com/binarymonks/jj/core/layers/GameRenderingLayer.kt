@@ -63,8 +63,8 @@ class GameRenderingLayer(
     }
 
     private fun renderGraph(type: RenderGraphType) {
-        if (JJ.B.sceneWorld.rootScene != null) {
-            val layers = JJ.B.sceneWorld.rootScene!!.sceneLayers
+        if (JJ.B.scenes.rootScene != null) {
+            val layers = JJ.B.scenes.rootScene!!.sceneLayers
             JJ.B.renderWorld.polyBatch.enableBlending()
             JJ.B.renderWorld.polyBatch.projectionMatrix = camera.combined
             JJ.B.renderWorld.shapeRenderer.projectionMatrix = camera.combined

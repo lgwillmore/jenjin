@@ -7,8 +7,10 @@ import com.binarymonks.jj.core.api.ScenesAPI
 import com.binarymonks.jj.core.assets.AssetReference
 import com.binarymonks.jj.core.async.Bond
 import com.binarymonks.jj.core.async.OneTimeTask
+import com.binarymonks.jj.core.extensions.emptyGDXArray
 import com.binarymonks.jj.core.pools.Poolable
 import com.binarymonks.jj.core.pools.new
+import com.binarymonks.jj.core.pools.newArray
 import com.binarymonks.jj.core.pools.recycle
 import com.binarymonks.jj.core.specs.InstanceParams
 import com.binarymonks.jj.core.specs.SceneSpec
@@ -21,11 +23,13 @@ class Scenes : ScenesAPI {
     val masterFactory = MasterFactory()
     private val unresolvedSpecRefs: ObjectMap<String, SceneSpecRef> = ObjectMap()
     val sceneSpecs: ObjectMap<String, SceneSpec> = ObjectMap()
-
     private var dirty = false
+    internal var rootScene: Scene? = null
+    internal var scenesByGroupName = ObjectMap<String, Array<Scene>>()
+    internal var inUpdate = false
 
     override fun instantiate(instanceParams: InstanceParams, scene: SceneSpec): Bond<Scene> {
-        return instantiate(instanceParams, scene, JJ.B.sceneWorld.rootScene)
+        return instantiate(instanceParams, scene, rootScene)
     }
 
     internal fun instantiate(instanceParams: InstanceParams, scene: SceneSpec, parentScene: Scene?): Bond<Scene> {
@@ -90,7 +94,54 @@ class Scenes : ScenesAPI {
     }
 
     override fun destroyAll() {
-        JJ.tasks.doOnceAfterPhysics { JJ.B.sceneWorld.destroyAllScenes() }
+        JJ.tasks.doOnceAfterPhysics { destroyAllScenes() }
+    }
+
+    override fun getScenesByGroupName(groupName: String): Array<Scene> {
+        if (scenesByGroupName.containsKey(groupName)) {
+            return scenesByGroupName[groupName]
+        }
+        return emptyGDXArray()
+    }
+
+    /**
+     * Adds scene to world.
+     */
+    internal fun add(scene: Scene) {
+        if (scene.groupName != null) {
+            if (!scenesByGroupName.containsKey(scene.groupName)) {
+                scenesByGroupName.put(scene.groupName, newArray())
+            }
+            scenesByGroupName[scene.groupName].add(scene)
+        }
+    }
+
+    /**
+     *Removes a scene from the world.
+     */
+    internal fun remove(scene: Scene) {
+        if (scene.groupName != null) {
+            scenesByGroupName[scene.groupName].removeValue(scene, true)
+        }
+    }
+
+    fun update() {
+        inUpdate = true
+        rootScene?.update()
+        inUpdate = false
+    }
+
+    internal fun destroyAllScenes() {
+        for (entry in rootScene!!.sceneLayers.entries()) {
+            val layerCopy: Array<Scene> = newArray()
+            for (scene in entry.value) {
+                layerCopy.add(scene)
+            }
+            for (scene in layerCopy) {
+                scene.destroy()
+            }
+            recycle(layerCopy)
+        }
     }
 }
 
@@ -111,7 +162,7 @@ class CreateSceneFunction : OneTimeTask(), Poolable {
 
     override fun doOnce() {
         val scene = JJ.B.scenes.masterFactory.createScene(sceneSpec!!, instanceParams!!, parentScene)
-        JJ.B.sceneWorld.add(scene)
+        JJ.B.scenes.add(scene)
         bond!!.succeed(scene)
         recycle(instanceParams!!)
         recycle(this)

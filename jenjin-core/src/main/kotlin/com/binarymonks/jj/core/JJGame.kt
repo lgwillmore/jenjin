@@ -33,7 +33,7 @@ abstract class JJGame(val jjConfig: JJConfig = JJConfig()) : ApplicationListener
             JJ.B.clock.update()
             JJ.B.assets.update()
             JJ.B.tasks.preloopTasks.update()
-            JJ.B.sceneWorld.update()
+            JJ.B.scenes.update()
             JJ.B.tasks.prePhysicsTasks.update()
             JJ.B.physicsWorld.update()
             JJ.B.tasks.postPhysicsTasks.update()

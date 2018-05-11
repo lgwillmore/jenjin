@@ -14,7 +14,6 @@ import com.binarymonks.jj.core.layers.LayerStack
 import com.binarymonks.jj.core.physics.PhysicsWorld
 import com.binarymonks.jj.core.pools.Pools
 import com.binarymonks.jj.core.render.RenderWorld
-import com.binarymonks.jj.core.scenes.SceneWorld
 import com.binarymonks.jj.core.scenes.Scenes
 import com.binarymonks.jj.core.specs.SceneSpec
 import com.binarymonks.jj.core.specs.params
@@ -55,7 +54,6 @@ object JJ {
         B.layers = LayerStack(config.gameView.clearColor)
         B.physicsWorld = PhysicsWorld()
         B.renderWorld = RenderWorld()
-        B.sceneWorld = SceneWorld()
         B.pools = Pools()
         B.assets = Assets()
         B.audio = Audio()
@@ -88,7 +86,7 @@ object JJ {
                 params { },
                 null
         )
-        B.sceneWorld.rootScene = rootScene
+        B.scenes.rootScene = rootScene
         rootScene.onAddToWorld()
     }
 }

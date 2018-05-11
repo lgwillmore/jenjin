@@ -94,4 +94,11 @@ fun <T> ObjectSet<T>.addVar(vararg add: T): ObjectSet<T> {
 }
 
 
+private val emptyArraySingleton: Array<*> = Array<Any>()
+
+@Suppress("UNCHECKED_CAST")
+fun <T> emptyGDXArray(): Array<T>{
+    return emptyArraySingleton as Array<T>
+}
+
 

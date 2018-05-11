@@ -1,5 +1,6 @@
 package com.binarymonks.jj.core.api
 
+import com.badlogic.gdx.utils.Array
 import com.binarymonks.jj.core.async.Bond
 import com.binarymonks.jj.core.scenes.Scene
 import com.binarymonks.jj.core.specs.InstanceParams
@@ -57,4 +58,10 @@ interface ScenesAPI {
      * Destroy all scenes
      */
     fun destroyAll()
+
+    /**
+     * Get scenes by group name
+     */
+
+    fun getScenesByGroupName(groupName:String):Array<Scene>
 }

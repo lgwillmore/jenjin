@@ -103,7 +103,7 @@ class MasterFactory {
             if (scene != null) {
                 var worldPosition = vec2().mul(paramsStack.transformMatrix)
                 scene.resetFromPool(worldPosition.x, worldPosition.y, paramsStack.rotationD)
-                scene.uniqueName = paramsStack.peek().uniqueInstanceName
+                scene.groupName = paramsStack.peek().groupName
                 scene.name = paramsStack.peek().name ?: sceneSpec.name
                 scene.properties.clear()
                 scene.properties.merge(sceneSpec.properties).merge(paramsStack.peek().properties)
@@ -113,7 +113,7 @@ class MasterFactory {
         val scene = Scene(
                 name = paramsStack.peek().name ?: sceneSpec.name,
                 specName = sceneSpec.name,
-                uniqueName = paramsStack.peek().uniqueInstanceName,
+                groupName = paramsStack.peek().groupName,
                 specID = sceneSpec.id,
                 scale = vec2(paramsStack.scaleX, paramsStack.scaleY),
                 physicsRoot = buildPhysicsRoot(sceneSpec.physics, paramsStack),

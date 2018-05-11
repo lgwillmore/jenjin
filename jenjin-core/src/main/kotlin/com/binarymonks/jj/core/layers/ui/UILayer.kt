@@ -41,14 +41,6 @@ open class UILayer(
         return namedActors.get(name)
     }
 
-    fun attachActorToScene(actor: Actor, scene: Scene, offset: Vector2, rotationD: Float): Int{
-        TODO()
-    }
-
-    fun detachActorFromScene(reference:Int){
-        TODO()
-    }
-
     override fun update() {
         act(JJ.clock.deltaFloat)
         draw()

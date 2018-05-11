@@ -37,7 +37,7 @@ import kotlin.reflect.KClass
 open class Scene(
         var name: String?,
         var specName: String?,
-        var uniqueName: String?,
+        var groupName: String?,
         val specID: Int,
         val scale: Vector2,
         val physicsRoot: PhysicsRoot,
@@ -199,6 +199,7 @@ open class Scene(
         if (pooled) {
             JJ.B.scenes.masterFactory.scenePool.put(scale.x, scale.y, specID, this)
         }
+        JJ.B.scenes.remove(this)
     }
 
     internal fun resetFromPool(x: Float, y: Float, rotationD: Float) {
@@ -222,7 +223,7 @@ open class Scene(
         if (other !is Scene) return false
 
         if (name != other.name) return false
-        if (uniqueName != other.uniqueName) return false
+        if (groupName != other.groupName) return false
         if (id != other.id) return false
 
         return true
@@ -233,7 +234,7 @@ open class Scene(
     }
 
     override fun toString(): String {
-        return "Scene(name=$name, uniqueName=$uniqueName, id=$id)"
+        return "Scene(name=$name, groupName=$groupName, id=$id)"
     }
 
     fun append(params: InstanceParams, scenePath: String): Bond<Scene> {
