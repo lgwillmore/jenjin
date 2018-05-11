@@ -111,6 +111,7 @@ class CreateSceneFunction : OneTimeTask(), Poolable {
 
     override fun doOnce() {
         val scene = JJ.B.scenes.masterFactory.createScene(sceneSpec!!, instanceParams!!, parentScene)
+        JJ.B.sceneWorld.add(scene)
         bond!!.succeed(scene)
         recycle(instanceParams!!)
         recycle(this)
