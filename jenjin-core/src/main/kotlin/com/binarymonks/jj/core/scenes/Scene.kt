@@ -106,6 +106,7 @@ open class Scene(
 
     fun onAddToWorld() {
         inWorld = true
+        JJ.B.scenes.add(this)
         sceneLayers.forEach {
             it.value.forEach { it.onAddToWorld() }
         }
