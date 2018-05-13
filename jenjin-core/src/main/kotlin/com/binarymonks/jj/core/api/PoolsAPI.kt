@@ -1,5 +1,6 @@
 package com.binarymonks.jj.core.api
 
+import com.badlogic.gdx.utils.ObjectSet
 import com.binarymonks.jj.core.pools.PoolManager
 import kotlin.reflect.KClass
 
@@ -31,4 +32,5 @@ interface PoolsAPI {
      * @param clazzToClear
      */
     fun clearPool(clazzToClear: KClass<*>)
+
 }

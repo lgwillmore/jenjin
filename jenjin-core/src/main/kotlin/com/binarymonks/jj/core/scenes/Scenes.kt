@@ -97,11 +97,10 @@ class Scenes : ScenesAPI {
         JJ.tasks.doOnceAfterPhysics { destroyAllScenes() }
     }
 
-    override fun getScenesByGroupName(groupName: String): Array<Scene> {
+    override fun getScenesByGroupName(groupName: String, outResult: Array<Scene>){
         if (scenesByGroupName.containsKey(groupName)) {
-            return scenesByGroupName[groupName]
+            outResult.addAll(scenesByGroupName[groupName])
         }
-        return emptyGDXArray()
     }
 
     /**

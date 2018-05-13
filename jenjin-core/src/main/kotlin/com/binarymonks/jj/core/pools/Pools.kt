@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.ObjectMap
+import com.badlogic.gdx.utils.ObjectSet
 import com.binarymonks.jj.core.JJ
 import com.binarymonks.jj.core.api.PoolsAPI
 import com.binarymonks.jj.core.pools.managers.Matrix3PoolManager
@@ -42,6 +43,13 @@ fun <T : Any> new(pooledClass: KClass<T>): T {
  */
 fun <K, V> newObjectMap(): ObjectMap<K, V> {
     return JJ.B.pools.nuwObjectMap()
+}
+
+/**
+ * Get a new instance of an ObjectSet from a pool
+ */
+fun <T> newObjectSet(): ObjectSet<T> {
+    return JJ.B.pools.nuwObjectSet()
 }
 
 /**
@@ -85,6 +93,7 @@ class Pools : PoolsAPI {
     internal var pools = ObjectMap<Class<*>, Pool<*>>()
     internal var poolablePools = ObjectMap<Class<*>, Array<Poolable>>()
     internal var objectMapPool = Array<ObjectMap<*, *>>()
+    internal var objectSetPool = Array<ObjectSet<*>>()
     internal var arrayPool = Array<Array<*>>()
 
 
@@ -173,6 +182,11 @@ class Pools : PoolsAPI {
             arrayPool.add(pooled)
             return
         }
+        if (pooled is ObjectSet<*>) {
+            pooled.clear()
+            objectSetPool.add(pooled)
+            return
+        }
         if (pooled is Poolable) {
             recyclePoolable(pooled)
             return
@@ -234,6 +248,15 @@ class Pools : PoolsAPI {
             return array as Array<T>
         }
         return Array()
+    }
+
+    fun <T> nuwObjectSet(): ObjectSet<T> {
+        if (objectSetPool.size > 0) {
+            val set = objectSetPool.pop()
+            set.clear()
+            return set as ObjectSet<T>
+        }
+        return ObjectSet()
     }
 
     class NoPoolManagerException(classWithMissingPool: Class<*>) : RuntimeException(String.format("No PoolManager for %s. Register a pool manager.", classWithMissingPool.canonicalName))

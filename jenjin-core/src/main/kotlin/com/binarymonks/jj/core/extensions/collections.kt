@@ -1,13 +1,15 @@
 package com.binarymonks.jj.core.extensions
 
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.ObjectMap
 import com.badlogic.gdx.utils.ObjectSet
 import com.binarymonks.jj.core.Copyable
 import com.binarymonks.jj.core.JJ
-import com.binarymonks.jj.core.copy
 import com.binarymonks.jj.core.forceCopy
+import com.binarymonks.jj.core.pools.newArray
 import com.binarymonks.jj.core.pools.newObjectMap
+import com.binarymonks.jj.core.pools.recycle
 
 /**
  * Copies the map with [Copyable] awareness for values. Uses pooled Object maps via [newObjectMap]
@@ -75,6 +77,11 @@ fun <T> Array<T>.addVar(vararg add: T): Array<T> {
 }
 
 
+fun <T> Array<T>.addAll(objectSet: ObjectSet<T>): Array<T> {
+    objectSet.forEach { this.add(it) }
+    return this
+}
+
 /**
  * Copies the set with [Copyable] awareness for values
  */
@@ -97,8 +104,36 @@ fun <T> ObjectSet<T>.addVar(vararg add: T): ObjectSet<T> {
 private val emptyArraySingleton: Array<*> = Array<Any>()
 
 @Suppress("UNCHECKED_CAST")
-fun <T> emptyGDXArray(): Array<T>{
+fun <T> emptyGDXArray(): Array<T> {
     return emptyArraySingleton as Array<T>
 }
+
+
+fun <T> ObjectSet<T>.randomMembers(numberToSelect: Int, selected: ObjectSet<T>) {
+    if (numberToSelect > this.size || numberToSelect < 0) {
+        throw Exception("Cannot select $numberToSelect from ${this.size}")
+    }
+    val pool: Array<T> = newArray()
+    pool.addAll(this)
+    val originalSize = selected.size
+    while ((selected.size - originalSize) < numberToSelect) {
+        selected.add(pool.removeIndex(MathUtils.random(0, pool.size - 1)))
+    }
+    recycle(pool)
+}
+
+fun <T> Array<T>.randomMembers(numberToSelect: Int, selected: Array<T>) {
+    if (numberToSelect > this.size || numberToSelect < 0) {
+        throw Exception("Cannot select $numberToSelect from ${this.size}")
+    }
+    val pool: Array<T> = newArray()
+    pool.addAll(this)
+    val originalSize = selected.size
+    while ((selected.size - originalSize) < numberToSelect) {
+        selected.add(pool.removeIndex(MathUtils.random(0, pool.size - 1)))
+    }
+    recycle(pool)
+}
+
 
 

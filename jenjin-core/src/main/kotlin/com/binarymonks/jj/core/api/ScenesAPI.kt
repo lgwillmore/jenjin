@@ -63,5 +63,5 @@ interface ScenesAPI {
      * Get scenes by group name
      */
 
-    fun getScenesByGroupName(groupName:String):Array<Scene>
+    fun getScenesByGroupName(groupName:String, outResult: Array<Scene>)
 }
