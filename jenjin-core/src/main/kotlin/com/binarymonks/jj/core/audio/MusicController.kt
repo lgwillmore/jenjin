@@ -49,7 +49,7 @@ class MusicController : Music.OnCompletionListener {
         get() = music!!.isPlaying
 
     fun stop() {
-        music!!.stop()
+        music?.stop()
     }
 
     fun disposeCurrentMusic() {
