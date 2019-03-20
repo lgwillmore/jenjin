@@ -60,17 +60,17 @@ class D12_shaders : JJGame(JJConfig {
 
 
         JJ.scenes.instantiate(SceneSpec {
-            nodeRef(params { x = -5f; y = 5f;prop("color", Color.BLUE) }, "linearLightCube")
-            nodeRef(params { x = 0f; y = 5f; rotationD = 45f; prop("color", Color.GREEN) }, "pixelPolyCube")
-            nodeRef(params { x = 5f; y = 5f;prop("color", Color.ORANGE) }, "linearLightCube")
+            node("linearLightCube") { x = -5f; y = 5f;prop("color", Color.BLUE) }
+            node("pixelPolyCube") { x = 0f; y = 5f; rotationD = 45f; prop("color", Color.GREEN) }
+            node("linearLightCube") { x = 5f; y = 5f;prop("color", Color.ORANGE) }
 
-            nodeRef(params { x = -5f; y = 0f;prop("color", Color.BLUE) }, "pixelCubeLarge")
-            nodeRef(params { x = 0f; y = 0f;prop("color", Color.GREEN) }, "checkeredCircle")
-            nodeRef(params { x = 5f; y = 0f;prop("color", Color.ORANGE) }, "pixelCubeSmall")
+            node("pixelCubeLarge") { x = -5f; y = 0f;prop("color", Color.BLUE) }
+            node("checkeredCircle") { x = 0f; y = 0f;prop("color", Color.GREEN) }
+            node("pixelCubeSmall") { x = 5f; y = 0f;prop("color", Color.ORANGE) }
 
-            nodeRef(params { x = -5f; y = -5f;prop("color", Color.BLUE) }, "normalCube")
-            nodeRef(params { x = 0f; y = -5f;prop("color", Color.GREEN) }, "normalCircle")
-            nodeRef(params { x = 5f; y = -5f;prop("color", Color.ORANGE) }, "normalCube")
+            node("normalCube") { x = -5f; y = -5f;prop("color", Color.BLUE) }
+            node("normalCircle") { x = 0f; y = -5f;prop("color", Color.GREEN) }
+            node("normalCube") { x = 5f; y = -5f;prop("color", Color.ORANGE) }
         })
 
     }

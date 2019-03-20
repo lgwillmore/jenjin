@@ -199,7 +199,7 @@ public class MeshAttachment extends VertexAttachment {
 		return color;
 	}
 
-	/** The name of the texture region for this attachment. */
+	/** The localName of the texture region for this attachment. */
 	public String getPath () {
 		return path;
 	}

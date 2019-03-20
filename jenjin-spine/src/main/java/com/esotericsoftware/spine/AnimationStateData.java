@@ -45,12 +45,12 @@ public class AnimationStateData {
 		this.skeletonData = skeletonData;
 	}
 
-	/** The SkeletonData to look up animations when they are specified by name. */
+	/** The SkeletonData to look up animations when they are specified by localName. */
 	public SkeletonData getSkeletonData () {
 		return skeletonData;
 	}
 
-	/** Sets a mix duration by animation name.
+	/** Sets a mix duration by animation localName.
 	 * <p>
 	 * See {@link #setMix(Animation, Animation, float)}. */
 	public void setMix (String fromName, String toName, float duration) {

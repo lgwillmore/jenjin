@@ -26,8 +26,8 @@ class D09_spine : JJGame(JJConfig {
         JJ.scenes.loadAssetsNow()
 
         JJ.scenes.instantiate(SceneSpec {
-            nodeRef(params { x=-0.7f; }, "spineBoy" )
-            nodeRef(params { x=0.7f; }, "spineBoy" )
+            node(params { x=-0.7f; }, "spineBoy" )
+            node(params { x=0.7f; }, "spineBoy" )
         })
     }
 

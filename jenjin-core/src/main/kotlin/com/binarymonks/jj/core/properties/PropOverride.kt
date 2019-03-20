@@ -70,7 +70,7 @@ class PropOverride<T>(var default: T) : Copyable<PropOverride<T>> {
     }
 
     /**
-     * Get the actual value with a specific set of properties
+     * Get the actual value with a specific set of localProperties
      */
     fun get(hasProps: HasProps): T {
         this.hasProps = hasProps

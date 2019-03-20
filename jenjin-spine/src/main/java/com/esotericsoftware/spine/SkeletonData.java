@@ -61,7 +61,7 @@ public class SkeletonData {
 		return bones;
 	}
 
-	/** Finds a bone by comparing each bone's name. It is more efficient to cache the results of this method than to call it
+	/** Finds a bone by comparing each bone's localName. It is more efficient to cache the results of this method than to call it
 	 * multiple times.
 	 * @return May be null. */
 	public BoneData findBone (String boneName) {
@@ -81,7 +81,7 @@ public class SkeletonData {
 		return slots;
 	}
 
-	/** Finds a slot by comparing each slot's name. It is more efficient to cache the results of this method than to call it
+	/** Finds a slot by comparing each slot's localName. It is more efficient to cache the results of this method than to call it
 	 * multiple times.
 	 * @return May be null. */
 	public SlotData findSlot (String slotName) {
@@ -109,7 +109,7 @@ public class SkeletonData {
 		this.defaultSkin = defaultSkin;
 	}
 
-	/** Finds a skin by comparing each skin's name. It is more efficient to cache the results of this method than to call it
+	/** Finds a skin by comparing each skin's localName. It is more efficient to cache the results of this method than to call it
 	 * multiple times.
 	 * @return May be null. */
 	public Skin findSkin (String skinName) {
@@ -126,7 +126,7 @@ public class SkeletonData {
 
 	// --- Events.
 
-	/** Finds an event by comparing each events's name. It is more efficient to cache the results of this method than to call it
+	/** Finds an event by comparing each events's localName. It is more efficient to cache the results of this method than to call it
 	 * multiple times.
 	 * @return May be null. */
 	public EventData findEvent (String eventDataName) {
@@ -148,7 +148,7 @@ public class SkeletonData {
 		return animations;
 	}
 
-	/** Finds an animation by comparing each animation's name. It is more efficient to cache the results of this method than to
+	/** Finds an animation by comparing each animation's localName. It is more efficient to cache the results of this method than to
 	 * call it multiple times.
 	 * @return May be null. */
 	public Animation findAnimation (String animationName) {
@@ -168,7 +168,7 @@ public class SkeletonData {
 		return ikConstraints;
 	}
 
-	/** Finds an IK constraint by comparing each IK constraint's name. It is more efficient to cache the results of this method
+	/** Finds an IK constraint by comparing each IK constraint's localName. It is more efficient to cache the results of this method
 	 * than to call it multiple times.
 	 * @return May be null. */
 	public IkConstraintData findIkConstraint (String constraintName) {
@@ -188,7 +188,7 @@ public class SkeletonData {
 		return transformConstraints;
 	}
 
-	/** Finds a transform constraint by comparing each transform constraint's name. It is more efficient to cache the results of
+	/** Finds a transform constraint by comparing each transform constraint's localName. It is more efficient to cache the results of
 	 * this method than to call it multiple times.
 	 * @return May be null. */
 	public TransformConstraintData findTransformConstraint (String constraintName) {
@@ -208,7 +208,7 @@ public class SkeletonData {
 		return pathConstraints;
 	}
 
-	/** Finds a path constraint by comparing each path constraint's name. It is more efficient to cache the results of this method
+	/** Finds a path constraint by comparing each path constraint's localName. It is more efficient to cache the results of this method
 	 * than to call it multiple times.
 	 * @return May be null. */
 	public PathConstraintData findPathConstraint (String constraintName) {
@@ -223,7 +223,7 @@ public class SkeletonData {
 
 	// ---
 
-	/** The skeleton's name, which by default is the name of the skeleton data file, if possible.
+	/** The skeleton's localName, which by default is the localName of the skeleton data file, if possible.
 	 * @return May be null. */
 	public String getName () {
 		return name;

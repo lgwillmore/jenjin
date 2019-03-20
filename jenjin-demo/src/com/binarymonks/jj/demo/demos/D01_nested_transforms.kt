@@ -29,14 +29,14 @@ class D01_nested_transforms : JJGame(JJConfig {
         JJ.scenes.loadAssetsNow()
 
         val initialSceneSpec = SceneSpec {
-            nodeRef(params { x = 10f;y = 6f }, "nestedCircles")
-            nodeRef(params { x = 20f;y = 6f; scaleX = 0.5f; scaleY = 0.5f }, "nestedCircles")
-            nodeRef(params { x = -8f; y = 6f }, "nestedRectangles")
-            nodeRef(params { x = -18f; y = 6f; scaleX = 0.5f; scaleY = 0.5f }, "nestedRectangles")
-            nodeRef(params { x = 10f; y = -15f }, "nestedPolygons")
-            nodeRef(params { x = 20f; y = -15f; scaleX = 0.5f; scaleY = 0.5f }, "nestedPolygons")
-            nodeRef(params { x = -12f; y = -8f }, "nestedFixtureTransforms")
-            nodeRef(params { x = -12f; y = -15f }, "flatFixtureTransforms")
+            node("nestedCircles") { x = 10f;y = 6f }
+            node("nestedCircles") { x = 20f;y = 6f; scaleX = 0.5f; scaleY = 0.5f }
+            node("nestedRectangles") { x = -8f; y = 6f }
+            node("nestedRectangles") { x = -18f; y = 6f; scaleX = 0.5f; scaleY = 0.5f }
+            node("nestedPolygons") { x = 10f; y = -15f }
+            node("nestedPolygons") { x = 20f; y = -15f; scaleX = 0.5f; scaleY = 0.5f }
+            node("nestedFixtureTransforms") { x = -12f; y = -8f }
+            node("flatFixtureTransforms") { x = -12f; y = -15f }
         }
 
         JJ.scenes.instantiate(initialSceneSpec)
@@ -57,7 +57,8 @@ class D01_nested_transforms : JJGame(JJConfig {
                     color.set(Color.PURPLE)
                 }
             }
-            node(nestedParams) {
+            node {
+                update(nestedParams)
                 physics {
                     bodyType = BodyDef.BodyType.StaticBody
                     fixture {
@@ -69,7 +70,8 @@ class D01_nested_transforms : JJGame(JJConfig {
                         color.set(Color.PURPLE)
                     }
                 }
-                node(nestedParams) {
+                node {
+                    update(nestedParams)
                     physics {
                         bodyType = BodyDef.BodyType.StaticBody
                         fixture {
@@ -81,7 +83,8 @@ class D01_nested_transforms : JJGame(JJConfig {
                             color.set(Color.PURPLE)
                         }
                     }
-                    node(nestedParams) {
+                    node {
+                        update(nestedParams)
                         physics {
                             bodyType = BodyDef.BodyType.StaticBody
                             fixture {
@@ -96,7 +99,8 @@ class D01_nested_transforms : JJGame(JJConfig {
                     }
                 }
             }
-            node(nestedParams2) {
+            node {
+                update(nestedParams2)
                 physics {
                     bodyType = BodyDef.BodyType.StaticBody
                     fixture {
@@ -108,7 +112,8 @@ class D01_nested_transforms : JJGame(JJConfig {
                         color.set(Color.PURPLE)
                     }
                 }
-                node(nestedParams2) {
+                node {
+                    update(nestedParams2)
                     physics {
                         bodyType = BodyDef.BodyType.StaticBody
                         fixture {
@@ -120,7 +125,8 @@ class D01_nested_transforms : JJGame(JJConfig {
                             color.set(Color.PURPLE)
                         }
                     }
-                    node(nestedParams2) {
+                    node {
+                        update(nestedParams2)
                         physics {
                             bodyType = BodyDef.BodyType.StaticBody
                             fixture {
@@ -153,7 +159,8 @@ class D01_nested_transforms : JJGame(JJConfig {
                     imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
                 }
             }
-            node(nestedParams) {
+            node {
+                update(nestedParams)
                 physics {
                     bodyType = BodyDef.BodyType.StaticBody
                     fixture {
@@ -163,7 +170,8 @@ class D01_nested_transforms : JJGame(JJConfig {
                         imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
                     }
                 }
-                node(nestedParams) {
+                node {
+                    update(nestedParams)
                     physics {
                         bodyType = BodyDef.BodyType.StaticBody
                         fixture {
@@ -173,7 +181,8 @@ class D01_nested_transforms : JJGame(JJConfig {
                             imageTexture("textures/binarymonk.png") { width = imageWidth; height = imageheight }
                         }
                     }
-                    node(nestedParams) {
+                    node {
+                        update(nestedParams)
                         physics {
                             bodyType = BodyDef.BodyType.StaticBody
                             fixture {
@@ -208,7 +217,8 @@ class D01_nested_transforms : JJGame(JJConfig {
                     color.set(Color.CYAN)
                 }
             }
-            node(nestedParams) {
+            node {
+                update(nestedParams)
                 physics {
                     bodyType = BodyDef.BodyType.StaticBody
                     fixture {
@@ -220,7 +230,8 @@ class D01_nested_transforms : JJGame(JJConfig {
                         color.set(Color.CYAN)
                     }
                 }
-                node(nestedParams) {
+                node {
+                    update(nestedParams)
                     physics {
                         bodyType = BodyDef.BodyType.StaticBody
                         fixture {
@@ -232,7 +243,8 @@ class D01_nested_transforms : JJGame(JJConfig {
                             color.set(Color.CYAN)
                         }
                     }
-                    node(nestedParams) {
+                    node {
+                        update(nestedParams)
                         physics {
                             bodyType = BodyDef.BodyType.StaticBody
                             fixture {
@@ -265,7 +277,8 @@ class D01_nested_transforms : JJGame(JJConfig {
                     }
                 }
             }
-            node(params { x = 5f }) {
+            node {
+                x=5f
                 physics {
                     bodyType = BodyDef.BodyType.StaticBody
                     fixture {
@@ -296,7 +309,8 @@ class D01_nested_transforms : JJGame(JJConfig {
                     color.set(Color.RED)
                 }
             }
-            node(params { scaleX = 0.5f; scaleY = 0.5f }) {
+            node{
+                scaleX = 0.5f; scaleY = 0.5f
                 physics {
                     bodyType = BodyDef.BodyType.StaticBody
                     fixture {

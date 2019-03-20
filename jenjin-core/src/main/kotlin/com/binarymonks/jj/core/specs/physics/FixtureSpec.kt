@@ -30,7 +30,7 @@ class FixtureSpec() {
     }
 
     /**
-     * Puts the fixture in a collision group by name.
+     * Puts the fixture in a collision group by localName.
      * This must be set  in [com.binarymonks.jj.core.JJ.physics.collisionGroups]
      */
     fun collsionGroup(name: String) {
@@ -45,7 +45,7 @@ class FixtureSpec() {
     }
 
     /**
-     * Works the same as [collisionGroup], but the name of the group is retrieved from a property
+     * Works the same as [collisionGroup], but the localName of the group is retrieved from a property
      *
      * This is evaluated at instantiation only. Not constantly.
      */

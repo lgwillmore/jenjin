@@ -393,7 +393,7 @@ public class AnimationState {
 		queue.start(current);
 	}
 
-	/** Sets an animation by name.
+	/** Sets an animation by localName.
 	 * <p>
 	 * {@link #setAnimation(int, Animation, boolean)}. */
 	public TrackEntry setAnimation (int trackIndex, String animationName, boolean loop) {
@@ -429,7 +429,7 @@ public class AnimationState {
 		return entry;
 	}
 
-	/** Queues an animation by name.
+	/** Queues an animation by localName.
 	 * <p>
 	 * See {@link #addAnimation(int, Animation, boolean, float)}. */
 	public TrackEntry addAnimation (int trackIndex, String animationName, boolean loop, float delay) {
@@ -758,9 +758,9 @@ public class AnimationState {
 		/** The track time in seconds when this animation will be removed from the track. Defaults to the highest possible float
 		 * value, meaning the animation will be applied until a new animation is set or the track is cleared. If the track end time
 		 * is reached, no other animations are queued for playback, and mixing from any previous animations is complete, then the
-		 * properties keyed by the animation are set to the setup pose and the track is cleared.
+		 * localProperties keyed by the animation are set to the setup pose and the track is cleared.
 		 * <p>
-		 * It may be desired to use {@link AnimationState#addEmptyAnimation(int, float, float)} to mix the properties back to the
+		 * It may be desired to use {@link AnimationState#addEmptyAnimation(int, float, float)} to mix the localProperties back to the
 		 * setup pose over time, rather than have it happen instantly. */
 		public float getTrackEnd () {
 			return trackEnd;

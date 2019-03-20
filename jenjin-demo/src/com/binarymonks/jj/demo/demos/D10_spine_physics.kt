@@ -33,9 +33,9 @@ class D10_spine_physics : JJGame(JJConfig{
         JJ.scenes.loadAssetsNow()
 
         JJ.scenes.instantiate(SceneSpec {
-            nodeRef(params { x = 4f; y = -0.4f }, "spineBoy" )
-            nodeRef(params { x = 7f; y = 4f; rotationD = 90f }, "hammer" )
-            nodeRef(params { y = -2f; scaleX = 13f; name = "floor" }, "terrain" )
+            node(params { x = 4f; y = -0.4f }, "spineBoy" )
+            node(params { x = 7f; y = 4f; rotationD = 90f }, "hammer" )
+            node(params { y = -2f; scaleX = 13f; localName = "floor" }, "terrain" )
         })
     }
 
@@ -69,10 +69,10 @@ class D10_spine_physics : JJGame(JJConfig{
 
     private fun swingHammer(): SceneSpec {
         return SceneSpec {
-            node(params { name = "hammerAnchor" }) {
+            node(params { localName = "hammerAnchor" }) {
                 physics { bodyType = BodyDef.BodyType.StaticBody }
             }
-            node(params { name = "hammer" }) {
+            node(params { localName = "hammer" }) {
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
                     fixture { shape = Rectangle(0.5f, 3f); offsetY = -1.5f; collsionGroup("hammer") }

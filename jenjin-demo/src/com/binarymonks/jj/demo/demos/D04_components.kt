@@ -37,7 +37,7 @@ class D04_components : JJGame(JJConfig {
         JJ.scenes.loadAssetsNow()
 
         val initialSceneSpec = SceneSpec {
-            nodeRef(params {
+            node("platform") {
                 x = -10f
                 y = 15f
                 scaleX = 3f
@@ -45,29 +45,29 @@ class D04_components : JJGame(JJConfig {
                 prop("movementRange", 5f)
                 prop("metersPerSecond", 1f)
 
-            }, "platform" )
-            nodeRef(params {
+            }
+            node("platform") {
                 x = 0f
                 y = 4f
                 scaleX = 6f
                 prop("direction", Direction.HORIZONTAL)
                 prop("movementRange", 10f)
                 prop("metersPerSecond", 3f)
-            }, "platform" )
-            nodeRef(params {
+            }
+            node("orb") {
                 x = 6f
                 y = 20f
                 scaleX = 2f
                 prop("direction", Direction.VERTICAL)
                 prop("movementRange", 10f)
                 prop("metersPerSecond", 5f)
-            }, "orb" )
-            //This instance does not set the properties, and so the defaults of the component will be used.
-            nodeRef(params {
+            }
+            //This instance does not set the localProperties, and so the defaults of the component will be used.
+            node("orb") {
                 x = 0f
                 y = 20f
                 scaleX = 3f
-            }, "orb" )
+            }
 
         }
 
@@ -83,7 +83,7 @@ class D04_components : JJGame(JJConfig {
                     shape = Circle(0.5f)
                 }
             }
-            //Add our component to our me and bind fields to properties
+            //Add our component to our me and bind fields to localProperties
             component(BackForwardMovement()) {
                 direction.setOverride("direction")
                 movementRange.setOverride("movementRange")
@@ -100,7 +100,7 @@ class D04_components : JJGame(JJConfig {
                 fixture {
                 }
             }
-            //Add our component to our me and bind fields to properties
+            //Add our component to our me and bind fields to localProperties
             component(BackForwardMovement()) {
                 direction.setOverride("direction")
                 movementRange.setOverride("movementRange")
@@ -115,7 +115,7 @@ enum class Direction { HORIZONTAL, VERTICAL }
 //A reusable and configurable component that can be attache to any Scene
 class BackForwardMovement : Component() {
 
-    //We want our component to have the option of delegating its values to properties.
+    //We want our component to have the option of delegating its values to localProperties.
     // These are our configurable fields.
     var direction: PropOverride<Direction> = PropOverride(Direction.HORIZONTAL)
     var movementRange: PropOverride<Float> = PropOverride(0f)

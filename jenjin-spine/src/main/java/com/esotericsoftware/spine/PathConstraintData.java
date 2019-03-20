@@ -47,11 +47,11 @@ public class PathConstraintData {
 	float position, spacing, rotateMix, translateMix;
 
 	public PathConstraintData (String name) {
-		if (name == null) throw new IllegalArgumentException("name cannot be null.");
+		if (name == null) throw new IllegalArgumentException("localName cannot be null.");
 		this.name = name;
 	}
 
-	/** The path constraint's name, which is unique within the skeleton. */
+	/** The path constraint's localName, which is unique within the skeleton. */
 	public String getName () {
 		return name;
 	}

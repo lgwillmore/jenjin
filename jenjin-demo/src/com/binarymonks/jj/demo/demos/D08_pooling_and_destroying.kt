@@ -76,7 +76,7 @@ class D08_pooling_and_destroying : JJGame(JJConfig {
             component(com.binarymonks.jj.core.components.misc.SelfDestruct()) {
                 delaySeconds = destroyDelay
             }
-            node(params { name = "rectangle" }) {
+            node(params { localName = "rectangle" }) {
                 pooled = poolEverything
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
@@ -86,7 +86,7 @@ class D08_pooling_and_destroying : JJGame(JJConfig {
                     rectangleRender(1f, 1f) { color.set(Color.BLUE) }
                 }
             }
-            node(params { name = "rectangle2"; y = 4f; rotationD = 45f }) {
+            node(params { localName = "rectangle2"; y = 4f; rotationD = 45f }) {
                 pooled = poolEverything
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
@@ -96,7 +96,7 @@ class D08_pooling_and_destroying : JJGame(JJConfig {
                     rectangleRender(1f, 1f) { color.set(Color.BLUE) }
                 }
             }
-            nodeRef(params { name = "circle"; y = 2f }, "circle")
+            node(params { localName = "circle"; y = 2f }, "circle")
             weldJoint("rectangle", "circle", vec2()) {}
             weldJoint("rectangle", "rectangle2", vec2()) {}
         }

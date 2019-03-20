@@ -35,8 +35,8 @@ class D16_spine_pooling : JJGame(JJConfig {
 
         JJ.scenes.instantiate(SceneSpec {
             container = true
-            nodeRef(params { x = -2f }, "spawnBounding")
-            nodeRef(params { x = 2f }, "spawnAnimation")
+            node(params { x = -2f }, "spawnBounding")
+            node(params { x = 2f }, "spawnAnimation")
             node(params{x=-2f; y=-0.18f}) {
                 physics {
                     bodyType=BodyDef.BodyType.StaticBody

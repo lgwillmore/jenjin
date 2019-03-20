@@ -27,12 +27,13 @@ class D07_b2d_composite : JJGame(JJConfig {
         JJ.scenes.addSceneSpec("terrain", floor())
 
         JJ.scenes.instantiate(SceneSpec {
-            nodeRef(params { x = 8f; y = 7f; rotationD = 180f;scaleX = 0.5f; scaleY = 0.5f }, "swingHammer")
-            nodeRef(params { x = 8f; y = 11f; rotationD = 180f;scaleX = 0.5f; scaleY = 0.5f }, "swingHammer")
-            nodeRef(params { x = 8f; y = 4f; scaleX = 0.5f; scaleY = 0.5f }, "spinner")
-            nodeRef("terrain")
-            nodeRef(params { x = -1f; y = 15f; rotationD = -15f }, "slider")
-            node(params { x = 7.5f; y = 2.5f }) {
+            node("swingHammer") { x = 8f; y = 7f; rotationD = 180f;scaleX = 0.5f; scaleY = 0.5f }
+            node("swingHammer") { x = 8f; y = 11f; rotationD = 180f;scaleX = 0.5f; scaleY = 0.5f }
+            node("spinner") { x = 8f; y = 4f; scaleX = 0.5f; scaleY = 0.5f }
+            node("terrain")
+            node("slider") { x = -1f; y = 15f; rotationD = -15f }
+            node {
+                x = 7.5f; y = 2.5f
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
                     fixture { shape = Circle(0.5f) }
@@ -46,7 +47,8 @@ class D07_b2d_composite : JJGame(JJConfig {
     private fun slider(): SceneSpecRef {
         val sliderLength = 8f
         return SceneSpec {
-            node(params { name = "anchor" }) {
+            node {
+                localName = "anchor"
                 physics { bodyType = BodyDef.BodyType.StaticBody }
                 render {
                     val chain: Array<Vector2> = Array<Vector2>().addVar(vec2(), vec2(sliderLength, 0f))
@@ -55,7 +57,8 @@ class D07_b2d_composite : JJGame(JJConfig {
                     }
                 }
             }
-            node(params { name = "ball" }) {
+            node {
+                localName = "ball"
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
                     fixture { shape = Circle(0.5f) }
@@ -102,18 +105,21 @@ class D07_b2d_composite : JJGame(JJConfig {
     private fun spinner(): SceneSpec {
         //Some forced weld joints, but they work
         return SceneSpec {
-            node(params { name = "anchor" }) {
+            node {
+                localName = "anchor"
                 physics { bodyType = BodyDef.BodyType.StaticBody }
                 render { circleRender(0.25f) { color.set(Color.GREEN) } }
             }
-            node(params { name = "arm" }) {
+            node {
+                localName = "arm"
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
                     fixture { shape = Rectangle(0.5f, 4f) }
                 }
                 render { rectangleRender(0.5f, 4f) { color.set(Color.BROWN) } }
             }
-            node(params { name = "topBall"; y = 2f }) {
+            node {
+                localName = "topBall"; y = 2f
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
                     fixture { shape = Circle(1f) }
@@ -122,7 +128,8 @@ class D07_b2d_composite : JJGame(JJConfig {
                     circleRender(1f) { color.set(Color.GRAY) }
                 }
             }
-            node(params { name = "bottomBall"; y = -2f }) {
+            node {
+                localName = "bottomBall"; y = -2f
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
                     fixture { shape = Circle(1f) }
@@ -139,10 +146,12 @@ class D07_b2d_composite : JJGame(JJConfig {
 
     private fun swingHammer(): SceneSpec {
         return SceneSpec {
-            node(params { name = "hammerAnchor" }) {
+            node {
+                localName = "hammerAnchor"
                 physics { bodyType = BodyDef.BodyType.StaticBody }
             }
-            node(params { name = "hammer" }) {
+            node {
+                localName = "hammer"
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
                     fixture { shape = Rectangle(0.5f, 3f); offsetY = -1.5f }

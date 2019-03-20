@@ -38,7 +38,7 @@ class D11_ui_screens : JJGame() {
                 setPosition(width / 2, height * 2 / 3)
             }
 
-            //You can add actors with a name reference so that you can retrieve them
+            //You can add actors with a localName reference so that you can retrieve them
             actor("beepButton", TextButton("Beep", skin)) {
                 setPosition(width / 2, height / 2)
             }

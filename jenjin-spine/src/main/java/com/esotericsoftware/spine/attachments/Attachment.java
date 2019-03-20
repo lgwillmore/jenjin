@@ -35,11 +35,11 @@ abstract public class Attachment {
 	String name;
 
 	public Attachment (String name) {
-		if (name == null) throw new IllegalArgumentException("name cannot be null.");
+		if (name == null) throw new IllegalArgumentException("localName cannot be null.");
 		this.name = name;
 	}
 
-	/** The attachment's name. */
+	/** The attachment's localName. */
 	public String getName () {
 		return name;
 	}

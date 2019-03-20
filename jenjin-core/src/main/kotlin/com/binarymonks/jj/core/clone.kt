@@ -33,8 +33,8 @@ interface Copyable<T> {
 /**
  * Makes copies of things.
  *
- * Will try to copy any visible and modifiable properties.
- * Will call [Copyable.clone] on properties that implement it.
+ * Will try to copy any visible and modifiable localProperties.
+ * Will call [Copyable.clone] on localProperties that implement it.
  * Will check members of the following collections for [Copyable]:
  *  - [com.badlogic.gdx.utils.ObjectMap]
  *  - [com.badlogic.gdx.utils.Array]

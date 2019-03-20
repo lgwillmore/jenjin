@@ -40,7 +40,7 @@ public class EventData {
 	String stringValue;
 
 	public EventData (String name) {
-		if (name == null) throw new IllegalArgumentException("name cannot be null.");
+		if (name == null) throw new IllegalArgumentException("localName cannot be null.");
 		this.name = name;
 	}
 
@@ -68,7 +68,7 @@ public class EventData {
 		this.stringValue = stringValue;
 	}
 
-	/** The name of the event, which is unique within the skeleton. */
+	/** The localName of the event, which is unique within the skeleton. */
 	public String getName () {
 		return name;
 	}

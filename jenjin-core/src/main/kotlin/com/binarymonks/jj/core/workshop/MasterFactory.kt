@@ -104,14 +104,14 @@ class MasterFactory {
                 var worldPosition = vec2().mul(paramsStack.transformMatrix)
                 scene.resetFromPool(worldPosition.x, worldPosition.y, paramsStack.rotationD)
                 scene.groupName = paramsStack.peek().groupName
-                scene.name = paramsStack.peek().name ?: sceneSpec.name
+                scene.name = paramsStack.peek().localName ?: sceneSpec.name
                 scene.properties.clear()
-                scene.properties.merge(sceneSpec.properties).merge(paramsStack.peek().properties)
+                scene.properties.merge(sceneSpec.properties).merge(paramsStack.peek().localProperties)
                 return scene
             }
         }
         val scene = Scene(
-                name = paramsStack.peek().name ?: sceneSpec.name,
+                name = paramsStack.peek().localName ?: sceneSpec.name,
                 specName = sceneSpec.name,
                 groupName = paramsStack.peek().groupName,
                 specID = sceneSpec.id,
@@ -119,7 +119,7 @@ class MasterFactory {
                 physicsRoot = buildPhysicsRoot(sceneSpec.physics, paramsStack),
                 renderRoot = buildRenderRoot(sceneSpec.render, paramsStack),
                 soundEffects = buildSoundEffects(sceneSpec.sounds.params),
-                properties = sceneSpec.properties.copy().merge(paramsStack.peek().properties),
+                properties = sceneSpec.properties.copy().merge(paramsStack.peek().localProperties),
                 pooled = sceneSpec.pooled
         )
         addBehaviour(scene, sceneSpec)
@@ -174,7 +174,7 @@ class MasterFactory {
 
         for (lightSpec in physicsSpec.lights) {
             val light = buildLight(lightSpec, body, paramsStack.peek())
-            val colData = lightSpec.collisionGroup.toCollisionData(paramsStack.peek().properties)
+            val colData = lightSpec.collisionGroup.toCollisionData(paramsStack.peek().localProperties)
             light.setContactFilter(colData.category, 0, colData.mask)
             if (lightSpec.name != null) {
                 physicsRoot.lights.add(checkNotNull(lightSpec.name), light)
@@ -216,7 +216,7 @@ class MasterFactory {
         fDef.friction = material?.friction ?: fixtureSpec.friction
         fDef.restitution = material?.restitution ?: fixtureSpec.restitution
         fDef.isSensor = fixtureSpec.isSensor
-        val cd = fixtureSpec.collisionGroup.toCollisionData(checkNotNull(params.peek()).properties)
+        val cd = fixtureSpec.collisionGroup.toCollisionData(checkNotNull(params.peek()).localProperties)
         fDef.filter.categoryBits = cd.category
         fDef.filter.maskBits = cd.mask
         val fixture = body.createFixture(fDef)

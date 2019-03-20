@@ -417,7 +417,7 @@ public class Skeleton {
     }
 
     /**
-     * Finds a bone by comparing each bone's name. It is more efficient to cache the results of this method than to call it
+     * Finds a bone by comparing each bone's localName. It is more efficient to cache the results of this method than to call it
      * multiple times.
      *
      * @return May be null.
@@ -440,7 +440,7 @@ public class Skeleton {
     }
 
     /**
-     * Finds a slot by comparing each slot's name. It is more efficient to cache the results of this method than to call it
+     * Finds a slot by comparing each slot's localName. It is more efficient to cache the results of this method than to call it
      * multiple times.
      *
      * @return May be null.
@@ -477,7 +477,7 @@ public class Skeleton {
     }
 
     /**
-     * Sets a skin by name.
+     * Sets a skin by localName.
      * <p>
      * See {@link #setSkin(Skin)}.
      */
@@ -515,8 +515,8 @@ public class Skeleton {
     }
 
     /**
-     * Finds an attachment by looking in the {@link #skin} and {@link SkeletonData#defaultSkin} using the slot name and attachment
-     * name.
+     * Finds an attachment by looking in the {@link #skin} and {@link SkeletonData#defaultSkin} using the slot localName and attachment
+     * localName.
      * <p>
      * See {@link #getAttachment(int, String)}.
      *
@@ -530,7 +530,7 @@ public class Skeleton {
 
     /**
      * Finds an attachment by looking in the {@link #skin} and {@link SkeletonData#defaultSkin} using the slot index and
-     * attachment name. First the skin is checked and if the attachment was not found, the default skin is checked.
+     * attachment localName. First the skin is checked and if the attachment was not found, the default skin is checked.
      * <p>
      * See <a href="http://esotericsoftware.com/spine-runtime-skins">Runtime skins</a> in the Spine Runtimes Guide.
      *
@@ -573,7 +573,7 @@ public class Skeleton {
     }
 
     /**
-     * Finds an IK constraint by comparing each IK constraint's name. It is more efficient to cache the results of this method
+     * Finds an IK constraint by comparing each IK constraint's localName. It is more efficient to cache the results of this method
      * than to call it multiple times.
      *
      * @return May be null.
@@ -596,7 +596,7 @@ public class Skeleton {
     }
 
     /**
-     * Finds a transform constraint by comparing each transform constraint's name. It is more efficient to cache the results of
+     * Finds a transform constraint by comparing each transform constraint's localName. It is more efficient to cache the results of
      * this method than to call it multiple times.
      *
      * @return May be null.
@@ -619,7 +619,7 @@ public class Skeleton {
     }
 
     /**
-     * Finds a path constraint by comparing each path constraint's name. It is more efficient to cache the results of this method
+     * Finds a path constraint by comparing each path constraint's localName. It is more efficient to cache the results of this method
      * than to call it multiple times.
      *
      * @return May be null.

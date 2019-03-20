@@ -28,7 +28,7 @@ class D00_Basic : JJGame(JJConfig {
 
     public override fun gameOn() {
 
-        //You can register material profiles so that you can quickly set the properties of your fixture
+        //You can register material profiles so that you can quickly set the localProperties of your fixture
         JJ.physics.materials.registerMaterial("rubber", restitution = 0.8f, friction = 0.2f, density = 0.35f)
         JJ.physics.materials.registerMaterial("plastic", restitution = 0.1f, friction = 0.1f, density = 0.3f)
         JJ.physics.materials.registerMaterial("glass", restitution = 0.0f, friction = 0.05f, density = 0.65f)
@@ -39,32 +39,32 @@ class D00_Basic : JJGame(JJConfig {
 
         JJ.scenes.instantiate(
                 SceneSpec {
-                    nodeRef(params {
+                    node("circle") {
                         x = -8f; y = 8f
                         prop("material", "rubber")
-                    }, "circle" )
-                    nodeRef(params {
+                    }
+                    node("circle") {
                         x = -2f; y = 8f; scaleX = 2f; scaleY = 2f
                         prop("material", "plastic")
                     }
-                    , "circle" )
-                    nodeRef(params {
+                    node("circle") {
                         x = 2f; y = 8f
                         prop("material", "glass")
-                    }, "circle" )
-                    nodeRef(params {
+                    }
+                    node("circle") {
                         x = +8f; y = 8f
                         prop("material", "rubber")
-                    }, "circle" )
-                    nodeRef(params {
+                    }
+                    node("square") {
                         x = -6f; y = 5f; rotationD = 45f
                         prop("material", "rubber")
-                    }, "square" )
-                    nodeRef(params {
+                    }
+                    node("square") {
                         x = +6f; y = 5f; rotationD = 45f
                         prop("material", "plastic")
-                    }, "square" )
-                    node(params { x = 0f; y = 6f }) {
+                    }
+                    node {
+                        x = 0f; y = 6f
                         physics {
                             bodyType = BodyDef.BodyType.StaticBody
                             fixture {
@@ -76,10 +76,11 @@ class D00_Basic : JJGame(JJConfig {
                             }
                         }
                     }
-                    nodeRef(params {
+                    node("terrain") {
                         x = 0f; y = 0f; scaleX = 20f
                         prop("material", "glass")
-                    },"terrain")
+
+                    }
                 }
         ).then(this::sceneCreated)
     }

@@ -48,7 +48,7 @@ class Emitter(
         params.scaleX = scaleX.get()
         params.scaleY = scaleY.get()
         params.rotationD = rotationD.get()
-        params.properties = copy(props)
+        params.localProperties = copy(props)
 
         JJ.scenes.instantiate(params, checkNotNull(sceneSpecRef.get()).resolve())
 

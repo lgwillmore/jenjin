@@ -20,11 +20,52 @@ fun params(init: InstanceParams.() -> Unit): InstanceParams {
     return instanceParams
 }
 
-class InstanceParams : HasProps {
+interface Params {
+    var x: Float
+    var y: Float
+    var scaleX: Float
+    var scaleY: Float
+    var rotationD: Float
+    var localProperties: ObjectMap<String, Any>
+    /**
+     * This must be a localName that is unique to its me SceneSpec child nodes if set
+     */
+    var localName: String?
+    /**
+     * This must be a localName that is globally unique if set. It is used for retrieving
+     */
+    var groupName: String?
+}
+
+open class ParamsBase: Params{
+    override var x: Float = 0f
+    override var y: Float = 0f
+    override var scaleX: Float = 1f
+    override var scaleY: Float = 1f
+    override var rotationD: Float = 0f
+    override var localProperties: ObjectMap<String, Any> = ObjectMap()
+    override var localName: String? = null
+    override var groupName: String? = null
+}
+
+class InstanceParams : ParamsBase(), HasProps {
 
     companion object Factory {
         fun new(): InstanceParams {
             return new(InstanceParams::class)
+        }
+
+        fun from(params: Params): InstanceParams{
+            val new = InstanceParams()
+            new.x = params.x
+            new.y = params.y
+            new.scaleX = params.scaleX
+            new.scaleY = params.scaleY
+            new.rotationD = params.rotationD
+            new.localProperties = params.localProperties
+            new.localName = params.localName
+            new.groupName = params.groupName
+            return new
         }
 
         fun from(rootScene: Scene): InstanceParams {
@@ -37,20 +78,6 @@ class InstanceParams : HasProps {
         }
     }
 
-    var x: Float = 0f
-    var y: Float = 0f
-    var scaleX: Float = 1f
-    var scaleY: Float = 1f
-    var rotationD: Float = 0f
-    var properties: ObjectMap<String, Any> = ObjectMap()
-    /**
-     * This must be a name that is unique to its me SceneSpec child nodes if set
-     */
-    var name: String? = null
-    /**
-     * This must be a name that is globally unique if set. It is used for retrieving
-     */
-    var groupName: String? = null
     private var transformMatrix: Matrix3 = mat3()
 
     fun setPosition(x: Float, y: Float) {
@@ -64,7 +91,7 @@ class InstanceParams : HasProps {
     }
 
     fun prop(name: String, value: Any? = null) {
-        properties.put(name, value)
+        localProperties.put(name, value)
     }
 
     fun getTransformMatrix(): Matrix3 {
@@ -76,11 +103,11 @@ class InstanceParams : HasProps {
     }
 
     override fun hasProp(key: String): Boolean {
-        return properties.containsKey(key)
+        return localProperties.containsKey(key)
     }
 
     override fun getProp(key: String): Any? {
-        return properties[key]
+        return localProperties[key]
     }
 
     fun clone(): InstanceParams {
@@ -88,10 +115,8 @@ class InstanceParams : HasProps {
     }
 
     override fun toString(): String {
-        return "InstanceParams(x=$x, y=$y, scaleX=$scaleX, scaleY=$scaleY, rotationD=$rotationD, properties=$properties, name=$name, groupName=$groupName)"
+        return "InstanceParams(x=$x, y=$y, scaleX=$scaleX, scaleY=$scaleY, rotationD=$rotationD, localProperties=$localProperties, localName=$localName, groupName=$groupName)"
     }
-
-
 }
 
 class ParamsPoolManager : PoolManager<InstanceParams> {
@@ -102,7 +127,7 @@ class ParamsPoolManager : PoolManager<InstanceParams> {
         pooled.scaleX = 1f
         pooled.scaleY = 1f
         pooled.rotationD = 0f
-        pooled.properties.clear()
+        pooled.localProperties.clear()
 
     }
 

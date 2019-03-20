@@ -273,7 +273,7 @@ public class RegionAttachment extends Attachment {
 		return color;
 	}
 
-	/** The name of the texture region for this attachment. */
+	/** The localName of the texture region for this attachment. */
 	public String getPath () {
 		return path;
 	}
