@@ -47,7 +47,7 @@ public class BoneData {
 	/** @param parent May be null. */
 	public BoneData (int index, String name, BoneData parent) {
 		if (index < 0) throw new IllegalArgumentException("index must be >= 0.");
-		if (name == null) throw new IllegalArgumentException("localName cannot be null.");
+		if (name == null) throw new IllegalArgumentException("name cannot be null.");
 		this.index = index;
 		this.name = name;
 		this.parent = parent;
@@ -75,7 +75,7 @@ public class BoneData {
 		return index;
 	}
 
-	/** The localName of the bone, which is unique within the skeleton. */
+	/** The name of the bone, which is unique within the skeleton. */
 	public String getName () {
 		return name;
 	}

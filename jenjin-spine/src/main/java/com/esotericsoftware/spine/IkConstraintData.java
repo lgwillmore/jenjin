@@ -44,11 +44,11 @@ public class IkConstraintData {
 	float mix = 1;
 
 	public IkConstraintData (String name) {
-		if (name == null) throw new IllegalArgumentException("localName cannot be null.");
+		if (name == null) throw new IllegalArgumentException("name cannot be null.");
 		this.name = name;
 	}
 
-	/** The IK constraint's localName, which is unique within the skeleton. */
+	/** The IK constraint's name, which is unique within the skeleton. */
 	public String getName () {
 		return name;
 	}

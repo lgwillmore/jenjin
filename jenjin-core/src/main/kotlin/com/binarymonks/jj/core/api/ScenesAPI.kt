@@ -60,7 +60,7 @@ interface ScenesAPI {
     fun destroyAll()
 
     /**
-     * Get scenes by group localName
+     * Get scenes by group name
      */
 
     fun getScenesByGroupName(groupName:String, outResult: Array<Scene>)

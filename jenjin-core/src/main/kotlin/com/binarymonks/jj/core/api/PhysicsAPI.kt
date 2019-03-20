@@ -15,7 +15,7 @@ interface PhysicsAPI {
     var collisionGroups: CollisionGroups
 
     /**
-     * This lets you define materials that can be used to quickly provide the localProperties of your physics Fixtures.
+     * This lets you define materials that can be used to quickly provide the properties of your physics Fixtures.
      */
     var materials: Materials
 }

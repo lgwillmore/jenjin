@@ -44,11 +44,11 @@ public class TransformConstraintData {
 	float offsetRotation, offsetX, offsetY, offsetScaleX, offsetScaleY, offsetShearY;
 
 	public TransformConstraintData (String name) {
-		if (name == null) throw new IllegalArgumentException("localName cannot be null.");
+		if (name == null) throw new IllegalArgumentException("name cannot be null.");
 		this.name = name;
 	}
 
-	/** The transform constraint's localName, which is unique within the skeleton. */
+	/** The transform constraint's name, which is unique within the skeleton. */
 	public String getName () {
 		return name;
 	}

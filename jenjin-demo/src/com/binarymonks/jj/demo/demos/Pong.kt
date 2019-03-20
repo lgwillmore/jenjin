@@ -131,7 +131,8 @@ object GameState {
 fun court(): SceneSpecRef {
     return SceneSpec {
         //LeftWall
-        node(params { x = 0f; y = COURT_LENGTH / 2 }) {
+        node {
+            x = 0f; y = COURT_LENGTH / 2
             physics {
                 bodyType = BodyDef.BodyType.StaticBody
                 fixture { shape = Rectangle(1f, COURT_LENGTH) }
@@ -141,7 +142,8 @@ fun court(): SceneSpecRef {
             render { rectangleRender(1f, COURT_LENGTH) }
         }
         //RightWall
-        node(params { x = COURT_LENGTH; y = COURT_LENGTH / 2 }) {
+        node {
+            x = COURT_LENGTH; y = COURT_LENGTH / 2
             physics {
                 bodyType = BodyDef.BodyType.StaticBody
                 fixture { shape = Rectangle(1f, COURT_LENGTH) }
@@ -151,7 +153,8 @@ fun court(): SceneSpecRef {
             render { rectangleRender(1f, COURT_LENGTH) }
         }
         //BottomWall
-        node(params { x = COURT_LENGTH / 2; y = 0f; rotationD = 90f }) {
+        node {
+            x = COURT_LENGTH / 2; y = 0f; rotationD = 90f
             physics {
                 bodyType = BodyDef.BodyType.StaticBody
                 fixture { shape = Rectangle(1f, COURT_LENGTH) }
@@ -159,7 +162,8 @@ fun court(): SceneSpecRef {
             render { rectangleRender(1f, COURT_LENGTH) }
         }
         //TopWall
-        node(params { x = COURT_LENGTH / 2; y = COURT_LENGTH; rotationD = 90f }) {
+        node {
+            x = COURT_LENGTH / 2; y = COURT_LENGTH; rotationD = 90f
             physics {
                 bodyType = BodyDef.BodyType.StaticBody
                 fixture { shape = Rectangle(1f, COURT_LENGTH) }

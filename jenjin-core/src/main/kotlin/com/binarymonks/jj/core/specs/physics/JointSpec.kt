@@ -3,7 +3,6 @@ package com.binarymonks.jj.core.specs.physics
 import com.badlogic.gdx.math.Matrix3
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
-import com.badlogic.gdx.physics.box2d.Joint
 import com.badlogic.gdx.physics.box2d.JointDef
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef
@@ -14,8 +13,8 @@ import com.binarymonks.jj.core.pools.vec2
 /**
  * Like a [com.badlogic.gdx.physics.box2d.JointDef] but with names of Scenes in a scene rather than bodies.
  *
- * @param nameA instance localName of Body A. Leave null to use scene Body.
- * @param nameB instance localName of Body B.
+ * @param nameA instance name of Body A. Leave null to use scene Body.
+ * @param nameB instance name of Body B.
  */
 abstract class JointSpec(
         val nameA: String?,

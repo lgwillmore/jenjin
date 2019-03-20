@@ -34,13 +34,13 @@ class D18_physics_debug : JJGame(JJConfig {
 
         val initialSceneSpec = SceneSpec {
             //Set up some balls and a terrain on 'layer1' collision group
-            node(params { x = -8f; y = 8f; prop("collisionGroup", "layer1") }, "ball")
-            node(params { x = -2f; y = 9f; scaleX = 2f; scaleY = 2f;prop("collisionGroup", "layer1") }, "ball")
-            node(params { x = 0f; y = 0f; scaleX = 20f;prop("collisionGroup", "layer1") }, "terrain")
+            node("ball"){ x = -8f; y = 8f; prop("collisionGroup", "layer1") }
+            node("ball"){ x = -2f; y = 9f; scaleX = 2f; scaleY = 2f;prop("collisionGroup", "layer1") }
+            node("terrain"){ x = 0f; y = 0f; scaleX = 20f;prop("collisionGroup", "layer1") }
             //Set up some balls and a terrain on 'layer2' collision group
-            node(params { x = 2f; y = 10f;prop("collisionGroup", "layer2") }, "ball")
-            node(params { x = +8f; y = 11f; scaleX = 2f; scaleY = 2f;prop("collisionGroup", "layer2") }, "ball")
-            node(params { x = 0f; y = -10f; scaleX = 20f;prop("collisionGroup", "layer2") }, "terrain")
+            node("ball"){ x = 2f; y = 10f;prop("collisionGroup", "layer2") }
+            node("ball"){ x = +8f; y = 11f; scaleX = 2f; scaleY = 2f;prop("collisionGroup", "layer2") }
+            node("terrain"){ x = 0f; y = -10f; scaleX = 20f;prop("collisionGroup", "layer2") }
         }
 
         JJ.scenes.instantiate(initialSceneSpec)

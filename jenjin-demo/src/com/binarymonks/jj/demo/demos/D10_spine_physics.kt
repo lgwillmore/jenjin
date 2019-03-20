@@ -12,7 +12,7 @@ import com.binarymonks.jj.spine.collisions.TriggerRagDollCollision
 import com.binarymonks.jj.spine.specs.SpineSpec
 
 
-class D10_spine_physics : JJGame(JJConfig{
+class D10_spine_physics : JJGame(JJConfig {
     b2d.debugRender = true
 
     gameView.worldBoxWidth = 15f
@@ -33,9 +33,9 @@ class D10_spine_physics : JJGame(JJConfig{
         JJ.scenes.loadAssetsNow()
 
         JJ.scenes.instantiate(SceneSpec {
-            node(params { x = 4f; y = -0.4f }, "spineBoy" )
-            node(params { x = 7f; y = 4f; rotationD = 90f }, "hammer" )
-            node(params { y = -2f; scaleX = 13f; localName = "floor" }, "terrain" )
+            node("spineBoy") { x = 4f; y = -0.4f }
+            node("hammer") { x = 7f; y = 4f; rotationD = 90f }
+            node("terrain") { y = -2f; scaleX = 13f; localName = "floor" }
         })
     }
 
@@ -60,7 +60,7 @@ class D10_spine_physics : JJGame(JJConfig{
                     fixture {
                         offsetX = 1.2f
                         collisionGroup = CollisionGroupSpecName("character")
-                        shape=Rectangle()
+                        shape = Rectangle()
                     }
                 }
             }
@@ -69,10 +69,12 @@ class D10_spine_physics : JJGame(JJConfig{
 
     private fun swingHammer(): SceneSpec {
         return SceneSpec {
-            node(params { localName = "hammerAnchor" }) {
+            node {
+                localName = "hammerAnchor"
                 physics { bodyType = BodyDef.BodyType.StaticBody }
             }
-            node(params { localName = "hammer" }) {
+            node {
+                localName = "hammer"
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
                     fixture { shape = Rectangle(0.5f, 3f); offsetY = -1.5f; collsionGroup("hammer") }

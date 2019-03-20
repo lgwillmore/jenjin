@@ -24,7 +24,7 @@ class CollisionGroupSpecProperty(val propertyName: String) : CollisionGroupSpec 
             var groupName: String  =  properties.get(propertyName) as String
             return JJ.B.physicsWorld.collisionGroups.getCollisionData(groupName)
         }
-        throw Exception("No property set by localName of $propertyName")
+        throw Exception("No property set by name of $propertyName")
     }
 
 }

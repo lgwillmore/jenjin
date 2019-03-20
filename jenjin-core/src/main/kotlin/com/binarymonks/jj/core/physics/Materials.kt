@@ -5,8 +5,8 @@ import com.badlogic.gdx.utils.ObjectMap
 /**
  * Lets you build a material system.
  *
- * So you can register materials with the physical localProperties you desire, and then use these
- * named materials for your [com.binarymonks.jj.core.specs.physics.FixtureSpec] by setting the material localName.
+ * So you can register materials with the physical properties you desire, and then use these
+ * named materials for your [com.binarymonks.jj.core.specs.physics.FixtureSpec] by setting the material name.
  */
 class Materials {
 

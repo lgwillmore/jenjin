@@ -35,17 +35,18 @@ class D16_spine_pooling : JJGame(JJConfig {
 
         JJ.scenes.instantiate(SceneSpec {
             container = true
-            node(params { x = -2f }, "spawnBounding")
-            node(params { x = 2f }, "spawnAnimation")
-            node(params{x=-2f; y=-0.18f}) {
+            node("spawnBounding") { x = -2f }
+            node("spawnAnimation") { x = 2f }
+            node {
+                x = -2f; y = -0.18f
                 physics {
-                    bodyType=BodyDef.BodyType.StaticBody
+                    bodyType = BodyDef.BodyType.StaticBody
                     fixture {
-                        shape=Rectangle(5f,0.3f)
+                        shape = Rectangle(5f, 0.3f)
                     }
                 }
                 render {
-                    rectangleRender(5f,0.3f)
+                    rectangleRender(5f, 0.3f)
                 }
             }
         })
@@ -83,8 +84,8 @@ class D16_spine_pooling : JJGame(JJConfig {
             }
             skeleton {
                 boundingBoxes = true
-                coreMotorTorque=0f
-                coreMotorTorqueFalloff=1f
+                coreMotorTorque = 0f
+                coreMotorTorqueFalloff = 1f
             }
             rootScene {
                 component(SelfDestruct()) {
@@ -122,7 +123,7 @@ class D16_spine_pooling : JJGame(JJConfig {
     }
 }
 
-class DelayedTriggerRagdollComponent: Component(){
+class DelayedTriggerRagdollComponent : Component() {
 
     private var scheduledID = -1
 
@@ -131,7 +132,7 @@ class DelayedTriggerRagdollComponent: Component(){
         JJ.clock.schedule(this::triggerRagDoll, delaySeconds = 1f)
     }
 
-    fun triggerRagDoll(){
+    fun triggerRagDoll() {
         me().getComponent(SpineComponent::class)[0].triggerRagDoll(1f)
     }
 

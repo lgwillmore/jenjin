@@ -235,7 +235,7 @@ open class Scene(
     }
 
     override fun toString(): String {
-        return "Scene(localName=$name, groupName=$groupName, id=$id)"
+        return "Scene(name=$name, groupName=$groupName, id=$id)"
     }
 
     fun append(params: InstanceParams, scenePath: String): Bond<Scene> {

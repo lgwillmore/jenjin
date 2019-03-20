@@ -37,14 +37,14 @@ import com.badlogic.gdx.utils.FloatArray;
 import com.esotericsoftware.spine.attachments.Attachment;
 import com.esotericsoftware.spine.attachments.VertexAttachment;
 
-/** A simple container for a list of timelines and a localName. */
+/** A simple container for a list of timelines and a name. */
 public class Animation {
 	final String name;
 	final Array<Timeline> timelines;
 	float duration;
 
 	public Animation (String name, Array<Timeline> timelines, float duration) {
-		if (name == null) throw new IllegalArgumentException("localName cannot be null.");
+		if (name == null) throw new IllegalArgumentException("name cannot be null.");
 		if (timelines == null) throw new IllegalArgumentException("timelines cannot be null.");
 		this.name = name;
 		this.timelines = timelines;
@@ -81,7 +81,7 @@ public class Animation {
 			timelines.get(i).apply(skeleton, lastTime, time, events, alpha, setupPose, mixingOut);
 	}
 
-	/** The animation's localName, which is unique within the skeleton. */
+	/** The animation's name, which is unique within the skeleton. */
 	public String getName () {
 		return name;
 	}
@@ -656,12 +656,12 @@ public class Animation {
 			return frames;
 		}
 
-		/** The attachment localName for each key frame. May contain null values to clear the attachment. */
+		/** The attachment name for each key frame. May contain null values to clear the attachment. */
 		public String[] getAttachmentNames () {
 			return attachmentNames;
 		}
 
-		/** Sets the time in seconds and the attachment localName for the specified key frame. */
+		/** Sets the time in seconds and the attachment name for the specified key frame. */
 		public void setFrame (int frameIndex, float time, String attachmentName) {
 			frames[frameIndex] = time;
 			attachmentNames[frameIndex] = attachmentName;

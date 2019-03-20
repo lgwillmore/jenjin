@@ -43,7 +43,7 @@ public class SlotData {
 
 	public SlotData (int index, String name, BoneData boneData) {
 		if (index < 0) throw new IllegalArgumentException("index must be >= 0.");
-		if (name == null) throw new IllegalArgumentException("localName cannot be null.");
+		if (name == null) throw new IllegalArgumentException("name cannot be null.");
 		if (boneData == null) throw new IllegalArgumentException("boneData cannot be null.");
 		this.index = index;
 		this.name = name;
@@ -55,7 +55,7 @@ public class SlotData {
 		return index;
 	}
 
-	/** The localName of the slot, which is unique within the skeleton. */
+	/** The name of the slot, which is unique within the skeleton. */
 	public String getName () {
 		return name;
 	}
@@ -75,7 +75,7 @@ public class SlotData {
 		this.attachmentName = attachmentName;
 	}
 
-	/** The localName of the attachment that is visible for this slot in the setup pose, or null if no attachment is visible. */
+	/** The name of the attachment that is visible for this slot in the setup pose, or null if no attachment is visible. */
 	public String getAttachmentName () {
 		return attachmentName;
 	}

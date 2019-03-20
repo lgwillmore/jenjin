@@ -11,7 +11,7 @@ object Reflection {
         try {
             return clazz.getField(name)
         } catch (e: NoSuchFieldException) {
-            throw RuntimeException(String.format("Could not checkPools field localName %s from class %s", name, clazz.canonicalName))
+            throw RuntimeException(String.format("Could not checkPools field name %s from class %s", name, clazz.canonicalName))
         }
 
     }

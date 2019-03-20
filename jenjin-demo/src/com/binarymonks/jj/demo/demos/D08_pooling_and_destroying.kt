@@ -30,7 +30,8 @@ class D08_pooling_and_destroying : JJGame(JJConfig {
 
         JJ.scenes.instantiate(SceneSpec {
             //generator
-            node(params { y = -3f;x = 3f }) {
+            node {
+                y = -3f;x = 3f
                 component(Emitter()) {
                     setSpec("nestedCompositeScene")
                     delayMinSeconds.set(spawnDelay)
@@ -41,7 +42,8 @@ class D08_pooling_and_destroying : JJGame(JJConfig {
                 }
             }
             //scaled generator
-            node(params { y = 3f;x = -3f }) {
+            node {
+                y = 3f;x = -3f
                 component(Emitter()) {
                     sceneSpecRef.set(sceneRef("nestedCompositeScene"))
                     delayMinSeconds.set(spawnDelay)
@@ -76,7 +78,8 @@ class D08_pooling_and_destroying : JJGame(JJConfig {
             component(com.binarymonks.jj.core.components.misc.SelfDestruct()) {
                 delaySeconds = destroyDelay
             }
-            node(params { localName = "rectangle" }) {
+            node {
+                localName = "rectangle"
                 pooled = poolEverything
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
@@ -86,7 +89,8 @@ class D08_pooling_and_destroying : JJGame(JJConfig {
                     rectangleRender(1f, 1f) { color.set(Color.BLUE) }
                 }
             }
-            node(params { localName = "rectangle2"; y = 4f; rotationD = 45f }) {
+            node {
+                localName = "rectangle2"; y = 4f; rotationD = 45f
                 pooled = poolEverything
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
@@ -96,7 +100,7 @@ class D08_pooling_and_destroying : JJGame(JJConfig {
                     rectangleRender(1f, 1f) { color.set(Color.BLUE) }
                 }
             }
-            node(params { localName = "circle"; y = 2f }, "circle")
+            node("circle") { localName = "circle"; y = 2f }
             weldJoint("rectangle", "circle", vec2()) {}
             weldJoint("rectangle", "rectangle2", vec2()) {}
         }
