@@ -104,14 +104,14 @@ class MasterFactory {
                 var worldPosition = vec2().mul(paramsStack.transformMatrix)
                 scene.resetFromPool(worldPosition.x, worldPosition.y, paramsStack.rotationD)
                 scene.groupName = paramsStack.peek().groupName
-                scene.name = paramsStack.peek().localName ?: sceneSpec.name
+                scene.name = paramsStack.peek().nameOverride ?: sceneSpec.name
                 scene.properties.clear()
                 scene.properties.merge(sceneSpec.properties).merge(paramsStack.peek().localProperties)
                 return scene
             }
         }
         val scene = Scene(
-                name = paramsStack.peek().localName ?: sceneSpec.name,
+                name = paramsStack.peek().nameOverride ?: sceneSpec.name,
                 specName = sceneSpec.name,
                 groupName = paramsStack.peek().groupName,
                 specID = sceneSpec.id,

@@ -20,42 +20,51 @@ fun params(init: InstanceParams.() -> Unit): InstanceParams {
     return instanceParams
 }
 
-interface Params {
+interface BaseParamsI {
     var x: Float
     var y: Float
     var scaleX: Float
     var scaleY: Float
     var rotationD: Float
-    var localProperties: ObjectMap<String, Any>
-    /**
-     * This must be a localName that is unique to its me SceneSpec child nodes if set
-     */
-    var localName: String?
-    /**
-     * This must be a localName that is globally unique if set. It is used for retrieving
-     */
     var groupName: String?
 }
 
-open class ParamsBase: Params{
+open class BaseParams: BaseParamsI {
     override var x: Float = 0f
     override var y: Float = 0f
     override var scaleX: Float = 1f
     override var scaleY: Float = 1f
     override var rotationD: Float = 0f
-    override var localProperties: ObjectMap<String, Any> = ObjectMap()
-    override var localName: String? = null
-    override var groupName: String? = null
+    override var groupName: String?  = null
 }
 
-class InstanceParams : ParamsBase(), HasProps {
+open class FullParams: BaseParams(){
+    /**
+     * This must be a nameOverride that is unique to its parent SceneSpec child nodes if set
+     */
+    var nameOverride: String? = null
+
+    var localProperties: ObjectMap<String, Any> = ObjectMap()
+    /**
+     * This must be a nameOverride that is globally unique if set. It is used for retrieving
+     */
+
+    /**
+     * Convenience method for setting a property.
+     */
+    fun prop(name: String, value: Any?) {
+        localProperties.put(name, value)
+    }
+}
+
+class InstanceParams : FullParams(), HasProps {
 
     companion object Factory {
         fun new(): InstanceParams {
             return new(InstanceParams::class)
         }
 
-        fun from(params: Params): InstanceParams{
+        fun from(params: FullParams): InstanceParams{
             val new = InstanceParams()
             new.x = params.x
             new.y = params.y
@@ -63,7 +72,18 @@ class InstanceParams : ParamsBase(), HasProps {
             new.scaleY = params.scaleY
             new.rotationD = params.rotationD
             new.localProperties = params.localProperties
-            new.localName = params.localName
+            new.nameOverride = params.nameOverride
+            new.groupName = params.groupName
+            return new
+        }
+
+        fun from(params: BaseParamsI): InstanceParams{
+            val new = InstanceParams()
+            new.x = params.x
+            new.y = params.y
+            new.scaleX = params.scaleX
+            new.scaleY = params.scaleY
+            new.rotationD = params.rotationD
             new.groupName = params.groupName
             return new
         }
@@ -90,10 +110,6 @@ class InstanceParams : ParamsBase(), HasProps {
         this.y = vector.y
     }
 
-    fun prop(name: String, value: Any? = null) {
-        localProperties.put(name, value)
-    }
-
     fun getTransformMatrix(): Matrix3 {
         transformMatrix.idt()
         transformMatrix.translate(x, y)
@@ -115,7 +131,7 @@ class InstanceParams : ParamsBase(), HasProps {
     }
 
     override fun toString(): String {
-        return "InstanceParams(x=$x, y=$y, scaleX=$scaleX, scaleY=$scaleY, rotationD=$rotationD, localProperties=$localProperties, localName=$localName, groupName=$groupName)"
+        return "InstanceParams(x=$x, y=$y, scaleX=$scaleX, scaleY=$scaleY, rotationD=$rotationD, localProperties=$localProperties, nameOverride=$nameOverride, groupName=$groupName)"
     }
 }
 

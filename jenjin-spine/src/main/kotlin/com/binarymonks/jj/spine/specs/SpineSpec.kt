@@ -150,7 +150,7 @@ class SpineSpec() : SceneSpecRef {
                         }
                     }
                 },
-                params { localName = bone.data.name }
+                params { nameOverride = bone.data.name }
         )
         spineComponent.bonePaths.put(bone.data.name, ScenePath(path.copy()))
         return bone.data.name

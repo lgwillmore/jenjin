@@ -39,7 +39,7 @@ open class SceneSpec() : SceneSpecRef {
      * @param scene The scene to instantiate
      * @param instanceParams The instance specific parameters
      */
-    fun addNode(scene: SceneSpecRef, instanceParams: Params = InstanceParams.new()) {
+    fun addNode(scene: SceneSpecRef, instanceParams: FullParams = InstanceParams.new()) {
         val fullParams = InstanceParams.from(instanceParams)
         nodes.put(getName(fullParams), SceneNode(scene, fullParams))
     }
@@ -50,16 +50,16 @@ open class SceneSpec() : SceneSpecRef {
      * @param scenePath The path to the addNode[SceneSpec].
      * @param instanceParams The instance specific parameters
      */
-    fun addNode(scenePath: String, instanceParams: Params = InstanceParams.new()) {
+    fun addNode(scenePath: String, instanceParams: FullParams = InstanceParams.new()) {
         val fullParams = InstanceParams.from(instanceParams)
         nodes.put(getName(fullParams), SceneNode(SceneSpecRefPath(scenePath), fullParams))
     }
 
     private fun getName(instanceParams: InstanceParams): String? {
-        return if (instanceParams.localName == null) {
+        return if (instanceParams.nameOverride == null) {
             "ANON${nodeCounter++}"
         } else {
-            instanceParams.localName
+            instanceParams.nameOverride
         }
     }
 
@@ -67,21 +67,21 @@ open class SceneSpec() : SceneSpecRef {
         properties.put(key, value)
     }
 
-    fun node(path: String, build: Params.() -> Unit) {
-        val params = ParamsBase()
+    fun node(path: String, build: FullParams.() -> Unit) {
+        val params = FullParams()
         params.build()
         this.addNode(path, params)
     }
 
     fun node(path: String) {
-        val params = ParamsBase()
+        val params = FullParams()
         this.addNode(path, params)
     }
 
     fun node(build: NodeBuilder.() -> Unit) {
         val builder = NodeBuilder()
         builder.build()
-        this.addNode(builder, builder)
+        this.addNode(builder, InstanceParams.from(builder))
     }
 
     fun physics(init: PhysicsSpec.() -> Unit): PhysicsSpec {
@@ -149,18 +149,15 @@ open class SceneSpec() : SceneSpecRef {
         nodes.forEach { assets.addAll(it.value.sceneRef!!.getAssets()) }
         return assets
     }
-
 }
 
-class NodeBuilder(private val params: Params = ParamsBase()) : SceneSpec(), Params by params {
-    fun update(params: Params) {
+class NodeBuilder(private val params: BaseParams = BaseParams()) : SceneSpec(), BaseParamsI by params {
+    fun update(params: BaseParams) {
         this.params.x = params.x
         this.params.y = params.y
         this.params.scaleX = params.scaleX
         this.params.scaleY = params.scaleY
         this.params.rotationD = params.rotationD
-        this.params.localProperties = params.localProperties
-        this.params.localName = params.localName
         this.params.groupName = params.groupName
     }
 }

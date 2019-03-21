@@ -79,7 +79,7 @@ class D08_pooling_and_destroying : JJGame(JJConfig {
                 delaySeconds = destroyDelay
             }
             node {
-                localName = "rectangle"
+                nameOverride = "rectangle"
                 pooled = poolEverything
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
@@ -90,7 +90,7 @@ class D08_pooling_and_destroying : JJGame(JJConfig {
                 }
             }
             node {
-                localName = "rectangle2"; y = 4f; rotationD = 45f
+                nameOverride = "rectangle2"; y = 4f; rotationD = 45f
                 pooled = poolEverything
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
@@ -100,7 +100,7 @@ class D08_pooling_and_destroying : JJGame(JJConfig {
                     rectangleRender(1f, 1f) { color.set(Color.BLUE) }
                 }
             }
-            node("circle") { localName = "circle"; y = 2f }
+            node("circle") { nameOverride = "circle"; y = 2f }
             weldJoint("rectangle", "circle", vec2()) {}
             weldJoint("rectangle", "rectangle2", vec2()) {}
         }

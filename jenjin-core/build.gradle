@@ -31,15 +31,6 @@ publishing {
             }
 
         }
-//        mavenTest(MavenPublication) {
-//            artifactId 'jenjin-core-test'
-//
-//            from components.java
-//
-//            artifact testJar {
-//                classifier "sources"
-//            }
-//        }
     }
 }
 
