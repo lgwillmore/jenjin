@@ -70,11 +70,11 @@ class D10_spine_physics : JJGame(JJConfig {
     private fun swingHammer(): SceneSpec {
         return SceneSpec {
             node {
-                nameOverride = "hammerAnchor"
+                name = "hammerAnchor"
                 physics { bodyType = BodyDef.BodyType.StaticBody }
             }
             node {
-                nameOverride = "hammer"
+                name = "hammer"
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
                     fixture { shape = Rectangle(0.5f, 3f); offsetY = -1.5f; collsionGroup("hammer") }

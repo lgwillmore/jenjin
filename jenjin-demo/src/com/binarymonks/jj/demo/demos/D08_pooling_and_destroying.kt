@@ -79,7 +79,7 @@ class D08_pooling_and_destroying : JJGame(JJConfig {
                 delaySeconds = destroyDelay
             }
             node {
-                nameOverride = "rectangle"
+                name = "rectangle"
                 pooled = poolEverything
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
@@ -90,7 +90,7 @@ class D08_pooling_and_destroying : JJGame(JJConfig {
                 }
             }
             node {
-                nameOverride = "rectangle2"; y = 4f; rotationD = 45f
+                name = "rectangle2"; y = 4f; rotationD = 45f
                 pooled = poolEverything
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody

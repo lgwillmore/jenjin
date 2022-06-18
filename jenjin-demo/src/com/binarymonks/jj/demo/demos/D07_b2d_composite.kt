@@ -48,7 +48,7 @@ class D07_b2d_composite : JJGame(JJConfig {
         val sliderLength = 8f
         return SceneSpec {
             node {
-                nameOverride = "anchor"
+                name = "anchor"
                 physics { bodyType = BodyDef.BodyType.StaticBody }
                 render {
                     val chain: Array<Vector2> = Array<Vector2>().addVar(vec2(), vec2(sliderLength, 0f))
@@ -58,7 +58,7 @@ class D07_b2d_composite : JJGame(JJConfig {
                 }
             }
             node {
-                nameOverride = "ball"
+                name = "ball"
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
                     fixture { shape = Circle(0.5f) }
@@ -106,12 +106,12 @@ class D07_b2d_composite : JJGame(JJConfig {
         //Some forced weld joints, but they work
         return SceneSpec {
             node {
-                nameOverride = "anchor"
+                name = "anchor"
                 physics { bodyType = BodyDef.BodyType.StaticBody }
                 render { circleRender(0.25f) { color.set(Color.GREEN) } }
             }
             node {
-                nameOverride = "arm"
+                name = "arm"
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
                     fixture { shape = Rectangle(0.5f, 4f) }
@@ -119,7 +119,7 @@ class D07_b2d_composite : JJGame(JJConfig {
                 render { rectangleRender(0.5f, 4f) { color.set(Color.BROWN) } }
             }
             node {
-                nameOverride = "topBall"; y = 2f
+                name = "topBall"; y = 2f
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
                     fixture { shape = Circle(1f) }
@@ -129,7 +129,7 @@ class D07_b2d_composite : JJGame(JJConfig {
                 }
             }
             node {
-                nameOverride = "bottomBall"; y = -2f
+                name = "bottomBall"; y = -2f
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
                     fixture { shape = Circle(1f) }
@@ -147,11 +147,11 @@ class D07_b2d_composite : JJGame(JJConfig {
     private fun swingHammer(): SceneSpec {
         return SceneSpec {
             node {
-                nameOverride = "hammerAnchor"
+                name = "hammerAnchor"
                 physics { bodyType = BodyDef.BodyType.StaticBody }
             }
             node {
-                nameOverride = "hammer"
+                name = "hammer"
                 physics {
                     bodyType = BodyDef.BodyType.DynamicBody
                     fixture { shape = Rectangle(0.5f, 3f); offsetY = -1.5f }
